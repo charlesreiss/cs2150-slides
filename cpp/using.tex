@@ -1,0 +1,23 @@
+\begin{frame}[fragile,label=using]{using directive}
+\lstset{
+    style=small,
+    language=C++,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+}
+\begin{lstlisting}
+#include <iostream>
+@1using namespace std;1@
+int main() {
+    cout << "Hello World!" << endl;
+    return 0;
+}
+\end{lstlisting}
+\hline
+\begin{lstlisting}
+#include <iostream>
+int main() {
+    @1std::1@cout << "Hello World!" << @1std::1@endl;
+    return 0;
+}
+\end{lstlisting}
+\end{frame}

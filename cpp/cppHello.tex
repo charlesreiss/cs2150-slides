@@ -1,0 +1,41 @@
+\begin{frame}<1>[fragile,label=cppHello]{C++ hello world}
+\lstset{
+    language=C++,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:4-5>]{@5}{5@}},
+    moredelim={**[is][\btHL<all:4,6>]{@6}{6@}},
+}
+\begin{lstlisting}
+#@5include5@ <iostream>
+@6using namespace std6@;
+@2int main()2@ {
+    @3cout <<3@ "Hello World!" @3<< endl3@;
+    return 0;
+}
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+\coordinate (place) at ([yshift=3cm]current page.south);
+\tikzset{
+    box/.style={ultra thick,draw,at=(place),anchor=center,align=center,font=\large}
+}
+\begin{visibleenv}<2>
+\node[box]  {
+    outside of any class! \\
+    called a \myemph{function}
+};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[box]  {
+    instead of \texttt{System.out.println}
+};
+\end{visibleenv}
+\begin{visibleenv}<4>
+\node[box] {
+   instead of \texttt{import java...} 
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}

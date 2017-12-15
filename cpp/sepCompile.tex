@@ -1,0 +1,182 @@
+\begin{frame}[fragile,label=javaAcross]{between Java files}
+\lstset{language=Java,style=small,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+}
+\begin{tikzpicture}
+\tikzset{
+    fileBox/.style={draw,thick,text width=7cm,align=left},
+    fileLabel/.style={label={[label distance=-1mm,draw,inner sep=0.5mm,fill=white]north:#1}},
+    >=Latex,
+}
+\node[fileBox,fileLabel=Foo.java] (fooJava) {%
+\vspace{-2ex}
+\begin{lstlisting}
+public class Foo {
+    ...
+    @1Bar1@ x = new @1Bar1@();
+    ...
+}
+\end{lstlisting}%
+\vspace{-2ex}
+};
+
+\node[fileBox,anchor=north west,fileLabel=Bar.java] (barJava) at ([yshift=-.5cm]fooJava.south west){%
+\vspace{-2ex}
+\begin{lstlisting}
+public class Bar {
+    ...
+}
+\end{lstlisting}%
+\vspace{-2ex}
+};
+
+\draw[very thick,->] (fooJava.east) -- ++ (1cm,0cm) |- (barJava.east)
+    node[pos=0.25,right,align=left] {
+        Java compiler \\ looks for \\ \texttt{Bar.java}
+    };
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=cppInclude]{C++: header files}
+\lstset{language=C++,style=small,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+}
+\begin{tikzpicture}
+\tikzset{
+    fileBox/.style={draw,thick,text width=7cm,align=left},
+    fileLabel/.style={label={[label distance=-1mm,draw,inner sep=0.5mm,fill=white]north:#1}},
+    >=Latex,
+}
+\node[fileBox,fileLabel=main.c] (mainC) {%
+\vspace{-2ex}
+\begin{lstlisting}
+#include <iostream>
+using namespace std;
+int main() {
+  cout << "Hello, World!"
+       << endl;
+}
+\end{lstlisting}%
+\vspace{-2ex}
+};
+
+\node[fileBox,anchor=north west,fileLabel=iostream (comes w/ compiler)] (iostream) at ([yshift=-.5cm]mainC.south west){%
+\vspace{-2ex}
+\begin{lstlisting}
+namespace std {
+...
+  class ostream {
+    ...
+  };
+
+  extern ostream cout;
+}
+\end{lstlisting}%
+\vspace{-2ex}
+};
+
+\draw[very thick,->] (fooJava.east) -- ++ (1cm,0cm) |- (barJava.east)
+    node[pos=0.25,right,align=left] {
+        C++ compiler \\ copies text of \\
+        \texttt{iostream}
+    };
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[label=declBefUse]<1-2>{declare before use}
+\begin{itemize}
+\item functions, classes must be \textbf{declared before they are used}
+\vspace{.5cm}
+\item compiler processes \myemph<2>{each file in order}
+\item compiler processes \myemph<3>{files seperately}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=declVDefn1]{declaration versus definition (1)}
+\lstset{language=C++,style=small,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+}
+\begin{tikzpicture}
+\tikzset{
+    fileBox/.style={draw,thick,text width=8cm,align=left},
+    fileLabel/.style={label={[label distance=-1mm,draw,inner sep=0.5mm,fill=white]north:#1}},
+    >=Latex,
+}
+\node[fileBox] (mainC) {%
+\vspace{-2ex}
+\begin{lstlisting}
+#include <iostream>
+@2bool even(int number);2@
+bool odd(int number) {
+    return !even(number);
+}
+@3bool even(int number) {3@
+    if (number == 0) {
+        return true;
+    } else {
+        return odd(number - 1);
+    }
+}
+\end{lstlisting}%
+\vspace{-2ex}
+};
+\begin{visibleenv}<2>
+\node[draw=red,thick,anchor=north west] at ([xshift=-1cm]mainC.north east) {
+    \myemph{declaration}
+};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[draw=red,thick,anchor=north west] at ([yshift=-1cm,xshift=-2cm]mainC.north east) {
+    \myemph{definition} (and declaration)
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+% FIXME: error for even/od
+
+\againframe<3>{declBefUse}
+
+
+\begin{frame}[fragile,label=declVDefn2]{declaration versus definition (2)}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{tikzpicture}
+\tikzset{
+    fileBox/.style={draw,thick,text width=8cm,align=left},
+    fileLabel/.style={label={[label distance=-1mm,draw,inner sep=0.5mm,fill=white]north:#1}},
+    >=Latex,
+}
+\node[fileBox,fileLabel=main.c] (mainC) {%
+\vspace{-2ex}
+\begin{lstlisting}
+#include <iostream>
+extern bool even(int number);
+int main() {
+    std::cout << "42 is ";
+    if (even(42)) {
+        std::cout << "even";
+    } else {
+        std::cout << "odd";
+    }
+    std::cout << std::endl;
+}
+\end{lstlisting}%
+\vspace{-2ex}
+};
+\node[fileBox,fileLabel=even.c,anchor=north west] (evenC) at ([yshift=-.5cm]mainC.south west) {%
+\vspace{-2ex}
+\begin{lstlisting}
+bool even(int number) {
+    return number % 2 == 0;
+}
+\end{lstlisting}
+\vspace{-2ex}
+};
+\end{tikzpicture}
+\end{frame}
+
