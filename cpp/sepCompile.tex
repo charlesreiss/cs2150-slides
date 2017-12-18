@@ -37,55 +37,9 @@ public class Bar {
 \end{tikzpicture}
 \end{frame}
 
-\begin{frame}[fragile,label=cppInclude]{C++: header files}
-\lstset{language=C++,style=small,
-    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
-}
-\begin{tikzpicture}
-\tikzset{
-    fileBox/.style={draw,thick,text width=7cm,align=left},
-    fileLabel/.style={label={[label distance=-1mm,draw,inner sep=0.5mm,fill=white]north:#1}},
-    >=Latex,
-}
-\node[fileBox,fileLabel=main.c] (mainC) {%
-\vspace{-2ex}
-\begin{lstlisting}
-#include <iostream>
-using namespace std;
-int main() {
-  cout << "Hello, World!"
-       << endl;
-}
-\end{lstlisting}%
-\vspace{-2ex}
-};
-
-\node[fileBox,anchor=north west,fileLabel=iostream (comes w/ compiler)] (iostream) at ([yshift=-.5cm]mainC.south west){%
-\vspace{-2ex}
-\begin{lstlisting}
-namespace std {
-...
-  class ostream {
-    ...
-  };
-
-  extern ostream cout;
-}
-\end{lstlisting}%
-\vspace{-2ex}
-};
-
-\draw[very thick,->] (fooJava.east) -- ++ (1cm,0cm) |- (barJava.east)
-    node[pos=0.25,right,align=left] {
-        C++ compiler \\ copies text of \\
-        \texttt{iostream}
-    };
-\end{tikzpicture}
-\end{frame}
-
-\begin{frame}[label=declBefUse]<1-2>{declare before use}
+\begin{frame}<1-2>[label=declBefUse]{declare before use}
 \begin{itemize}
-\item functions, classes must be \textbf{declared before they are used}
+\item functions, classes must be \\ \myemph{declared before they are used}
 \vspace{.5cm}
 \item compiler processes \myemph<2>{each file in order}
 \item compiler processes \myemph<3>{files seperately}
@@ -102,6 +56,7 @@ namespace std {
 \tikzset{
     fileBox/.style={draw,thick,text width=8cm,align=left},
     fileLabel/.style={label={[label distance=-1mm,draw,inner sep=0.5mm,fill=white]north:#1}},
+    hiBox/.style={draw=red,ultra thick,fill=white},
     >=Latex,
 }
 \node[fileBox] (mainC) {%
@@ -123,16 +78,30 @@ bool odd(int number) {
 \vspace{-2ex}
 };
 \begin{visibleenv}<2>
-\node[draw=red,thick,anchor=north west] at ([xshift=-1cm]mainC.north east) {
-    \myemph{declaration}
+\node[hiBox,anchor=north west] at ([xshift=-5cm,yshift=-1cm]mainC.north east) {
+    \myemph{declaration} --- ``function prototype''
 };
 \end{visibleenv}
 \begin{visibleenv}<3>
-\node[draw=red,thick,anchor=north west] at ([yshift=-1cm,xshift=-2cm]mainC.north east) {
+\node[hiBox,anchor=north west] at ([yshift=-1cm,xshift=-3cm]mainC.north east) {
     \myemph{definition} (and declaration)
 };
 \end{visibleenv}
 \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=funcAndProto]{functions and prototypes}
+\lstset{language=C++,style=small}
+\begin{itemize}
+\item functions --- methods not associated with class
+\item \textit{function prototype} or \textit{forward declaration} ---
+\begin{lstlisting}
+return_type functionName(argType name,
+                         argType name,
+                         argType name, ...);
+\end{lstlisting}
+\item prototype or definition must appear before function can be used
+\end{itemize}
 \end{frame}
 
 % FIXME: error for even/od
@@ -143,7 +112,10 @@ bool odd(int number) {
 \begin{frame}[fragile,label=declVDefn2]{declaration versus definition (2)}
 \lstset{
     language=C++,
-    style=small
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
 }
 \begin{tikzpicture}
 \tikzset{
@@ -151,19 +123,17 @@ bool odd(int number) {
     fileLabel/.style={label={[label distance=-1mm,draw,inner sep=0.5mm,fill=white]north:#1}},
     >=Latex,
 }
-\node[fileBox,fileLabel=main.c] (mainC) {%
+\node[fileBox,fileLabel=main.cpp] (mainC) {%
 \vspace{-2ex}
 \begin{lstlisting}
 #include <iostream>
-extern bool even(int number);
+@1extern bool even(int number);1@
 int main() {
-    std::cout << "42 is ";
-    if (even(42)) {
-        std::cout << "even";
-    } else {
-        std::cout << "odd";
-    }
-    std::cout << std::endl;
+  if (even(42)) {
+    std::cout << "42 is even"
+        << std::endl;
+  }
+  return 0;
 }
 \end{lstlisting}%
 \vspace{-2ex}
@@ -180,3 +150,190 @@ bool even(int number) {
 \end{tikzpicture}
 \end{frame}
 
+
+\begin{frame}[fragile,label=cppInclude1]{C++: header files (1)}
+\lstset{language=C++,style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+}
+\begin{tikzpicture}
+\tikzset{
+    fileBox/.style={draw,thick,text width=7cm,align=left},
+    fileLabel/.style={label={[label distance=-1mm,draw,inner sep=0.5mm,fill=white]north:#1}},
+    >=Latex,
+}
+\node[fileBox,fileLabel=main.cpp] (mainC) {%
+\vspace{-2ex}
+\begin{lstlisting}
+#include <iostream>
+#@1include "even.h"1@
+int main() {
+  if (even(42)) {
+    std::cout << "42 is even"
+              << std::endl;
+  }
+  return 0;
+}
+\end{lstlisting}%
+\vspace{-2ex}
+};
+
+\node[fileBox,anchor=north west,fileLabel=even.h] (evenH) at ([yshift=-.5cm]mainC.south west){%
+\vspace{-2ex}
+\begin{lstlisting}
+...
+extern bool even(int number);
+...
+\end{lstlisting}%
+\vspace{-2ex}
+};
+
+\node[fileBox,anchor=north west,fileLabel=even.c] (evenC) at ([yshift=-.5cm]evenH.south west){%
+\vspace{-2ex}
+\begin{lstlisting}
+bool even(int number) {
+    return number % 2 == 0;
+}
+\end{lstlisting}%
+\vspace{-2ex}
+};
+
+
+
+\draw[very thick,->] ([yshift=-1cm]fooJava.east) -- ++ (1cm,0cm) |- (barJava.east)
+    node[pos=0.25,right,align=left] {
+        C++ compiler \\ reads from \\
+        \texttt{even.h}
+    };
+\end{tikzpicture}
+\end{frame}
+
+
+\begin{frame}[fragile,label=cppInclude2]{C++: header files (2)}
+\lstset{language=C++,style=small,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+}
+\begin{tikzpicture}
+\tikzset{
+    fileBox/.style={draw,thick,text width=7cm,align=left},
+    fileLabel/.style={label={[label distance=-1mm,draw,inner sep=0.5mm,fill=white]north:#1}},
+    >=Latex,
+}
+\node[fileBox,fileLabel=main.cpp] (mainC) {%
+\vspace{-2ex}
+\begin{lstlisting}
+#include <iostream>
+using namespace std;
+int main() {
+  cout << "Hello, World!"
+       << endl;
+}
+\end{lstlisting}%
+\vspace{-2ex}
+};
+
+\node[fileBox,anchor=north west,fileLabel=iostream (comes w/ compiler)] (iostream) at ([yshift=-.5cm]mainC.south west){%
+\vspace{-2ex}
+\begin{lstlisting}
+...
+  class ostream {
+    ...
+  };
+
+  extern ostream cout;
+...
+\end{lstlisting}%
+\vspace{-2ex}
+};
+
+\draw[very thick,->] (fooJava.east) -- ++ (1cm,0cm) |- (barJava.east)
+    node[pos=0.25,right,align=left] {
+        C++ compiler \\ reads from \\
+        \texttt{iostream}
+    };
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{header files}
+\begin{itemize}
+\item header files contain \myemph{declarations}
+    \begin{itemize}
+    \item (mostly)
+    \end{itemize}
+\item alternative to placing prototypes, etc. in every file
+    \begin{itemize}
+    \item convention: every \texttt{.cpp} file has a \texttt{.h} file
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{seperate compilation}
+\begin{tikzpicture}
+\tikzset{
+    box/.style={draw,ultra thick,font=\tt},
+    boxB/.style={draw,ultra thick,font=\tt\small,dotted},
+    >=Latex,
+    l/.style={draw,thick,->},
+    ll/.style={fill=white,draw=none},
+    compileMain/.style={alt=<3>{red,line width=2pt}},
+    compileEven/.style={alt=<4>{red,line width=2pt}},
+    link/.style={alt=<5>{red,line width=2pt}},
+    explainBox/.style={fill=white,draw=red,line width=2pt,align=left},
+    objectFile/.style={alt=<6>{red,line width=2pt}},
+}
+\node[box] (mainC) {main.cpp};
+\node[below=.2cm of mainC,xshift=1.5cm,boxB] (mainInc) { even.h, iostream, \ldots };
+\node[box,right=3cm of mainC,objectFile] (mainO) {main.o};
+\draw[l,compileMain] (mainC) -- (mainO) node[midway,ll] {compile};
+\node[box,below=1.5cm of mainC] (evenC) {even.cpp};
+\node[box,right=3cm of evenC,objectFile] (evenO) {even.o};
+\draw[l] (evenC) -- (evenO) node[midway,ll] {compile};
+
+\node[box,anchor=north west] (iostreamC) at ([yshift=-3cm]evenC.south west) {iostream.cpp};
+\node[box,right=3cm of iostreamC] (iostreamO) {iostream.o};
+\draw[l] (iostreamC) -- (iostreamO) node[midway,ll] {compile};
+\node[fit=(iostreamC) (iostreamO),ultra thick,dashed,draw=black!50,label={north:done in advance}] {};
+
+\begin{visibleenv}<2->
+
+\node[box,link] (mainExe) at ([xshift=3.5cm,yshift=-3.5cm]mainO) { main.exe };
+
+\coordinate (mainExePre) at ([xshift=-4cm]mainExe.west);
+
+\draw[l,link] (evenO.east) -- ++(.25cm,0cm) |- ([yshift=-.4cm]evenO.south) -| (mainExePre) -- (mainExe);
+\draw[l,link] (mainO.east) -- ++(.25cm,0cm) |- ([yshift=-.4cm]evenO.south) -| (mainExePre) -- (mainExe);
+\draw[l,link] (iostreamO.east) -- ++(.25cm,0cm) |- ([yshift=-1.6cm]evenO.south) -| (mainExePre) -- (mainExe)
+    node[midway,ll] {link};
+
+\end{visibleenv}
+
+\begin{visibleenv}<3>
+\node [anchor=north west,explainBox] at ([yshift=-1cm]mainC.south west) {
+    \texttt{clang++ -c main.cpp}
+};
+\end{visibleenv}
+
+\begin{visibleenv}<4>
+\node [anchor=north west,explainBox] at ([yshift=-.25cm]evenC.south west) {
+    \texttt{clang++ -c even.cpp}
+};
+\end{visibleenv}
+
+\begin{visibleenv}<5>
+\node [anchor=north west,explainBox] at ([yshift=-4cm,xshift=-.25cm]mainC.south west) {
+    \texttt{clang++ -o main.exe main.o even.o}
+};
+\end{visibleenv}
+
+\begin{visibleenv}<6>
+\node[explainBox] at ([xshift=-4cm]mainExe) {``object files''};
+\end{visibleenv}
+
+\begin{visibleenv}<7>
+\node[explainBox] at ([xshift=-4cm]mainExe) {
+    \texttt{clang++ -o main.exe main.c even.c} \\
+    (does all steps, but doesn't keep some files)
+};
+\end{visibleenv}
+
+\end{tikzpicture}
+\end{frame}

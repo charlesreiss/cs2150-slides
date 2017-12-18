@@ -1,0 +1,226 @@
+\begin{frame}[fragile,label=cppClass]{Java: IntCell.java (1)}
+\lstset{language=Java,style=smaller}
+\begin{lstlisting}
+public class IntCell {
+    public IntCell() { this(0); }
+
+    public IntCell(int initialValue) {
+        storedValue = initialValue;
+    }
+
+    public int getValue() {
+        return storedValue;
+    }
+
+    public void setValue(int newValue) {
+        storedValue = newValue;
+    }
+
+    private int storedValue;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}<1>[fragile,label=intCellH]{C++: IntCell.h}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2-3>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+    moredelim={**[is][\btHL<all:6>]{@6}{6@}},
+    moredelim={**[is][\btHL<all:7>]{@7}{7@}},
+    moredelim={**[is][\btHL<all:8>]{@8}{8@}},
+}
+\begin{lstlisting}
+#@2ifndef INTCELL_H2@
+#@2define INTCELL_H2@
+class IntCell {
+  @4public:4@
+    @5IntCell5@( int initialValue @6= 06@ );
+
+    @7int getValue()7@ @8const8@;
+    @7void setValue(int val)7@;
+
+  private:
+    @9int storedValue;9@
+}
+#@2endif2@
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+\tikzset{
+    explainBox/.style={draw=red,ultra thick,align=left,fill=white},
+}
+\coordinate (c) at (current page.center);
+\coordinate (c2) at ([yshift=1cm]current page.center);
+\begin{visibleenv}<2-3>
+\node[explainBox] at (c) {
+    ``boilerplate'' \\
+    used to keep preprocessor from including file twice \\
+    (more on this later)
+};
+\end{visibleenv}
+\begin{visibleenv}<4>
+\node[explainBox] at (c) {
+    everything after this is public \\
+    (default is private)
+};
+\end{visibleenv}
+\begin{visibleenv}<5>
+\node[explainBox] at (c) {
+    constructor declaration
+};
+\end{visibleenv}
+\begin{visibleenv}<6>
+\node[explainBox] at (c) {
+    default argument \\
+    must be part of declaration (not definition)
+};
+\end{visibleenv}
+\begin{visibleenv}<7>
+\node[explainBox] at (c2) {
+    method declarations \\
+    (official C++ name for methods: ``member functions'')
+};
+\end{visibleenv}
+\begin{visibleenv}<8>
+\node[explainBox] at (c2) {
+    ``const'' \textit{after parenthesis} --- \\
+    indicates method does not change object \\
+    (\texttt{this} is constant)
+};
+\end{visibleenv}
+\begin{visibleenv}<9>
+\node[explainBox] at (c) {
+    instance variable \\
+    (official C++ name: ``member variable'')
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\againframe<2,4->{intCellH}
+
+\begin{frame}[fragile,label=intCellCpp]{C++: IntCell.cpp}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+    moredelim={**[is][\btHL<all:6>]{@6}{6@}},
+    moredelim={**[is][\btHL<all:7>]{@7}{7@}},
+    moredelim={**[is][\btHL<all:8>]{@8}{8@}},
+}
+\begin{lstlisting}
+#include "IntCell.h"
+
+@2IntCell::2@IntCell( @3int initialValue3@ ) @4:4@
+        @4storedValue( initialValue )4@ {
+}
+
+int @2IntCell::2@getValue() @5const5@ {
+    return storedValue;
+}
+
+void @2IntCell::2@setValue( int val ) {
+    storedValue = val;
+}
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+\tikzset{
+    explainBox/.style={draw=red,ultra thick,align=left,fill=white},
+}
+\coordinate (c) at (current page.center);
+\coordinate (c2) at ([yshift=2cm]current page.center);
+\begin{visibleenv}<2>
+\node[explainBox] at (c) {
+    all methods declarations prefixed with ``ClassName::''
+};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[explainBox] at (c) {
+    declaration had ``\texttt{int initialValue \myemph{= 0}}'' \\
+    not repeated in definition
+};
+\end{visibleenv}
+\begin{visibleenv}<4>
+\node[explainBox] at (c) {
+    special syntax for initializing member variables \\
+    can also call constructors (if member variable is a class)
+};
+\end{visibleenv}
+\begin{visibleenv}<5>
+\node[explainBox] at (c2) {
+    \texttt{const} (method called on const object) \\
+    defintion and declaration \\
+    (indicates \texttt{this} is const here)
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+
+\begin{frame}[fragile,label=testIntCellCpp]{C++: TestIntCell.cpp}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:2-3>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+    moredelim={**[is][\btHL<all:6>]{@6}{6@}},
+    moredelim={**[is][\btHL<all:7>]{@7}{7@}},
+    moredelim={**[is][\btHL<all:8>]{@8}{8@}},
+}
+\begin{lstlisting}
+#include <iostream>
+#include "IntCell.h"
+using namespace std;
+
+int main( ) {
+    @2IntCell m12@;
+    @4IntCell m2( 37 )4@;
+    // output: 0 37
+    cout << m1.getValue( ) << " "
+         << m2.getValue( ) << endl;
+    @5m1 = m2;5@
+    m2.setValue( 40 );
+    // output: 37 40
+    cout << m1.getValue( ) << " " 
+         << m2.getValue( ) << endl;
+    return 0;
+}
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+\tikzset{
+    explainBox/.style={draw=red,ultra thick,align=left,fill=white},
+}
+\coordinate (c) at (current page.center);
+\coordinate (c2) at ([yshift=2cm]current page.center);
+\begin{visibleenv}<2>
+\node[explainBox] at (c) {
+    not a reference --- \myemph{cannot be null} \\
+    represents the object itself
+};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[explainBox] at (c) {
+    calls the \myemph{default constructor} \\ 
+    \texttt{IntCell::IntCell()}
+};
+\end{visibleenv}
+\begin{visibleenv}<4>
+\node[explainBox] at (c2) {
+    calls \texttt{IntCell(37)} constructor
+};
+\end{visibleenv}
+\begin{visibleenv}<5>
+\node[explainBox] at (c) {
+    \myemph{copies} m1 into m2 \\
+    C++ objects are \myemph{values} (not references)
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}

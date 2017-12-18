@@ -1,0 +1,155 @@
+\begin{frame}[fragile,label=RationalH]{C++: Rational.h}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+    moredelim={**[is][\btHL<all:6>]{@6}{6@}},
+    moredelim={**[is][\btHL<all:7>]{@7}{7@}},
+    moredelim={**[is][\btHL<all:8>]{@8}{8@}},
+}
+\begin{lstlisting}
+#ifndef RATIONAL_H
+#define RATIONAL_H 
+
+class Rational { 
+  public: 
+    @3Rational()3@;
+    @4Rational(int numerator, int denominator)4@;
+    @5~Rational5@();
+    void print() @2const2@; 
+    Rational times(Rational b) @2const2@; 
+    Rational plus(Rational b) const; 
+    Rational reciprocal() const;
+    Rational divides(Rational b) const; 
+  private: 
+    int num, den; // the numerator and denominator
+    @6static6@ int gcd(int m, int n); // helper function
+};
+
+#endif
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+\tikzset{
+    explainBox/.style={draw=red,ultra thick,align=left,fill=white},
+}
+\coordinate (c) at (current page.center);
+    \coordinate (c2) at ([yshift=1cm]current page.center);
+\begin{visibleenv}<2>
+\node[explainBox] at (c2) {
+    I marked these \texttt{const} \\
+    since they don't change the object they're called on
+};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[explainBox] at (c2) {
+    default constructor
+};
+\end{visibleenv}
+\begin{visibleenv}<4>
+\node[explainBox] at (c2) {
+    another constructor
+};
+\end{visibleenv}
+\begin{visibleenv}<5>
+\node[explainBox] at (c2) {
+    \myemph{destructor} --- not actually useful yet
+};
+\end{visibleenv}
+\begin{visibleenv}<6>
+\node[explainBox] at (c) {
+    \texttt{static} --- like Java, method doesn't take object
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=RationalCppConst]{C++: Rational.cpp --- constructors}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+    moredelim={**[is][\btHL<all:6>]{@6}{6@}},
+    moredelim={**[is][\btHL<all:7>]{@7}{7@}},
+    moredelim={**[is][\btHL<all:8>]{@8}{8@}},
+}
+\begin{lstlisting}
+...
+// default constructor: initialize to 0/1
+Rational::Rational() : num(0), den(1) {
+}
+
+Rational::Rational(int numerator, int denominator) {
+    if (denominator == 0) {
+        @2cout << "Denominator is zero" << endl2@;
+    }
+    int g = @3gcd(numerator, denominator)3@;
+    @4num =4@ numerator   / g;
+    den = denominator / g;
+}
+\end{lstlisting}
+
+\begin{tikzpicture}[overlay,remember picture]
+\tikzset{
+    explainBox/.style={draw=red,ultra thick,align=left,fill=white},
+}
+\coordinate (c) at (current page.center);
+\begin{visibleenv}<2>
+\node[explainBox] at (c) {
+    probably should throw exception instead?
+};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[explainBox] at (c) {
+    call to static method
+};
+\end{visibleenv}
+\begin{visibleenv}<4>
+\node[explainBox] at (c) {
+    member variables initialized in body \\
+    instead of \texttt{: LIST} syntax
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=RationalCppTimes]{C++: Rational.cpp --- times}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+    moredelim={**[is][\btHL<all:6>]{@6}{6@}},
+    moredelim={**[is][\btHL<all:7>]{@7}{7@}},
+    moredelim={**[is][\btHL<all:8>]{@8}{8@}},
+}
+\begin{lstlisting}
+...
+Rational Rational::times(Rational b) {
+    return @2Rational(num * b.num, den * b.den)2@;
+}
+\end{lstlisting}
+
+\begin{tikzpicture}[overlay,remember picture]
+\tikzset{
+    explainBox/.style={draw=red,ultra thick,align=left,fill=white},
+}
+\coordinate (c) at (current page.center);
+\begin{visibleenv}<2>
+\node[explainBox] at (c) {
+    syntax to create new Rational object
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+

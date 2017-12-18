@@ -1,0 +1,223 @@
+\begin{frame}[fragile,label=dumbPreproc]{the preprocessor is dumb}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+}
+\begin{tikzpicture}
+\tikzset{
+    fileBox/.style={draw,thick,text width=10cm,align=left},
+    fileLabel/.style={label={[label distance=-1mm,draw,inner sep=0.5mm,fill=white]north:#1}},
+    hiBox/.style={draw=red,thick,fill=white},
+    >=Latex,
+}
+\node[fileBox,fileLabel=Foo.h,text height=0ex,text depth=2ex] (fooH) {
+\vspace{-1.5ex}
+\begin{lstlisting}
+class Foo { /* ... */ };
+\end{lstlisting}
+\vspace{-4ex}
+};
+
+\node[fileBox,fileLabel=Bar.h,below=.5cm of fooH,inner ysep=-1ex] (barH) {
+\begin{lstlisting}
+#include @2"Foo.h"2@
+class Bar { /* ... uses Foo ... */ };
+\end{lstlisting}
+};
+\node[fileBox,fileLabel=main.cpp,below=.5cm of barH,inner ysep=-1ex] (mainC) {
+\begin{lstlisting}
+#include @2"Foo.h"2@
+#include "Bar.h"
+\end{lstlisting}
+};
+\begin{visibleenv}<2->
+\node[draw=red,below=0cm of mainC] {
+\lstset{language={}}
+\begin{lstlisting}
+In file included from main.cpp:2:
+In file included from ./Bar.h:1:
+./Foo.h:1:7: error: redefinition of 'Foo'
+class Foo {};
+      ^
+./Foo.h:1:7: note: previous definition is here
+class Foo {};
+\end{lstlisting}
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=cppAlone]{running the preprocessor alone}
+\newcommand{\myemphB}[1]{\myemph<2>{#1}}
+\small (some lines omitted)
+\begin{Verbatim}[commandchars=\\\{\}]
+\textit{prompt$ } clang++ -E main.cpp
+# 1 "main.cpp"
+\myemphB{# 1 "./Foo.h" 1}\tikzmark{mark}
+class Foo \{\};
+# 2 "main.cpp" 2
+# 1 "./Bar.h" 1
+# 1 "./Foo.h" 1
+class Foo \{\};
+# 2 "./Bar.h" 2
+class Bar \{\};
+\end{Verbatim}
+\begin{tikzpicture}[overlay,remember picture]
+\tikzset{
+    hiBox/.style={draw=red,thick,fill=white,align=left},
+}
+\coordinate (mark) at (pic cs:mark);
+\begin{visibleenv}<1>
+\node[hiBox,anchor=north west] at ([xshift=.5cm]mark) {
+    compiler generates this first \\
+    (as a temporary file)
+};
+\end{visibleenv}
+\begin{visibleenv}<2>
+\node[hiBox,anchor=north west] at ([xshift=.5cm]mark) {
+    line numbers/file names for error messages
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+% FIXME: preprocessor commands  clang++ -E  define   ifdef   ifndef endif
+
+\begin{frame}[fragile,label=define]{\texttt{\#define}}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+    moredelim={**[is][\btHL<all:6>]{@6}{6@}},
+    moredelim={**[is][\btHL<all:7>]{@7}{7@}},
+    moredelim={**[is][\btHL<all:8>]{@8}{8@}},
+    texcl=false,
+}%
+\begin{lstlisting}
+/* make 'FOO' equivalent to 'something' */
+#define FOO something
+
+/* make 'BAR' equivalent to '' */
+#define BAR
+
+foo is FOO.
+bar is BAR.
+\end{lstlisting}
+\hrule
+\begin{Verbatim}[commandchars=\\\{\},fontsize=\small]
+\textit{prompt$ }clang++ -E define-example1.cpp
+...
+
+foo is something.
+bar is something.
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile,label=ifndef]{\texttt{\#ifndef}}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+    moredelim={**[is][\btHL<all:6>]{@6}{6@}},
+    moredelim={**[is][\btHL<all:7>]{@7}{7@}},
+    moredelim={**[is][\btHL<all:8>]{@8}{8@}},
+    texcl=false,
+}%
+\begin{lstlisting}
+#ifndef FOO
+if shown after preprocessing:
+foo not defined first time
+#endif
+#define FOO
+#ifndef FOO
+@2if shown after preprocessing:2@
+@2foo not defined second time2@
+#endif
+\end{lstlisting}
+\hrule
+\begin{Verbatim}[commandchars=\\\{\},fontsize=\small]
+\textit{prompt$ }clang++ -E define-example2.cpp
+...
+
+if shown after preprocessing:
+foo not defiend first time
+
+\end{Verbatim}
+\begin{tikzpicture}[overlay,remember picture]
+\tikzset{
+    hiBox/.style={draw=red,thick,fill=white,align=left},
+}
+\coordinate (mark) at (current page.center);
+\begin{visibleenv}<2>
+\node[hiBox,anchor=north west] at (mark) {
+    omitted since after \#define of FOO
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=boilerplate]{the boilerplate}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+    moredelim={**[is][\btHL<all:6>]{@6}{6@}},
+    moredelim={**[is][\btHL<all:7>]{@7}{7@}},
+    moredelim={**[is][\btHL<all:8>]{@8}{8@}},
+    texcl=false,
+}%
+\begin{lstlisting}
+#ifndef FOO_H
+#define FOO_H
+  (contents here)
+#endif
+\end{lstlisting}
+\begin{itemize}
+    \item first time included --- \texttt{FOO\_H} not defined yet
+    \item sceond time included --- \texttt{FOO\_H} defined
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=preprocCmds]{preprocessor commands (subset)}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+    moredelim={**[is][\btHL<all:6>]{@6}{6@}},
+    moredelim={**[is][\btHL<all:7>]{@7}{7@}},
+    moredelim={**[is][\btHL<all:8>]{@8}{8@}},
+    texcl=false,
+}%
+\begin{itemize}
+    \item \texttt{\#define NAME replacement}
+    \item \texttt{\#undef NAME}
+    \item \texttt{\#ifndef NAME}, \texttt{\#ifdef NAME}
+    \vspace{.5cm}
+    \item \texttt{\#if \textit{expression}}
+        \begin{itemize}
+            \item e.g. \texttt{\#if defined(X) \&\& defined(Y)}
+        \end{itemize}
+    \item \texttt{\#define NAME(\textit{X}, \textit{Y})   thing w/ X and Y}
+        \begin{itemize}
+            \item \texttt{NAME(foo, bar)} $\rightarrow$ \texttt{thing w/ foo and bar}
+        \end{itemize}
+    \item \ldots
+\end{itemize}
+\end{frame}
