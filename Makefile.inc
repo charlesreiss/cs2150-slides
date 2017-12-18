@@ -1,4 +1,4 @@
-all: talk-slides.pdf talk-handout.pdf talk-slides-heldback.pdf talk-handout-heldback.pdf
+all: talk-slides.pdf
 
 %.pdf: %.tex .FORCE
 	mkdir -p build
