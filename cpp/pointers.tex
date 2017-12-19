@@ -1,0 +1,84 @@
+% FIXME
+
+\begin{frame}{pointers}
+\begin{itemize}
+\item store \myemph{memory addresses}
+    \begin{itemize}
+    \item the location of values
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+% FIXME: ways of interpreting?
+
+\begin{frame}{memory?}
+\begin{tikzpicture}
+\matrix[tight matrix,
+    column 1/.style={nodes={draw=none,text width=3cm}},
+    column 2/.style={nodes={draw=none,text width=1cm,font=\tt}},
+    label={north:memory (as 64-bit values)}
+] (mem64) {
+    address \& value (64-bit) \\
+    0 \& 123999 \\
+    8 \& 323232 \\
+    16 \& 434093 \\
+    \ldots \& \ldots \\
+    10000 \& 1 \\
+    10008 \& 5 \\
+    10016 \& 7\\
+    \ldots \& \ldots \\
+};
+\begin{visibleenv}<2>
+\matrix[tight matrix,
+    column 1/.style={draw=none,text width=3cm},
+    column 2/.style={draw=none,text width=1cm,font=\tt},
+    label={north:(as 64-bit values)}
+    right=1cm of mem64
+] (mem8) {
+    address \& value (8-bit) \\
+    0 \& 95 \\
+    1 \& 228 \\
+    2 \& 1 \\
+    3 \& 0 \\
+    4 \& 0 \\
+    5 \& 0 \\
+    6 \& 0 \\
+    7 \& 0 \\
+    8 \& 160 \\
+    9 \& 238 \\
+    10 \& 4 \\
+    11 \& \ldots
+    \ldots \& \ldots \\
+};
+\tikzset{
+    hiBox/.style={draw=red,inner sep=0.5mm,ultra thick}
+}
+\node[hiBox,fit=(mem64-2-2)] {};
+\node[hiBox,fit=(mem8-2-2) (mem8-9-2)] {};
+\draw[red,ultra thick] (mem64-2-2.north east) -- (mem8-2-2.north west);
+\draw[red,ultra thick] (mem64-2-1.south east) -- (mem8-9-1.south west);
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=pointersIntro]{pointers}
+\lstset{
+    language=C++,
+    style=smaller,
+}
+\begin{tikzpicture}
+\tikzset{
+    codeBox/.style={draw,thick}
+},
+\node[codeBox] {
+\begin{lstlisting}
+int anInteger;
+int *pointerToAnInteger;
+\end{lstlisting}
+};
+\end{tikzpicture}
+\end{frame}
+
+% FIXME: box diagram
+
+% Binky pointer fun?
