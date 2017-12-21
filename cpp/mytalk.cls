@@ -147,6 +147,15 @@
     },
 }
 
+\makeatletter
+\lst@CCPutMacro
+    \lst@ProcessOther {"2A}{%
+      \lst@ttfamily 
+         {\raisebox{2pt}{*}}% used with ttfamily
+         {\raisebox{2pt}{*}}}% used with other fonts
+    \@empty\z@\@empty
+
+
 \lstdefinelanguage
    [x8664gas]{Assembler}     % add a "x64" dialect of Assembler
    [x86masm]{Assembler} % based on the "x86masm" dialect
@@ -165,7 +174,9 @@
                   SUBQ,SYSCALL,.ASCII,CALLQ,MOVSLQ,JMP,ANDQ,SHRQ,MOVB,INCQ,TESTL,XORL,%
                   SHRL,LEAL,SARL,SUBL,IMULL,IMULQ,MOVDQU,PADDD,XORL,%
                   MOVZBL,MOVZB,SHRB,SRAL,SHRL,ANDL,%
-                  CMOVNS,SRAL,SRAQ,MOVZBW,MOVZBQ},
+                  CMOVNS,SRAL,SRAQ,MOVZBW,MOVZBQ,%
+                  PADDW,PADDQ,MODUPS,MOVAPD,%
+                  },
     deletekeywords={eax,ebx,sp,si,cx,di,ds,cs,es,fs,dx,ax,bx,al,esi,ebp,ecx,rip,eip,edx,edi,rdi,esp},
     morecomment=[l]{\#},
     morecomment=[l]{\/\/},
@@ -214,7 +225,7 @@
     language=C,
     basicstyle=\sourcecodepro\EmptyMapping,
     escapechar=`,
-    keywordstyle=\keywordstyle,
+    keywordstyle=\keywordstyle\EmptyMapping,
     identifierstyle=\sourcecodepro\EmptyMapping,
     numberstyle=\small\color{black!70},
     commentstyle=\color{red!60!black}\ttfamily\itshape,

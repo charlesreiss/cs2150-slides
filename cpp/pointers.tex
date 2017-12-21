@@ -14,9 +14,10 @@
 \begin{frame}{memory?}
 \begin{tikzpicture}
 \matrix[tight matrix,
-    column 1/.style={nodes={draw=none,text width=3cm}},
-    column 2/.style={nodes={draw=none,text width=1cm,font=\tt}},
-    label={north:memory (as 64-bit values)}
+    column 1/.style={nodes={draw=none,text width=2cm}},
+    column 2/.style={nodes={text width=2cm,font=\tt}},
+    row 1/.style={nodes={font=\normalfont}},
+    label={[font=\bfseries]north:memory (as 64-bit values)}
 ] (mem64) {
     address \& value (64-bit) \\
     0 \& 123999 \\
@@ -30,11 +31,12 @@
 };
 \begin{visibleenv}<2>
 \matrix[tight matrix,
-    column 1/.style={draw=none,text width=3cm},
-    column 2/.style={draw=none,text width=1cm,font=\tt},
-    label={north:(as 64-bit values)}
-    right=1cm of mem64
-] (mem8) {
+    column 1/.style={nodes={draw=none,text width=2cm}},
+    column 2/.style={nodes={text width=2cm,font=\tt}},
+    row 1/.style={nodes={font=\normalfont,draw=none}},
+    label={[font=\bfseries]north:(as 8-bit values)},
+    anchor=north west,
+] (mem8) at ([xshift=1.25cm]mem64.north east) {
     address \& value (8-bit) \\
     0 \& 95 \\
     1 \& 228 \\
@@ -47,7 +49,7 @@
     8 \& 160 \\
     9 \& 238 \\
     10 \& 4 \\
-    11 \& \ldots
+    11 \& \ldots \\
     \ldots \& \ldots \\
 };
 \tikzset{
@@ -56,7 +58,7 @@
 \node[hiBox,fit=(mem64-2-2)] {};
 \node[hiBox,fit=(mem8-2-2) (mem8-9-2)] {};
 \draw[red,ultra thick] (mem64-2-2.north east) -- (mem8-2-2.north west);
-\draw[red,ultra thick] (mem64-2-1.south east) -- (mem8-9-1.south west);
+\draw[red,ultra thick] (mem64-2-2.south east) -- (mem8-9-2.south west);
 \end{visibleenv}
 \end{tikzpicture}
 \end{frame}
@@ -65,20 +67,144 @@
 \lstset{
     language=C++,
     style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
 }
 \begin{tikzpicture}
 \tikzset{
-    codeBox/.style={draw,thick}
+    codeBox/.style={draw,thick},
+    pointerBox/.style={draw},
+    >=Latex,
+    pointing/.style={->,ultra thick},
+    value/.style={green!50!black},
+    pointer/.style={blue},
 },
-\node[codeBox] {
+\node[codeBox] (mainBox) {
 \begin{lstlisting}
-int anInteger;
-int *pointerToAnInteger;
+long anInteger;
+long *pointerToAnInteger;
+anInteger = 42;
+@2pointerToAnInteger = &anInteger;2@
+@4*pointerToAnInteger = 43;4@
 \end{lstlisting}
 };
+\matrix[tight matrix,
+    column 1/.style={nodes={draw=none,text width=1.75cm}},
+    column 2/.style={nodes={text width=2cm,font=\tt}},
+    row 1/.style={nodes={font=\normalfont,draw=none}},
+    label={[font=\bfseries,xshift=2cm]north:memory (as 64-bit values)},
+    anchor=north west,
+] (mem) at ([yshift=-1cm]mainBox.south west){
+    address \& value \\
+    \ldots \& \ldots \\
+    |[value]| 10000 \& |[value,alias=anInteger]| \sout<4->{42}\only<4->{~43} \\
+    |[pointer]| 10008 \& |[pointer,alias=pointerToAnInteger]| \only<1-2>{?}\only<3->{10000} \\
+    10016 \& \ldots \\
+    \ldots \& \ldots \\
+};
+\begin{visibleenv}<2->
+\node[font=\tt\small,value,right=0.5cm of anInteger] (anIntegerName) {anInteger};
+\node[font=\tt\small,pointer,right=.5cm of pointerToAnInteger] {pointerToAnInteger};
+\end{visibleenv}
+\begin{visibleenv}<3->
+\draw[pointing] ([xshift=-.5cm]pointerToAnInteger.east) -- ++ (1cm,0cm) |- (anInteger.east);
+\node[font=\tt\small,value,right=0.25cm of anIntegerName] {*pointerToAnInteger};
+\end{visibleenv}
 \end{tikzpicture}
 \end{frame}
 
 % FIXME: box diagram
+
+% FIXME: not about whitespace
+\begin{frame}[fragile,label=pointerDeclare]{declaring pointers}
+\lstset{
+    language=C++,
+    style=smaller,
+    morekeywords=Rational,
+}
+\begin{lstlisting}
+float *X; // X is a pointer to float
+float* X; // X is a pointer to float
+float * X; // X is a pointer to float
+
+Rational *Y; // Y is a pointer to Rational
+Rational* Y; // Y is a pointer to Rational
+
+Rational **Z; // Z is a pointer to pointer to Rational
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=pointOtherType]{pointers to other types}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{tikzpicture}
+\tikzset{
+    codeBox/.style={draw,thick},
+    pointerBox/.style={draw},
+    >=Latex,
+    pointing/.style={->,ultra thick},
+    value/.style={green!50!black},
+    pointer/.style={blue},
+    paren/.style={black!50,font=\small},
+}
+\node[codeBox] (mainBox) {
+\begin{lstlisting}
+Rational aFraction(2, 3);
+Rational *pointerToFraction;
+pointerToFraction = &aFraction;
+*pointerToFraction =
+    (*pointerToFraction).times(*pointerToFraction);
+\end{lstlisting}
+};
+\matrix[tight matrix,
+    nodes={minimum height=.6cm},
+    column 1/.style={nodes={draw=none,text width=1.75cm}},
+    column 2/.style={nodes={text width=2cm,font=\tt}},
+    row 1/.style={nodes={font=\normalfont,draw=none}},
+    label={[font=\bfseries,xshift=2cm]north:memory},
+    anchor=north west,
+] (mem) at ([yshift=-1cm]mainBox.south west){
+    address \& value \\
+    \ldots \& \ldots \\
+    |[value]| 10000 \& |[value,alias=fraction]| {\begin{tabular}{l|l} 2 & 3 \end{tabular}} \\
+    |[pointer]| 10008 \& |[pointer,alias=pointerToFraction]| \only<1-2>{?}\only<3->{10000} \\
+    10016 \& \ldots \\
+    \ldots \& \ldots \\
+};
+
+\begin{visibleenv}<2->
+\node[font=\tt\small,value,right=0.5cm of fraction] (fractionLabel) {aFraction};
+\node[font=\tt\small,pointer,right=.5cm of pointerToFraction] {pointerToFraction};
+\end{visibleenv}
+\begin{visibleenv}<3->
+\draw[pointing] ([xshift=-.5cm]pointerToFraction.east) -- ++ (1cm,0cm) |- (fraction.east);
+\node[font=\tt\small,value,right=0.25cm of fractionLabel] {*pointerToFraction};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+% FIXME: the & operator
+
+% FIXME: the * operator
+
+    % FIXME: relationship between declaration and other syntax
+
+% swap example
+
+% FIXME: pointers to classes
+
+    % the -> operator
+
+% FIXME: pointers to pointers
+
+% FIXME: memory errors and NULL
 
 % Binky pointer fun?
