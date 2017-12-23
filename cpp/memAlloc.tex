@@ -1,4 +1,4 @@
-\begin{frame}[fragile,label=noNewObjects]{no new: C++ local variables (1)}
+\begin{frame}[fragile,label=noNewObjects]{C++ local variables (1)}
 \lstset{language=C++,style=small}
 \begin{lstlisting}
 Rational getTwoThirds() {
@@ -11,7 +11,7 @@ Rational getTwoThirds() {
     \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile,label=noNewObjects]{no new: C++ local variables (2)}
+\begin{frame}[fragile,label=noNewObjects2]{C++ local variables (2)}
 \lstset{language=C++,style=small}
 \begin{lstlisting}
 HugeValue computeHugeInteger() {
@@ -38,6 +38,86 @@ Rational *brokenGetTwoThirds() {
 \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile,label=cppNewLocal]{new in C++}
+\lstset{
+    language=C++,
+    style=smaller,
+}
+\begin{lstlisting}
+Rational *getTwoThirds() {
+    Rational *twoThirdsPointer = new Rational(2, 3);
+    return twoThirdsPointer;
+}
+HugeValue *computeHugeNumber() {
+    HugeValue *theHugeNumber = new HugeValue;
+    ... /* set *theHugeNumber */ ...
+    return theHugeNumber;
+}
+\end{lstlisting}
+    \begin{itemize}
+        \item does not copy --- returns a pointer
+        \item new allocates space somewhere
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=cppNewDelete]{need for delete (1)}
+\lstset{
+    language=C++,
+    style=smaller,
+}
+\begin{lstlisting}
+Rational *getTwoThirds() {
+    Rational *twoThirdsPointer;
+    twoThirdsPointer = new Rational(2, 3);
+    return twoThirdsPointer;
+}
+
+void showTwoThirds() {
+    Rational *twoThirdsPointer = getTwoThirds();
+    twoThirdsPointer->print();
+}
+\end{lstlisting}
+\begin{itemize}
+    \item what happens to where \texttt{twoThirdsPointer} points?
+    \item<2> memory \myemph{remains used and allocated}
+    \item<2> ``memory leak''
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=cppNewDelete2]{need for delete (2)}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2-3>]{@2}{2@}},
+}
+\begin{lstlisting}
+Rational *getTwoThirds() {
+    Rational *twoThirdsPointer = new Rational(2, 3);
+    return twoThirdsPointer;
+}
+
+void showTwoThirds() {
+    Rational *twoThirdsPointer = getTwoThirds();
+    @1twoThirdsPointer->print();1@
+}
+
+int main() { showTwoThirds(); @2aThing();2@ return 0; }
+\end{lstlisting}
+\begin{tikzpicture}
+\tikzset{
+    box/.style={draw,thick,font=\tt},
+    dealloced/.style={alt=<2->{opacity=0.5}},
+    stillAlloced/.style={alt=<3>{red,ultra thick}},
+    >=Latex,
+}
+\node[box,label={[font=\small,dealloced]local variable},dealloced] (twoThirdsPointer) {twoThirdsPointer};
+\node[box,stillAlloced,label={[stillAlloced,font=\small]allocated with new},right=1cm of twoThirdsPointer] (twoThirds) {twoThirds};
+\draw[thick,->,dealloced] (twoThirdsPointer) -- (twoThirds);
+
+\end{tikzpicture}
+\end{frame}
+
 \begin{frame}[fragile,label=cppArray]{C++: fixed-sized arrays}
 \lstset{language=C++,style=small}
 \begin{lstlisting}
@@ -47,19 +127,145 @@ int fourthValue = arrayOfTenValues[3];
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile,label=cppArray]{C++: variable sized arrays?}
-\lstset{language=C++,style=small}
+\begin{frame}[fragile,label=vlas]{C++: variable sized arrays?}
+\lstset{language=C++,style=small,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    }
 \begin{lstlisting}
-int N = computeSize();
+int n;
+cout << "Enter size: ";
+cin >> n;
 ...
-int brokenArrayOfNValues[N];
+int brokenArrayOfNValues@1[n]1@;
 ...
 \end{lstlisting}
-not officially part of C++ \\
+\myemph{not part of C++} \\
 (but some compilers allow an extension)
-\begin{Verbatim}[fontsize=\tiny]
+\begin{Verbatim}[fontsize=\small]
 $ clang++ -Wall -pedantic -c test.cpp
 test.cpp:3:29: warning: variable length arrays are a C99 feature [-Wvla-extension]
-    int brokenArrayOfNValues[N];
+    int brokenArrayOfNValues[1];
 \end{Verbatim}
+\end{frame}
+
+
+\begin{frame}[fragile,label=dynArray1]{C++: dynamic arrays (1)}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+}
+\begin{lstlisting}
+int n;
+cout << "Enter size: ";
+cin >> n;
+
+// use the user's input to create an array of int
+int * ages = @2new int [n];2@
+\end{lstlisting}
+\hrule
+\begin{tikzpicture}
+\tikzset{
+    codeBox/.style={draw,thick},
+    pointerBox/.style={draw},
+    >=Latex,
+    pointing/.style={->,ultra thick},
+    value/.style={green!50!black},
+    pointer/.style={blue},
+}
+\matrix[tight matrix,
+    nodes={minimum height=.6cm},
+    column 1/.style={nodes={draw=none,text width=4cm}},
+    column 2/.style={nodes={text width=2cm,font=\tt}},
+    row 1/.style={nodes={font=\normalfont,draw=none}},
+    anchor=north west,
+] (mem) {
+    address \& value \\
+    |[pointer]| 10000 \& |[pointer,alias=ages]| 90000 \\
+    \ldots \& \ldots \\
+    |[value]| 90000 \& |[value,alias=agesZero]| ? \\
+    |[value]| 90004 \& |[value,alias=agesOne]| ? \\
+    |[value]| 90008 \& |[value,alias=agesTwo]| ? \\
+    \ldots \& \ldots \\
+    |[value]| 90000+(n-1)$\times$4 \& |[value,alias=agesN1]| ? \\
+};
+    \node[font=\tt\small,pointer,right=0.25cm of ages] {ages};
+    \node[font=\tt\small,value,right=0.25cm of agesZero] {ages[0]};
+    \node[font=\tt\small,value,right=0.25cm of agesOne] {ages[1]};
+    \node[font=\tt\small,value,right=0.25cm of agesTwo] {ages[2]};
+    \node[font=\tt\small,value,right=0.25cm of agesN1] {ages[n-1]};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=dynArray2]{C++: dynamic arrays (2)}
+\lstset{
+    language=C++,
+    style=small,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+}
+\begin{lstlisting}
+int * ages = @2new int [n];2@
+... /* use ages[i] */ ...
+@2delete[] ages;2@
+\end{lstlisting}
+\hrule
+\begin{itemize}
+    \item must \myemph{explicitly} free memory \ldots
+    \item \ldots otherwise, remains allocated (until program exits)
+    \item ``memory leak''
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=dynArray3]{C++: dynamic arrays (3)}
+\lstset{
+    language=C++,
+    style=small,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:2>]{@3}{3@}},
+}
+\begin{lstlisting}
+int * ages = @2new int [n]2@;
+for (int i = 0; i < n; i++) {
+    cout << "Value for ages[" << i << "]: ";
+    cin >> @3ages[i]3@;
+}
+for (int i = 0; i < n; i++)
+    cout << "ages[" << i << "] = " << @3ages[i]3@
+         << endl;
+@2delete[] ages2@;
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=newDelete]{new/delete}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+}
+\begin{lstlisting}
+// single integer
+int *p;         p = new int;            delete p;
+int *p;         p = @3new int(3)3@;         delete p;
+
+// array of integers
+int *p;         p = new int@2[2@100@2]2@;       @2delete[]2@ p;
+
+Rational *p;    p = new Rational;       delete p;
+Rational *p;    p = @3new Rational(3,4)3@;  delete p;
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+\coordinate (place) at ([yshift=2cm]current page.south);
+\tikzset{
+    markBox/.style={draw=red,very thick,align=left,at=(place)},
+}
+\begin{visibleenv}<2>
+    \node[markBox] {\texttt{delete[]} form needed for new with arrays \\
+                    otherwise, delete won't know the size to free};
+\end{visibleenv}
+\begin{visibleenv}<3>
+    \node[markBox] {\texttt{new \textit{TYPE}(arg1, arg2)} --- calls constructor \\
+                    built-in constructors that take existing objects};
+\end{visibleenv}
+\end{tikzpicture}
 \end{frame}
