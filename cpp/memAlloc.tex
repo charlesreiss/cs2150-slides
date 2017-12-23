@@ -1,0 +1,65 @@
+\begin{frame}[fragile,label=noNewObjects]{no new: C++ local variables (1)}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+Rational getTwoThirds() {
+    Rational twoThirds(2, 3);
+    return twoThirds;
+}
+\end{lstlisting}
+    \begin{itemize}
+        \item two thirds is \myemph{copied when function returns}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=noNewObjects]{no new: C++ local variables (2)}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+HugeValue computeHugeInteger() {
+    HugeValue theHugeNumber = ...;
+    return theHugeNumber;
+}
+\end{lstlisting}
+    \begin{itemize}
+        \item copy huge number --- very inefficiect?
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=pointerToLocal]{C++: pointer to local variables?}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+Rational *brokenGetTwoThirds() {
+    Rational twoThirds(2, 3);
+    return &twoThirds;  // ERROR
+}
+\end{lstlisting}
+\begin{itemize}
+    \item twoThirds \myemph{no longer exists} when function returns
+\item address likely to be reused for something else
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=cppArray]{C++: fixed-sized arrays}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+int arrayOfTenValues[10];
+...
+int fourthValue = arrayOfTenValues[3];
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=cppArray]{C++: variable sized arrays?}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+int N = computeSize();
+...
+int brokenArrayOfNValues[N];
+...
+\end{lstlisting}
+not officially part of C++ \\
+(but some compilers allow an extension)
+\begin{Verbatim}[fontsize=\tiny]
+$ clang++ -Wall -pedantic -c test.cpp
+test.cpp:3:29: warning: variable length arrays are a C99 feature [-Wvla-extension]
+    int brokenArrayOfNValues[N];
+\end{Verbatim}
+\end{frame}
