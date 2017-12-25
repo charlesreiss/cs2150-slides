@@ -1,0 +1,20 @@
+\begin{frame}[fragile,label=confAmp]{\texttt{*} and \texttt{\&}}
+\lstset{
+    language=C++,
+    style=small,
+}
+\begin{itemize}
+    \item \lstinline|int *p = q| --- \begin{tabular}{l}p is a pointer to int\\ initially contains \textit{address} q\end{tabular}
+\item \lstinline|&y| --- \begin{tabular}{l}
+                                 pointer to y
+                            \end{tabular}
+\item \lstinline|int *p = &y; cout << *p| --- outputs y's value
+\item \lstinline|int *p; p = &y; cout << *p| --- outputs y's value
+    \hrule
+\item \lstinline|int &r = y| --- \begin{tabular}{l}
+                                    r is a reference to int \\
+                                    bound to y
+                                 \end{tabular}
+\item \lstinline|int &r = y; cout << r| --- outputs y's value
+\end{itemize}
+\end{frame}

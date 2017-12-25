@@ -1,0 +1,82 @@
+% FIXME: hilight assignment
+\begin{frame}[fragile,label=cppReferences]{C++ references}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{lstlisting}
+int x, y;
+int &referenceToX = x;
+x = 42; y = 100;
+cout << referenceToX << " ";  // output: 42
+referenceToX = y;  // sets x
+cout << referenceToX << " ";  // output: 100
+y = 99;
+cout << x << " " << y;        // output: 100 99
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{references}
+    \begin{itemiz[e}
+    \item \myemph{alternate name} for a value
+    \item like pointers that are automatically dereferenced
+    \item can only \myemph{bind} references at initialization
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=swapRef]{swap with references}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{lstlisting}
+void swapWithPointers(int *x, int *y) {
+    int temp = *y;
+    *y = *x;
+    *x = temp;
+}
+
+void swapWithReferences(int &x, int &y) {
+    int temp = y;
+    y = x;
+    x = temp;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=usingSwap]{using swap}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{lstlisting}
+int main(void) {
+    int x = 42, y = 100;
+    swapWithPointers(&x, &y);
+    cout << x << " " << y << endl; 
+        // output: 100 42
+
+    x = 42; y = 100;
+    swapWithReferences(x, y);
+    cout << x << " " << y << endl; 
+        // output: 100 42
+    return 0;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=refToClass]{references to classes}
+\begin{lstlisting}
+class Square {
+    ...
+public:
+    int sideLength;
+};
+...
+Square *ptr = ...;
+doSomethingWith(ptr->sideLength);
+doSomethingWith((*ptr).sideLength);
+Square &ref = ...;
+doSomwthingWIth(ref.sideLength);
+\end{lstlisting}
+\end{frame}

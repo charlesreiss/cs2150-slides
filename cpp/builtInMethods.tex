@@ -1,0 +1,120 @@
+\begin{frame}[fragile,label=implMeth]{implicit methods}
+    \lstset{language=C++,style=small}
+\begin{lstlisting}
+class Foo {};
+\end{lstlisting}
+\begin{itemize}
+    \item Foo has the following methods:
+    \begin{itemize}
+    \item \texttt{Foo()} --- default constructor
+    \item \texttt{Foo(const Foo\&)} --- copy constructor
+    \item \texttt{\textasciitilde{}Foo()} --- destructor
+    \item \texttt{operator=(const Foo\&)} --- assignment operator
+    \end{itemize}
+    \item created by compiler, but you can override
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=defaultConstructor]{default constructor/destructor}
+\lstset{language=C++,style=small}
+\begin{tikzpicture}
+\node[] (foo) {
+\begin{lstlisting}
+class Foo { public: Foo(); ~Foo(); };
+Foo::Foo() { cout << "Foo::Foo()" << endl; }
+Foo::~Foo() { cout << "Foo::~Foo()" << endl; }
+int main() {
+    Foo local; 
+    cout << "(1)\n";
+    Foo *ptr = new Foo;  
+    cout << "(2)\n";
+    delete ptr;
+    cout << "(3)\n";
+    return 0;
+};
+\end{lstlisting}
+};
+    \node[draw,thick,anchor=north west,align=left] at ([xshift=7.75cm,yshift=-2cm]foo.north west) {
+\lstset{language={}}
+output: \\
+\begin{lstlisting}
+Foo::Foo()
+(1)
+Foo::Foo()
+(2)
+Foo::~Foo()
+(3)
+Foo::~Foo()
+\end{lstlisting}
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=whyDestructor]{why destructors}
+\lstset{language=C++,style=small}
+\begin{tikzpicture}
+\node[] (foo) {
+\begin{lstlisting}
+class DynamicArray {
+    ...
+    ~DynamicArray();
+private:
+    int *pointer;  // allocated with new int[...]
+};
+...
+DynamicArray::~DynamicArray() {
+    delete[] pointer;
+}
+\end{lstlisting}
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=copyConstructor1]{copy constructors, operator=  (1)}
+\lstset{language=C++,style=small}
+\begin{tikzpicture}
+\node[] (foo) {
+\begin{lstlisting}
+Foo a, b;
+
+// invokes Foo::Foo(const Foo&)
+Foo copy1(a);   
+
+// invokes Foo::Foo(const Foo&)
+Foo copy2 = a;
+
+// invokes Foo::operator=(const Foo&);
+b = a;
+\end{lstlisting}
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=exampleCCOpEq]{default implementations}
+\lstset{language=C++,style=smaller}
+    \vspace{-.75cm}
+\begin{tikzpicture}
+\node[] (foo) {
+\begin{lstlisting}
+// equivalent to default implementation:
+Rational::Rational(const Rational &other) {
+    // copy all member variables
+    den = other.den;
+    num = other.num;
+}
+
+// equivalent to default implementation:
+Rational &Rational::operator=(
+        const Rational &other) {
+    // copy all members
+    den = other.den;
+    num = other.num;
+    // return reference to this so
+    //    foo = bar = baz 
+    // works
+    return *this;
+}
+\end{lstlisting}
+};
+\end{tikzpicture}
+\end{frame}

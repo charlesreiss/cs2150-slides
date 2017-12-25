@@ -42,7 +42,7 @@ private:
 \end{tikzpicture}
 \end{frame}
 
-\begin{frame}[fragile,label=labListLocal]{a common mistake}
+\begin{frame}[fragile,label=labListLocal1]{a common mistake (1)}
 \lstset{
     language=C++,
     style=small,
@@ -68,24 +68,78 @@ Foo::Foo() {
 \begin{tikzpicture}[overlay,remember picture]
     \tikzset{
         >=Latex,
+        dealloced/.style={alt=<4->{opacity=0.25}}
     }
-\coordinate (place) at ([yshift=8cm,xshift=0cm]current page.south);
+\coordinate (place) at ([yshift=7.5cm,xshift=0cm]current page.south);
 \begin{visibleenv}<2->
 \node[draw,font=\tt,thick,anchor=north west,label={north:Foo object},minimum width=2cm] (fooHead) at (place) {
     head
 };
 \node[draw,font=\tt,thick,anchor=north west,minimum width=2cm] (fooRest) at (fooHead.south west) {\ldots};
-    \node[draw,font=\tt,thick,anchor=north west,label={north:local variables}] (fooLocal) at ([yshift=-2.5cm]place) {
+    \node[draw,font=\tt,thick,anchor=north west,label={north:local variables},minimum width=2cm] (fooLocal) at ([yshift=-2.5cm]place) {
     head
 };
 \end{visibleenv}
 \begin{visibleenv}<3->
-    \node[right=1cm of fooHead,label={north:ListNode},rectangle split,rectangle split parts=3,draw] (fooNode) {
+    \node[right=1.5cm of fooHead,thick,label={north:ListNode},rectangle split,rectangle split parts=3,draw] (fooNode) {
     next
     \nodepart{second} prev
     \nodepart{third} \ldots
 };
-    \draw[ultra thick,red,->] (fooLocal) -- ++(1cm,0cm) |- (fooNode)
+    \draw[ultra thick,red,->] (fooLocal) -- ++(2cm,0cm) |- ([yshift=-.25cm]fooNode.north west);
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}[fragile,label=labListLocal2]{a common mistake (2)}
+\lstset{
+    language=C++,
+    style=small,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+class Foo {
+public:
+  Foo();
+private:
+  ListNode *@2head2@;
+  ...
+};
+Foo::Foo() {
+  ListNode temp;
+  head = @2&temp2@;
+}
+\end{lstlisting}
+\begin{itemize}
+\item what's wrong with this?
+\end{itemize}
+\begin{tikzpicture}[overlay,remember picture]
+    \tikzset{
+        >=Latex,
+        dealloced/.style={alt=<4->{opacity=0.25}}
+    }
+\coordinate (place) at ([yshift=7.5cm,xshift=0cm]current page.south);
+\begin{visibleenv}<2->
+\node[draw,font=\tt,thick,anchor=north west,label={north:Foo object},minimum width=2cm] (fooHead) at (place) {
+    head
+};
+\node[thick,rectangle split,rectangle split parts=3,draw,anchor=north west,
+        label={[alias=fooNodeLabel,dealloced]north:{temp:}},dealloced] (fooNode)
+        at ([xshift=.25cm,yshift=-3cm]place) {
+    next
+    \nodepart{second} prev
+    \nodepart{third} \ldots
+};
+    \node[below=1mm of fooNode] (belowFooNode) {};
+    \node[inner sep=0mm,inner xsep=1mm,fit=(fooNode) (fooNodeLabel) (belowFooNode),draw,thick,
+        label={[dealloced]north:local variables},dealloced] {};
+\end{visibleenv}
+\begin{visibleenv}<3->
+    \draw[ultra thick,red,->] (fooHead) -- ++(2cm,0cm) |- ([yshift=-.25cm]fooNode.north east);
 \end{visibleenv}
 \end{tikzpicture}
 \end{frame}

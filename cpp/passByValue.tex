@@ -1,0 +1,184 @@
+\begin{frame}[fragile,label=cppValue1]{pass-by-value (1)}
+    \lstset{language=C++,style=small}
+\begin{lstlisting}
+class IntWrapper { public: int value; };
+void foo(IntWrapper arg) {
+    arg.value = 42;
+}
+int main(void) {
+    IntWrapper iw;
+    iw.value = 100;
+    foo(iw);
+    cout << iw.value;
+}
+\end{lstlisting}
+\begin{itemize}
+    \item what is the output?
+        \begin{tabular}{ll}
+        A: 42  & C: crashes/doesn't compile \\
+            \myemph<2->{\textbf<2->{B: 100}} & D: none of the above
+        \end{tabular}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=cppValue2]{pass-by-value (2)}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+class IntWrapper { public: int value; };
+void foo(IntWrapper &arg) {
+    arg.value = 42;
+}
+int main(void) {
+    IntWrapper iw;
+    iw.value = 100;
+    foo(iw);
+    cout << iw.value;
+}
+\end{lstlisting}
+\begin{itemize}
+    \item what is the output?
+        \begin{tabular}{ll}
+            \myemph<2>{\textbf<2->{A: 42}}  & C: crashes/doesn't compile \\
+        B: 100 & D: none of the above
+        \end{tabular}
+\end{itemize}
+\begin{tikzpicture}[overlay,remember picture]
+\coordinate (place) at ([yshift=4cm,xshift=2cm]current page.south);
+    \node[draw=red,thick] at (place) {
+        \texttt{arg} bound to \texttt{iw}
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=cppValue3]{pass-by-value (3)}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+class IntWrapper { public: int value; };
+void foo(IntWrapper *arg) {
+    arg.value = 42;
+}
+int main(void) {
+    IntWrapper iw;
+    iw.value = 100;
+    foo(&iw);
+    cout << iw.value;
+}
+\end{lstlisting}
+\begin{itemize}
+    \item what is the output?
+        \begin{tabular}{ll}
+            A: 42  & C: \myemph<2->{\textbf<2->{crashes}}/doesn't compile \\
+        B: 100 & D: none of the above
+        \end{tabular}
+    \item<3-> pointers don't have member variables
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=cppValue4]{pass-by-value (4)}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+class IntWrapper { public: int value; };
+void foo(IntWrapper *arg) {
+    arg->value = 42;
+}
+int main(void) {
+    IntWrapper iw;
+    iw.value = 100;
+    foo(&iw);
+    cout << iw.value;
+}
+\end{lstlisting}
+\begin{itemize}
+    \item what is the output?
+        \begin{tabular}{ll}
+            \myemph<2->{\textbf<2->{A: 42}}  & C: crashes/doesn't compile \\
+        B: 100 & D: none of the above
+        \end{tabular}
+    \item<3-> pointer's value (address) is copied
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=avoidingCopying]{avoiding copying}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+bool lessThanCopy(Rational first, Rational second) {
+    return first.num * second.den < second.num * first.den;
+}
+bool lessThanNoCopy(const Rational &first, const Rational &second) {
+    return first.num * second.den < second.num * first.den;
+}
+\end{lstlisting}
+\begin{tikzpicture}
+\node[draw,rectangle split,rectangle split parts=7,label={north:caller's memory}] (caller) {
+    \ldots
+    \nodepart{two} first.num
+    \nodepart{three} first.den
+    \nodepart{four} \ldots
+    \nodepart{five} second.num
+    \nodepart{six} second.den
+    \nodepart{seven} \ldots
+};
+\node[right=1cm of caller,draw,rectangle split,rectangle split parts=4,label={north:lessThanCopy locals}] {
+    first.num \nodepart{two}
+    first.den \nodepart{three}
+    second.num \nodepart{four}
+    second.den
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=constReferneces]{const}
+\lstset{
+    language=C++,
+    style=smaller,
+}
+    \vspace{-.75cm}
+\begin{lstlisting}
+// no copy, modifies original 
+void foo(Rational& value) { 
+    value = Rational(4, 3);
+}
+
+// makes copy, modifies copy
+void fooBroken1(Rational value) {  
+    value = Rational(4, 3);  // BROKEN
+}
+
+// makes const(ant) copy, error modifying
+void fooBroken1(const Rational value) { 
+    value = Rational(4, 3);  // ERROR
+}
+
+// no copy, error modifying
+void fooBroken2(const Rational& value) {
+    value = Rational(4, 3);  // ERROR
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=returnByRef]{return-by-reference}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+int counter;  // global variable
+int &get_counter_reference() {
+    return counter;
+}
+...
+get_counter_reference() = 42;
+cout << get_counter_reference() << endl;  // output: 42
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=returnByRefCaution]{return-by-reference --- caution}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+int &get_counter_reference() {
+    int counter = 0;
+    return counter;   // ERROR
+}
+...
+get_counter_reference() = 42;   // ERROR -- writing unallocated object
+\end{lstlisting}
+\end{frame}
+
+// FIXME: return-by-pointer?
