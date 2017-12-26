@@ -1,0 +1,311 @@
+\begin{frame}[fragile,label=overExOver]{C++ combined example}
+    \begin{itemize}
+    \item test class to demo constructors, operator=, etc.
+    \item single file with all examples for test class: cpptest.cpp
+    \item this lecture: in independent pieces
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile,label=overEx]{C++ combined example (test.h)}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+// test.h:
+class test {
+    static int idcount;
+    @2const2@ int id;
+    int value;
+  public:
+    test();
+    test(int v);
+    test(const test& x);
+    ~test();
+    test& operator=(const test& other);
+    friend @3ostream& operator<<3@(ostream& out,
+                                 const test& f);
+};
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+\coordinate (place) at ([yshift=5cm,xshift=2cm]current page.south);
+\tikzset{
+    box/.style={draw=red,very thick,at=(place),fill=white,align=left},
+}
+    \begin{visibleenv}<2>
+        \node[box] {\texttt{const} --- must be set in constructor};
+    \end{visibleenv}
+    \begin{visibleenv}<3>
+        \node[box] {friend function for \\ outputting to an ostream (like cout)};
+    \end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=overEx2]{C++ combined example (test.cpp)}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+// test.cpp:
+@2int test::idcount = 0;2@
+
+ostream &operator<<(ostream &out, const test &f) {
+  out << "test[id=" << f.id << ",v="
+      << f.value << "]@" << &f;
+  return out;
+}
+
+test::test(const test& x) : id(x.id), @3value(x.value)3@ {
+  cout << "calling test(" << x <<"); object created is " << *this << endl;
+}
+
+test &@4test::operator=4@(const test &other) {
+  cout << "calling " << *this
+       << ".operator=(" << other << ")" << endl;
+  return *this;
+}
+/* and similar for constructors */
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+\coordinate (place) at ([yshift=5cm,xshift=1cm]current page.south);
+\tikzset{
+    box/.style={draw=red,very thick,at=(place),align=left,fill=white},
+}
+    \begin{visibleenv}<2>
+        \node[box] {\lstinline|class test { static int idcount; ... }|};
+    \end{visibleenv}
+    \begin{visibleenv}<3>
+        \node[box] {\texttt{const}, so must be \\ on initialization list};
+    \end{visibleenv}
+    \begin{visibleenv}<4>
+        \node[box] {called like assignment doesn't actually assign!};
+    \end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+% FIXME: show constructors?
+
+\begin{frame}[fragile,label=testtrivial]{trivial test object: testtrivial.cpp}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+int main() {
+    cout << "about to create aa" << endl;
+    @2test aa;2@
+    cout << "aa is: " << aa << endl;
+    @3return 0;3@
+}
+\end{lstlisting}
+\hrule
+    \lstset{language={},style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    }
+\begin{lstlisting}
+about to create aa
+@2calling test(); object created is2@
+     @2test[id=0,v=0]@0x7ffc82ba94402@
+aa is: test[id=0,v=0]@0x7ffc82ba9440
+@3calling ~test() on test[id=0,v=0]@0x7ffc82ba94403@
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=usingTest2]{trivial test object: testint.cpp}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+int main() {
+    cout << "about to create b" << endl;
+    @2test b(1);2@
+    cout << "b is: " << b << endl;
+    return 0;
+}
+\end{lstlisting}
+\hrule
+    \lstset{language={},style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    }
+\begin{lstlisting}
+about to create aa
+@2calling test(); object created is2@
+    @2test[id=0,v=0]@0x7ffed5659d702@
+aa is: test[id=0,v=0]@0x7ffed5659d70
+calling ~test() on test[id=0,v=0]@0x7ffed5659d70
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=gotcha]{Type foo(): not a constructor call}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+int main() {
+    cout << "before test a()" << endl;
+    test a();
+    cout << "a is: " << a << endl;
+    return 0;
+}
+\end{lstlisting}
+\hrule
+``a is: 1''
+\end{frame}
+
+\begin{frame}[fragile,label=gotchaWarnings]{Type foo(): warnings}
+\lstset{language={},style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    }
+\begin{lstlisting}
+$ clang++ -Wall -pedantic -o testgotcha \
+                 testgotcha.cpp test.cpp -I.
+testgotcha.cpp:7:11: warning: empty parentheses
+                    interpreted as a function
+                    declaration [-Wvexing-parse]
+    test a();
+          ^~
+testgotcha.cpp:7:11: note: remove parentheses to
+                     declare a variable
+    test a();
+          ^~
+testgotcha.cpp:8:25: warning: address of function 'a'
+                     will always evaluate to 'true'
+                     [-Wpointer-bool-conversion]
+    cout << "a is: " << a << endl;
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=testnew]{new}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+int main() {
+    test *c = new test(2);
+    cout << "created *c: " << *c << endl;
+    test *d = new test;
+    cout << "created *d: " << *d << endl;
+    @2return 0;2@
+}
+\end{lstlisting}
+\hrule
+\lstset{language={},style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    }
+\begin{lstlisting}
+calling test(2); object created is test[id=0,v=2]@0x144dc20
+created *c: test[id=0,v=2]@0x144dc20
+calling test(); object created is test[id=1,v=0]@0x144e050
+created *d: test[id=1,v=0]@0x144e050
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=testnew]{new + delete}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+int main() {
+    test *c = new test(2);
+    test *d = new test;
+    delete c;
+    return 0;
+}
+\end{lstlisting}
+\hrule
+\lstset{language={},style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    }
+\begin{lstlisting}
+calling test(2); object created is test[id=0,v=2]@0xe91c20
+calling test(); object created is test[id=1,v=0]@0xe92050
+calling ~test() on test[id=0,v=2]@0xe91c20
+\end{lstlisting}
+\end{frame}
+
+% FIXME: copy constructor
+
+
+\begin{frame}[fragile,label=testbar]{function call}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+test bar(@2test param2@) {
+  return test(10);
+}
+int main() {
+  test *c = new test(2);  // oops: never deleted
+  cout << "about to call bar" << endl;
+  test e = bar(@2*c2@);
+  cout << "done calling bar" << endl;
+}
+\end{lstlisting}
+\hrule
+\lstset{language={},style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    }
+\begin{lstlisting}
+calling test(2); object created is test[id=0,v=2]@0x17b1c20
+about to call bar
+calling test(@2test[id=0,v=2]@0x17b1c202@); object created is test[id=0,v=2]@@20x7ffcea9375282@
+calling @3test(10); object created is test[id=1,v=10]@0x7ffcea9375303@
+calling ~test() on test[id=0,v=2]@@20x7ffcea9375282@
+done calling bar
+calling ~test() on @3test[id=1,v=10]@0x7ffcea9375303@
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+\coordinate (place) at ([yshift=5cm,xshift=1cm]current page.south);
+\tikzset{
+    box/.style={draw=red,very thick,at=(place),align=left,fill=white},
+}
+    \begin{visibleenv}<3>
+        \node[box] {return value optimization: \\
+                    compiler omitted copy constructor call \\
+                    (but could have included it)};
+    \end{visibleenv}
+\end{tikzpicture}
+\end{frame}

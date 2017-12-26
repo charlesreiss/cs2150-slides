@@ -1,0 +1,42 @@
+\begin{frame}[fragile,label=implMeth]{operator overloading with methods}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+int x = 42;
+cout << "The value is: " << x;
+// same as:
+cout.operator<<("The value is: ").operator<<(x);
+\end{lstlisting}
+\hrule
+\begin{lstlisting}
+/* approximate code ... */
+class ostream {
+    ...
+    ostream &operator<(int value);
+};
+...
+ostream &ostream::operator<<(int value) {
+    ...
+    return *this;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=implMeth]{operator overloading with functions}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+#include <string>
+...
+string x = ...;  // like Java String class
+cout << x;
+// same as:
+operator<<(cout, x);
+\end{lstlisting}
+\hrule
+\begin{lstlisting}
+ostream& operator<<(ostream& out, const string &s) {
+    ...
+    return out;
+}
+\end{lstlisting}
+\end{frame}
+
