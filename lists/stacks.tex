@@ -1,0 +1,73 @@
+\begin{frame}{stacks}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    point/.style={draw,very thick,<-},
+    change/.style={black!50,draw,line width=2mm,->},
+    stack/.style={tight matrix,nodes={align=center}},
+    isTop/.style={alt=<2>{red,thick}},
+};
+\matrix[stack](theStack) {
+    |[isTop]| A \\
+    B \\
+    C \\
+    D \\
+    E \\
+    F \\
+    G \\
+};
+
+\path[point] (theStack-1-1.west) -- ++(-1cm,0cm) node[left] {`top'};
+\path[point] (theStack-7-1.west) -- ++(-1cm,0cm) node[left] {`bottom'};
+
+    \matrix[stack] (afterPush) at ([xshift=4cm,yshift=2cm]theStack) {
+    |[isTop]| X \\
+    A \\
+    B \\
+    C \\
+    D \\
+    E \\
+    F \\
+    G \\
+    };
+    \path[change] ([yshift=.5cm,xshift=.25cm]theStack.east) -- ([xshift=-.25cm]afterPush.west)
+        node[black,midway,sloped,above=1.5mm,font=\bfseries] {push `X'};
+
+\path[point] (afterPush-1-1.east) -- ++(1cm,0cm) node[right] {new `top'};
+
+    \matrix[stack] (afterPop) at ([xshift=4cm,yshift=-2cm]theStack) {
+    |[isTop]| B \\
+    C \\
+    D \\
+    E \\
+    F \\
+    G \\
+    };
+    \path[change] ([yshift=-.5cm,xshift=.25cm]theStack.east) -- ([xshift=-.25cm]afterPop.west)
+        node[align=center,black,midway,sloped,above=1.5mm,font=\bfseries] {pop};
+
+    \path[point] (afterPop-1-1.east) -- ++(1cm,0cm) node[right] {new `top'};
+
+\begin{visibleenv}<2>
+    \node[align=left,above=.25cm of theStack,draw=red,thick] {
+        operations only access/manipulate \\
+        \textit{top} of stack \\
+        (rest is hidden)
+    };
+\end{visibleenv}
+
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=stackOps]{stack methods}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{itemize}
+\item \lstinline|stack.push(value)| --- add at top
+\item \lstinline|value = stack.pop()| --- remove from top, returned removed
+\item \lstinline|value = stack.top()| --- return top without removing
+\item \lstinline|bool wasEmpty = stack.isEmpty()| --- check if stack is empty?
+\end{itemize}
+\end{frame}
