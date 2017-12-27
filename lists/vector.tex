@@ -1,0 +1,102 @@
+\begin{frame}[fragile,label=vectorIntro]{vector}
+\lstset{language=C++,style=small}
+\begin{itemize}
+\item C++ equivalent of Java \texttt{ArrayList}
+\end{itemize}
+\begin{lstlisting}
+#include <vector>
+...
+vector<int> example;
+example.push_back(4);
+example.push_back(5);
+example.push_back(6);
+cout << example[0] << " "
+     << example[2] << " "
+     << example.size();
+// OUTPUT: 4 6 2
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{why not normal arrays?}
+\begin{itemize}
+\item can't resize arrays
+\item can't assign arrays with =
+\item doesn't track capacity
+\item no bounds checking
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=vectMeth]{vector methods: accessing elements}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{itemize}
+\item given \lstinline|vector<Type>|
+\item \lstinline|Type &operator[](int index)|
+    \begin{itemize}
+    \item may or may not crash if \lstinline|index| out of bounds
+    \item \lstinline|cout << someVector[idx]|
+    \item \lstinline|someVector[idx] = value;|
+    \end{itemize}
+\item \lstinline|Type &at(int index)|
+    \begin{itemize}
+        \item throws exception if \lstinline|index| out of bounds
+        \item \lstinline|cout << someVector.at(idx)|
+        \item \lstinline|someVector.at(idx) = value;|
+    \end{itemize}
+\item \lstinline|Type &front()|
+\item \lstinline|Type &back()|
+\end{itemize}
+\end{frame}
+
+    \begin{frame}[fragile,label=vectMethConst]{vector methods: const variants}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{lstlisting}
+vector<int> example;
+...
+const vector<int>& ref = example;
+cout << ref.at(2);  // OKAY: returns const reference
+cout << ref[2];  // OKAY: returns const reference
+ref.at(2) = 3;  // ERROR: const reference
+ref[2[ = 3;     // ERROR: const reference
+\end{lstlisting}
+\begin{itemize}
+\item \lstinline|const Type &operator[](int index) const|
+\item \lstinline|const Type &at(int index) const|
+\item \lstinline|const Type &front() cosnt|
+\item \lstinline|const Type &back() const|
+\end{itemize}
+\end{frame}
+
+    \begin{frame}[fragile,label=vectMethSize]{vector methods: size and capacity}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{itemize}
+\item \lstinline|int capacity() const|
+\item \lstinline|int size() const|
+\item \lstinline|void reserve(int newCapacity)|
+\item \lstinline|void resize(int newSize)|
+\item \lstinline|void clear()|
+\end{itemize}
+\end{frame}
+
+
+    \begin{frame}[fragile,label=vectMethApp]{vector methods: append/prepend}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{itemize}
+\item \lstinline|void push_back(const T& newElement)| \\
+      \lstinline|void pop_back()|
+\begin{itemize}\item add/remove last element\end{itemize}
+\item \lstinline|void push_front(const T& newElement)|
+\begin{itemize}\item add/remove first element --- O(N)\end{itemize}
+\end{itemize}
+\end{frame}

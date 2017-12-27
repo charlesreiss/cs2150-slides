@@ -1,0 +1,210 @@
+\begin{frame}{templates}
+    \begin{itemize}
+    \item \textit{templates} --- C++'s equivalent to \textit{generics}
+    \vspace{.5cm}
+    \item idea --- code with `fill in the blank'
+    \item compiler genreates seperate version for each blank
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=findMax]{template example: findMax.cpp (1)}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+template <typename Comparable>
+const @3Comparable3@& findMax(const vector<@3Comparable3@> &a)
+{
+  int maxIndex = 0; 
+  for( int i = 1; i < a.size(); i++ ) 
+    if( a[ maxIndex ] < a[ i ] ) maxIndex = i; 
+  return a[ maxIndex ]; 
+}
+\end{lstlisting}
+\hrule
+\begin{lstlisting}
+vector<int> v1(37);  cout << findMax(v1) << endl;
+\end{lstlisting}
+\begin{visibleenv}<2->
+\hrule
+\begin{lstlisting}
+const @3int3@& findMax(const vector<@3int3@> &a) {
+  int maxIndex = 0; 
+  for( int i = 1; i < a.size(); i++ ) 
+    if( a[ maxIndex ] < a[ i ] ) maxIndex = i; 
+  return a[ maxIndex ]; 
+}
+\end{lstlisting}
+\end{visibleenv}
+\end{frame}
+
+\begin{frame}[fragile,label=findMax2]{template example: findMax.cpp (2)}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+template <typename Comparable>
+const Comparable& findMax(const vector<Comparable> &a)
+{
+  int maxIndex = 0; 
+  for( int i = 1; i < a.size(); i++ ) 
+    if( a[ maxIndex ] < a[ i ] ) maxIndex = i; 
+  return a[ maxIndex ]; 
+}
+\end{lstlisting}
+\hrule
+\begin{lstlisting}
+vector<IntCell> v4(30);  cout << findMax(v4) << endl;
+\end{lstlisting}
+\begin{visibleenv}<2->
+\hrule
+\begin{lstlisting}
+const IntCell& findMax(const vector<IntCell> &a) {
+  int maxIndex = 0; 
+  for( int i = 1; i < a.size(); i++ ) 
+    if( @3a[ maxIndex ] < a[ i ]3@ ) maxIndex = i; 
+  return a[ maxIndex ]; 
+}
+\end{lstlisting}
+\end{visibleenv}
+\begin{tikzpicture}[overlay,remember picture]
+\coordinate (place) at ([yshift=5cm]current page.south);
+\tikzset{
+    box/.style={at=(place),draw=red,very thick,fill=white,align=left}
+}
+\begin{visibleenv}<3>
+\node[box] {
+    compile error! \\
+    can't use \lstinline|<| on \lstinline|IntCell|
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+
+\begin{frame}[fragile,label=tempClass]{template classes}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+template <typename @2Object2@>
+class ObjectCell {
+public:
+    ObjectCell(const @2Object2@ & initValue = @2Object()2@) 
+                : storedValue(initValue) {}
+    const @2Object2@ & getValue() const {
+        return storedValue;
+    }
+    void setValue(const @2Object2@ & val) {
+        storedValue = val;
+    }
+private:
+    @2Object2@ storedValue;
+};
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+\coordinate (place) at ([yshift=2cm]current page.south);
+\tikzset{
+    box/.style={at=(place),draw=red,very thick,fill=white,align=left}
+}
+\begin{visibleenv}<2>
+\node[box] {
+    \lstinline|ObjectCell<int>| --- replace \lstinline|Object| with \lstinline|int|
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=useTempCl]{using template classes}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+int main() {
+    ObjectCell<int> m1;
+    ObjectCell<double> m2(3.14);
+    m1.setValue(37);
+    m2.setValue(m2.getValue() * 2);
+    // ...
+    return 0;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=multParam]{multiple parameters}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+template <typename Key, typename Value>
+class Map {
+    ...
+};
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=constValParam]{constant value paramters}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+template <typename ValueType, int size>
+class Buffer {
+    ...
+    ValueType data[size];
+};
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=defParam]{default paramters}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+template <typename ValueType=char, int size=4096>
+class Buffer {
+    ...
+    ValueType data[size];
+};
+...
+Buffer<> buf1; // Buffer<char, 4096>
+Buffer<int> buf2; // Buffer<int, 4096>
+Buffer<string, 2048> buf3;
+\end{lstlisting}
+\end{frame}
+

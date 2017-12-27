@@ -1,0 +1,70 @@
+\begin{frame}{C++ iterators}
+    \begin{itemize}
+        \item nested type representing \myemph{position}
+        \item designed to \myemph{work like a pointer}
+        \item most methods use operator overloading
+        \item example: \texttt{vector<T>::iterator}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=itMethods]{vector iterator methods}
+\lstset{
+    language=C++,
+    style=smaller,
+}
+\begin{itemize}
+\item methods within vector:
+    \begin{itemize}
+    \item \lstinline|iterator begin()|
+    \item \lstinline|iterator end()| --- one past end
+    \end{itemize}
+\item methods within \lstinline|vector<T>::iterator iter|:
+    \begin{itemize}
+        \item \lstinline|operator++| --- \lstinline|iter++|, \lstinline|++iter| (forward)
+    \item \lstinline|operator--| --- \lstinline|iter--|, \lstinline|--iter| (backward)
+                \item \lstinline|operator*| --- \lstinline|*iter| (access at position)
+                \item \lstinline|operator==|, \ldots --- \lstinline|iter1 == iter2|, \ldots (compare positions)
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=itInVector]{iterating through a vector}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{lstlisting}
+vector<int> v;
+...
+for (vector<int>::iterator it = v.begin();
+     it != v.end();
+     ++it) {
+  cout << *it << " ";
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=moreItMethods]{methods that take iterators}
+\lstset{
+    language=C++,
+    style=smaller
+}
+\begin{itemize}
+\item (assuming \lstinline|vector<Type>|\ldots)
+\item \lstinline|iterator insert(iterator pos, const Type &x)|
+\begin{itemize}
+    \item insert \textit{before} \texttt{pos}
+    \item return iterator pointing to position of inserted element
+    \item O(N) unless \texttt{pos} is the end
+\end{itemize}
+\item \lstinline|iterator erase(iterator pos)| 
+    \begin{itemize}
+    \item return iterator pointing to position after the end
+    \end{itemize}
+\item \lstinline|iterator erase(iterator start, iterator end)| 
+    \begin{itemize}
+        \item erase from \texttt{start} up to \textit{and not including} \texttt{end}
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
