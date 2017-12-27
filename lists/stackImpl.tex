@@ -1,0 +1,237 @@
+\begin{frame}{stack implmentation choices}
+\begin{itemize}
+\item need to keep track of multiple items
+\item several data structures for doing so\ldots
+\vspace{.5cm}
+\item \myemph<2>{singly linked lists}
+\item doubly linked lists
+\item arrays
+\end{itemize}
+\end{frame}
+
+\makeatletter
+\tikzset{
+    prefix node name/.code={%
+        \tikzset{name/.code={\edef\tikz@fig@name{#1 ##1}}}%
+    },
+}
+\makeatother
+
+% FIXME: source?
+\begin{frame}[fragile,label=llStackOfInts]{linked list stack of ints}
+\lstset{language=C++,style=smaller}
+\begin{tikzpicture}
+    \tikzset{
+        codeBox/.style={},
+        classBox/.style={very thick,draw,rectangle split,rectangle split parts=2,font=\small,align=left,
+            inner sep=0.5mm,text depth=0mm},
+        classBoxLabel/.style={font=\tt\small},
+        classBoxB/.style={classBox,rectangle split parts=3,align=left},
+        pointerLine/.style={draw,ultra thick},
+        null/.pic={
+            \draw (-2mm,0mm) -- (2mm, 0mm);
+            \draw (-1.5mm,-0.75mm) -- (1.5mm, -0.75mm);
+            \draw (-1mm,-1.5mm) -- (1mm, -1.5mm);
+        },
+        >=Latex,
+    }
+\node[codeBox] (mainCode) {
+\begin{lstlisting}
+class StackNode {
+    ...
+    int value;
+    StackNode *next;
+};
+
+class Stack {
+  public:
+    Stack();
+    ~Stack();
+    bool isEmpty() const;
+    int top() const;
+    void push(int value);
+    void pop();
+
+  private:
+    StackNode *head;
+};
+\end{lstlisting}
+};
+\begin{visibleenv}<2>
+\node[codeBox,anchor=north west] (exA-aStackCode) at ([xshift=.5cm]mainCode.north east) {
+\begin{lstlisting}
+Stack aStack;
+\end{lstlisting}
+};
+\begin{scope}[name prefix=exA-]
+\node[below=1cm of aStackCode,draw,thick,classBoxB,label={[classBoxLabel]north:aStack}] (aStack) {
+\bfseries Stack \nodepart{two}
+    head \hspace{.5cm} \nodepart{three}
+Stack()  \\
+\textasciitilde{}Stack() \\
+isEmpty() \\
+    push() \\
+    pop()
+};
+    \path[pointerLine,->] ([xshift=-2ex]aStack.two east) -- ++(1cm,0cm) -- ++(0cm,-3cm) coordinate (forNull);
+    \path (forNull) pic {null};
+\end{scope}
+\end{visibleenv}
+
+\begin{visibleenv}<3>
+\node[codeBox,anchor=north west] (exB-aStackCode) at ([xshift=.5cm]mainCode.north east) {
+\begin{lstlisting}
+Stack aStack;
+aStack.push(1);
+\end{lstlisting}
+};
+\begin{scope}[name prefix=exB-]
+\node[below=1cm of aStackCode,draw,thick,classBox,label={[classBoxLabel]north:aStack}] (aStack) {
+\bfseries Stack \nodepart{two}
+head
+};
+    \node[below=1cm of aStack,xshift=1cm,classBox] (stackNodeA) {
+\bfseries StackNode \nodepart{two}
+value = 1 \\
+next
+};
+    \path[pointerLine,->] ([xshift=-1ex]aStack.two east) -| ++(.5cm,-.75cm) -| ([xshift=-.5cm]stackNodeA.one west) -- (stackNodeA.one west);
+    \path[pointerLine,->] ([yshift=-1.5ex,xshift=-1cm]stackNodeA.two east) -- ++(.5cm,0cm) -- ++(0cm,-1cm)
+        coordinate (forNull);
+    \path (forNull) pic {null};
+\end{scope}
+\end{visibleenv}
+
+\begin{visibleenv}<4>
+\node[codeBox,anchor=north west] (exC-aStackCode) at ([xshift=.5cm]mainCode.north east) {
+\begin{lstlisting}
+Stack aStack;
+aStack.push(1);
+aStack.push(2);
+\end{lstlisting}
+};
+\begin{scope}[name prefix=exC-]
+\node[below=0.5cm of aStackCode,draw,thick,classBox,label={[classBoxLabel]north:aStack}] (aStack) {
+\bfseries Stack \nodepart{two}
+head
+};
+    \node[below=0.5cm of aStack,xshift=1cm,classBox] (stackNodeA) {
+\bfseries StackNode \nodepart{two}
+value = 2 \\
+next
+};
+    \node[below=0.5cm of stackNodeA,classBox] (stackNodeB) {
+\bfseries StackNode \nodepart{two}
+value = 1 \\
+next
+};
+    \path[pointerLine,->] ([xshift=-1ex]aStack.two east) -| ++(.5cm,-.5cm) -| ([xshift=-.5cm]stackNodeA.one west) -- (stackNodeA.one west);
+    \path[pointerLine,->] ([xshift=-1cm,yshift=-1ex]stackNodeA.two east) -| ++(.5cm,-.5cm) -| ([xshift=-.5cm]stackNodeB.one west) -- (stackNodeB.one west);
+    \path[pointerLine,->] ([yshift=-1ex,xshift=-1cm]stackNodeB.two east) -- ++(.5cm,0cm) -- ++(0cm,-1cm)
+        coordinate (forNull);
+    \path (forNull) pic {null};
+\end{scope}
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=implLLStack]{implementing linked list stack}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+bool Stack::isEmpty() cosnt {
+    return head == NULL;
+}
+
+int Stack::top() const {
+    // FIXME: throw exception if empty?
+    return head->value;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=vectorStack]{vector stack of ints}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+class Stack {
+  public:
+    Stack();
+    ~Stack();
+    bool isEmpty() const;
+    int top() const;
+    void push(int value);
+    void pop();
+
+  private:
+    vector<int> data;
+};
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{data} contains elements of stack
+\item last element of \texttt{data} is ``top''
+    \begin{itemize}
+    \item (lets \texttt{push} be fast)
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=vectorStackImpl]{implementing vector stack}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+bool Stack::isEmpty() const {
+    return data.size() == 0;
+}
+
+void Stack::push(int value) {
+    data.push_back(value);
+}
+
+// ...
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=vectorStackImplPop]{implementing pop?}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+void Stack::pop() {
+    ...
+}
+\end{lstlisting}
+What could go here? \\
+    \begin{tabular}{l}
+        A. \lstinline|data.pop_front();| \\
+        B. \lstinline|data.resize(data.size() - 1);| \\
+        C. \lstinline|data.reserve(data.size() - 1);| \\
+        D. \lstinline|data.erase(data.begin());| \\
+        E. \lstinline|data.pop_back();| \\
+    \end{tabular}
+\begin{visibleenv}<2>
+\iftoggle{heldback}{}{
+\\
+\myemph{B or E}
+}
+\end{visibleenv}
+\end{frame}
+
+\begin{frame}[fragile,label=vectorStackImplTop]{implementing top?}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+int Stack::top() {
+    return ...
+}
+\end{lstlisting}
+What could go here? \\
+    \begin{tabular}{l}
+        A. \lstinline|data.back();| \\
+        B. \lstinline|data.at(data.size());| \\
+        C. \lstinline|data.at(data.size() - 1);|\\
+        D. \lstinline|data[data.capacity() - 1];| \\
+        E. \lstinline|*data.end();| \\
+    \end{tabular}
+\begin{visibleenv}<2>
+\iftoggle{heldback}{}{
+\\ \myemph{A or C} \\
+ or \lstinline|data[data.size() - 1]| \\ or
+    \lstinline|*(data.end() - 1);|
+}
+\end{visibleenv}
+\end{frame}
