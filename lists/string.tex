@@ -1,0 +1,23 @@
+\begin{frame}[fragile,label=cppStr]{C++ strings}
+    \lstset{
+        language=C++,
+        style=smaller
+    }
+\begin{lstlisting}
+#include <string>
+...
+    std::string s, s2;
+// Mostly same as vector<char>:
+    s.size() == size.length()
+    s.at(index), s[index]
+
+// Additional operations:
+    s = "some string constant";
+    s += "additional text";
+    const char *c_style_string = s.c_str();
+    cout << s.substr(1, 3);  // output: ome
+
+    if (s == s2) { ... }
+\end{lstlisting}
+\end{frame}
+

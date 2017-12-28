@@ -1,0 +1,187 @@
+\begin{frame}{queues}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    point/.style={draw,very thick,<-},
+    change/.style={black!50,draw,line width=2mm,->},
+    stack/.style={tight matrix,nodes={align=center}},
+    isTop/.style={alt=<2>{red,thick}},
+};
+\matrix[stack](theStack) {
+    A \\
+    B \\
+    C \\
+    D \\
+    E \\
+    F \\
+    G \\
+};
+
+\path[point] (theStack-1-1.west) -- ++(-1cm,0cm) node[left] {`front'};
+\path[point] (theStack-7-1.west) -- ++(-1cm,0cm) node[left] {`back'};
+
+    \matrix[stack] (afterPush) at ([xshift=6cm,yshift=2cm]theStack) {
+    A \\
+    B \\
+    C \\
+    D \\
+    E \\
+    F \\
+    G \\
+    X \\
+    };
+    \path[change] ([yshift=.5cm,xshift=.25cm]theStack.east) -- ([xshift=-.25cm]afterPush.west)
+        node[black,midway,sloped,above=1.5mm,font=\bfseries] {enqueue `X'};
+
+\path[point] (afterPush-8-1.east) -- ++(1cm,0cm) node[right] {`back'};
+
+    \matrix[stack] (afterPop) at ([xshift=6cm,yshift=-2cm]theStack) {
+    B \\
+    C \\
+    D \\
+    E \\
+    F \\
+    G \\
+    };
+    \path[change] ([yshift=-.5cm,xshift=.25cm]theStack.east) -- ([xshift=-.25cm]afterPop.west)
+        node[align=center,black,midway,sloped,above=1.5mm,font=\bfseries] {(returns `A') \\ dequeue};
+
+    \path[point] (afterPop-1-1.east) -- ++(1cm,0cm) node[right] {`front'};
+
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{queue v stack}
+\begin{itemize}
+\item queue --- first-in, first-out (FIFO)
+\item stack --- last-in, first-out (LIFO)
+\vspace{.5cm}
+\item both have linked list, array-based implementations
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=arrayQueue]{array-based queue of ints}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{tikzpicture}
+\node (queueCode) {
+\begin{lstlisting}
+class Queue {
+public:
+  Queue();
+  ~Queue();
+  void enqueue(int value);
+  int dequeue();
+  bool isEmpty() const;
+private:
+  int *data;
+  int dataSize;
+  int frontIndex;
+  int backIndex;
+};
+\end{lstlisting}
+};
+\node[draw,anchor=north west] at ([xshift=-2cm,yshift=1.5cm]queueCode.north east) {
+\begin{lstlisting}
+void Queue::enqueue(int value) {
+  backIndex++;
+  if (@2backIndex >= dataSize2@)
+      ...
+  data[backIndex] = value;
+}
+\end{lstlisting}
+};
+\node[draw,anchor=north west] at ([xshift=-2cm,yshift=-3cm]queueCode.north east) {
+\begin{lstlisting}
+int Queue::dequeue() {
+  if (@3frontIndex > backIndex3@)
+      ...
+  int value = data[frontIndex];
+  frontIndex++;
+  return value;
+}
+\end{lstlisting}
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=llQueue]{linked-list queue}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{tikzpicture}
+    \tikzset{
+        codeBox/.style={},
+        classBox/.style={very thick,draw,rectangle split,rectangle split parts=2,font=\small,align=left,
+            inner sep=0.5mm,text depth=0mm},
+        classBoxLabel/.style={font=\tt\small},
+        classBoxB/.style={classBox,rectangle split parts=3,align=left},
+        pointerLine/.style={draw,ultra thick},
+        null/.pic={
+            \draw (-2mm,0mm) -- (2mm, 0mm);
+            \draw (-1.5mm,-0.75mm) -- (1.5mm, -0.75mm);
+            \draw (-1mm,-1.5mm) -- (1mm, -1.5mm);
+        },
+        >=Latex,
+    }
+\node (queueCode) {
+\begin{lstlisting}
+class QueueNode {
+  ...
+  int value;
+  QueueNode *next;
+};
+
+class Queue {
+public:
+  Queue();
+  ~Queue();
+  void enqueue(int value);
+  int dequeue();
+  bool isEmpty() const;
+private:
+  QueueNode *head, *tail;
+};
+\end{lstlisting}
+};
+    \node[overlay,anchor=north west,draw,thick,classBoxB] (aQueue) at ([yshift=1.5cm,xshift=1cm]queueCode.north east) {
+\bfseries Queue \nodepart{two}
+    front \\ back \hspace{.5cm} \nodepart{three}
+enqueue() \\
+dequeue() \\
+isEmpty()
+};
+    \node[classBox,anchor=north west] (queueOne) at ([yshift=-1cm,xshift=1.5cm]aQueue.south west) {
+        \bfseries QueueNode \nodepart{two}
+        value = 1 \\
+        next
+    };
+    \node[classBox,anchor=north west,left=1cm of queueOne] (queueTwo) {
+        \bfseries QueueNode \nodepart{two}
+        value = 2 \\
+        next
+    };
+    \draw[pointerLine,->] ([yshift=1ex,xshift=1ex]aQueue.two west) -| ([yshift=.5cm]queueTwo.north)
+        -| ([xshift=-.5cm]queueTwo.one west) -- (queueTwo.one west);
+
+    \draw[pointerLine,->] ([xshift=-3ex,yshift=-1ex]queueTwo.two east) -- ++(1cm,0cm) |- (queueOne.one west);
+
+    \draw[pointerLine,->] ([yshift=-1ex,xshift=-1ex]aQueue.two east) -| ([yshift=.5cm]queueOne.north)
+        -| ([xshift=.5cm]queueOne.one east) -- (queueOne.one east);
+    
+    \draw[pointerLine,->] ([xshift=-3ex,yshift=-1ex]queueOne.two east) -- ++(1cm,0cm) -- ++(0cm,-.5cm)
+        coordinate (forNull);
+    \path (forNull) pic {null};
+\end{tikzpicture}
+\end{frame}

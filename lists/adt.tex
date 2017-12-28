@@ -1,0 +1,103 @@
+\begin{frame}{abstract data type}
+\begin{itemize}
+\item definition: collection of operations \\
+      that can be done on data structure
+\vspace{.5cm}
+\item<2-> hide \myemph{implementation details} from (library) users
+\item<2-> library can change implementation without library user code changing
+\item<2-> functions can be written atop C function with that
+\end{itemize}
+\end{frame}
+
+\begin{frame}{implementing ADT options}
+    \begin{itemize}
+    \item C++ or Java class
+    \item just a collection of functions
+    \item \ldots
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{some ADT examples}
+    \begin{itemize}
+        \item stacks
+        \item queues
+        \item lists
+            \vspace{.5cm}
+        \item multiple reasonable implementations
+        \item same interface
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=listAdt]{list ADT operations}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+// From lab 2 --- selected operations
+@2List2@ someList;
+...
+bool empty = someList.isEmpty()
+someList.makeEmpty();
+@3ListItr3@ iterator  = someList.first() ;
+ListItr iterator = someList.last();
+someList.insertAfter(value, iterator);
+someList.remove(value);
+ListItr position = someList.find(value);
+
+// Operations not in the lab
+int kthElement = someList.findKth(k);
+someList.erase(iterator);
+someList.insert(value, index)
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+    \coordinate (place) at ([yshift=2cm]current page.south);
+\tikzset{
+    box/.style={draw=red,very thick,at=(place),align=left,fill=white}
+}
+\begin{visibleenv}<3->
+    \node[box] {
+        iterator type --- internals will depend on implementation \\
+        linked list: might contain pointer to node \\
+        array: might contain index
+    };
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=listAdtExample]{list ADT examples}
+\begin{tabular}{l|llllll}
+values & 34 & 12 & 52 & 16 & 12 \\
+iterator & a1 & a2 & a3 & a4 & a5 & a6 \\
+\end{tabular}
+\begin{lstlisting}
+find(52) == a3
+
+find(2) == a6
+    // not found
+
+insert('x', 2) 
+    // becomes {34,12,'x',52,16,12}
+
+remove(52)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=listComplexity]{ADT complexity}
+\small
+\begin{tabular}{l|ll}
+    operation & array* & \myemph<2>{linked list} \\ \hline
+find (by value) &  linear time & linear time \\
+findKth (by index) & constant time & linear time \\
+insert/erase (with index) & linear time & linear time \\
+insert/erase (with index at end) & constant time & linear time \\
+insert/erase (with iterator) & linear time & constant time \\
+\end{tabular}
+    (* fixed-capacity array)
+\\~\\
+    \only<2->{lab --- implement linked list}
+\end{frame}
