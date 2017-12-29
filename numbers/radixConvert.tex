@@ -1,0 +1,81 @@
+\begin{frame}{terminology}
+    \begin{itemize}
+    \item base-$X$ number --- $X$ is the \myemph{radix}
+    \item I will call components of base $X$ number `digits'
+        \begin{itemize}
+        \item but not a great term --- digit sometimes implies baes-10
+        \item sometimes ``radit''
+        \item base-2 digit = bit
+        \item base-16 digit = nibble (sometimes)
+        \end{itemize}
+    \item base-10 = decimal
+    \item base-2 = binary
+    \item base-8 = octal
+    \item base-16 = hexadecimal
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{convert to decimal}
+\begin{eqnarray*}
+    42_\text{FIVE} & = & \onslide<2->{4 \cdot 5^1 + 2 \cdot 5^0} \\
+                   & \onslide<2->{=} & \onslide<3->{20_\text{TEN} + 2 = 22_\text{TEN}} \\
+                   ~\\
+    121_\text{THREE} & = & \onslide<4->{1\cdot 3^2 + 2 \cdot 3^1 + 1 \cdot 3^0} \\
+                     & \onslide<4->{=} = \onslide<5->{9 + 6 + 1 = 16_\text{TEN}} \\
+\end{eqnarray*}
+\end{frame}
+
+\begin{frame}{convert to something (1)}
+\begin{eqnarray*}
+    42_\text{TEN} \text{~as radix 5} &=& \only<2>{\_\_\myemph<2>{2}}\only<3>{\_\myemph<3>{3}2}\only<4->{\myemph<4>{1}32} \\
+    ~ \\
+    \onslide<2->{42 \div 5} & \onslide<2->{=} & \onslide<2->{8 + \ldots} \\
+    \onslide<2->{42 \text{~mod~} 5} & \onslide<2->{=} & \onslide<2->{2} \\
+    \onslide<2->{42} & \onslide<2->{=} & \onslide<2->{8 \cdot 5 + \myemph<2>{2}} \\
+    \onslide<3->{8} & \onslide<3->{=} & \onslide<3->{1 \cdot 5 + \myemph<3>{3}} \\
+    \onslide<4->{\myemph<4>{1}}
+\end{eqnarray*}
+\end{frame}
+
+
+\begin{frame}{convert to something (2)}
+\begin{eqnarray*}
+    121_\text{TEN} \text{~as radix 11} &=& \only<2>{\_\_\myemph<2>{0}}\only<3>{\_\myemph<3>{0}0}%
+    \only<4->{\myemph<4>{1}00} \\
+    ~ \\
+    \onslide<2->{121 \div 11} & \onslide<2->{=} & \onslide<2->{11} \\
+    \onslide<2->{121 \text{~mod~} 11} & \onslide<2->{=} & \onslide<2->{0} \\
+    \onslide<2->{121} & \onslide<2->{=} & \onslide<2->{11 \cdot 11 + \myemph<2>{0}} \\
+    \onslide<3->{11} & \onslide<3->{=} & \onslide<3->{1 \cdot 11 + \myemph<3>{0}} \\
+    \onslide<4->{\myemph<4>{1}}
+\end{eqnarray*}
+\end{frame}
+
+\begin{frame}{special case: base-16 to base-2}
+    \begin{itemize}
+        \item each ``nibble'' (hexadecimal digit) = 4 binary bits
+    \end{itemize}
+
+\begin{tabular}{l|l|l|l}
+    \myemph<3>{$\mathtt{1}$} & \myemph<4>{$\mathtt{2}$} & $\mathtt{3}$ & $\mathtt{4}_\text{SIXTEEN}$ \\
+    \onslide<2->{\myemph<3>{$\mathtt{0001}$}} & \onslide<2->{\myemph<4>{$\mathtt{0010}$}} & \onslide<2->{$\mathtt{0011}$} & \onslide<2->{$\mathtt{0100}_\text{TWO}$} \\
+\end{tabular}
+    \vspace{1cm}
+\begin{visibleenv}<5->
+\begin{tabular}{l|l|l|l}
+    $\mathtt{1101}$ & $\mathtt{1110}$ & $\mathtt{0011}$ & $\mathtt{0000}_\text{TWO}$ \\
+    \onslide<6->{$\mathtt{C}$} & $\mathtt{D}$ & $\mathtt{3}$ & $\mathtt{0}_\text{SIXTEEN}$ \\
+\end{tabular}
+\end{visibleenv}
+\end{frame}
+
+\begin{frame}{a note on bytes}
+    \begin{itemize}
+        \item one byte = one ``octet'' = \myemph<2>{two nibbles} (hexadecimal digits) = \myemph<3>{eight bits}
+        \vspace{.5cm}
+        \item this class --- byte is always eight bits
+            \begin{itemize}
+                \item (some very old machines sometimes called different sizes ``bytes'')
+            \end{itemize}
+    \end{itemize}
+\end{frame}
