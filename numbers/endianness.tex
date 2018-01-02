@@ -1,0 +1,244 @@
+
+\begin{frame}{numbering bits}
+\begin{eqnarray*}
+\text{option 1: $n$-bit number:}&\;&b_{n-1}b_{n-2}b_{n-3}\ldots b_2b_1b_0 \\
+    & = & \sum_{i=0}^{n-1} b_i \cdot 2^i \\
+\text{option 2: $n$-bit number:}&\;&b_{0}b_{1}b_{2}\ldots b_{n-3}b_{n-2}b_{n-1} \\
+    & = & \sum_{i=0}^{n-1} b_i \cdot 2^{n-i-1} \\
+\end{eqnarray*}
+\begin{itemize}
+\item<2-> two viable ways to number bits
+\item<3-> does it matter which I use?
+\end{itemize}
+\end{frame}
+
+\begin{frame}{numbering bytes}
+\begin{eqnarray*}
+\text{option 1: 4-byte number:}&\;&B_3B_2B_1B_0 \\
+    & = & \sum_{i=0}^{3} B_i \cdot 256^i \\
+\text{option 2: $n$-bit number:}&\;&B_0B_1B_2B_3 \\
+    & = & \sum_{i=0}^{n3} b_i \cdot 256^{3-i} \\
+\end{eqnarray*}
+\begin{itemize}
+\item<2-> two viable ways to number bytes
+\item<3-> does it matter which I use?
+\end{itemize}
+\end{frame}
+
+\begin{frame}{memory}
+\begin{tikzpicture}
+\matrix[tight matrix,
+    column 1/.style={nodes={draw=none,text width=1cm}},
+    column 2/.style={nodes={text width=2cm,font=\tt}},
+    row 1/.style={nodes={font=\normalfont}},
+    label={[font=\bfseries,align=center]north:memory \\ (as 64-bit values)}
+] (mem64) {
+    addr. \& value (64-bit) \\
+    0 \& 123999 \\
+    8 \& 323232 \\
+    16 \& 434093 \\
+    \ldots \& \ldots \\
+};
+
+\begin{visibleenv}<2>
+\matrix[tight matrix,
+    column 1/.style={nodes={draw=none,text width=1cm}},
+    column 2/.style={nodes={text width=1cm,font=\tt}},
+    row 1/.style={nodes={font=\normalfont,draw=none}},
+    label={[font=\bfseries,align=center]north:if \myemph{little endian} \\ (as 8-bit values)},
+    anchor=north west,
+] (mem8) at ([xshift=1.25cm]mem64.north east) {
+    addr. \& value (8-bit) \\
+    0 \& 95 \\
+    1 \& 228 \\
+    2 \& 1 \\
+    3 \& 0 \\
+    4 \& 0 \\
+    5 \& 0 \\
+    6 \& 0 \\
+    7 \& 0 \\
+    8 \& 160 \\
+    9 \& 238 \\
+    10 \& 4 \\
+    11 \& \ldots \\
+    \ldots \& \ldots \\
+};
+\tikzset{
+    hiBox/.style={draw=red,inner sep=0.5mm,ultra thick}
+}
+\node[hiBox,fit=(mem64-2-2)] {};
+\node[hiBox,fit=(mem8-2-2) (mem8-9-2)] {};
+\draw[red,ultra thick] (mem64-2-2.north east) -- (mem8-2-2.north west);
+\draw[red,ultra thick] (mem64-2-2.south east) -- (mem8-9-2.south west);
+\matrix[tight matrix,
+    column 1/.style={nodes={draw=none,text width=1cm}},
+    column 2/.style={nodes={text width=1cm,font=\tt}},
+    row 1/.style={nodes={font=\normalfont,draw=none}},
+    label={[font=\bfseries,align=center]north:if \myemph{big endian} \\ (as 8-bit values)},
+    anchor=north east,
+] (mem8B) at ([xshift=-1.25cm]mem64.north west) {
+    addr. \& value (8-bit) \\
+    0 \& 0 \\
+    1 \& 0 \\
+    2 \& 0 \\
+    3 \& 0 \\
+    4 \& 0 \\
+    5 \& 1 \\
+    6 \& 228 \\
+    7 \& 95 \\
+    8 \& 0 \\
+    9 \& 0 \\
+    10 \& 0 \\
+    11 \& \ldots \\
+    \ldots \& \ldots \\
+};
+\tikzset{
+    hiBox/.style={draw=red,inner sep=0.5mm,ultra thick}
+}
+\node[hiBox,fit=(mem64-2-2)] {};
+\node[hiBox,fit=(mem8-2-2) (mem8-9-2)] {};
+\draw[red,ultra thick] (mem64-2-2.north east) -- (mem8-2-2.north west);
+\draw[red,ultra thick] (mem64-2-2.south east) -- (mem8-9-2.south west);
+\node[hiBox,fit=(mem8B-2-2) (mem8B-9-2)] {};
+\draw[red,ultra thick] (mem64-2-2.north west) -- (mem8B-2-2.north east);
+\draw[red,ultra thick] (mem64-2-2.south west) -- (mem8B-9-2.south east);
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=findEndian]{finding endianness in C++}
+\lstset{
+    language=C++,
+    style=smaller,
+     moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+     moredelim={**[is][\btHL<all:2-3>]{@2}{2@}},
+     moredelim={**[is][\btHL<all:4>]{@3}{3@}},
+     moredelim={**[is][\btHL<all:5>]{@4}{4@}},
+     moredelim={**[is][\btHL<all:6>]{@5}{5@}},
+     moredelim={**[is][\btHL<all:7>]{@6}{6@}},
+}
+\vspace{-.6cm}
+\begin{lstlisting}
+#include <iostream>
+using std::cout; using std::hex; using std::endl;
+int main() {
+    unsigned long value = @60x0123456789ABCDEF6@;
+    cout << hex << value << endl;
+    unsigned char *ptr = @2(unsigned char*) &value2@;
+    for (int i = 0; i < sizeof(unsigned long); ++i) {
+        cout << (int) @3ptr[i]3@ << " ";
+    }
+    ...
+}
+\end{lstlisting}
+\hrule
+\lstset{
+    language={},
+    style=smaller,
+     moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+     moredelim={**[is][\btHL<all:2-3>]{@2}{2@}},
+     moredelim={**[is][\btHL<all:4>]{@3}{3@}},
+     moredelim={**[is][\btHL<all:5>]{@4}{4@}},
+     moredelim={**[is][\btHL<all:6>]{@5}{5@}},
+     moredelim={**[is][\btHL<all:7>]{@6}{6@}},
+}
+little endian (e.g. lab machine):
+\vspace{-.15cm}
+\begin{lstlisting}
+@6123456789abcdef6@
+@4ef4@ cd ab 89 67 45 23 1
+\end{lstlisting}
+\hrule
+big endian:
+\begin{lstlisting}
+@6123456789abcdef6@
+@515@ 23 45 67 89 ab cd ef
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+\coordinate (place) at ([yshift=4cm]current page.south);
+\tikzset{
+    box/.style={draw=red,fill=white,ultra thick,align=left,at=(place),inner sep=2mm},
+}
+\begin{visibleenv}<2>
+\node[box] {
+    get pointer to \myemph{byte} with \\ lowest address in \texttt{value}
+}; 
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[box] {
+    unless you do something like this \\
+    won't see endianness
+}; 
+\end{visibleenv}
+\begin{visibleenv}<4>
+\node[box] {
+    use pointer to get \texttt{i}th byte of value \\
+    (cast to int to output as number, not character)
+};
+\end{visibleenv}
+\begin{visibleenv}<5>
+\node[box] {
+    little endian: byte 0 is \myemph{least significant} \\
+    (affects overall value the least)
+};
+\end{visibleenv}
+\begin{visibleenv}<6>
+\node[box] {
+    big endian: byte 0 is \myemph{most significant} \\
+    (affects overall value the most)
+};
+\end{visibleenv}
+\begin{visibleenv}<7>
+\node[box] {
+    but we don't write numbers in a different order \\
+    based on which end we call ``part 0''
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{little versus big endian}
+\begin{itemize}
+\item little endian --- least significant part has lowest address
+\begin{itemize}
+\item i.e. index 0 is the one's place
+\end{itemize}
+\item big endian --- most significant part has the lowest address
+\begin{itemize}
+\item i.e. index $n-1$ is the one's place
+\end{itemize}
+\vspace{.5cm}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{endianness in the real world}
+\begin{itemize}
+\item today and this course: little endian is dominant
+    \begin{itemize}
+    \item e.g. x86, \textit{typically} ARM
+    \end{itemize}
+\item historically: big endian was dominant
+    \begin{itemize}
+    \item e.g. \textit{typically} SPARC, POWER, Alpha, MIPS, \ldots
+    \item still commonly used for networking because of this
+    \end{itemize}
+\item many architectures have switchable endianness
+    \begin{itemize}
+    \item e.g. ARM, SPARC, POWER, MIPS
+    \item usually, OS chooses endianness
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{middle endian}
+\begin{itemize}
+\item sometimes not just big/little endian
+\item e.g. number bytes most to least significant as \\
+    5, 6, 7, 8, 1, 2, 3, 4
+\item e.g. doubles on little-endian ARM
+\item generally some sort of historical accident
+    \begin{itemize}
+    \item e.g. ARM floating point designed for big endian?
+    \end{itemize}
+\end{itemize}
+\end{frame}
