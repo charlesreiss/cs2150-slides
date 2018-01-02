@@ -1,0 +1,189 @@
+\begin{frame}{representing negative numbers}
+\vspace{-.5cm}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    myl/.style={font=\small\tt,align=center},
+}
+\begin{visibleenv}<1-4>
+\node at (1.5, 4mm) {unsigned integers};
+\draw[thick] (0, 0)  -- (9, 0);
+\draw[thick] (0,2mm) -- (0,-2mm) node[below,myl] {0000\ldots0000 \\ = $0$};
+\draw[thick] (9,2mm) -- (9,-2mm) node[below,myl] {1111\ldots1111 \\ = $2^n-1$};
+\draw[thick] (4.45,2mm) -- (4.45,-2mm);
+\draw[thick,dotted] (4.45,-2mm) -- ++(-1cm,-0.2cm) node[below,myl] {0111\ldots1111 \\ = $2^{n-1}-1$};
+\draw[thick] (4.5,2mm) -- (4.5,-2mm);
+\draw[thick,dotted] (4.5,2mm) -- ++(1cm,0.2cm) node[above,myl] {1000\ldots0000 \\ = $2^{n}-1$};
+\end{visibleenv}
+
+\begin{visibleenv}<2->
+\begin{scope}[yshift=-5cm]
+\node at (1.5, 4mm) {signed integers};
+\draw[thick] (0, 0) -- (9, 0);
+\draw[thick] (0,2mm) -- (0,-2mm) node[below,myl] {0000\ldots0000 \\ = $0$};
+\draw[thick] (9,2mm) -- (9,-2mm) node[below,myl] {1111\ldots1111 \\ = \myemph<5>{???}};
+\draw[thick] (4.45,2mm) -- (4.45,-2mm);
+\draw[thick] (4.5,2mm) -- (4.5,-2mm);
+\draw[thick,dotted] (4.45,-2mm) -- ++(-1cm,-0.2cm) node[below,myl] {0111\ldots1111 \\ = $2^{n-1}-1$};
+\draw[thick,dotted] (4.5,2mm) -- ++(1cm,0.2cm) node[above,myl] {1000\ldots0000 \\ = \myemph<5>{???}};
+\end{scope}
+\end{visibleenv}
+
+\begin{visibleenv}<3>
+\draw[blue,ultra thick] (0, 0) -- (4.45, 0);
+\draw[blue,ultra thick] (0, -5) -- (4.45, -5);
+\draw[blue,->,dashed,thick] (2, -2.5) -- (2, -3mm);
+\draw[blue,->,dashed,thick] (2, -2.5) -- (2, -47mm);
+\node[fill=white,align=left] at (2.5, -2.5) {positive numbers up to $2^n-1$ \\
+            goal: same bits, signed or not};
+\end{visibleenv}
+
+\begin{visibleenv}<4>
+\draw[green!50!black,ultra thick] (4.5, 0) -- (9, 0);
+\draw[green!50!black,ultra thick] (4.5, -5) -- (9, -5);
+\draw[green!50!black,->,dashed,thick] (7.5, -2.5) -- (7.5, -3mm);
+\draw[green!50!black,->,dashed,thick] (7.5, -2.5) -- (7.5, -47mm);
+\node[fill=white,align=left] at (7.5, -2.5) {unsigned: $2^{n-1}$ and bigger \\
+                signed: negative numbers, but how?};
+\end{visibleenv}
+
+\begin{visibleenv}<5->
+\draw[green!50!black,ultra thick] (4.5, -5) -- (9, -5);
+\node[draw=black,thin,fill=white,font=\tt\small] at (4.5, 0) {
+\begin{tabular}{l|lll}
+~ & \normalfont \myemph<6,9>{sign \& magnitude} & \normalfont \myemph<6,8>{1's complement} & \normalfont \myemph<7,8>{2's complement} \\ \hline
+000\ldots000 & \myemph<6>{$0$} & \myemph<6>{$0$} & 0 \\
+011\ldots111 & $2^{n-1}-1$ &$2^{n-1}-1$ & \myemph<7>{$2^{n-1}-1$} \\
+100\ldots000 & \myemph<6>{$0$} & $-2^{n-1}+1$ & \myemph<7>{$-2^{n-1}$} \\
+111\ldots111 & \myemph<9>{$-2^{n-1}+1$} & \myemph<6,8>{$0$} & \myemph<8>{$-1$} \\
+\end{tabular}
+};
+\end{visibleenv}
+
+\begin{visibleenv}<6>
+\node[red!70!black,align=center] at (4.5, -2.5) {
+    two representations of zero? \\
+    \texttt{x~==~y} needs to do something special
+};
+\end{visibleenv}
+
+\begin{visibleenv}<7>
+\node[red!70!black,align=center] at (4.5, -2.5) {
+    more negative values than positive values?
+};
+\end{visibleenv}
+
+\begin{visibleenv}<8>
+\node[red!70!black,align=center] at (4.5, -2.5) {
+    all 1's --- least negative? 
+};
+\end{visibleenv}
+
+\begin{visibleenv}<9>
+\node[red!70!black,align=center] at (4.5, -2.5) {
+    all 1's --- most negative?
+};
+\end{visibleenv}
+
+\end{tikzpicture}
+\end{frame}
+% FIXME: also hilight ticks in rep slide
+
+\begin{frame}{sign and magnitude}
+\vspace{-.5cm}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    myl/.style={font=\small\tt,align=center},
+}
+\begin{visibleenv}<1-2>
+\node at (1.5, 4mm) {unsigned integers};
+\draw[thick] (0, 0)  -- (9, 0);
+\draw[thick] (0,2mm) -- (0,-2mm) node[below,myl] {0000\ldots0000 \\ = $0$};
+\draw[thick] (9,2mm) -- (9,-2mm) node[below,myl] {1111\ldots1111 \\ = $2^n-1$};
+\draw[thick] (4.45,2mm) -- (4.45,-2mm);
+\draw[thick,dotted] (4.45,-2mm) -- ++(-1cm,-0.2cm) node[below,myl] {0111\ldots1111 \\ = $2^{n-1}-1$};
+\draw[thick] (4.5,2mm) -- (4.5,-2mm);
+\draw[thick,dotted] (4.5,2mm) -- ++(1cm,0.2cm) node[above,myl] {1000\ldots0000 \\ = $2^{n}-1$};
+\end{visibleenv}
+
+\begin{visibleenv}<3>
+\node[align=left] at (4.5, 0) {
+    first bit is ``sign bit'' --- 0 = positive, 1 = negative \\
+    flip sign bit to negate number
+};
+\end{visibleenv}
+
+\begin{visibleenv}<4>
+% FIXME: arithmetic
+\node[align=left] at (4.5, 0) {
+    adding 1 \\ different direction if negative
+};
+\end{visibleenv}
+
+\begin{scope}[yshift=-5cm]
+\draw[thick] (0, 0) -- (9, 0);
+\draw[thick] (0,2mm) -- (0,-2mm) node[below,myl] {0000\ldots0000 \\ = $+0$};
+\draw[thick] (9,2mm) -- (9,-2mm) node[below,myl] {1111\ldots1111 \\ = $-2^{n-1}+1$};
+\draw[thick] (4.45,2mm) -- (4.45,-2mm);
+\draw[thick] (4.5,2mm) -- (4.5,-2mm);
+\draw[thick,dotted] (4.45,-2mm) -- ++(-1cm,-0.2cm) node[below,myl] {0111\ldots1111 \\ = $2^{n-1}-1$};
+\draw[thick,dotted] (4.5,2mm) -- ++(0cm,0.2cm) node[above,myl] {1000\ldots0000 \\ = $-0$};
+\begin{visibleenv}<2-3>
+\draw[thick, dotted, green!50!black] (.5,0mm) -- ++(0cm,15mm) node[above] {\myemph<2-3>{0}000\ldots0101 = $6$};
+\draw[thick, dotted, green!50!black] (5.,0mm) -- ++(2cm,15mm) node[above] {\myemph<2-3>{1}000\ldots0101 = $-6$};
+\end{visibleenv}
+\begin{visibleenv}<4>
+\draw[ultra thick,->,red] (1, 0) -- (1.5, 0);
+\draw[ultra thick,->,red] (6, 0) -- (5.5, 0);
+\end{visibleenv}
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+
+% FIXME: one's complement
+
+% FIXME: addition in one's complement
+
+% FIXME: two's complement
+
+% FIXME: addition in two's complement --- wraparound
+
+\begin{frame}[fragile,label=twosComplement]{two's complement summary}
+\begin{tikzpicture}[visible on=<1->]
+\matrix [matrix of nodes,nodes={text width=1.5em,inner xsep=0pt,outer sep=0pt,every label/.style={font=\scriptsize}}] (places) {
+    |[label={90:$-2^{31}$}]|1 \& |[label={90:$+2^{30}$}]|1 \& |[label=90:$+2^{29}$]|1 \& \ldots \&  |[label={90:$+2^2$}]| 1 \& |[label={90:$+2^1$}]| 1 \& |[label={90:$+2^0$}]| 1 \\
+};
+\node[left=1ex of places,yshift=-1ex] (minusOne) {$-1 =$};
+\end{tikzpicture}
+
+\begin{tikzpicture}[scale=1.2]
+\onslide<2->{
+\draw[ultra thick,opacity=0.1,black] (0,0) circle (2cm);
+\begin{scope}[every node/.style={font=\scriptsize},outer sep=0pt,inner sep=1pt]
+\node[color=red!40!black] (minusOne) at (115:2cm) {$-1$};
+\node (zero) at (90:2cm) {$0$};
+\node[color=green!40!black] (one) at (65:2cm) {$1$};
+\node[color=green!40!black] (intmax) at (300:2cm) {$2^{31}-1$};
+\node[color=red!40!black] (intmin) at (270:2cm) {$-2^{31}$};
+\node[color=red!40!black] (intmin1) at (240:2cm) {$-2^{31}+1$};
+\end{scope}
+
+\draw[green!40!black,dotted,thick,-latex] (60:2cm) arc (60:-50:2cm);
+\draw[red!40!black,dotted,thick,-latex] (230:2cm) arc (230:120:2cm);
+\draw[red!40!black,thin,-latex] (260:2cm) arc (260:250:2cm);
+\draw[thin,-latex] (290:2cm) arc (290:280:2cm);
+}
+\onslide<3->{
+\begin{scope}[every node/.style={font=\tiny,inner sep=1mm,outer sep=0mm}]
+\node[below right=1pt of intmax,color=green!40!black] (intmaxDecode) {\lstinline|0111 1111 |\ldots\lstinline| 1111|};
+\node[below=3pt of intmin,color=red!40!black] (intminDecode) {\lstinline|1000 0000 |\ldots\lstinline| 0000|};
+\node[above left=1pt of minusOne,color=red!40!black] (minusOneDecode) {\lstinline|1111 1111 |\ldots\lstinline| 1111|};
+\end{scope}
+\draw[thin,black!70!green] (intmax) -- (intmaxDecode);
+\draw[thin,black!70!red] (intmin) -- (intminDecode);
+\draw[thin,black!70!red] (minusOne) -- (minusOneDecode);
+}
+\end{tikzpicture}
+\end{frame}
+
