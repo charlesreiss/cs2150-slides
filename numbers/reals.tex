@@ -84,10 +84,48 @@
 \begin{frame}{base-2 scientific notation}
 \begin{eqnarray*}
 \frac{1}{3} &=& 0.101010101\ldots_\text{TWO}  \\\
-            &\approx& 0.1010_\text{TWO} \text{--- represent as {\tt 00000 1010}} \\
+            &\approx& 0.1010101010_\text{TWO} = +1.0101010_\text{TWO} \cdot 2^-1\\
 \end{eqnarray*}
 \begin{eqnarray*}
 \frac{100}{7} &=& 1110.001001001\ldots_\text{TWO}  \\\
-            &\approx& -1110.0010_\text{TWO} \text{--- represent as {\tt 01110 0010}} \\
+            &\approx& -1110.0010010_\text{TWO} = -1.1100010010_\text{TWO} \cdot 2^3\\
 \end{eqnarray*}
 \end{frame}
+
+\begin{frame}{IEEE half-precision floating point}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    labelLine/.style={draw,thick,dotted},
+    myLabel/.style={align=center,font=\small},
+    pm/.style={blue!70!black},
+    mant/.style={green!70!black},
+}
+\begin{scope}[every node/.style={inner sep=0mm}]
+\node[pm] (pm) {-};
+\node[right=0cm of pm] (onePt) {$1.$};
+\node[right=0cm of onePt,mant] (mant) {$1100010010_\text{TWO}$};
+\node[right=0cm of mant] (cdot) {\cdot};
+\node[right=0cm of cdot] (expt) {$2^3$};
+\end{scope}
+\begin{visibleenv}<2->
+\node[pm,below right=1cm of pm,myLabel] (signLabel) {sign (1 bit) \\ $0=+$ \\ $1=-$};
+\draw[pm,labelLine] (pm) -- (signLabel);
+\node[mant,right=.25cm of signLabel,myLabel] (mantLabel) {mantissa ($M=10$ bits) \\ don't store leading $1$ };
+\draw[mant,labelLine] (mant) -- (signLabel);
+\node[right=.25cm of mantLabel,myLabel] (exptLabel) {exponent ($E=5$ bits)};
+\node[below=1cm of mantLabel] {
+    \tt 1 10010 1100010010
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+
+% FIXME: IEEE format
+% FIXME: bias representation for exponents
+% FIXME: implciit 1 on mantissa
+% FIXME: 0.1 can't be represented
+% FIXME: converting to IEEE format
+% FIXME: 
+
