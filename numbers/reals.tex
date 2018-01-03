@@ -99,33 +99,77 @@
     labelLine/.style={draw,thick,dotted},
     myLabel/.style={align=center,font=\small},
     pm/.style={blue!70!black},
-    mant/.style={green!70!black},
+    mant/.style={green!60!black},
+    expt/.style={orange!80!black},
 }
 \begin{scope}[every node/.style={inner sep=0mm}]
 \node[pm] (pm) {-};
-\node[right=0cm of pm] (onePt) {$1.$};
-\node[right=0cm of onePt,mant] (mant) {$1100010010_\text{TWO}$};
-\node[right=0cm of mant] (cdot) {\cdot};
-\node[right=0cm of cdot] (expt) {$2^3$};
+\node[anchor=base west] (onePt) at (pm.base east) {$1.$};
+\node[anchor=base west,mant] (mant) at (onePt.base east) {$1100010010_\text{TWO}$};
+\node[anchor=base west] (cdot) at (mant.base east) {\cdot};
+\node[anchor=base west] (expt) at (cdot.base east) {$2^{\color{orange!80!black}3}$};
 \end{scope}
 \begin{visibleenv}<2->
-\node[pm,below right=1cm of pm,myLabel] (signLabel) {sign (1 bit) \\ $0=+$ \\ $1=-$};
+\node[pm,below left=1cm of pm,myLabel] (signLabel) {sign (1 bit) };
 \draw[pm,labelLine] (pm) -- (signLabel);
-\node[mant,right=.25cm of signLabel,myLabel] (mantLabel) {mantissa ($M=10$ bits) \\ don't store leading $1$ };
-\draw[mant,labelLine] (mant) -- (signLabel);
-\node[right=.25cm of mantLabel,myLabel] (exptLabel) {exponent ($E=5$ bits)};
+\node[mant,right=.25cm of signLabel,myLabel] (mantLabel) {mantissa ($M=10$ bits)};
+\draw[mant,labelLine] (mant) -- (mantLabel);
+\node[right=.25cm of mantLabel,myLabel,expt] (exptLabel) {exponent ($E=5$ bits)};
+\draw[expt,labelLine] (expt) -- (exptLabel);
 \node[below=1cm of mantLabel] {
-    \tt 1 10010 1100010010
+    \tt {\color{blue!70!black}1} {\color{orange!80!black}10010} {\color{green!60!black}1100010010}
 };
 \end{visibleenv}
+\begin{visibleenv}
+\item<2-> \color{blue!70!black} sign bit: {\tt 0} for $+$, {\tt 1} for $-$
+\item<3-> \color{orange!80!black} exponent $E$: $E+15=e$ stored as unsigned 
+    \begin{itemize}
+    \item 15 called the ``bias'' --- $15 = 2^5-1$
+    \item this example: $3+15= 18 = 10010_\text{TWO}$
+    \end{itemize}
+\item<4-> \color{green!60!black} mantissa: stored \myemph{without leading ``1.''}
+    \begin{itemize}
+    \item ``1.'' always present in base-2 scientific notation
+    \end{itemize}
 \end{tikzpicture}
 \end{frame}
 
+\begin{frame}{IEEE half precision float}
+\begin{itemize}
+\item 1 sign bit ($1$ for negative)
+\item 5 expontent bits
+    \begin{itemize}
+    \item bias of 15 --- if bits as unsigned are $e$, exponent is $E=e-127$
+    \end{itemize}
+\item 10 mantissa bits
+    \begin{itemize}
+    \item leading ``1.'' not stored
+    \end{itemize}
+\vspace{.5cm}
+\item $\text{value} = (1-2\cdot \text{sign}) \cdot (1.\text{mantissa}_\text{TWO}) \cdot 2^{\text{exponent}-15}$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{other IEEE precisions}
+\begin{tabular}{lll}
+C++/Java type & --- & \texttt{float} & \texttt{double} \\
+sign bits & 1 & 1 & 1 \\
+exponent bits & 5 & 8 & 11 \\
+exponent bias & 15 ($2^5-1$) & 127 ($2^7-1$) & 1023 ($2^10-1$)\\
+mantissa bits & 10 & 23 & 52 \\
+total bits & 16 & 32 & 64 \\
+\end{tabular}
+\end{frame}
+
+% FIXME: single precision examples
 
 % FIXME: IEEE format
 % FIXME: bias representation for exponents
 % FIXME: implciit 1 on mantissa
 % FIXME: 0.1 can't be represented
-% FIXME: converting to IEEE format
-% FIXME: 
-
+% FIXME: zero
+% FIXME: infinity
+% FIXME: denormal
+% FIXME: converting to/from IEEE format
+% FIXME: catastrophic cancellation
+% FIXME: not associative
