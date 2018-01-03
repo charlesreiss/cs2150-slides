@@ -1,0 +1,93 @@
+\begin{frame}{some real numbers}
+\begin{itemize}
+\item $\frac{1}{3}$
+\item $-\frac{100}{7}$
+\item $\pi$
+\item $0.1$
+\item $\sqrt{2}$
+\item \ldots
+\vspace{.5cm}
+\item want to represent these:
+    \begin{itemize}
+    \item accurately? compactly? efficiently?
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{fixed point}
+\begin{eqnarray*}
+\frac{1}{3} &=& 0.101010101\ldots_\text{TWO}  \\\
+            &\approx& 0.1010_\text{TWO} \text{--- represent as {\tt 00000 1010}} \\
+\end{eqnarray*}
+\begin{eqnarray*}
+\frac{100}{7} &=& 1110.001001001\ldots_\text{TWO}  \\\
+            &\approx& -1110.0010_\text{TWO} \text{--- represent as {\tt 01110 0010}} \\
+\end{eqnarray*}
+\begin{itemize}
+\item<2-> $x \approx y/2^K$ --- $y$ is a fixed-sized integer
+\begin{itemize}
+    \item this case: $y/2^4$ and $y$ is 9 bits.
+\end{itemize}
+\item<3-> can also use non-power-of-two base
+    \begin{itemize}
+    \item e.g. representing dollars+cents as a number of cents
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{why fixed-point?}
+\begin{itemize}
+\item $x \approx y/2^K$ ($y$ fixed-sized integer)
+\item math similar to integer math:
+    \begin{itemize}
+    \item addition/subtraction --- same
+    \item multiplication --- same except divide by $2^{2K}$ at the end
+    \item division --- same
+    \end{itemize}
+\item easy to understand what values are represented well
+\end{itemize}
+\end{frame}
+
+\begin{frame}{why not fixed-point?}
+\begin{itemize}
+\item pretty small range of numbers for space used
+\item hard to choose a $2^K$ that works for lots of applications
+\end{itemize}
+\end{frame}
+
+\begin{frame}{recall (?): scientific notation}
+\begin{eqnarray*}
++\frac{1}{3} &=& +0.33333333\ldots \\
+            &\approx& \myemph<3>{+}\myemph<4>{3.33}\cdot 10^{\myemph<5>{-1}} \\\
+\end{eqnarray*}
+\begin{eqnarray*}
+-\frac{100}{7} &=& -14.285714\ldots \\
+            &\approx& \myemph<3>{-}\myemph<4>{1.42}\cdot 10^{\myemph<5>{+1}} \\\
+\end{eqnarray*}
+\begin{itemize}
+\item<2-> $\myemph<3>{\pm}\text{\myemph<3>{mantissa}} \cdot \text{\myemph<5>{base}}^\text{\myemph<4>{exponent}}$
+\item<3-> sign --- plus or minus (one bit)
+\item<4-> mantissa (``value'' of number)
+    \begin{itemize}
+    \item fixed precision
+    \item $1 \le \text{mantissa} < \text{base}$
+    \end{itemize}
+\item<5-> exponent
+\item<6-> base
+    \begin{itemize}
+    \item normal scientific notation: 10
+    \item typical computers: 2
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{base-2 scientific notation}
+\begin{eqnarray*}
+\frac{1}{3} &=& 0.101010101\ldots_\text{TWO}  \\\
+            &\approx& 0.1010_\text{TWO} \text{--- represent as {\tt 00000 1010}} \\
+\end{eqnarray*}
+\begin{eqnarray*}
+\frac{100}{7} &=& 1110.001001001\ldots_\text{TWO}  \\\
+            &\approx& -1110.0010_\text{TWO} \text{--- represent as {\tt 01110 0010}} \\
+\end{eqnarray*}
+\end{frame}
