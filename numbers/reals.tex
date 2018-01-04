@@ -365,10 +365,102 @@ int main(void) {
 \ldots
 \end{frame}
 
-% FIXME: 0.1 can't be represented
-% FIXME: zero
-% FIXME: infinity
-% FIXME: denormal
-% FIXME: converting to/from IEEE format
+\begin{frame}{the problem of 0}
+\begin{itemize}
+\item 0 is a very imporant number
+\item \myemph{can't be represented with implicit ``1.''}
+\vspace{.5cm}
+\item solution: \myemph{special cases}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{IEEE float special cases}
+\begin{tabular}{llp{5cm}}
+exponent bits & mantissa bits & meaning \\ \hline
+{\tt 00000000} & {\tt 000\ldots000} & $\pm 0$\\
+{\tt 00000000} & non-zero & \textit{denormal} number \\
+{\tt 11111111} & {\tt 000\ldots000} & $\pm \infty$ \\
+{\tt 11111111} & non-zero & not a number (NaN) \\
+\end{tabular}
+\small
+\begin{eqnarray*}
+(+1/1000000000) \div \text{huge positive number} &= +0 \\
+(-1/1000000000) \div \text{huge positive number} &= -0 \\
+(+1000000000) \cdot \text{huge positive number} &= +\infty \\
+(-1000000000) \cdot \text{huge positive number} &= -\infty \\
+1 \div 0 &= +\infty \\
+0 \div 0 &= \text{\tt NaN} \\ \sqrt{-1} &= \text{\tt NaN} \\
+\end{eqnarray*}
+\end{frame}
 % FIXME: catastrophic cancellation
+
+\begin{frame}{float min magnitude value}
+\begin{itemize}
+\item exponent of {\tt 0000 0001}  (not 0 since that's special)
+\item mantisssa of {\tt 000\ldots000}
+\item $1.000000\ldots_\text{TWO} \cdot 2^{1-\text{bias}} = 2^{-126}$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{float max magnitude value}
+\begin{itemize}
+\item exponent of {\tt 1111 1110}  (not all 1s since that's special) 
+\item mantisssa of {\tt 111\ldots111}
+\item $1.111111\ldots11_\text{TWO} \cdot 2^{254-\text{bias}} = 1.1111110\ldots1_\text{TWO} \cdot 2^{127} \approx 2^{128}$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{on denormals}
+\begin{itemize}
+\item denormals --- minimum exponent bits, non-zero mantissa
+\item smaller in magntiude than ``normal'' minimum value
+    \begin{itemize}
+    \item ignore the ``implicit 1.'' rule
+    \end{itemize}
+\item notorious for being superslow on some systems
+    \begin{itemize}
+    \item some CPUs take 100s of times longer to compute on them
+    \end{itemize}
+\item we won't ask you about them
+\end{itemize}
+\end{frame}
+
+\begin{frame}{rounding errors (1)}
+\[
+2^{100} + 1
+\]
+\begin{itemize}
+\item $2^{100}+1$ cannot be represented exactly
+    \begin{itemize}
+    \item would need 99 mantissa bits
+    \item rounds to $2^{100}$
+    \end{itemize}
+\item (but $2^{100}$ and $1$ can)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{rounding errors (2)}
+\[
+(2^{100} + 1) - 2^{100} 
+\]
+\[
+2^{100} - 2^{100}
+\]
+\[
+0
+\]
+\vspace{.25cm}
+\hrule
+\vspace{.25cm}
+\[
+(2^{100} - 2^{100}) + 1
+\]
+\[
+0 + 1
+\]
+\[
+1
+\]
+\end{frame}
+
 % FIXME: not associative
