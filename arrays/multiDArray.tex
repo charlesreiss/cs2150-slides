@@ -1,0 +1,103 @@
+\begin{frame}[fragile,label=AoAExample]{arrays of arrays}
+\lstset{
+    language=C++,
+    style=small
+}
+AKA multidimensional arrays
+\begin{lstlisting}
+int m[2][3];
+int n[2][3] = { {1,2,3}, {4,5,6} };
+\end{lstlisting}
+\begin{visibleenv}<2->
+\begin{lstlisting}
+// "row" 1
+n[0][0] == 1
+n[0][1] == 2
+n[0][2] == 3
+
+// "row" 2
+n[1][0] == 4
+n[1][0] == 5
+n[1][0] == 6
+\end{lstlisting}
+\end{visibleenv}
+\end{frame}
+
+\begin{frame}{array of array storage}
+\begin{tikzpicture}
+\tikzset{
+    addrLabel/.style={font=\tt,red!70!black,visible on=<2->}
+}
+\matrix[tight matrix,
+    column 1/.style={nodes={draw=none,text width=2.5cm,font=\tt}},
+    column 2/.style={nodes={text width=2.5cm,font=\tt,minimum height=.7cm}},
+    column 3/.style={nodes={draw=none,text width=2.1cm,font=\tt,addrLabel}},
+    row 1/.style={nodes={font=\normalfont,draw=none}},
+] (mem) {
+    address \& value\\
+    \ldots \& \ldots  \\
+    0x1000 \& 1 \& n[0][0] \\
+    0x1004 \& 2 \& n[0][1] \\
+    0x1008 \& 3 \& n[0][2] \\
+    0x100C \& 4 \& n[1][0] \\
+    0x1010 \& 5 \& n[1][1] \\
+    0x1014 \& 6 \& n[1][2] \\
+    \ldots \& \ldots  \\
+};
+\begin{visibleenv}<3->
+\matrix[tight matrix,right=1cm of mem,
+    nodes={draw,very thick,text width=1cm,minimum height=1cm,fill=blue!20,inner xsep=-.5mm},
+    column 4/.style={nodes={draw=none,text width=.5cm,minimum width=.5cm,fill=none}},
+    row 1/.style={nodes={draw=none,text width=.25cm,fill=none,minimum height=0cm}},
+] (mat) {
+    0 \& 1 \& 2 \\
+    ~ \& ~ \& ~ \& 0\\
+    ~ \& ~ \& ~ \& 1\\
+};
+\begin{scope}[
+    very thick,blue!60!black,-Latex,
+]
+\draw ([yshift=.25cm]mat-2-1.center) -- (mem-3-3.east);
+\draw (mat-2-2.center) -- (mem-4-3.east);
+\draw ([yshift=-.25cm]mat-2-3.center) -- (mem-5-3.east);
+\draw ([yshift=.25cm]mat-3-1.center) -- (mem-6-3.east);
+\draw (mat-3-2.center) -- (mem-7-3.east);
+\draw ([yshift=-.25cm]mat-3-3.center) -- (mem-8-3.east);
+\end{scope}
+\end{visibleenv}
+\node[font=\Large,above right=0cm and -1cm of mem] {``row-major'' order};
+\begin{visibleenv}<4->
+\node[fit=(mem-3-2.north) (mem-5-2.south east), inner sep=0mm,fill=white,very thick,draw=green!70!black] {
+        n[0]
+};
+\node[fit=(mem-6-2.north) (mem-8-2.south east), inner sep=0mm,fill=white,very thick,draw=green!70!black] {
+        n[1]
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=ptrToArray]{pointers to array}
+\lstset{
+    language=C++,
+    style=smaller,
+    texcl=false,
+}
+{\small (we will not test you on this) }
+\begin{lstlisting}
+int m[3][2] = { {1,2,3}, {4,5,6} }
+
+// p1 is a "pointer to array of 3 ints"
+    // yes, this syntax is really confusing
+    // and generally not worth using
+int (*p1)[3];
+p1 = m;   // p1 contains address of m[0]
+cout << p1 << endl;
+    // OUTPUT: 0x... --- address of m[0][0]
+cout << p1[1] << endl;
+    // OUTPUT: 0x... --- address of m[1][0]
+
+cout << p1[1][1] <<endl;
+    // OUTPUT: 5
+\end{lstlisting}
+\end{frame}
