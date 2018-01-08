@@ -1,0 +1,128 @@
+\begin{frame}[fragile,label=nativeArray1]{`primtive' arrays v. vectors (1)}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{tikzpicture}
+\tikzset{
+    mylabel/.style={}
+}
+\begin{visibleenv}<1->
+\node (nativeArrayDecl) {
+\begin{lstlisting}
+int a[10];
+\end{lstlisting}
+};
+\node[anchor=north west] (vectorDecl) at ([xshift=6cm]nativeArrayDecl.north west){
+\begin{lstlisting}
+vector<int> v(10);
+// or:
+vector<int> v;
+v.resize(10);
+\end{lstlisting}
+};
+\node[anchor=south,mylabel] at (vectorDecl.north west) {allocate new, 10 elements};
+\end{visibleenv}
+\begin{visibleenv}<2->
+\node[anchor=north west] (nativeAccess) at ([yshift=-1cm]nativeArrayDecl.south west |- vectorDecl.south) {
+\begin{lstlisting}
+int foo = a[3];
+a[4] = 17;
+\end{lstlisting}
+};
+\node[anchor=north west] (vectorAccess) at ([xshift=6cm]nativeAccess.north west) {
+\begin{lstlisting}
+int foo = v[3];
+v[4] = 17;
+\end{lstlisting}
+};
+\node[anchor=south,mylabel] at (vectorAccess.north west) {access (no bounds checking)};
+\end{visibleenv}
+\begin{visibleenv}<3->
+\node[anchor=north west] (nativeAccessAt) at ([yshift=-1cm]nativeAccess.south west) {
+\begin{lstlisting}
+/* no equivalent */
+\end{lstlisting}
+};
+\node[anchor=north west] (vectorAccessAt) at ([xshift=6cm]nativeAccessAt.north west) {
+\begin{lstlisting}
+int foo = v.at(3);
+v.at(4) = 17;
+\end{lstlisting}
+};
+\node[anchor=south,mylabel] at (vectorAccessAt.north west) {access (with bounds checking)};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=nativeArray2]{`primtive' arrays v. vectors (2)}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{tikzpicture}
+\tikzset{
+    mylabel/.style={}
+}
+\begin{visibleenv}<1->
+\node (nativeCopy) {
+\begin{lstlisting}
+int a[10]; int b[10];
+...
+// a = b does NOT work
+for (int i = 0;
+     i < 10; ++i)
+    a[i] = b[i];
+\end{lstlisting}
+};
+\node[anchor=north west] (vectorCopy) at ([xshift=6cm]nativeCopy.north west){
+\begin{lstlisting}
+vector<int> a;
+vector<int> b;
+...
+a = b;
+\end{lstlisting}
+};
+\node[anchor=south,mylabel] at (vectorCopy.north west) {copy};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=nativeArray3]{`primitive' arrays v. vectors (3)}
+\lstset{
+    language=C++,
+    style=smaller
+}
+\begin{tikzpicture}
+\tikzset{
+    mylabel/.style={}
+}
+\begin{visibleenv}<1->
+\node[anchor=north west] (nativeEqual) at ([yshift=-1cm]nativeCopy.south west |- vectorDecl.south) {
+\begin{lstlisting}
+int a[10]; int b[10];
+...
+
+// a == b does NOT work
+  // instead: checks if
+  // a, b are same array
+  // (not same values)
+
+bool isEqual = true;
+for (int i = 0; i < 10; ++i)
+    isEqual = (isEqual &&
+        a[i] == b[j]);
+\end{lstlisting}
+};
+\node[anchor=north west] (vectorEqual) at ([xshift=6cm]nativeEqual.north west) {
+\begin{lstlisting}
+vector<int> a;
+vector<int> b;
+
+bool isEqual = (a == b);
+\end{lstlisting}
+};
+\node[anchor=south,mylabel] at (vectorEqual.north west) {equality};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}

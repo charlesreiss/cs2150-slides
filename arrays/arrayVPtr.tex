@@ -1,0 +1,161 @@
+\begin{frame}[fragile,label=arrayAndMme]{arrays, pointers, and memory (1)}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{tikzpicture}
+\tikzset{
+    addrLabel/.style={font=\tt,red!70!black,visible on=<2->}
+}
+\node (code) {
+\begin{lstlisting}
+int someInts[3] = {2, 4, 6};
+int *pointer = someInts;
+\end{lstlisting}
+};
+\matrix[tight matrix,
+    column 1/.style={nodes={draw=none,text width=2.5cm,font=\tt}},
+    column 2/.style={nodes={text width=2.5cm,font=\tt,minimum height=.6cm}},
+    column 3/.style={nodes={draw=none,text width=2.5cm,font=\tt,addrLabel}},
+    row 1/.style={nodes={font=\normalfont}},
+    label={[font=\bfseries]north:memory},
+    below=1cm of code,
+] (mem) {
+    address \& value\\
+    \ldots \& \ldots  \\
+    0x10000 \& 2 \& someInts[0] \\
+    0x10004 \& 4 \& someInts[1] \\
+    0x10008 \& 6 \& someInts[2] \\
+    \ldots \& \ldots \\
+    ??? \& |[name=ptrTop]| ~ \& |[name=ptrLabelTop]| \\
+    ~ \& |[name=ptrBottom]| ~ \& |[name=ptrLabelBottom]| \\
+    \ldots \& \ldots \\
+};
+\node[fit=(ptrTop) (ptrBottom),inner sep=0mm,font=\tt, fill=white,draw,align=left] { 0x10000 };
+\node[fit=(ptrLabelTop) (ptrLabelBottom),addrLabel,inner sep=0mm,font=\tt,align=left] { pointer };
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=arrayAndMmeEx]{arrays, pointers, and memory (2)}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+int someInts[3] = {2, 4, 6};
+
+cout << "someInts is: " << @2someInts2@ << endl;
+cout << "&someInts[0] is: " << @2&someInts[0]2@ << endl;
+cout << "&someInts[1] is: " << &someInts[1] << endl;
+cout << "someInts[1] is: " << someInts[1] << endl;
+\end{lstlisting}
+\hrule
+\small
+example output: \\
+\lstset{
+    language={},
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3-4>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+someInts is: @20x7ffda5455b442@
+&someInts[0] is: @2@30x7ffda5455b43@42@
+&someInts[1] is: @30x7ffda5455b43@8
+someInts[1] is: 4
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+\tikzset{
+    box/.style={at=(place),draw=red,very thick,fill=white,align=left}
+}
+\coordinate (place) at ([yshift=5cm]current page.south);
+\begin{visibleenv}<2>
+\node[box] {
+    array (almost) the same as pointer to its first element
+};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[box] {
+    arrays elements always at adjacent addresses \\
+    (4 bytes apart = ints are 4 bytes)
+};
+\end{visibleenv}
+\begin{visibleenv}<4>
+\node[box] {
+    general rule: \lstinline|&array[i] = array-addr + sizeof(array-elem) * i|
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=arrayNotPtr]{array aren't quite pointers}
+\lstset{
+    language=C++,
+    style=small,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+int someIntsA[3] = {2, 4, 6};
+int someIntsB[3] = {8, 10, 12};
+int *pointer = someIntsA;
+
+// OK:
+pointer = someIntsB;
+
+// NOT OK:
+someIntsA = someIntsB;  // COMPILE ERROR
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=arrayFuncParam]{arrays as function parameters}
+\lstset{
+    language=C++,
+    style=small,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+void someFunc(int arrayofInts[]) { /* code */ }
+int main() {
+    int someInts[3];
+    someFunc(someInts);
+    return 0;
+}
+\end{lstlisting}
+is \myemph{exactly} equivalent to:
+\begin{lstlisting}
+void someFunc(int *arrayofInts) { /* code */ }
+int main() {
+    int someInts[3];
+    someFunc(someInts);
+    return 0;
+}
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+\tikzset{
+    box/.style={at=(place),draw=red,very thick,fill=white,align=left}
+}
+\coordinate (place) at ([yshift=5.5cm]current page.south);
+\begin{visibleenv}<2>
+\node[box] {
+    example: \lstinline|arrayOfInts = otherArray;| is allowed \\
+    (and doesn't change \lstinline|someInts|) \\
+    (even though this is inconsistent with how \\
+     arrays usualy work)
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+

@@ -8,6 +8,9 @@ all: talk-slides.pdf
 clean:
 	latexmk -CA -output-directory=build
 
+copy: talk-slides.pdf
+	cp talk-slides.pdf ../output/$(BASENAME).pdf
+
 .FORCE:
 
 .PHONY: all clean .FORCE
