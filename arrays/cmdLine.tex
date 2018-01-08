@@ -1,0 +1,78 @@
+\begin{frame}[fragile,label=cmdLineP]{command line parameters }
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{lstlisting}
+int main (int argc, char* argv[]) { ... }
+// same as:
+int main (int argc, char **argv) { ... }
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{argc} --- number of arguments + 1
+\item \texttt{argv} --- array of C-style strings
+    \begin{itemize}
+    \item \texttt{argv[0]} --- program name
+    \item \texttt{argv[1]}, \texttt{argv[2]}, \ldots --- arguments
+    \end{itemize}
+\vspace{.5cm}
+\item what about \lstinline|int main() { ... }|?
+    \begin{itemize}
+    \item okay, but can't get arguments
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=cStringVString]{C strings to strings}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{itemize}
+\item given a \lstinline|char *c_style_string| (like \lstinline|argv[i]|)
+\vspace{.5cm}
+\item output:
+    \begin{itemize}
+    \item \lstinline|cout << c_style_string|
+    \end{itemize}
+\item convert to C++-style string called \texttt{s}:
+    \begin{itemize}
+    \item \lstinline|string s(c_style_string)| 
+    \item \lstinline|string s; s = c_style_string)| 
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile,label=cmdLinePEx]{command line parameters}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+int main (int argc, char* argv[]) {
+    // The 0th command line parameter is the program name.
+    cout << "This program is called '" << @2argv[0]2@
+         << "'" << endl;
+    cout << "The following are the command " 
+         << "line parameters you specified: " << endl;
+    // for loop starts at 1 to avoid printing
+    // name of program (again)
+    for ( int i = 1; i < argc; i++ ) {
+        // we can convert the C-style strings into 
+        // C++-style strings, and then print them:
+        string s(@3argv[i]3@);
+        cout << "\t" << s << endl;
+    }
+    return 0;
+}
+\end{lstlisting}
+\end{frame}
