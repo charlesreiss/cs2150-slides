@@ -9,7 +9,7 @@ clean:
 	latexmk -CA -output-directory=build
 
 copy: talk-slides.pdf
-	cp talk-slides.pdf ../output/$(BASENAME).pdf
+	cp talk-slides.pdf ~/public_html/2150-slide-drafts/$(BASENAME).pdf
 
 .FORCE:
 

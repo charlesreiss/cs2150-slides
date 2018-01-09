@@ -1,0 +1,153 @@
+\begin{frame}[label=abstractionA,fragile]{layers of abstraction (1)}
+    \begin{tikzpicture}
+        \node[draw,rectangle,minimum width=5cm,below] (absDS) {Data structures, objects, etc.: C++ classes};
+            \node[above=0.5cm of absDS] {\small \lstinline[language=C]!map.insert(key)!};
+        \node[draw,rectangle,minimum width=5cm,below=3mm of absDS] (hll) {Higher-level language: C++};
+            \node[left=1cm of hll] {\small \lstinline[language=C]!x += y!};
+        \node[draw,rectangle,minimum width=5cm,below=3mm of hll] (asm) {Assembly: X86-64/IBCM};
+            \node[left=1cm of asm] {\small \lstinline[language=myasm]!add rax, rbx!};
+        \node[draw,rectangle,minimum width=5cm,below=3mm of asm] (machineCode) {Machine code: IBCM};
+            \node[left=1cm of machineCode] {\small \lstinline[language=myasm]!1110 1111!};
+        \node[draw,rectangle,minimum width=5cm,below=3mm of machineCode] (hw) {Hardware: (not this course)};
+    \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[label=abstractionB,fragile]{layers of abstraction (2)}
+    \begin{tikzpicture}
+        \node[draw,rectangle,minimum width=5cm,below] (objs) {Objects};
+            \node[above=0.5cm of objs] {\small \lstinline[language=C]!string!};
+        \node[draw,rectangle,minimum width=5cm,below=3mm of objs] (arr) {Arrays};
+            \node[left=1cm of arr] {\small \lstinline[language=C]!char data[10]!};
+        \node[draw,rectangle,minimum width=5cm,below=3mm of arr] (prims) {Primitive Types};
+            \node[left=1cm of prims] {\small \lstinline[language=myasm]!char data!};
+        \node[draw,rectangle,minimum width=5cm,below=3mm of prims] (addr) {Addresses/Memory};
+            \node[left=1cm of machineCode] {\small \tt @ 0x9cdf4123: 0x12};
+        \node[draw,rectangle,minimum width=5cm,below=3mm of addr] (bits) {Bits};
+            \node[left=1cm of bits] {\small \tt 01101011};
+    \end{tikzpicture}
+\end{frame}
+
+% FIXME: Aaron's picture
+
+\begin{frame}{data structures}
+\begin{itemize}
+\item linked lists
+\item stacks
+\item queues
+\item hash tables
+\item heaps
+\item trees
+\item etc.
+\end{itemize}
+\end{frame}
+
+% FIXME: more modern numbers including setup for asymptotic comparison example
+
+\begin{frame}[fragile,label=compList1]{comparing list data structures (1)}
+\begin{itemize}
+\item benchmark: {\small (\texttt{DataStructureComparison.java})}
+\begin{itemize}
+\item insert $50\,000$ elements (even integers $0$ to $100\,000$)
+\item search for $50\,000$ elements ($0$ to $25\,000$)
+\item delete $10\,000$ elements
+\end{itemize}
+\item on my desktop, Java 8, median of 3 consecutive runs
+\end{itemize}
+\begin{visibleenv}<2->
+\begin{tabular}{lr@{.}l}
+Data structure & \multicolumn{2}{c}{Runtime} \\
+{\tt Vector} &  0 & 703 s \\
+{\tt ArrayList} &  \myemph<3,4>{0}  & \myemph<3,4>{700 s} \\
+{\tt LinkedList} &  \myemph<4>{2} & \myemph<4>{037 s} \tikzmark{side}\\
+{\tt HashSet} &  \myemph<3>{0} & \myemph<3>{002 s} \\
+{\tt TreeSet} &  \myemph<3>{0} & \myemph<3>{010 s} \\
+\end{tabular}
+\end{visibleenv}
+\begin{tikzpicture}[overlay,remember picture]
+\coordinate (place) at (pic cs:side);
+\tikzset{
+    box/.style={anchor=west,at={([xshift=0.5cm]place)},align=left,draw=red,thick}
+}
+\begin{visibleenv}<3>
+\node[box] {{\tt HashSet}/{\tt TreeSet} \\ more than 350/50x faster \\ than {\tt Vector}/{\tt ArrayList}};
+\end{visibleenv}
+\begin{visibleenv}<4>
+\node[box] {{\tt LinkedList} \\ 3x slower than \\ than {\tt Vector}/{\tt ArrayList}};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{comparing list data structures (2)}
+\begin{tabular}{lr@{.}lr@{.}lr@{.}lr@{.}l}
+Data structure & \multicolumn{2}{c}{Total }  & \multicolumn{2}{c}{\myemph<5>{Insert}}& \multicolumn{2}{c}{Search  } & \multicolumn{2}{c}{Delete }  \\
+{\tt Vector} &  0 & 703 &  \myemph<5>{0} & \myemph<5>{002} & \myemph<2,3>{0} & \myemph<2,3>{507} & 0 & 194 \\
+{\tt ArrayList} &  0  & 700 & \myemph<5>{0} & \myemph<5>{001} & \myemph<2>{0} & \myemph<2>{507} & 0 & 192 \\
+\myemph<7>{\tt LinkedList} &  2 & 037 & \myemph<5>{0} & \myemph<5>{002} & \myemph<2>{1} & \myemph<2>{521} & 0 & 514 \\
+{\tt HashSet} &  0 & 002 & \myemph<5>{0} & \myemph<5>{002} & 0 & 000 & 0 & 000 \\
+\myemph<6>{{\tt TreeSet}} &  0 & 010 & \myemph<5>{0} & \myemph<5>{007} & 0 & 002 & 0 & 001 \\
+{\tt Vector}, sorted &  0 & 024 & \myemph<5>{0} & \myemph<5>{001} & \myemph<3>{0} & \myemph<3>{002} & \myemph<4>{0} & \myemph<4>{021} \\
+\end{tabular}
+\begin{tikzpicture}[overlay,remember picture]
+\coordinate (place) at ([yshift=1cm]current page.south);
+\tikzset{
+    box/.style={anchor=south,at={(place)},align=left,draw=red,thick}
+}
+\begin{visibleenv}<2>
+\node[box] {search is where most the time goes};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[box] {vector is slow mostly because searching unsorted list};
+\end{visibleenv}
+\begin{visibleenv}<4>
+\node[box] {and then delete time starts mattering};
+\end{visibleenv}
+\begin{visibleenv}<5>
+\node[box] {benchmark not precise enough \\ to measure insert time differences \\ except for TreeSet};
+\end{visibleenv}
+\begin{visibleenv}<6>
+\node[box] {TreeSet worse than HashSet? \\ in this benchmark, yes \\ but not other benchmarks};
+\end{visibleenv}
+\begin{visibleenv}<7>
+\node[box] {LinkedList worse than ArrayList? \\ in this benchmark, yes \\ but not other benchmarks};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{comparing list data structures (3)}
+\begin{itemize}
+\item same benchmark, 10x original sizes:
+\end{itemize}
+\begin{tabular}{lr@{.}lr@{.}lr@{.}lr@{.}l}
+Data structure & \multicolumn{2}{c}{Total}  & \multicolumn{2}{c}{Insert}& \multicolumn{2}{c}{Search} & \multicolumn{2}{c}{Delete}  \\
+{\tt Vector} &  \myemph<2,3>{87} & \myemph<2,3>{818} & 0 & 004 & 63 & 202 & 24 & 612 s \\
+{\tt ArrayList} & 87 & 192 & 0 & 010 & 62 & 470 & 24 & 712 s\\
+{\tt LinkedList} & \myemph<2>{263} & \myemph<3>{776} & 0 & 006 & 196 & 550 & 67 & 439 s\\
+{\tt HashSet} &  \myemph<3>{0} & \myemph<2>{029} & 0 & 022 & 0 & 003 & 0 & 004 s\\
+{\tt TreeSet} &  0 & 134 & 0 & 110 & 0 & 017 & 0 & 007 s\\
+{\tt Vector}, sorted &  2 & 642 & 0 & 009 & 0 & 024 & 2 & 609 s\\
+\end{tabular}
+\begin{tikzpicture}[overlay,remember picture]
+\coordinate (place) at ([yshift=1cm]current page.south);
+\tikzset{
+    box/.style={anchor=south,at={(place)},align=left,draw=red,thick}
+}
+\begin{visibleenv}<2>
+\node[box] {linked lists still 3x slower than vector\ldots};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[box] {\ldots but 350x faster became 3000x faster because of larger size \\
+    we will learn \myemph{asymptotic analysis} to predict this};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{time/space analysis}
+\begin{itemize}
+    \item \textit{theoretical} analysis of time \textit{or space} usage
+        \begin{itemize}
+        \item theoretical = can do without implementing
+        \item \ldots but doesn't capture all the details
+        \end{itemize}
+    \item general technique --- not just data structures
+\end{itemize}
+\end{frame}
