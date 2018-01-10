@@ -1,0 +1,30 @@
+\begin{frame}{what are we measuring}
+\begin{eqnarray*}
+    f(n) &=& \text{\myemph<3>{worst case} running time} \\
+    n    &=& \text{input size --- as a positive integer} \\
+\end{eqnarray*}
+    \begin{itemize}
+        \item<2-> will comapre $f$ to another function $g(n)$
+        \item<2-> example: $f(n) \in O(g(n))$ (or $f \in O(g)$)
+            \begin{itemize}
+                \item informally: ``$f$ is big-oh of $g$''
+            \end{itemize}
+        \item<2-> example $f(n) \not\in \Omega(g(n))$ or ($g \not\in \Omega(g)$)
+            \begin{itemize}
+            \item informally: ``$f$` is not big-omega of $g$''
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{worst case?}
+    \begin{itemize}
+    \item this class: almost always \myemph{worst cases}
+    \item intuition: detect if program will \textit{ever} take ``forever''
+    \vspace{.5cm}
+    \item<2-> example: iterating through an array until we find a value
+        \begin{itemize}
+        \item best case: look at one value, it's the one we want
+        \item worst case: look at every value, none of them are what we want
+        \end{itemize}
+    \end{itemize}
+\end{frame}

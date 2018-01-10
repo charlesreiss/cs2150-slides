@@ -1,0 +1,64 @@
+\begin{frame}{recall: comparing list data structures}
+\begin{itemize}
+    \item List benchmark (from intro slides) w/ 100000 elements
+\end{itemize}
+\begin{tabular}{lr@{.}lr@{.}lr@{.}lr@{.}l}
+Data structure & \multicolumn{2}{c}{Total}  & \multicolumn{2}{c}{Insert}& \multicolumn{2}{c}{Search} & \multicolumn{2}{c}{Delete}  \\
+    {\tt Vector} &  \myemph<2>{87} & \myemph<2>{818} & 0 & 004 & \myemph<2,5>{63} & \myemph<2,5>{202} & \myemph<2,5>{24} & \myemph<2,5>{612} s \\
+    {\tt ArrayList} & \myemph<2>{87} & \myemph<2>{192} & 0 & 010 & \myemph<2,5>{62} & \myemph<2,5>{470} & \myemph<2,5>{24} & \myemph<2,5>{712} s\\
+    {\tt LinkedList} & \myemph<2>{263} & \myemph<2>{776} & 0 & 006 & \myemph<2,5>{196} & \myemph<2,5>{550} & \myemph<2,5>{67} & \myemph<2,5>{439} s\\
+    {\tt HashSet} & \myemph<3>{0} & \myemph<3>{029} & 0 & 022 & \myemph<6>{0} & \myemph<6>{003} & \myemph<6>{0} & \myemph<6>{004} s\\
+{\tt TreeSet} & \myemph<3>{0} & \myemph<3>{134} & 0 & 110 & 0 & 017 & 0 & 007 s\\
+{\tt Vector}, sorted &  2 & 642 & 0 & 009 & 0 & 024 & 2 & 609 s\\
+\end{tabular}
+\begin{tikzpicture}[overlay,remember picture]
+\coordinate (place) at ([yshift=.5cm]current page.south);
+\tikzset{
+    box/.style={anchor=south,at={(place)},align=left,draw=red,thick}
+}
+\begin{visibleenv}<2>
+\node[box] {some runtimes get really big as size gets large\ldots};
+\end{visibleenv}
+\begin{visibleenv}<3>
+    \node[box] {others seem to remain manageable};
+\end{visibleenv}
+\begin{visibleenv}<4>
+    \node[box] {problem: \myemph{growth rate} of runtimes with list size};
+\end{visibleenv}
+\begin{visibleenv}<5>
+    \node[box] {
+        for {\tt Vector} (unsorted), {\tt ArrayList}, {\tt LinkedList}\ldots \\
+        \# operations grows like $n$ where $n$ is list size
+    };
+\end{visibleenv}
+\begin{visibleenv}<6>
+    \node[box] {
+        for {\tt HashSet}\ldots \\
+        \# operations per search/remove is constant (sort of)
+    };
+\end{visibleenv}
+\begin{visibleenv}<7>
+    \node[box] {
+        for {\tt TreeSet}, sorted {\tt Vector}\ldots \\
+        \# operations per search grows like $\log(n)$ where $n$ is list size
+    };
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{why asymptotic analysis?}
+    \begin{itemize}
+    \item ``can my program work when data gets big?''
+        \begin{itemize}
+        \item website gets thousands of new users?
+        \item text editor opening 1MB book? 1 GB log file?
+        \item music player sees $1\,000$ song collection? $50\,000$?
+        \item text search on 100 petabyte copy of the text of the web?
+        \end{itemize}
+    \item<2-> if asymptotic analysis says ``no''
+        \begin{itemize}
+            \item can find out \myemph{before implementing algorithm}
+            \item won't be fixed by, e.g., buying a faster CPU
+        \end{itemize}
+    \end{itemize}
+\end{frame}

@@ -1,0 +1,76 @@
+\begin{frame}{formal definitions}
+    \begin{itemize}
+    \item $f(n) \in O(g(n))$ if and only if \\
+        \hspace{.5cm}there exists $c > 0$ and $n_0 > 0$ such that \\
+            \hspace{.5cm}$f(n) \le c \cdot g(n)$ for all $n > n_0$
+    \item $f(n) \in \Omega(g(n))$ if and only if \\
+        \hspace{.5cm}there exists $c > 0$ and $n_0 > 0$ such that \\
+        \hspace{.5cm}$f(n) \le c \cdot g(n)$ for all $n > n_0$
+    \item $f(n) \in \Theta(g(n))$ if and only if \\
+          $f(n) \in O(g(n))$ and $f(n) \in \Omega(g(n))$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{formal definition example (1)}
+    \begin{itemize}
+    \item $f(n) \in O(g(n))$ if and only if \\
+        \hspace{.5cm}there exists $c > 0$ and $n_0 > 0$ such that \\
+        \hspace{.5cm}$f(n) \le c \cdot g(n)$ for all $n > n_0$
+    \item Is $ n \in O(n^2)$:
+        \begin{itemize}
+        \item<2-> choose $c = 1$, $n_0 = 2$
+        \item<2-> for $n > 2=n_0$: $n \le c\cdot n^2 = n^2$
+        \item<2-> Yes!
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{formal definition example (2)}
+    \begin{itemize}
+    \item $f(n) \in O(g(n))$ if and only if \\
+        \hspace{.5cm}there exists $c > 0$ and $n_0 > 0$ such that \\
+        \hspace{.5cm}$f(n) \le c \cdot g(n)$ for all $n > n_0$
+    \item Is $10n \in O(n)$?
+        \begin{itemize}
+        \item<2-> choose $c = 11$\tikzmark{bigC}, $n_0 = 2$
+        \item<2-> for $n > 2=n_0$: $f(n) = n \le c\cdot g(n) = 11n$
+        \item<2-> Yes!
+        \end{itemize}
+    \end{itemize}
+    \begin{tikzpicture}[overlay, remember picture]
+        \begin{visiblelenv}<3->
+            \node[mycallout=bigC,anchor=north west] at ([xshift=-2cm,yshift=-1cm]pic cs:bigC) {
+                don't need to choose smallest possible $c$
+            };
+        \end{visibleenv}
+    \end{tikzpicture}
+\end{frame}
+\begin{frame}{formal definition example (2)}
+    \begin{itemize}
+    \item $f(n) \in O(g(n))$ if and only if \\
+        \hspace{.5cm}there exists $c > 0$ and $n_0 > 0$ such that \\
+        \hspace{.5cm}$f(n) \le c \cdot g(n)$ for all $n > n_0$
+    \item Is $n^2 \in O(n)$?
+        \begin{itemize}
+        \item<2-> no --- consider any $c, n_0 > 0$
+        \item<2-> consider $n_{bad} = (c + 100) + (n_0 + 100) > n_0$ \\
+            $n_{bad}^2 > (c + 100)^2 + (n_0 + 100)^2 > c + 100 + n_0 + 100 = n_{bad}$ \\
+        \item<2-> so can't find $c, n_0$ that sastisfy definition
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{formal definition example (4)}
+    \begin{itemize}
+    \item $f(n) \in O(g(n))$ if and only if \\
+        \hspace{.5cm}there exists $c > 0$ and $n_0 > 0$ such that \\
+        \hspace{.5cm}$f(n) \le c \cdot g(n)$ for all $n > n_0$
+    \item consider: $f(n) = 100\cdot n^2 + n$, $g(n) = n^2$:
+        \begin{itemize}
+        \item choose $c = 200$, $n_0 = 2$
+        \item observe for $n > 2$: $100n^2 + n \le 101n^2$
+        \item for $n > 2=n_0$: $f(n) = 100n^2 + n \le 101n^2 \le c\cdot g(n) = 200n^2$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+

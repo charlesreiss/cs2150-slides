@@ -2,8 +2,18 @@
 \begin{itemize}
 \item define sets of functions based on an example $f$
 \vspace{.5cm}
-\item $\Omega(f)$: functions that grow no slower than $f$ (``$\ge f$'')
-\item $O(f)$: functions that grow no faster than $f$ (``$\le f$'')
-\item $\Theta(f) = \Omega(f) \cap O(f)$: functions that grow at same rate as $f$ (``$= f$'')
+\item $\Omega(f)$: grow no slower than $f$ (``$\ge f$'')
+\item $O(f)$: grow no faster than $f$ (``$\le f$'')
+\item $\Theta(f) = \Omega(f) \cap O(f)$: grow as fast as $f$ (``$= f$'')
+\vspace{.5cm}
+\item<2-> examples:
+    \begin{itemize}
+        \item $n^3 \in \Omega(n^2)$ 
+        \item $100n \in O(n^2)$ 
+        \item $10n^2+n \in \Theta(n^2)$ --- ignore constant factor, etc.
+            \begin{itemize}
+            \item and $10n^2+n \in O(n^2)$ and $10n^2+n \in \Omega(n^2)$
+            \end{itemize}
+    \end{itemize}
 \end{itemize}
 \end{frame}
