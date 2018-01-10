@@ -1,0 +1,41 @@
+\begin{frame}{asymptotic growth rate or \textit{order}}
+\begin{itemize}
+\item compare two functions, but\ldots
+\item ignore constant factors, small inputs
+\item<2-> example: {\color{red!70!black}$f(n) = 1\,000\,000 \cdot n^2$}; {\color{blue!70!black}$g(n) = 2^n$}
+    \begin{itemize}
+    \item $g$ grows faster --- eventually much bigger than $f$
+    \end{itemize}
+\end{itemize}
+\begin{tikzpicture}
+\begin{visibleenv}<3->
+\begin{axis}[width=12.5cm,height=5.5cm,samples=50,xmin=1,xmax=35,ymin=0,ymax=2e9]
+\addplot[draw=red,very thick,domain=1:35] {1000000*x^2};
+\addplot[draw=blue,very thick,domain=1:31] {2^x};
+\begin{visibleenv}<4->
+\fill[green,opacity=0.05] (axis cs:30,0) rectangle (axis cs:35,2147483648);
+\draw[thick,-Latex] (axis cs:25,1.5e9) node[left] {goal: predict behavior here} -- (axis cs:31,1.5e9);
+\end{visibleenv}
+\begin{visibleenv}<5->
+\fill[red,opacity=0.05] (axis cs:1,0) rectangle (axis cs:27,0.75e9);
+\draw[thick,-Latex] (axis cs:10,0.8e9) node[above,inner sep=0.5mm] {ignore behavior here} -- (axis cs:10,0.5e9);
+\end{visibleenv}
+\end{axis}
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{preview: what functions?}
+\begin{itemize}
+    \item example: comparing sorting algorithms
+    \item $\text{runtime} = f(\text{size of input})$
+        \begin{itemize}
+        \item e.g. $\text{seconds to sort} = f(\text{number of elements in list})$
+        \item e.g. $\text{\# operations to sort} = f(\text{number of elements in list})$
+        \end{itemize}
+    \item $\text{space} = f(\text{size of input})$
+        \begin{itemize}
+        \item e.g. $\text{number of bytes of memory} = f(\text{number of elements in list})$
+        \end{itemize}
+\end{itemize}
+\end{frame}

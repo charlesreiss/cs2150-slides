@@ -1,0 +1,29 @@
+Vector:         took 716 ms     0.716 sec (insert: 3 ms, search: 516 ms, delete: 197 ms)
+ArrayList:      took 733 ms     0.733 sec (insert: 2 ms, search: 528 ms, delete: 203 ms)
+LinkedList:     took 2047 ms    2.047 sec (insert: 3 ms, search: 1526 ms, delete: 518 ms)
+HashSet:        took 11 ms      0.011 sec (insert: 7 ms, search: 2 ms, delete: 2 ms)
+TreeSet:        took 20 ms      0.020 sec (insert: 15 ms, search: 3 ms, delete: 2 ms)
+
+Vector, sorted: took 37 ms      0.037 sec (insert: 2 ms, search: 11 ms, delete: 24 ms)
+Operations performed:
+        50000   insertions
+        25000   searches
+        10000   deletions
+Vector:         took 703 ms     0.703 sec (insert: 2 ms, search: 507 ms, delete: 194 ms)
+ArrayList:      took 700 ms     0.700 sec (insert: 1 ms, search: 507 ms, delete: 192 ms)
+LinkedList:     took 2037 ms    2.037 sec (insert: 2 ms, search: 1521 ms, delete: 514 ms)
+HashSet:        took 2 ms       0.002 sec (insert: 2 ms, search: 0 ms, delete: 0 ms)
+TreeSet:        took 10 ms      0.010 sec (insert: 7 ms, search: 2 ms, delete: 1 ms)
+
+Vector, sorted: took 24 ms      0.024 sec (insert: 1 ms, search: 2 ms, delete: 21 ms)
+Operations performed:
+        50000   insertions
+        25000   searches
+        10000   deletions
+Vector:         took 700 ms     0.700 sec (insert: 0 ms, search: 507 ms, delete: 193 ms)
+ArrayList:      took 699 ms     0.699 sec (insert: 0 ms, search: 506 ms, delete: 193 ms)
+LinkedList:     took 2037 ms    2.037 sec (insert: 1 ms, search: 1522 ms, delete: 514 ms)
+HashSet:        took 1 ms       0.001 sec (insert: 1 ms, search: 0 ms, delete: 0 ms)
+TreeSet:        took 8 ms       0.008 sec (insert: 6 ms, search: 1 ms, delete: 1 ms)
+
+Vector, sorted: took 23 ms      0.023 sec (insert: 1 ms, search: 2 ms, delete: 20 ms)
