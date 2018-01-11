@@ -1,13 +1,15 @@
 \begin{frame}{formal definitions}
     \begin{itemize}
-    \item $f(n) \in O(g(n))$ if and only if \\
+    \item $f(n) \in O(g(n))$: \\
         \hspace{.5cm}there exists $c > 0$ and $n_0 > 0$ such that \\
-            \hspace{.5cm}$f(n) \le c \cdot g(n)$ for all $n > n_0$
-    \item $f(n) \in \Omega(g(n))$ if and only if \\
+        \hspace{.5cm}for all $n > n_0$, $\myemph<2>{f(n) \le c \cdot g(n)}$
+    \vspace{.5cm}
+    \item<2-> $f(n) \in \Omega(g(n))$: \\
         \hspace{.5cm}there exists $c > 0$ and $n_0 > 0$ such that \\
-        \hspace{.5cm}$f(n) \le c \cdot g(n)$ for all $n > n_0$
-    \item $f(n) \in \Theta(g(n))$ if and only if \\
-          $f(n) \in O(g(n))$ and $f(n) \in \Omega(g(n))$
+        \hspace{.5cm}for all $n > n_0$, $\myemph<2>{f(n) \ge c \cdot g(n)}$ for all $n > n_0$
+    \vspace{.5cm}
+    \item<3-> $f(n) \in \Theta(g(n))$: \\
+          \hspace{.5cm} $f(n) \in O(g(n))$ \myemph{and} $f(n) \in \Omega(g(n))$
     \end{itemize}
 \end{frame}
 
@@ -38,7 +40,7 @@
         \end{itemize}
     \end{itemize}
     \begin{tikzpicture}[overlay, remember picture]
-        \begin{visiblelenv}<3->
+        \begin{visibleenv}<3->
             \node[mycallout=bigC,anchor=north west] at ([xshift=-2cm,yshift=-1cm]pic cs:bigC) {
                 don't need to choose smallest possible $c$
             };
