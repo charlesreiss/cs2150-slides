@@ -15,7 +15,7 @@
 \begin{frame}[label=abstractionB,fragile]{layers of abstraction (2)}
     \begin{tikzpicture}
         \node[draw,rectangle,minimum width=5cm,below] (objs) {Objects};
-            \node[above=0.5cm of objs] {\small \lstinline[language=C]!string!};
+            \node[left=0.5cm of objs] {\small \lstinline[language=C]!string!};
         \node[draw,rectangle,minimum width=5cm,below=3mm of objs] (arr) {Arrays};
             \node[left=1cm of arr] {\small \lstinline[language=C]!char data[10]!};
         \node[draw,rectangle,minimum width=5cm,below=3mm of arr] (prims) {Primitive Types};

@@ -1,5 +1,3 @@
-
-
 \begin{frame}{lectures}
     \begin{itemize}
     \item I will audio+screenrecord my lectures
@@ -8,20 +6,130 @@
     \end{itemize}
 \end{frame}
 
+\begin{frame}{different lectureres?}
+    \begin{itemize}
+    \item Mark Floryan also teaches this class
+    \item we are giving seperate lectures
+    \item different slidedecks
+        \begin{itemize}
+        \item but generally --- very similar slide decks
+        \item I made my slides by looking at Floryan's\ldots
+        \item (different preferences about what should be on slide)
+            \begin{itemize}
+            \item Floryan's slides are usually more verbose
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
 \begin{frame}{homeworks (AKA labs)}
     \begin{itemize}
     \item weekly assignments with three parts:
     \vspace{.5cm}
     \item \textit{pre-lab} due Tuesday morning
-    \item \textit{in-lab} done \myemph{physically in your lab section}
+    \item \textit{in-lab} done \myemph{physically in the lab section you are registered for}
     \item \textit{post-lab} due Friday morning
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{course staff}
+    \begin{itemize}
+        \item lecturers: Mark Floryan and I
+        \item more than 20 TAs
+        \item some graduate student graders
     \end{itemize}
 \end{frame}
 
 \begin{frame}{questions}
     \begin{itemize}
-    \item Piazza (linked off Collab)
-    \item \ldots
+    \item Piazza 
+    \item support request tool
+        \begin{itemize}
+        \item linked off website
+        \item preferred way to contact faculty
+        \end{itemize}
+    \item office hours (faculty and TA)
+        \begin{itemize}
+        \item Google calendar linked off website
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{announcements}
+    \begin{itemize}
+    \item course twitter feed --- \texttt{@UVaCS2150}
+    \item emails to class --- used very sparingly
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{prerequisites}
+    \begin{itemize}
+        \item C- or better in CS2110 or CS 2220
+            \begin{itemize}
+            \item references, classes, objects, generics (or templates)
+            \item control structures, procedures, recursion
+            \item writing programs longer than a screenful
+            \end{itemize}
+        \item C- or better in CS2102
+            \begin{itemize}
+            \item logarithms, sets, graphs
+            \item proof techniques, including by contradiciton
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{CS2102 as co-requisite}
+    \begin{itemize}
+        \item you may take CS2102 as a co-requisite instead
+        \item but \myemph{at your own risk}
+        \item we may ask exam questions that require CS2102 material
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{lab swapping}
+    \begin{itemize}
+    \item we cannot change what lab your an enrolled in
+    \item we cannot increase lab capacities beyond 45 (fire marshall limits)
+    \item to switch to an open lab, you can use ``Edit Class'' in SIS
+        \begin{itemize}
+        \item you try dropping the course and re-adding, you will be put on the end of the waitlist
+        \end{itemize}
+    \item if you and another student want to swap labs, \\
+          Engineering main office in Thornton A122 may be able to do this
+        \begin{itemize}
+        \item you can try to find students to do this with on Piazza
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{honor-related policies}
+    \begin{itemize}
+    \item do not share your code or look at another student's code
+    \item do not try to hack the submission system
+    \item do not share midterm details with students who haven't taken it yet
+    \item \myemph<2>{do not release your source code online}\tikzmark{sourceOnline}
+    \item \myemph<3>{when we ask for assembly files, do not submit compiler-generated assembly}\tikzmark{compAsm} unless otherwise allowed
+    \end{itemize}
+    \begin{tikzpicture}[overlay,remember picture]
+        \begin{visibleenv}<2>
+        \node[mycallout=sourceOnline] at ([yshift=-1cm,xshift=-4cm]pic cs:sourceOnline) {
+            you \textit{must not} do your work in a public github repo
+        }
+        \end{visibleenv}
+    \end{tikzpicture}
+    \begin{tikzpicture}[overlay,remember picture]
+        \begin{visibleenv}<3>
+        \node[mycallout=compAsm] at ([yshift=-1cm,xshift=-4cm]pic cs:compAsm) {
+            probably the lab is about writing assembly, not using compilers\ldots
+        }
+        \end{visibleenv}
+    \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{academic honesty}
+    \begin{itemize}
+    \item we will refer to honor violations/cheating to the honor commitee
+    \item we will also give you an F in the course for them
     \end{itemize}
 \end{frame}
 
@@ -30,6 +138,18 @@
     \item 45\% labs
     \item 30\% midterms --- in lab!
     \item 25\% final exam
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{late policy}
+    \begin{itemize}
+    \item see \href{https://markfloryan.github.io/pdr/uva/labduedates.html}{discussion} linked from first lab
+        \begin{itemize}
+            \item summary (1): -25\% for first 24 hours
+            \item summary (2): you can request an extension for any in-lab
+        \end{itemize}
+        \vspace{.5cm}
+    \item lab due times are strictly enforced
     \end{itemize}
 \end{frame}
 
