@@ -1,25 +1,25 @@
 \begin{frame}[label=abstractionA,fragile]{layers of abstraction (1)}
     \begin{tikzpicture}
-        \node[draw,rectangle,minimum width=5cm,below] (absDS) {Data structures, objects, etc.: C++ classes};
-            \node[above=0.5cm of absDS] {\small \lstinline[language=C]!map.insert(key)!};
-        \node[draw,rectangle,minimum width=5cm,below=3mm of absDS] (hll) {Higher-level language: C++};
+        \node[draw,rectangle,align=center, minimum width=6cm,below] (absDS) {Data structures,\\objects, etc.};
+            \node[left=0.5cm of absDS] {\small \lstinline[language=C]!map.insert(key, value)!};
+        \node[draw,rectangle,minimum width=6cm,below=3mm of absDS] (hll) {High-level lang.: C++};
             \node[left=1cm of hll] {\small \lstinline[language=C]!x += y!};
-        \node[draw,rectangle,minimum width=5cm,below=3mm of hll] (asm) {Assembly: X86-64/IBCM};
+        \node[draw,rectangle,minimum width=6cm,below=3mm of hll] (asm) {Assembly: X86-64/IBCM};
             \node[left=1cm of asm] {\small \lstinline[language=myasm]!add rax, rbx!};
-        \node[draw,rectangle,minimum width=5cm,below=3mm of asm] (machineCode) {Machine code: IBCM};
+        \node[draw,rectangle,minimum width=6cm,below=3mm of asm] (machineCode) {Machine code: IBCM};
             \node[left=1cm of machineCode] {\small \lstinline[language=myasm]!1110 1111!};
-        \node[draw,rectangle,minimum width=5cm,below=3mm of machineCode] (hw) {Hardware: (not this course)};
+        \node[draw,rectangle,minimum width=6cm,below=3mm of machineCode] (hw) {Hardware: (not this course)};
     \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[label=abstractionB,fragile]{layers of abstraction (2)}
     \begin{tikzpicture}
         \node[draw,rectangle,minimum width=5cm,below] (objs) {Objects};
-            \node[left=0.5cm of objs] {\small \lstinline[language=C]!string!};
+            \node[left=1cm of objs] {\small \lstinline[language=C]!string, map<int, int>!};
         \node[draw,rectangle,minimum width=5cm,below=3mm of objs] (arr) {Arrays};
             \node[left=1cm of arr] {\small \lstinline[language=C]!char data[10]!};
         \node[draw,rectangle,minimum width=5cm,below=3mm of arr] (prims) {Primitive Types};
-            \node[left=1cm of prims] {\small \lstinline[language=myasm]!char data!};
+            \node[left=1cm of prims] {\small \lstinline[language=C]!char data!};
         \node[draw,rectangle,minimum width=5cm,below=3mm of prims] (addr) {Addresses/Memory};
             \node[left=1cm of machineCode] {\small \tt @ 0x9cdf4123: 0x12};
         \node[draw,rectangle,minimum width=5cm,below=3mm of addr] (bits) {Bits};
@@ -45,7 +45,7 @@
 
 \begin{frame}[fragile,label=compList1]{comparing list data structures (1)}
 \begin{itemize}
-\item benchmark: {\small (\texttt{DataStructureComparison.java})}
+\item benchmark: (linked in git repo (later))
 \begin{itemize}
 \item insert $50\,000$ elements (even integers $0$ to $100\,000$)
 \item search for $50\,000$ elements ($0$ to $25\,000$)
@@ -55,12 +55,12 @@
 \end{itemize}
 \begin{visibleenv}<2->
 \begin{tabular}{lr@{.}l}
-Data structure & \multicolumn{2}{c}{Runtime} \\
+Data structure & \multicolumn{2}{c}{\tikzmark{runtimeUL}Runtime} \\
 {\tt Vector} &  0 & 703 s \\
-{\tt ArrayList} &  \myemph<3,4>{0}  & \myemph<3,4>{700 s} \\
-{\tt LinkedList} &  \myemph<4>{2} & \myemph<4>{037 s} \tikzmark{side}\\
-{\tt HashSet} &  \myemph<3>{0} & \myemph<3>{002 s} \\
-{\tt TreeSet} &  \myemph<3>{0} & \myemph<3>{010 s} \\
+{\tt ArrayList} &  \myemph<4,5>{0}  & \myemph<4,5>{700 s} \\
+{\tt LinkedList} &  \myemph<5>{2} & \myemph<5>{037 s} \tikzmark{side}\\
+{\tt HashSet} &  \myemph<4>{0} & \myemph<4>{002 s} \\
+{\tt TreeSet} &  \myemph<4>{0} & \myemph<4>{010 s}\tikzmark{runtimeLL} \\
 \end{tabular}
 \end{visibleenv}
 \begin{tikzpicture}[overlay,remember picture]
@@ -68,6 +68,9 @@ Data structure & \multicolumn{2}{c}{Runtime} \\
 \tikzset{
     box/.style={anchor=west,at={([xshift=0.5cm]place)},align=left,draw=red,thick}
 }
+\begin{visibleenv}<2|handout:0>
+\fill[white] (pic cs:runtimeUL) rectangle ([yshift=-.1cm]pic cs:runtimeLL);
+\end{visibleenv}
 \begin{visibleenv}<3>
 \node[box] {{\tt HashSet}/{\tt TreeSet} \\ more than 350/50x faster \\ than {\tt Vector}/{\tt ArrayList}};
 \end{visibleenv}
@@ -93,7 +96,7 @@ Data structure & \multicolumn{2}{c}{Total }  & \multicolumn{2}{c}{\myemph<5>{Ins
     box/.style={anchor=south,at={(place)},align=left,draw=red,thick}
 }
 \begin{visibleenv}<2>
-\node[box] {search is where most the time goes};
+\node[box] {search is where most the time goes (followed by delete)};
 \end{visibleenv}
 \begin{visibleenv}<3>
 \node[box] {vector is slow mostly because searching unsorted list};
@@ -121,8 +124,8 @@ Data structure & \multicolumn{2}{c}{Total }  & \multicolumn{2}{c}{\myemph<5>{Ins
 Data structure & \multicolumn{2}{c}{Total}  & \multicolumn{2}{c}{Insert}& \multicolumn{2}{c}{Search} & \multicolumn{2}{c}{Delete}  \\
 {\tt Vector} &  \myemph<2,3>{87} & \myemph<2,3>{818} & 0 & 004 & 63 & 202 & 24 & 612 s \\
 {\tt ArrayList} & 87 & 192 & 0 & 010 & 62 & 470 & 24 & 712 s\\
-{\tt LinkedList} & \myemph<2>{263} & \myemph<3>{776} & 0 & 006 & 196 & 550 & 67 & 439 s\\
-{\tt HashSet} &  \myemph<3>{0} & \myemph<2>{029} & 0 & 022 & 0 & 003 & 0 & 004 s\\
+{\tt LinkedList} & \myemph<2>{263} & \myemph<2>{776} & 0 & 006 & 196 & 550 & 67 & 439 s\\
+{\tt HashSet} &  \myemph<3>{0} & \myemph<3>{029} & 0 & 022 & 0 & 003 & 0 & 004 s\\
 {\tt TreeSet} &  0 & 134 & 0 & 110 & 0 & 017 & 0 & 007 s\\
 {\tt Vector}, sorted &  2 & 642 & 0 & 009 & 0 & 024 & 2 & 609 s\\
 \end{tabular}
@@ -149,5 +152,32 @@ Data structure & \multicolumn{2}{c}{Total}  & \multicolumn{2}{c}{Insert}& \multi
         \item \ldots but doesn't capture all the details
         \end{itemize}
     \item general technique --- not just data structures
+    \vspace{.5cm}
+    \item focus: how \myemph{usage will grow} as data gets larger
+    \item `big picture' --- ignore small factors (e.g. using floats versus doubles)
+\end{itemize}
+\end{frame}
+
+\againframe<2>{abstractionB}
+
+\begin{frame}{the hardware/software interface}
+\begin{itemize}
+\item how do computers execute programs?
+    \begin{itemize}
+    \item what the processor wants --- assembly/machine language
+    \item how the processor works: the fetch-execute cycle
+    \item what compilers are actually doing
+    \end{itemize}
+\item how do computers store value?
+    \begin{itemize}
+    \item representing all sorts of numbers as bits
+    \item the illusion of fast storage: the memory hierarchy
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{course goals (Floryan's list)}
+\begin{itemize}
+\item 
 \end{itemize}
 \end{frame}
