@@ -6,7 +6,53 @@
         \item directly allocate memory
         \item more obvious translation to assembly/machine code
         \end{itemize}
+    \item heavily related to Java
     \end{itemize}
+\end{frame}
+
+\begin{comment}
+\begin{frame}[fragile,label=cppHist]{C++ history}
+\begin{tikzpicture}
+\tikzset{
+    histBox/.style={draw,thick,align=center,font=\fontsize{9}{10}\selectfont},
+    a/.style={-Latex,thick},
+    aa/.style={Latex-Latex,thick},
+    b/.style={-Latex,thick,dotted},
+    bb/.style={Latex-Latex,thick,dotted},
+}
+    \node [histBox] (bcpl) {BCPL\\(1967)};
+    \node [histBox,below=.5cm of bcpl] (preC) {``K\&R'' C \\(1972-) \\ \scriptsize Dennis Ritchie, Bell Labs};
+    \node [histBox,below=.5cm of preC] (cppPreStd) {C with classes/early C++ \\(1979-1997) \\ \scriptsize Bjarne Stroustrup, Bell Labs};
+    \node [histBox,below left=-1cm and .5cm of preC] (isoC) {ANSI/ISO C \\ (1989) \\ \scriptsize a standards committee};
+    \node [histBox,below=.5cm of cppPreStd] (isoCpp) {ISO C++ \\ (made 1989-1998) \\ (and later versions) \\ \scriptsize a standards committee};
+    \draw[a] (bcpl) -- (preC);
+    \draw[a] (preC) -- (isoC);
+    \draw[bb] (isoC.south) -- (cppPreStd);
+    \draw[a] (preC) -- (cppPreStd);
+    \draw[a] (cppPreStd) -- (isoCpp);
+\end{tikzpicture}
+\end{frame}
+\end{comment}
+
+\begin{frame}[fragile,label=cppHist]{C++ history}
+\begin{itemize}
+\item K\&R C (first published 1972) {\small Dennis Ritchie, Bell Labs}
+    \begin{itemize}
+    \item based on BCPL (1967)
+    \item meant to be easy to make efficient compilers for
+    \end{itemize}
+\item C with classes (1979) {\small Bjarne Stoustrup, Bell Labs}
+    \begin{itemize}
+    \item efficiecy of C with features of other languages?
+    \end{itemize}
+\item early C++ (1985) {\small Bjarne Stroustrup, Bell Labs}
+\item ANSI/ISO standard C++ (1998)
+    \begin{itemize}
+    \item standardization effort started in 1989 (!)
+    \item what current compilers try to implement
+    \item still actively being updated
+    \end{itemize}
+\end{itemize}
 \end{frame}
 
 \begin{frame}{why not C++?}
@@ -17,4 +63,3 @@
     \item makes compromises for compatibility with C
     \end{itemize}
 \end{frame}
-
