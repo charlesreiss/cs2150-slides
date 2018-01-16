@@ -1,0 +1,15 @@
+virtualbox
+login as student (L33T Haxor) password password
+open terminal
+    > ls
+    > cd pdr
+    > ls
+    > git pull
+    > make
+    > xdg-open ./index.html
+        file://yhome/student/pdr/README.html
+    
+open emacs
+    edit test.txt
+
+K > leave > shutdown
