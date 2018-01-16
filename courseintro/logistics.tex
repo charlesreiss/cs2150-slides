@@ -4,6 +4,7 @@
         \begin{itemize}
         \item intend to find a way to post them later in the same day
         \item suggest VLC for viewing (supports changing speed!)
+        \item how posted (where on webiste, etc.) to-be-determined
         \end{itemize}
     \item lecture attendence is strongly recommended, but \ldots
     \item I won't check
@@ -40,27 +41,6 @@
         \item some graduate student graders
     \end{itemize}
 \end{frame}
-
-\begin{frame}{questions, etc.?}
-    \begin{itemize}
-    \item Piazza 
-    \item support request tool
-        \begin{itemize}
-        \item linked off website (later)
-        \item preferred way for individual concerns
-        \end{itemize}
-    \item office hours (faculty and TA)
-        \begin{itemize}
-        \item Google calendar linked off website
-        \end{itemize}
-    \item my (or Floryan's) office if door is open
-    \item anonymous feedback on Collab
-        \begin{itemize}
-        \item visible to both instructors
-        \end{itemize}
-    \end{itemize}
-\end{frame}
-
 \begin{frame}{announcements}
     \begin{itemize}
     \item course twitter feed --- \texttt{@UVaCS2150}
@@ -117,7 +97,7 @@
 \begin{frame}{honor-related policies}
     \begin{itemize}
     \item do \textbf{not} share your code 
-    \item do \textbf{not} look at another student's code
+    \item do \textbf{not} look at \myemph<4>{another\tikzmark{anotherStudent} student's code}
     \item do \textbf{not} try to hack the submission system
     \item do \textbf{not} share midterm details with students who haven't taken it yet
     \item \myemph<2>{do \textbf{not} release your source code online}\tikzmark{sourceOnline}
@@ -138,6 +118,13 @@
         };
         \end{visibleenv}
     \end{tikzpicture}
+    \begin{tikzpicture}[overlay,remember picture]
+        \begin{visibleenv}<4>
+        \node[mycallout=anotherStudent,align=left] at ([yshift=-1cm,xshift=-4cm]pic cs:anotherStudent) {
+            past student, present student, \ldots
+        };
+        \end{visibleenv}
+    \end{tikzpicture}
 \end{frame}
 
 \begin{frame}{academic honesty}
@@ -152,6 +139,13 @@
     \item 45\% labs
     \item 30\% midterms --- in lab!
     \item 25\% final exam
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{midterms}
+    \begin{itemize}
+    \item 20 February
+    \item 3 April
     \end{itemize}
 \end{frame}
 
@@ -177,6 +171,7 @@
     \item the lab submission system tells you if it compiles
     \end{itemize}
 \end{frame}
+
 
 \begin{frame}{final exam}
     \begin{itemize}
