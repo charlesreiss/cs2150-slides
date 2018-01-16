@@ -1,7 +1,7 @@
 \begin{frame}[label=abstractionA,fragile]{layers of abstraction (1)}
     \begin{tikzpicture}
         \node[draw,rectangle,align=center, minimum width=6cm,below] (absDS) {Data structures,\\objects, etc.};
-            \node[left=0.5cm of absDS] {\small \lstinline[language=C]!map.insert(key)!};
+            \node[left=0.5cm of absDS] {\small \lstinline[language=C]!map.insert(key, value)!};
         \node[draw,rectangle,minimum width=6cm,below=3mm of absDS] (hll) {High-level lang.: C++};
             \node[left=1cm of hll] {\small \lstinline[language=C]!x += y!};
         \node[draw,rectangle,minimum width=6cm,below=3mm of hll] (asm) {Assembly: X86-64/IBCM};
