@@ -1,4 +1,4 @@
-\begin{frame}[label=abstractionA,fragile]{layers of abstraction: programs (1)}
+\begin{frame}[label=abstractionA,fragile]{layers of abstraction: programs}
     \begin{tikzpicture}
         \node[draw,rectangle,align=center, minimum width=6cm,below] (absDS) {Objects, etc.};
             \node[left=0.5cm of absDS] {\small \lstinline[language=C]!map.insert(key, value)!};
@@ -12,7 +12,7 @@
     \end{tikzpicture}
 \end{frame}
 
-\begin{frame}[label=abstractionB,fragile]{layers of abstraction: data (2)}
+\begin{frame}[label=abstractionB,fragile]{layers of abstraction: data}
     \begin{tikzpicture}
         \node[draw,rectangle,minimum width=5cm,below] (objs) {Data Structures};
             \node[left=1cm of objs] {\small \lstinline[language=C]!string, map<int, int>!};
