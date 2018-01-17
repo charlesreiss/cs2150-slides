@@ -1,0 +1,29 @@
+\begin{frame}[label=abstractionAAlone,fragile]{layers of abstraction: programs (1)}
+    \begin{tikzpicture}
+        \node[draw,rectangle,align=center, minimum width=6cm,below] (absDS) {Objects, etc.};
+            \node[left=0.5cm of absDS] {\small \lstinline[language=C]!map.insert(key, value)!};
+        \node[draw,rectangle,minimum width=6cm,below=3mm of absDS] (hll) {High-level lang.: C++};
+            \node[left=1cm of hll] {\small \lstinline[language=C]!x += y!};
+        \node[draw,rectangle,minimum width=6cm,below=3mm of hll] (asm) {Assembly: X86-64/IBCM};
+            \node[left=1cm of asm] {\small \lstinline[language=myasm]!add rax, rbx!};
+        \node[draw,rectangle,minimum width=6cm,below=3mm of asm] (machineCode) {Machine code: IBCM};
+            \node[left=1cm of machineCode] {\small \lstinline[language=myasm]!1110 1111!};
+        \node[draw,rectangle,minimum width=6cm,below=3mm of machineCode] (hw) {Hardware: (not this course)};
+    \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[label=abstractionBAlone,fragile]{layers of abstraction: data (2)}
+    \begin{tikzpicture}
+        \node[draw,rectangle,minimum width=5cm,below] (objs) {Data Structures};
+            \node[left=1cm of objs] {\small \lstinline[language=C]!string, map<int, int>!};
+        \node[draw,rectangle,minimum width=5cm,below=3mm of objs] (arr) {Arrays};
+            \node[left=1cm of arr] {\small \lstinline[language=C]!char data[10]!};
+        \node[draw,rectangle,minimum width=5cm,below=3mm of arr] (prims) {Primitive Types};
+            \node[left=1cm of prims] {\small \lstinline[language=C]!char data!};
+        \node[draw,rectangle,minimum width=5cm,below=3mm of prims] (addr) {Addresses/Memory};
+            \node[left=1cm of addr] {\small \tt @ 0x9cdf4123: 0x12};
+        \node[draw,rectangle,minimum width=5cm,below=3mm of addr] (bits) {Bits};
+            \node[left=1cm of bits] {\small \tt 01101011};
+    \end{tikzpicture}
+\end{frame}
+
