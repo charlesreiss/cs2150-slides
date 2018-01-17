@@ -1,6 +1,6 @@
-\begin{frame}[label=abstractionA,fragile]{layers of abstraction (1)}
+\begin{frame}[label=abstractionA,fragile]{layers of abstraction: programs (1)}
     \begin{tikzpicture}
-        \node[draw,rectangle,align=center, minimum width=6cm,below] (absDS) {Data structures,\\objects, etc.};
+        \node[draw,rectangle,align=center, minimum width=6cm,below] (absDS) {Objects, etc.};
             \node[left=0.5cm of absDS] {\small \lstinline[language=C]!map.insert(key, value)!};
         \node[draw,rectangle,minimum width=6cm,below=3mm of absDS] (hll) {High-level lang.: C++};
             \node[left=1cm of hll] {\small \lstinline[language=C]!x += y!};
@@ -12,16 +12,16 @@
     \end{tikzpicture}
 \end{frame}
 
-\begin{frame}[label=abstractionB,fragile]{layers of abstraction (2)}
+\begin{frame}[label=abstractionB,fragile]{layers of abstraction: data (2)}
     \begin{tikzpicture}
-        \node[draw,rectangle,minimum width=5cm,below] (objs) {Objects};
+        \node[draw,rectangle,minimum width=5cm,below] (objs) {Data Structures};
             \node[left=1cm of objs] {\small \lstinline[language=C]!string, map<int, int>!};
         \node[draw,rectangle,minimum width=5cm,below=3mm of objs] (arr) {Arrays};
             \node[left=1cm of arr] {\small \lstinline[language=C]!char data[10]!};
         \node[draw,rectangle,minimum width=5cm,below=3mm of arr] (prims) {Primitive Types};
             \node[left=1cm of prims] {\small \lstinline[language=C]!char data!};
         \node[draw,rectangle,minimum width=5cm,below=3mm of prims] (addr) {Addresses/Memory};
-            \node[left=1cm of machineCode] {\small \tt @ 0x9cdf4123: 0x12};
+            \node[left=1cm of addr] {\small \tt @ 0x9cdf4123: 0x12};
         \node[draw,rectangle,minimum width=5cm,below=3mm of addr] (bits) {Bits};
             \node[left=1cm of bits] {\small \tt 01101011};
     \end{tikzpicture}
