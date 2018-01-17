@@ -48,7 +48,7 @@
 \item benchmark: (linked in git repo (later))
 \begin{itemize}
 \item insert $50\,000$ elements (even integers $0$ to $100\,000$)
-\item search for $50\,000$ elements ($0$ to $25\,000$)
+\item search for $25\,000$ elements ($0$ to $25\,000$)
 \item delete $10\,000$ elements
 \end{itemize}
 \item on my desktop, Java 8, median of 3 consecutive runs
@@ -71,10 +71,10 @@ Data structure & \multicolumn{2}{c}{\tikzmark{runtimeUL}Runtime} \\
 \begin{visibleenv}<2|handout:0>
 \fill[white] (pic cs:runtimeUL) rectangle ([yshift=-.1cm]pic cs:runtimeLL);
 \end{visibleenv}
-\begin{visibleenv}<3>
+\begin{visibleenv}<4>
 \node[box] {{\tt HashSet}/{\tt TreeSet} \\ more than 350/50x faster \\ than {\tt Vector}/{\tt ArrayList}};
 \end{visibleenv}
-\begin{visibleenv}<4>
+\begin{visibleenv}<5>
 \node[box] {{\tt LinkedList} \\ 3x slower than \\ than {\tt Vector}/{\tt ArrayList}};
 \end{visibleenv}
 \end{tikzpicture}
@@ -173,11 +173,5 @@ Data structure & \multicolumn{2}{c}{Total}  & \multicolumn{2}{c}{Insert}& \multi
     \item representing all sorts of numbers as bits
     \item the illusion of fast storage: the memory hierarchy
     \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{course goals (Floryan's list)}
-\begin{itemize}
-\item 
 \end{itemize}
 \end{frame}

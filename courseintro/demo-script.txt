@@ -7,7 +7,7 @@ open terminal
     > git pull
     > make
     > xdg-open ./index.html
-        file://yhome/student/pdr/README.html
+        file://home/student/pdr/README.html
     
 open emacs
     edit test.txt
