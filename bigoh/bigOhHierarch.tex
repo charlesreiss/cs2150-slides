@@ -1,8 +1,40 @@
 \begin{frame}{function hierarchy}
 \begin{tikzpicture}
-    \path[draw,thick] (0, 0) --(12, 0);
-    \path[draw,thick] (0, 1) --(12, 1);
-    \path[draw,thick] decorate [decoration={name=zigzag}] { (0, 0) -- (0, 1) };
-    \path[draw,thick] decorate [decoration={name=zigzag}] { (12, 0) -- (12, 1) };
+    \tikzset{
+        box/.style={draw,thick},
+        mark/.style={draw,thin},
+        circ/.pic={
+            \fill(0,0) circle[radius=0.5mm];
+        },
+        pt/.style={},
+        label/.style={draw,red},
+        func/.style={font=\fontsize{12}{13}\selectfont},
+        upperBound/.style={fill=orange,fill opacity=0.5},
+        lowerBound/.style={fill=green,fill opacity=0.5},
+    }
+
+    \path[pt] (1, 1) pic{circ} node[below,func] {$\frac{1}{4}n$};
+    \path[pt] (1.2, 3) pic{circ} node[above,func] {$n+\log(n)$};
+
+    \path[pt] (4, 4) pic{circ} node[below,func] {$3n^2 + n$};
+    \path[pt] (5.6, 2) pic{circ}  node[above,func] {$100n^2+n^{1.9}$};
+    \path[pt] (7.8, 2.5) pic{circ} node[below,func] {$n^{2.5}$};
+    \path[pt] (11.4, 1.5) pic{circ} node[above,func] {$5n^{3} + n^2$};
+
+    \begin{visibleenv}<2>
+    \path[upperBound] (0,0) decorate [decoration={name=zigzag}] {to (0, 6)} to (7, 6) to (7, 0) to cycle;
+    \node[anchor=east,fill=white,draw=orange,very thick, inner sep=0.5mm] at (2.5, 5) {$O(n^2)$};
+    \end{visibleenv}
+
+    \begin{visibleenv}<3>
+    \path[lowerBound] (12,0) decorate [decoration={name=zigzag}] {to (12, 6)} to (3, 6) to (3, 0) to cycle;
+    \node[anchor=east,fill=white,draw=green,very thick, inner sep=0.5mm] at (8.5, 5) {$\Omega(n^2)$};
+    \end{visibleenv}
+
+    \path[box] (0, 0) --(12, 0);
+    \path[box] (0, 6) --(12, 6);
+    \path[box] decorate [decoration={name=zigzag}] { (0, 0) -- (0, 6) };
+    \path[box] decorate [decoration={name=zigzag}] { (12, 0) -- (12, 6) };
+
 \end{tikzpicture}
 \end{frame}
