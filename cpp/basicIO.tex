@@ -1,0 +1,19 @@
+\begin{frame}[fragile,label=basicIO]{basic I/O}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+#include <iostream>
+using std::cout; using std::cin; using std::endl;
+// or  using namespace std;
+int main() {
+    int number;
+    cout << "Enter a number: ";
+    cin >> number;
+    cout << "You entered " << number << endl;
+}
+\end{lstlisting}
+\begin{itemize}
+\item<2-> {\tt cin} is a global {\tt istream} object
+\item<2-> {\tt cout} is a global {\tt ostream} object
+\end{itemize}
+\end{frame}
+

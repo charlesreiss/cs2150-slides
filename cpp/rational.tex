@@ -22,12 +22,12 @@ class Rational {
     @5~Rational5@();
     void print() @2const2@; 
     Rational times(Rational b) @2const2@; 
-    Rational plus(Rational b) const; 
-    Rational reciprocal() const;
-    Rational divides(Rational b) const; 
+    Rational plus(Rational b) @2const2@; 
+    Rational reciprocal() @2const2@;
+    Rational divides(Rational b) @2const2@; 
   private: 
     int num, den; // the numerator and denominator
-    @6static6@ int gcd(int m, int n); // helper function
+    int gcd(int m, int n) const; // helper function
 };
 
 #endif
@@ -40,8 +40,9 @@ class Rational {
     \coordinate (c2) at ([yshift=1cm]current page.center);
 \begin{visibleenv}<2>
 \node[explainBox] at (c2) {
-    I marked these \texttt{const} \\
-    since they don't change the object they're called on
+    marked \texttt{const} \\
+    since they don't change the object they're called on \\
+    allows them to be used with variables marked {\tt const} 
 };
 \end{visibleenv}
 \begin{visibleenv}<3>
@@ -108,7 +109,7 @@ Rational::Rational(int numerator, int denominator) {
 \end{visibleenv}
 \begin{visibleenv}<3>
 \node[explainBox] at (c) {
-    call to static method
+    call to utility method
 };
 \end{visibleenv}
 \begin{visibleenv}<4>

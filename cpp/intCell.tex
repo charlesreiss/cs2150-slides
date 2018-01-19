@@ -1,24 +1,44 @@
-\begin{frame}[fragile,label=cppClass]{Java: IntCell.java (1)}
-\lstset{language=Java,style=smaller}
+\begin{frame}[fragile,label=intCellJava]{Java: IntCell.java (1)}
+\lstset{language=Java,style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+    moredelim={**[is][\btHL<all:6>]{@6}{6@}},
+    moredelim={**[is][\btHL<all:7>]{@7}{7@}},
+    moredelim={**[is][\btHL<all:8>]{@8}{8@}},
+}
 \begin{lstlisting}
 public class IntCell {
-    public IntCell() { this(0); }
+    public @2IntCell()2@ { this(0); }
 
-    public IntCell(int initialValue) {
+    public @2IntCell(int initialValue)2@ {
         storedValue = initialValue;
     }
 
-    public int getValue() {
+    public @3int getValue()3@ {
         return storedValue;
     }
 
-    public void setValue(int newValue) {
+    public @3void setValue(int newValue)3@ {
         storedValue = newValue;
     }
 
     private int storedValue;
 }
 \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=cppIntCellThree]{C++ version: three files}
+\begin{itemize}
+\item {\tt IntCell.h} --- ``header file'' with declarations \myemph{only}
+    \begin{itemize}
+    \item {\tt \#include}d by both files below
+    \end{itemize}
+\item {\tt IntCell.cpp} --- implementation of class
+\item {\tt TestIntCell.cpp} --- example {\tt main()} that uses class
+\end{itemize}
 \end{frame}
 
 \begin{frame}<1>[fragile,label=intCellH]{C++: IntCell.h}
@@ -29,10 +49,11 @@ public class IntCell {
     moredelim={**[is][\btHL<all:2-3>]{@2}{2@}},
     moredelim={**[is][\btHL<all:4>]{@4}{4@}},
     moredelim={**[is][\btHL<all:5>]{@5}{5@}},
-    moredelim={**[is][\btHL<all:6>]{@6}{6@}},
-    moredelim={**[is][\btHL<all:7>]{@7}{7@}},
-    moredelim={**[is][\btHL<all:8>]{@8}{8@}},
-    moredelim={**[is][\btHL<all:9>]{@9}{9@}},
+    moredelim={**[is][\btHL<all:6-7>]{@6}{6@}},
+    moredelim={**[is][\btHL<all:8>]{@7}{7@}},
+    moredelim={**[is][\btHL<all:9>]{@8}{8@}},
+    moredelim={**[is][\btHL<all:10>]{@9}{9@}},
+    moredelim={**[is][\btHL<all:11>]{@A}{A@}},
 }
 \begin{lstlisting}
 #@2ifndef INTCELL_H2@
@@ -46,7 +67,7 @@ class IntCell {
 
   private:
     @9int storedValue;9@
-}
+}@A;A@
 #@2endif2@
 \end{lstlisting}
 \begin{tikzpicture}[overlay,remember picture]
@@ -55,6 +76,7 @@ class IntCell {
 }
 \coordinate (c) at (current page.center);
 \coordinate (c2) at ([yshift=1cm]current page.center);
+\coordinate (c3) at ([yshift=2cm]current page.center);
 \begin{visibleenv}<2-3>
 \node[explainBox] at (c) {
     ``boilerplate'' \\
@@ -65,6 +87,7 @@ class IntCell {
 \begin{visibleenv}<4>
 \node[explainBox] at (c) {
     everything after this is public \\
+    until {\tt private:} \\
     (default is private)
 };
 \end{visibleenv}
@@ -80,22 +103,34 @@ class IntCell {
 };
 \end{visibleenv}
 \begin{visibleenv}<7>
-\node[explainBox] at (c2) {
+\node[explainBox] at (c) {
+    could have two explicit constructors, too: \\
+    {\tt IntCell(); } \\
+    {\tt IntCell(int initialValue); } \\
+};
+\end{visibleenv}
+\begin{visibleenv}<8>
+\node[explainBox] at (c3) {
     method declarations \\
     (official C++ name for methods: ``member functions'')
 };
 \end{visibleenv}
-\begin{visibleenv}<8>
-\node[explainBox] at (c2) {
+\begin{visibleenv}<9>
+\node[explainBox] at (c3) {
     ``const'' \textit{after parenthesis} --- \\
     indicates method does not change object \\
-    (\texttt{this} is constant)
+    ({\tt this} is constant)
 };
 \end{visibleenv}
-\begin{visibleenv}<9>
+\begin{visibleenv}<10>
 \node[explainBox] at (c) {
     instance variable \\
     (official C++ name: ``member variable'')
+};
+\end{visibleenv}
+\begin{visibleenv}<11>
+\node[explainBox] at (c) {
+    semicolon is \myemph{required!}
 };
 \end{visibleenv}
 \end{tikzpicture}
@@ -136,21 +171,23 @@ void @2IntCell::2@setValue( int val ) {
 }
 \coordinate (c) at (current page.center);
 \coordinate (c2) at ([yshift=2cm]current page.center);
+\coordinate (c3) at ([yshift=-2cm]current page.center);
 \begin{visibleenv}<2>
-\node[explainBox] at (c) {
-    all methods declarations prefixed with ``ClassName::''
+\node[explainBox] at (c3) {
+    all method declarations prefixed with ``ClassName::''
 };
 \end{visibleenv}
 \begin{visibleenv}<3>
 \node[explainBox] at (c) {
     declaration had ``\texttt{int initialValue \myemph{= 0}}'' \\
-    not repeated in definition
+    not repeated in definition (doing so is \myemph{an error})
 };
 \end{visibleenv}
 \begin{visibleenv}<4>
 \node[explainBox] at (c) {
     special syntax for initializing member variables \\
-    can also call constructors (if member variable is a class)
+    also used to call constructors (if member variable is a class) \\
+    {\tt : variable1(value), variable2(anotherValue), \ldots}
 };
 \end{visibleenv}
 \begin{visibleenv}<5>
@@ -203,7 +240,7 @@ int main( ) {
 \begin{visibleenv}<2>
 \node[explainBox] at (c) {
     not a reference --- \myemph{cannot be null} \\
-    represents the object itself
+    represents the object itself \\
 };
 \end{visibleenv}
 \begin{visibleenv}<3>

@@ -29,18 +29,18 @@ int main() {
     \node[box] {
         problem: what's in \texttt{namespace std}? \\
         does it conflict with your code?
-    }
+    };
 \end{visibleenv}
 \begin{visibleenv}<3>
     \node[box] {
         this class: lots of {\tt using namespace std;} \\
         real code: want to avoid calling {\tt std::foo} intead of your own {\tt foo}
-    }
+    };
 \end{visibleenv}
 \end{tikzpicture}
 \end{frame}
 
-\begin{frame}[fragile,label=using]{using single things}
+\begin{frame}[fragile,label=usingSingle]{using single things}
 \lstset{
     style=small,
     language=C++,
@@ -64,5 +64,4 @@ int main() {
     return 0;
 }
 \end{lstlisting}
-\end{tikzpicture}
 \end{frame}

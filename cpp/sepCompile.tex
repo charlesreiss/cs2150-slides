@@ -90,6 +90,54 @@ bool odd(int number) {
 \end{tikzpicture}
 \end{frame}
 
+\begin{frame}[fragile,label=declVDefn2]{declaration versus definition (2)}
+\lstset{language=C++,style=small,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+}
+\begin{tikzpicture}
+\tikzset{
+    fileBox/.style={draw,thick,text width=8cm,align=left},
+    fileLabel/.style={label={[label distance=-1mm,draw,inner sep=0.5mm,fill=white]north:#1}},
+    hiBox/.style={draw=red,ultra thick,fill=white},
+    >=Latex,
+}
+\node[fileBox] (mainC) {%
+\vspace{-2ex}
+\begin{lstlisting}
+#include <iostream>
+using namepace std;
+
+@2int max(int a, int b)2@;
+
+int main(void) {
+    int x=37, y=52;
+    cout << max(x, y) << endl;
+    return 0;
+}
+
+@3int max(int a, int b) {3@
+    return (a > b) ? a : b;
+}
+\end{lstlisting}%
+\vspace{-2ex}
+};
+\begin{visibleenv}<2>
+\node[hiBox,anchor=north west] at ([xshift=-5cm,yshift=-2cm]mainC.north east) {
+    \myemph{declaration} --- ``function prototype''
+};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[hiBox,anchor=north west] at ([yshift=-3cm,xshift=-3cm]mainC.north east) {
+    \myemph{definition} (and (re)declaration)
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+
+
 \begin{frame}[fragile,label=funcAndProto]{functions and prototypes}
 \lstset{language=C++,style=small}
 \begin{itemize}
@@ -109,7 +157,7 @@ return_type functionName(argType name,
 \againframe<3>{declBefUse}
 
 
-\begin{frame}[fragile,label=declVDefn2]{declaration versus definition (2)}
+\begin{frame}[fragile,label=declVDefn3]{declaration versus definition (3)}
 \lstset{
     language=C++,
     style=smaller,
