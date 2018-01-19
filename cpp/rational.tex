@@ -27,7 +27,7 @@ class Rational {
     Rational divides(Rational b) @2const2@; 
   private: 
     int num, den; // the numerator and denominator
-    int gcd(int m, int n) const; // helper function
+    @6static6@ int gcd(int m, int n); // helper function
 };
 
 #endif
@@ -62,7 +62,8 @@ class Rational {
 \end{visibleenv}
 \begin{visibleenv}<6>
 \node[explainBox] at (c) {
-    \texttt{static} --- like Java, method doesn't take object
+    \texttt{static} --- like Java, method doesn't take object \\
+    only appears on declaration
 };
 \end{visibleenv}
 \end{tikzpicture}
@@ -136,7 +137,7 @@ Rational::Rational(int numerator, int denominator) {
 }
 \begin{lstlisting}
 ...
-Rational Rational::times(Rational b) {
+Rational Rational::times(Rational b) @3const3@ {
     return @2Rational(num * b.num, den * b.den)2@;
 }
 \end{lstlisting}
@@ -149,6 +150,13 @@ Rational Rational::times(Rational b) {
 \begin{visibleenv}<2>
 \node[explainBox] at (c) {
     syntax to create new Rational object
+};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[explainBox] at (c) {
+    need to mark definition {\tt const} \\
+    because it's possible to have {\tt const} and \\
+    non-{\tt const} function with same name
 };
 \end{visibleenv}
 \end{tikzpicture}
