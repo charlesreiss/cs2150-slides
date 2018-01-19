@@ -2,7 +2,7 @@
 \lstset{
     style=small,
     language=C++,
-    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:1->]{@1}{1@}},
 }
 \begin{lstlisting}
 #include <iostream>
@@ -20,4 +20,49 @@ int main() {
     return 0;
 }
 \end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+    \coordinate (place) at ([yshift=-2cm]current page.south);
+    \tikzset{
+        box/.style={at=(place),anchor=south,draw=red,very thick,align=center},
+    }
+\begin{visibleenv}<2>
+    \node[box] {
+        problem: what's in \texttt{namespace std}? \\
+        does it conflict with your code?
+    }
+\end{visibleenv}
+\begin{visibleenv}<3>
+    \node[box] {
+        this class: lots of {\tt using namespace std;} \\
+        real code: want to avoid calling {\tt std::foo} intead of your own {\tt foo}
+    }
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=using]{using single things}
+\lstset{
+    style=small,
+    language=C++,
+    moredelim={**[is][\btHL<all:1->]{@1}{1@}},
+}
+\begin{lstlisting}
+#include <iostream>
+@1using namespace std;1@
+int main() {
+    cout << "Hello World!" << endl;
+    return 0;
+}
+\end{lstlisting}
+\hrule
+\begin{lstlisting}
+#include <iostream>
+@1using std::cout;1@
+@1using std::endl;1@
+int main() {
+    cout << "Hello World!" << endl;
+    return 0;
+}
+\end{lstlisting}
+\end{tikzpicture}
 \end{frame}
