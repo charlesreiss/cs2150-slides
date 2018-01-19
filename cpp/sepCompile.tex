@@ -186,7 +186,7 @@ int main() {
 \end{lstlisting}%
 \vspace{-2ex}
 };
-\node[fileBox,fileLabel=even.c,anchor=north west] (evenC) at ([yshift=-.5cm]mainC.south west) {%
+\node[fileBox,fileLabel=even.cpp,anchor=north west] (evenC) at ([yshift=-.5cm]mainC.south west) {%
 \vspace{-2ex}
 \begin{lstlisting}
 bool even(int number) {
@@ -235,7 +235,7 @@ extern bool even(int number);
 \vspace{-2ex}
 };
 
-\node[fileBox,anchor=north west,fileLabel=even.c] (evenC) at ([yshift=-.5cm]evenH.south west){%
+\node[fileBox,anchor=north west,fileLabel=even.cpp] (evenC) at ([yshift=-.5cm]evenH.south west){%
 \vspace{-2ex}
 \begin{lstlisting}
 bool even(int number) {
@@ -378,7 +378,7 @@ int main() {
 
 \begin{visibleenv}<7>
 \node[explainBox] at ([xshift=-4cm]mainExe) {
-    \texttt{clang++ -o main.exe main.c even.c} \\
+    \texttt{clang++ -o main.exe main.cpp even.cpp} \\
     (does all steps, but doesn't keep some files)
 };
 \end{visibleenv}
