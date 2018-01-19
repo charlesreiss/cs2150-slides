@@ -31,6 +31,29 @@
     \node[anchor=east,fill=white,draw=green,very thick, inner sep=0.5mm] at (8.5, 5) {$\Omega(n^2)$};
     \end{visibleenv}
 
+    \begin{visibleenv}<4-5>
+        \path[lowerBound] (12,0) decorate [decoration={name=zigzag}] {to (12, 6)} to (7, 6) to (7, 0) to cycle;
+        \path[upperBound] (0,0) decorate [decoration={name=zigzag}] {to (0, 6)} to (3, 6) to (3, 0) to cycle;
+        \node[anchor=east,fill=white,draw=orange,very thick, inner sep=0.5mm] at (2.5, 5) {$O(n^2)$};
+        \node[anchor=east,fill=white,draw=green,very thick, inner sep=0.5mm] at (8.5, 5) {$\Omega(n^2)$};
+    \end{visibleenv}
+
+    \begin{visibleenv}<4-7>
+        \path (3, 0) rectangle (7,6) [path picture={
+            \foreach \x in {-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4} {
+            \path[upperBound] ($(path picture bounding box.north west) + (\x, 0)$) --
+                ++ (.5, 0) -- ++ (6, -6) -- ++(-.5, 0) -- cycle;
+            \path[lowerBound] ($(path picture bounding box.north west) + (\x, 0) + (.5, 0)$) --
+                ++ (.5, 0) -- ++ (6, -6) -- ++(-.5, 0) -- cycle;
+            }
+        }];
+    \end{visibleenv}
+
+    \begin{visibleenv}<5-6>
+        \path[draw,dotted,ultra thick] (3, 0) rectangle (7,6);
+        \node[anchor=east,fill=white,draw,dotted,very thick, inner sep=0.5mm] at (5.5, 5) {$\Theta(n^2)$};
+    \end{visibleenv}
+
     \path[box] (0, 0) --(12, 0);
     \path[box] (0, 6) --(12, 6);
     \path[box] decorate [decoration={name=zigzag}] { (0, 0) -- (0, 6) };
