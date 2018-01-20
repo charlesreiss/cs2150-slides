@@ -1,0 +1,22 @@
+\begin{frame}{limit-based definition}
+\[\lim\myemph<2>{\sup}_{n\to\infty} \frac{f(n)}{g(n)} = X\]
+if only if\ldots
+\begin{itemize}
+\item $X < \infty$: $f\in O(g)$
+\item $X > 0$: $f \in \Omega(g)$
+\item $0 < X < \infty$: $f \in Theta(g)$
+\item $X = 0$: $f \in o(g)$
+\item $X = \infty$: $f \in \omega(g)$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{lim sup?}
+\begin{itemize}
+\item $\lim\sup \frac{f(n)}{g(n)}$ --- ``limit superior''
+    \begin{itemize}
+    \item equal to normal $\lim$ if function doesn't oscillate (normal cast)
+    \end{itemize}
+\item only care about upper bound
+\item e.g. $n^2$ in  $f(n) = \begin{cases} 1 & n \text{ odd} \\n^2 & n \text{ even} \\ \end{cases}$
+\end{itemize}
+\end{frame}

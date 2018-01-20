@@ -385,3 +385,15 @@ int main() {
 
 \end{tikzpicture}
 \end{frame}
+
+\begin{frame}{a note on commands}
+    \begin{itemize}
+    \item {\tt clang++ file1.cpp file2.cpp} --- produces {\tt a.out} or {\tt a.exe}
+    \item {\tt clang++ -o main.exe file1.cpp fil2.cpp} --- produces {\tt main.exe}
+        \begin{itemize}
+        \item NB --- {\tt file1.h} not part of command 
+        \end{itemize}
+    \item {\tt clang++ -Wall -o main.exe file1.cpp file2.cpp} --- gives warnings and\ldots
+    \item {\tt clang++ -Wall -c file1.cpp} --- produces {\tt file1.o} (not executable)
+    \end{itemize}
+\end{frame}
