@@ -1,0 +1,27 @@
+\begin{frame}{some big-Oh properties (1)} 
+\newcommand{\biimplies}{\leftrightarrow}
+\begin{itemize}
+    \item for $O$ and $\Omega$ and $\Theta$:
+    \item $O(f+g) = O(\max(f,g))$
+    \item $f\in O(f)\text{ and }g\in O(h)\implies f \in O(h)$
+        \begin{itemize}
+        \item also holds for $o$ (little-oh), $\omega$
+        \end{itemize}
+    \item $f\in O(f)$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{some big-Oh properties (2)}
+\newcommand{\biimplies}{\leftrightarrow}
+\begin{itemize}
+    \item $f \in O(g) \biimplies g \in \Omega(f)$
+    \item $f\in\Theta(g) \biimplies g\in\Theta(f)$
+        \begin{itemize}
+        \item does \textit{not} hold for $O$, $\Omega$, etc.
+        \end{itemize}
+    \item $\Theta$ is an \myemph{equivalence relation}
+        \begin{itemize}
+        \item same $\Theta$ --- functions are equal kinda
+        \end{itemize}
+\end{itemize}
+\end{frame}

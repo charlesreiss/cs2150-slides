@@ -1,0 +1,34 @@
+\begin{frame}{common equivalence classes}
+\begin{itemize}
+\item $\Theta(1)$ --- constant (some fixed maximum)
+    \begin{itemize}
+    \item read first element of array
+    \end{itemize}
+\item $\Theta(\log n)$ --- logarithmic
+    \begin{itemize}
+    \item searching a sorted array
+    \end{itemize}
+\item $\Theta(n)$ --- linear
+    \begin{itemize}
+    \item searching an unsorted array
+    \end{itemize}
+\item $\Theta(n\log n)$ --- log-linear
+    \begin{itemize}
+    \item sorting an array by comparing elements
+    \end{itemize}
+\item $\Theta(n^2)$ --- quadratic
+\item $\Theta(n^3)$ --- cubic
+\item $\Theta(2^n)$, $\Theta(c^n)$ --- exponential
+\end{itemize}
+\end{frame}
+
+\begin{frame}{selected relationships}
+\begin{itemize}
+\item for $k>0$, $c>1$, $\epsilon>0$:
+\item $n^k \in o(c^n)$ (polynomial always smaller than exponential)
+\item $\log_k(n) \in o(\log_l(n))$ (since $\log_k(n) = \frac{1}{\log_l(k)}\log_l(n)$)
+\item $n^k \in o(n^k \log n)$
+\item $n^k \in o(n^{k+\epsilon})$
+\item $n^k+cn^{k-1} \in \Theta(n^k)$
+\end{itemize}
+\end{frame}
