@@ -289,13 +289,6 @@ Rational *pointerToFraction;
     \end{itemize}
 \end{frame}
 
-
-% FIXME: the & operator
-
-% FIXME: the * operator
-
-    % FIXME: relationship between declaration and other syntax
-
 % swap example
 
     % the -> operator
@@ -309,6 +302,7 @@ Rational *pointerToFraction;
     \begin{itemize}
         \item \lstinline|(*foo).bar| same as \lstinline|foo->bar|
 \begin{lstlisting}
+Rational *pointerToFraction = ...;
 ... = pointerToFraction->times(
             *pointerToFraction)
 \end{lstlisting}
@@ -318,14 +312,14 @@ Rational *pointerToFraction;
 % FIXME: memory errors and NULL
 
 \begin{frame}[fragile,label=NULL]{NULL}
-\lstset{language=C++,style=small}
+\lstset{language=C++,style=smaller}
     \begin{itemize}
     \item \verb|NULL| or \verb|0| --- explicitly invalid pointer
-    \item similar to null in Java
 \begin{lstlisting}
 int anInt = 42;
 int *pointer = NULL;
 // same as: int *pointer = 0;
+// NOT same as: int *pointer;
 
 *pointer = anInt;   // ERROR: crash (hopefully)
 anInt = *pointer;   // ERROR: crash (hopefully)
@@ -363,9 +357,73 @@ if (pointer) { ... } // same as above
 \end{frame}
 % Binky pointer fun?
 
-% FIXME: pointers to pointers
+\begin{frame}[fragile,label=ptp]{pointer-to-pointers}
+\tikzset{
+    codeBox/.style={draw,thick},
+    pointerBox/.style={draw},
+    >=Latex,
+    pointing/.style={->,ultra thick},
+    value/.style={green!50!black},
+    pointer/.style={blue},
+}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+}
+\begin{lstlisting}
+int valueOne = 42, valueTwo = 100;
+@2int *pointer = &valueOne;2@
+@2int **ptrToPtr = &pointer;2@
+@3**ptrToPtr -= 10;3@
+@4*ptrToPtr = &valueTwo;4@
+@5**ptrToPtr += 10;5@
+// output: 32 110 110
+cout << valueOne << " " << valueTwo << " "
+     << *pointer << endl;
+\end{lstlisting}
+\begin{tikzpicture}
+\matrix[tight matrix,
+    column 1/.style={nodes={draw=none,text width=1.75cm}},
+    column 2/.style={nodes={text width=4.5cm,font=\tt}},
+    row 1/.style={nodes={font=\normalfont,draw=none}},
+    anchor=north west,
+] (mem) at ([yshift=-1cm]mainBox.south west){
+    address \& value \\
+    \ldots \& \ldots \\
+    |[value]| 10000 \& |[value,alias=valueOne]| \sout<3->{42}\only<3->{\myemph<3>{~32}} \\
+    |[value]| 10004 \& |[value,alias=valueTwo]| \sout<4->{100}\only<4->{\myemph<4>{~43}} \\
+    |[pointer]| 10008 \& |[pointer,alias=pointer]| \sout<5->{10000}\only<5->{\myemph<5>{~10004}} \\
+    |[pointer]| 10016 \& |[pointer,alias=ptrToPtr]| 10008 \\
+    10024 \& \ldots \\
+    \ldots \& \ldots \\
+};
+\begin{visibleenv}<2->
+\node[font=\tt\small,value,right=0.5cm of valueOne] (v1) {valueOne};
+\node[font=\tt\small,value,right=0.5cm of valueTwo] (v2) {valueTwo};
+\node[font=\tt\small,pointer,right=.5cm of pointer] (ptr) {pointer};
+\node[font=\tt\small,pointer,right=.5cm of ptrToPtr] (pp) {ptrToPtr};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\draw[pointing] ([xshift=-.5cm,yshift=.5mm]pointer.east) -- ++ (1cm,0cm) |- (valueOne.east);
+\draw[pointing] ([xshift=-.5cm]ptrToPtr.east) -- ++ (1cm,0cm) |- ([yshift=-.5mm]pointer.east);
+\end{visibleenv}
+\begin{visibleenv}<4>
+\draw[pointing,dotted,thick] ([xshift=-.5cm,yshift=.5mm]pointer.east) -- ++ (1cm,0cm) |- (valueOne.east);
+\draw[pointing,red] ([xshift=-.5cm,yshift=.5mm]pointer.east) -- ++ (1cm,0cm) |- (valueTwo.east);
+\draw[pointing] ([xshift=-.5cm]ptrToPtr.east) -- ++ (1cm,0cm) |- ([yshift=-.5mm]pointer.east);
+\end{visibleenv}
+\begin{visibleenv}<5>
+\draw[pointing] ([xshift=-.5cm,yshift=.5mm]pointer.east) -- ++ (1cm,0cm) |- (valueTwo.east);
+\draw[pointing] ([xshift=-.5cm]ptrToPtr.east) -- ++ (1cm,0cm) |- ([yshift=-.5mm]pointer.east);
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
 
-% FIXME: swap example
 \begin{frame}[fragile,label=swap]{swap}
 \lstset{language=C++,style=smaller}
 \begin{lstlisting}
