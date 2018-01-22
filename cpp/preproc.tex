@@ -1,3 +1,16 @@
+\begin{frame}{preprocessor}
+    \begin{itemize}
+    \item two steps to compilation 
+    \vspace{.5cm}
+    \item preprocessing 
+        \begin{itemize}
+        \item {\tt \#include}, {\tt \#define}, {\tt \#ifdef}, etc 
+        \item can run alone: {\tt clang++ -E file.cpp}
+        \end{itemize}
+    \item compilation
+    \end{itemize}
+\end{frame}
+
 \begin{frame}[fragile,label=dumbPreproc]{the preprocessor is dumb}
 \lstset{
     language=C++,
@@ -114,7 +127,7 @@ bar is BAR.
 ...
 
 foo is something.
-bar is something.
+bar is .
 \end{Verbatim}
 \end{frame}
 

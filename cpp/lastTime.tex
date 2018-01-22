@@ -11,3 +11,24 @@
     \end{itemize}
 \end{frame}
 
+\begin{frame}{on commands}
+    \begin{itemize}
+    \item {\tt clang++ file1.cpp file2.cpp} 
+        \begin{itemize}
+        \item makes {\tt a.out} or {\tt a.exe}
+        \item {\tt file1.h}, etc. not part of command 
+        \end{itemize}
+    \item {\tt clang++ -o main.exe file1.cpp file2.cpp} 
+        \begin{itemize}
+        \item makes {\tt main.exe}
+        \end{itemize}
+    \item {\tt clang++ -Wall -o main.exe file1.cpp file2.cpp} 
+        \begin{itemize}
+        \item makes {\tt main.exe} with more compiler warnings
+        \end{itemize}
+    \item {\tt clang++ -Wall -c file1.cpp} 
+        \begin{itemize}
+        \item makes {\tt file1.o} (not executable)
+        \end{itemize}
+    \end{itemize}
+\end{frame}

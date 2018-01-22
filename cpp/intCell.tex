@@ -41,7 +41,7 @@ public class IntCell {
 \end{itemize}
 \end{frame}
 
-\begin{frame}<1>[fragile,label=intCellH]{C++: IntCell.h}
+\begin{frame}<1>[fragile,label=intCellH]{IntCell.h}
 \lstset{
     language=C++,
     style=smaller,
@@ -77,6 +77,7 @@ class IntCell {
 \coordinate (c) at (current page.center);
 \coordinate (c2) at ([yshift=1cm]current page.center);
 \coordinate (c3) at ([yshift=2cm]current page.center);
+\coordinate (c4) at ([yshift=-2cm]current page.center);
 \begin{visibleenv}<2-3>
 \node[explainBox] at (c) {
     ``boilerplate'' \\
@@ -103,10 +104,10 @@ class IntCell {
 };
 \end{visibleenv}
 \begin{visibleenv}<7>
-\node[explainBox] at (c) {
+\node[explainBox] at (c4) {
     could have two explicit constructors, too: \\
     {\tt IntCell(); } \\
-    {\tt IntCell(int initialValue); } \\
+    {\tt IntCell(int initialValue); }
 };
 \end{visibleenv}
 \begin{visibleenv}<8>
@@ -119,7 +120,7 @@ class IntCell {
 \node[explainBox] at (c3) {
     ``const'' \textit{after parenthesis} --- \\
     indicates method does not change object \\
-    ({\tt this} is constant)
+    ({\tt this} is const --- enforced by compiler)
 };
 \end{visibleenv}
 \begin{visibleenv}<10>
@@ -138,7 +139,7 @@ class IntCell {
 
 \againframe<2,4->{intCellH}
 
-\begin{frame}[fragile,label=intCellCpp]{C++: IntCell.cpp}
+\begin{frame}[fragile,label=intCellCpp]{IntCell.cpp}
 \lstset{
     language=C++,
     style=smaller,
@@ -174,7 +175,9 @@ void @2IntCell::2@setValue( int val ) {
 \coordinate (c3) at ([yshift=-2cm]current page.center);
 \begin{visibleenv}<2>
 \node[explainBox] at (c3) {
-    all method declarations prefixed with ``ClassName::''
+    all method declarations prefixed with ``ClassName::'' \\
+    {\tt ::} seperates class/namespace names from \\
+    names within the class/namespace
 };
 \end{visibleenv}
 \begin{visibleenv}<3>
@@ -186,7 +189,7 @@ void @2IntCell::2@setValue( int val ) {
 \begin{visibleenv}<4>
 \node[explainBox] at (c) {
     special syntax for initializing member variables \\
-    also used to call constructors (if member variable is a class) \\
+    used to call constructors (otherwise --- default constructors used!)\\
     {\tt : variable1(value), variable2(anotherValue), \ldots}
 };
 \end{visibleenv}
@@ -194,14 +197,15 @@ void @2IntCell::2@setValue( int val ) {
 \node[explainBox] at (c2) {
     \texttt{const} (method called on const object) \\
     defintion and declaration \\
-    (indicates \texttt{this} is const here)
+    (repeated in case both {\tt const} and non-{\tt const} \\
+    method  with same name, arguments)
 };
 \end{visibleenv}
 \end{tikzpicture}
 \end{frame}
 
 
-\begin{frame}[fragile,label=testIntCellCpp]{C++: TestIntCell.cpp}
+\begin{frame}[fragile,label=testIntCellCpp]{TestIntCell.cpp}
 \lstset{
     language=C++,
     style=smaller,
@@ -240,7 +244,7 @@ int main( ) {
 \begin{visibleenv}<2>
 \node[explainBox] at (c) {
     not a reference --- \myemph{cannot be null} \\
-    represents the object itself \\
+    represents the object itself
 };
 \end{visibleenv}
 \begin{visibleenv}<3>
@@ -256,7 +260,8 @@ int main( ) {
 \end{visibleenv}
 \begin{visibleenv}<5>
 \node[explainBox] at (c) {
-    \myemph{copies} m1 into m2 \\
+    \myemph{copies} m2 into m1 \\
+    like assigning each member variable \\
     C++ objects are \myemph{values} (not references)
 };
 \end{visibleenv}
