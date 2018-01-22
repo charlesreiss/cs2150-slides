@@ -1,0 +1,39 @@
+\begin{frame}[fragile,label=thumb1]{big-oh rules of thumb (1)}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{tikzpicture}
+\tikzset{
+    codeBox/.style={
+        draw,thick
+    },
+    rt/.style={font=\small},
+}
+\node[codeBox] (forSimple) {
+\begin{lstlisting}
+for (int i = 0; i < N; ++i)
+    foo();
+\end{lstlisting}
+};
+\node[rt,right=1cm of forSimple] {$\text{runtime} = N \times (\text{runtime of \tt foo})$};
+
+\node[codeBox,below=1cm of forSimple] (nestedForSimple) {
+\begin{lstlisting}
+for (int i = 0; i < N; ++i)
+    for (int j = 0; j < M; ++j)
+        foo();
+\end{lstlisting}
+};
+\node[rt,right=1cm of nestedForSimple] {$\text{runtime} = N \times (M \times \text{runtime of \tt foo})$};
+
+\node[codeBox,below=1cm of nestedForSimple] (nestedForHard) {
+\begin{lstlisting}
+for (int i = 0; i < N; ++i)
+    for (int j = 0; j < i; ++j)
+        foo();
+\end{lstlisting}
+};
+\node[rt,right=1cm of nestedForHard] {$\text{runtime} = \sum_i^N j \times \text{runtime of \tt foo} = \Theta(N^2 \cdot \text{runtime of \tt foo})$};
+\end{tikzpicture}
+\end{frame}
