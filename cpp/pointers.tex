@@ -118,6 +118,13 @@ int anotherInt = 44;
     10012 \& 44 \\
 };
 \end{visibleenv}
+\begin{visibleenv}<4>
+    \node[right=1cm of mainBox,draw=red,thick,align=left] {
+        all variables kept \myemph{in memory} \\
+        (array of bytes where \\
+        `everything' is stored)
+    };
+\end{visibleenv}
 \end{tikzpicture}
 \end{frame}
 
@@ -140,23 +147,27 @@ int anotherInt = 44;
     pointing/.style={->,ultra thick},
     value/.style={green!50!black},
     pointer/.style={blue},
+    infoBox/.style={draw=red,thick,align=left},
 },
 \node[codeBox] (mainBox) {
 \begin{lstlisting}
-long anInteger;
-long *pointerToAnInteger;
+@1long anInteger;1@
+@1long *pointerToAnInteger;1@
 anInteger = 42;
 @2pointerToAnInteger = &anInteger;2@
 @4*pointerToAnInteger = 43;4@
-@5cout << pointerToInteger;5@ // output: (address, e.g. 10000)
-@5cout << *pointerToInteger;5@ // output: 43
+@5cout << pointerToInteger;5@
+     // output: address (10000)
+        // lab machines: in hexadecimal
+@5cout << *pointerToInteger;5@
+     // output: 43
 \end{lstlisting}
 };
 \matrix[tight matrix,
     column 1/.style={nodes={draw=none,text width=1.75cm}},
     column 2/.style={nodes={text width=2cm,font=\tt}},
     row 1/.style={nodes={font=\normalfont,draw=none}},
-    label={[font=\bfseries,xshift=2cm]north:memory (as 64-bit values)},
+    label={[font=\bfseries,xshift=1cm]north:memory (as 64-bit values)},
     anchor=north west,
 ] (mem) at ([yshift=-1cm]mainBox.south west){
     address \& value \\
@@ -166,18 +177,25 @@ anInteger = 42;
     10016 \& \ldots \\
     \ldots \& \ldots \\
 };
-\begin{visibleenv}<2->
+\begin{visibleenv}<2>
+    \node[right=.5cm of mainBox,infoBox] {
+        \&: ``address of''
+    };
+\end{visibleenv}
+
+\begin{visibleenv}<3>
+    \node[right=.5cm of mainBox,infoBox] {
+       *: ``dereference'' \\ use value \\ at address
+    };
+\end{visibleenv}
 \node[font=\tt\small,value,right=0.5cm of anInteger] (anIntegerName) {anInteger};
 \node[font=\tt\small,pointer,right=.5cm of pointerToAnInteger] {pointerToAnInteger};
-\end{visibleenv}
 \begin{visibleenv}<3->
 \draw[pointing] ([xshift=-.5cm]pointerToAnInteger.east) -- ++ (1cm,0cm) |- (anInteger.east);
 \node[font=\tt\small,value,right=0.25cm of anIntegerName] {*pointerToAnInteger};
 \end{visibleenv}
 \end{tikzpicture}
 \end{frame}
-
-% FIXME: demonstration with cout
 
 
 % FIXME: not about whitespace
@@ -196,6 +214,21 @@ Rational *Y; // Y is a pointer to Rational
 Rational* Y; // Y is a pointer to Rational
 
 Rational **Z; // Z is a pointer to pointer to Rational
+\end{lstlisting}
+\end{frame}
+
+% FIXME: not about whitespace
+\begin{frame}[fragile,label=pointerDeclareMult]{declaring multiple pointers}
+\lstset{
+    language=C++,
+    style=smaller,
+    morekeywords=Rational,
+}
+\begin{lstlisting}
+float *X, *Y; // X and Y are pointers to float
+float *X, ThisIsProbablyAMistake;
+    // X is a pointer to float
+    / ThisIsProbablyAMistake is a float
 \end{lstlisting}
 \end{frame}
 
@@ -218,14 +251,15 @@ Rational **Z; // Z is a pointer to pointer to Rational
     value/.style={green!50!black},
     pointer/.style={blue},
     paren/.style={black!50,font=\small},
+    infoBox/.style={draw=red,thick,align=left},
 }
 \node[codeBox] (mainBox) {
 \begin{lstlisting}
 Rational aFraction(2, 3);
 Rational *pointerToFraction;
 @4pointerToFraction = &aFraction4@;
-*pointerToFraction =
-    (*pointerToFraction).times(*pointerToFraction);
+@5*pointerToFraction5@ =
+    (@5*pointerToFraction5@).times(@5*pointerToFraction5@);
 \end{lstlisting}
 };
 \matrix[tight matrix,
@@ -233,12 +267,12 @@ Rational *pointerToFraction;
     column 1/.style={nodes={draw=none,text width=1.75cm}},
     column 2/.style={nodes={text width=2cm,font=\tt}},
     row 1/.style={nodes={font=\normalfont,draw=none}},
-    label={[font=\bfseries,xshift=2cm]north:memory},
+    label={[font=\bfseries,xshift=1cm]north:memory},
     anchor=north west,
 ] (mem) at ([yshift=-1cm]mainBox.south west){
     address \& value \\
     \ldots \& \ldots \\
-    |[value]| 10000 \& |[value,alias=fraction,font=\small\tt]| {\begin{tabular}{l|l} \sout<5->{2}~\only<5->{4} & \sout<5->{3}~\only<5->{9} \end{tabular}} \\
+    |[value]| 10000 \& |[value,alias=fraction,font=\small\tt]| {\begin{tabular}{l|l} \sout<5->{2}~\only<5->{\myemph<5>{4}} & \sout<5->{3}~\only<5->{\myemph<5>{9}} \end{tabular}} \\
     |[pointer]| 10008 \& |[pointer,alias=pointerToFraction]| \only<1-2>{?}\only<3->{10000} \\
     10016 \& \ldots \\
     \ldots \& \ldots \\
@@ -268,24 +302,48 @@ Rational *pointerToFraction;
 \begin{frame}[fragile,label=dereference]{dereference operator}
     \begin{itemize}
         \item expression: \verb|*foo| is ``value pointed to by \verb|foo|''
-        \item (declaration: \verb|Type *foo| means ``foo is a pointer to Type'')
-        \vspace{.5cm}
-        \item (declaration \myemph{mirrors} use)
+        \begin{itemize}
+            \item (declaration: \verb|Type *foo| means\\``foo is a pointer to Type'')
+        \end{itemize}
         \vspace{.5cm}
         \item \lstinline|cout << *foo;| --- output value foo points to
         \item \lstinline|*foo = 42;| --- set value foo points to to 42
     \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile,label=derefAndDecl]{dereference v declare}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+int *pointer = &foo;
+// same as:
+int *pointer;
+pointer = &foo;
+\end{lstlisting}
+\hrule
+\begin{visibleenv}<2->
+\begin{lstlisting}
+int *pointer = &foo;
+*pointer = bar;  // sets foo to bar
+\end{lstlisting}
+\end{visibleenv}
+\end{frame}
+
 \begin{frame}[fragile,label=addressOf]{address-of operator}
     \begin{itemize}
-        \item in an expression: \verb|&foo| is ``address of \verb|foo|''
-        \item (in a declaration, e.g. \verb|int &foo = 42;| --- declares a ``reference'')
+        \item in an expression: \verb|&foo| is ``\myemph{address of} \verb|foo|''
+        \begin{itemize}
+            \item (declaration: \verb|int &foo = 42;| means \\
+                ``foo is a \textit{reference}'' --- more on that later)
+        \end{itemize}
         \vspace{.5cm}
-        \item takes any variable/expression, returns its address
+        \item returns address of variable/value
+            \begin{itemize}
+            \item {\tt \&variable}, {\tt \&array[42]}, {\tt \&obj.instVar}
+            \item error if applied to temporary values (e.g. \sout{\tt \&(2+2)})
+            \end{itemize}
         \vspace{.5cm}
         \item \lstinline|cout << &foo;| --- output address of foo
-        \item \lstinline|foo = &bar;| --- set bar to be a pointer to foo
+        \item \lstinline|foo = &bar;| --- set {\tt foo} to be a pointer to {\tt bar}
     \end{itemize}
 \end{frame}
 
@@ -297,14 +355,23 @@ Rational *pointerToFraction;
 \begin{frame}[fragile,label=arrowOp]{\texttt{-\textgreater} operator}
 \lstset{
     language=C++,
-    style=small
+    style=small,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:4>]{@5}{5@}},
 }
     \begin{itemize}
         \item \lstinline|(*foo).bar| same as \lstinline|foo->bar|
 \begin{lstlisting}
 Rational *pointerToFraction = ...;
+
 ... = pointerToFraction->times(
-            *pointerToFraction)
+            *pointerToFraction);
+// same as:
+... = (*pointerToFraction).times(
+            *pointerToFraction);
 \end{lstlisting}
     \end{itemize}
 \end{frame}
@@ -312,13 +379,25 @@ Rational *pointerToFraction = ...;
 % FIXME: memory errors and NULL
 
 \begin{frame}[fragile,label=NULL]{NULL}
-\lstset{language=C++,style=smaller}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:4>]{@5}{5@}},
+}
+\begin{itemize}
+\item \verb|NULL| or \verb|0| --- explicitly invalid pointer
     \begin{itemize}
-    \item \verb|NULL| or \verb|0| --- explicitly invalid pointer
+    \item for {\tt NULL}: \lstinline|#include <cstddef>|, etc.
+    \end{itemize}
+\end{itemize}
 \begin{lstlisting}
 int anInt = 42;
-int *pointer = NULL;
-// same as: int *pointer = 0;
+int *pointer = NULL;i
+int *pointer = 0; // same as above
 // NOT same as: int *pointer;
 
 *pointer = anInt;   // ERROR: crash (hopefully)
@@ -331,7 +410,6 @@ if (!pointer) { ... } // same as above
 if (pointer != NULL) { ... }
 if (pointer) { ... } // same as above
 \end{lstlisting}
-    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile,label=NullErrors]{crash (hopefully)}
@@ -352,7 +430,7 @@ if (pointer) { ... } // same as above
             \begin{itemize}
             \item whatever was stored in that part of memory before
             \end{itemize}
-        \item might crash or might \myemph{silently point to something important}
+        \item might crash or \\ might \myemph{silently point to something important}
     \end{itemize}
 \end{frame}
 % Binky pointer fun?
@@ -439,4 +517,22 @@ Rational second(2, 7);
 swap(&first, &second);
 first.print();  // output: 2/7
 \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=ptrQ]{pointer question}
+\begin{lstlisting}
+int a = 10, b = 20;
+int *p; int *q;
+p = &a;
+q = p;
+p = &b;
+*p += 1;
+*q = b;
+\end{lstlisting}
+What are the values of {\tt a}, {\tt b}? \\
+\begin{tabular}{ll}
+A. a=10, b=21 & D. a=21, b=21 \\
+B. a=11, b=21 & E. something else \\
+C. a=20, b=21 & F. possible crash \\
+\end{tabular}
 \end{frame}

@@ -1,0 +1,60 @@
+\begin{frame}[fragile,label=memCpp]{memory.cpp}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+class Foo { long x, y; };
+int main() {
+    cout << "sizeof(long): " << @2sizeof(long)2@ << endl;
+    cout << "sizeof(Foo): " << @2sizeof(Foo)2@ << endl;
+    Foo *quux = new Foo;
+    Foo *bar = new Foo;
+    long diff = @3((long)bar)-((long)quux)3@;
+    cout << "First foo: " << @4foo4@ << endl;
+    cout << "Second foo: " << quux << endl;
+    cout << "Difference: " << diff << endl;
+    delete quux; delete bar;
+    return 0;
+}
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+\coordinate (place) at ([yshift=2cm]current page.south);
+\coordinate (place2) at ([yshift=3cm]current page.south);
+\tikzset{
+    markBox/.style={draw=red,very thick,align=left,at=(place), fill=white},
+    markBoxB/.style={draw=red,very thick,align=left,at=(place2), fill=white},
+}
+\begin{visibleenv}<2>
+\node[markBox] {{\tt sizeof} operator --- how many bytes is $X$?};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[markBox] {convert pointers to integers, subtract \\ = distance in memory};
+\end{visibleenv}
+\begin{visibleenv}<4>
+\node[markBox] {prints out address};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=memCppOut]{memory.cpp output}
+One (of many) possible output:
+\begin{Verbatim}
+sizeof(long): 8
+sizeof(Foo): 16
+1st Foo: 0x1ec4030
+2nd Foo: 0x1ec4050
+Difference: 32
+\end{Verbatim}
+\begin{itemize}
+\item 32 bytes apart? --- \myemph{16 extra bytes?}
+\item implementation of \texttt{new} storing metadata
+    \begin{itemize}
+    \item need extra space \textit{somewhere} to track size, etc.
+    \end{itemize}
+\end{itemize}
+\end{frame}

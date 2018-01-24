@@ -1,34 +1,18 @@
 \begin{frame}{last time}
     \begin{itemize}
-    \item seperate compilation:
+    \item classes
         \begin{itemize}
-        \item C++ compiler processes a file at a time
-        \item \#include --- explicitly say to read another file
-        \item only one copy of each function per program (usually)
+        \item declarations in {\tt .h} file
+        \item {\tt ClassName::method}
+        \item {\tt class ... \{...\}\myemph{;}}
+        \item {\tt const}, {\tt static}
         \end{itemize}
-    \item forward declarations --- needed for seperate compilation
-    \item types --- unsigned, etc.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{on commands}
-    \begin{itemize}
-    \item {\tt clang++ file1.cpp file2.cpp} 
+    \item objects --- values, not references
         \begin{itemize}
-        \item makes {\tt a.out} or {\tt a.exe}
-        \item {\tt file1.h}, etc. not part of command 
+        \item {\tt return Foo(1)} --- {\tt Foo(1)} is temporary Foo object
+        \item {\tt x = y} --- copy {\tt x} into {\tt y}
         \end{itemize}
-    \item {\tt clang++ -o main.exe file1.cpp file2.cpp} 
-        \begin{itemize}
-        \item makes {\tt main.exe}
-        \end{itemize}
-    \item {\tt clang++ -Wall -o main.exe file1.cpp file2.cpp} 
-        \begin{itemize}
-        \item makes {\tt main.exe} with more compiler warnings
-        \end{itemize}
-    \item {\tt clang++ -Wall -c file1.cpp} 
-        \begin{itemize}
-        \item makes {\tt file1.o} (not executable)
-        \end{itemize}
+    \item the preprocessor --- {\tt \#define}, {\tt \#include}, etc.
+    \item started pointers
     \end{itemize}
 \end{frame}

@@ -118,6 +118,28 @@ int main() { showTwoThirds(); @2aThing();2@ return 0; }
 \end{tikzpicture}
 \end{frame}
 
+\begin{frame}[fragile,label=cppNewDelete3]{fixed example}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2-3>]{@2}{2@}},
+}
+\begin{lstlisting}
+Rational *getTwoThirds() {
+    Rational *twoThirdsPointer = new Rational(2, 3);
+    return twoThirdsPointer;
+}
+
+void showTwoThirds() {
+    Rational *twoThirdsPointer = getTwoThirds();
+    twoThirdsPointer->print();
+    @1delete twoThirdsPointer;1@
+    // accessing twoThirdsPointer is now an ERROR
+}
+\end{lstlisting}
+\end{frame}
+
 \begin{frame}[fragile,label=cppArray]{C++: fixed-sized arrays}
 \lstset{language=C++,style=small}
 \begin{lstlisting}

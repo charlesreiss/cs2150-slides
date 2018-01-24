@@ -1,4 +1,4 @@
-\begin{frame}{lab: doubly-linked list}
+\begin{frame}{next lab: doubly-linked list}
 \includegraphics[height=0.9\textheight]{list-diagram}
 \end{frame}
 
@@ -25,19 +25,21 @@ private:
 };
 \end{lstlisting}
 \begin{tikzpicture}[overlay,remember picture]
-\coordinate (place) at ([yshift=4cm]current page.south);
+\coordinate (place) at ([yshift=3cm]current page.south);
+\coordinate (place2) at ([yshift=5cm]current page.south);
 \tikzset{
     markBox/.style={draw=red,very thick,align=left,at=(place), fill=white},
+    markBoxB/.style={draw=red,very thick,align=left,at=(place2), fill=white},
 }
 \begin{visibleenv}<2>
 \node[markBox] {\texttt{*} binds to name --- declares two pointers; \\
                 (why I write \texttt{*} next to names)};
 \end{visibleenv}
 \begin{visibleenv}<3>
-\node[markBox] {the class \texttt{List} can access \\ private members of \texttt{ListNode}};
+\node[markBoxB] {the class \texttt{List} can access \\ private members of \texttt{ListNode}};
 \end{visibleenv}
 \begin{visibleenv}<4>
-\node[markBox] {the class \texttt{ListItr} can access \\ private members of \texttt{ListNode}};
+\node[markBoxB] {the class \texttt{ListItr} can access \\ private members of \texttt{ListNode}};
 \end{visibleenv}
 \end{tikzpicture}
 \end{frame}
