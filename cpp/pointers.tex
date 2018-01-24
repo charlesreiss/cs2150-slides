@@ -221,14 +221,14 @@ Rational **Z; // Z is a pointer to pointer to Rational
 \begin{frame}[fragile,label=pointerDeclareMult]{declaring multiple pointers}
 \lstset{
     language=C++,
-    style=smaller,
+    style=small,
     morekeywords=Rational,
 }
 \begin{lstlisting}
 float *X, *Y; // X and Y are pointers to float
-float *X, ThisIsProbablyAMistake;
-    // X is a pointer to float
-    / ThisIsProbablyAMistake is a float
+float *Z, ThisIsProbablyAMistake;
+    // Z is a pointer to float
+    // ThisIsProbablyAMistake is a float
 \end{lstlisting}
 \end{frame}
 
@@ -303,7 +303,7 @@ Rational *pointerToFraction;
     \begin{itemize}
         \item expression: \verb|*foo| is ``value pointed to by \verb|foo|''
         \begin{itemize}
-            \item (declaration: \verb|Type *foo| means\\``foo is a pointer to Type'')
+            \item (different than declaration: \verb|Type *foo| means\\``foo is a pointer to Type'')
         \end{itemize}
         \vspace{.5cm}
         \item \lstinline|cout << *foo;| --- output value foo points to
@@ -324,6 +324,7 @@ pointer = &foo;
 \begin{lstlisting}
 int *pointer = &foo;
 *pointer = bar;  // sets foo to bar
+pointer = &bar;  // changes where pointer points
 \end{lstlisting}
 \end{visibleenv}
 \end{frame}
@@ -332,8 +333,8 @@ int *pointer = &foo;
     \begin{itemize}
         \item in an expression: \verb|&foo| is ``\myemph{address of} \verb|foo|''
         \begin{itemize}
-            \item (declaration: \verb|int &foo = 42;| means \\
-                ``foo is a \textit{reference}'' --- more on that later)
+            \item (different than declaration: \verb|int &foo = 42;| means \\
+                `foo is a \textit{reference}'' --- more on that later)
         \end{itemize}
         \vspace{.5cm}
         \item returns address of variable/value
@@ -365,12 +366,12 @@ int *pointer = &foo;
     \begin{itemize}
         \item \lstinline|(*foo).bar| same as \lstinline|foo->bar|
 \begin{lstlisting}
-Rational *pointerToFraction = ...;
+Rational *pointerToFraction = &aFraction; 
 
-... = pointerToFraction->times(
+aValue = pointerToFraction->times(
             *pointerToFraction);
 // same as:
-... = (*pointerToFraction).times(
+aValue = (*pointerToFraction).times(
             *pointerToFraction);
 \end{lstlisting}
     \end{itemize}
@@ -396,13 +397,13 @@ Rational *pointerToFraction = ...;
 \end{itemize}
 \begin{lstlisting}
 int anInt = 42;
-int *pointer = NULL;i
-int *pointer = 0; // same as above
+int *pointer = @2NULL2@;
+int *pointer = @202@; // same as above
 // NOT same as: int *pointer;
 
 *pointer = anInt;   // ERROR: crash (hopefully)
 anInt = *pointer;   // ERROR: crash (hopefully)
-pointer = anInt;    // ERROR: type mismatch
+pointer = anInt;    // ERROR: need cast
 
 if (pointer == NULL) { ... }
 if (!pointer) { ... } // same as above
@@ -507,7 +508,7 @@ cout << valueOne << " " << valueTwo << " "
 \begin{lstlisting}
 void swap(Rational *a, Rational *b) {
     Rational temp = *a;
-    b = *a;
+    *a = *b;
     *b = temp;
 }
 
