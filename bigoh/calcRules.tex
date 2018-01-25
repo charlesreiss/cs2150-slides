@@ -1,7 +1,11 @@
 \begin{frame}[fragile,label=thumb1]{big-oh rules of thumb (1)}
 \lstset{
     language=C++,
-    style=small
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
 }
 \begin{tikzpicture}
 \tikzset{
@@ -10,30 +14,94 @@
     },
     rt/.style={font=\small},
 }
-\node[codeBox] (forSimple) {
+\node[codeBox,draw=blue!40!black] (forSimple) {
 \begin{lstlisting}
 for (int i = 0; i < N; ++i)
+    @3foo();3@
+\end{lstlisting}
+};
+    \node[rt,anchor=north west,text=blue!40!black] at (forSimple.south west) {$\text{runtime} \in \myemph<2>{\Theta}(N \times (\text{runtime of \tt foo}))$};
+
+\begin{visibleenv}<2>
+    \node[align=left,draw=red,ultra thick,right=.5cm of forSimple] {
+        time to increment $i$? \\
+        ``constant factor'' \\
+        ignored by $\Theta$
+    };
+\end{visibleenv}
+
+    \node[codeBox,draw=green!40!black,anchor=north west,alt=<3>{draw=red,ultra thick}] (nestedForSimple) at ([yshift=-1cm]forSimple.south west){
+\begin{lstlisting}
+for (int i = 0; i < N; ++i)
+    @3for (int j = 0; j < M; ++j)3@
+        @3bar();3@
+\end{lstlisting}
+};
+    \node[rt,text=green!40!black,anchor=north west] at (nestedForSimple.south west) {$\text{runtime} \in \myemph<2>{\Theta}(N \times (M \times \text{runtime of \tt bar}))$};
+
+\begin{visibleenv}<3>
+    \node[align=left,draw=red,ultra thick,right=.5cm of forSimple] {
+        nested loops --- work inside out \\
+        find time of inner loop (``{\tt foo}'') \\
+        multiply by iterations of outer loop
+    };
+\end{visibleenv}
+
+    \node[codeBox,anchor=north west,alt=<4>{draw=red,ultra thick}] (nestedForHard)  at ([yshift=-1cm]nestedForSimple.south west){
+\begin{lstlisting}
+for (int i = 0; i < N; ++i)
+    for (@4int j = 0; j < i; ++j4@)
+        foo();
+\end{lstlisting}
+};
+    \node[rt,anchor=north west] at (nestedForHard.south west) {$\text{runtime} \in \myemph<2>{\Theta}\left(\sum_{i=0}^N i \times \text{runtime of \tt foo}\right) = \Theta(\myemph<4>{N^2} \cdot \text{runtime of \tt foo})$};
+\begin{visibleenv}<4>
+    \node[align=left,draw=red,ultra thick,right=.5cm of nestedForHard,yshift=1cm] {
+        at least $N/2$ iterations with \\
+        at least $N/2$ calls to {\tt foo} \\
+        $\implies N/2 \cdot N/2 = N^2/4$ \\
+        also $\le N \cdot N = N^2$ calls \\
+        $\implies$ \# calls to {\tt foo} is $\Theta(N^2)$
+    };
+\end{visibleenv}
+
+
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=thumb2]{big-oh rules of thumb (2)}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{tikzpicture}
+\tikzset{
+    codeBox/.style={
+        draw,thick
+    },
+    rt/.style={font=\small},
+}
+\node[codeBox,draw=blue!40!black] (consecutive) {
+\begin{lstlisting}
+foo();
+bar();
+\end{lstlisting}
+};
+    \node[rt,anchor=north west,align=left,text=blue!40!black] at (consecutive.south west) {$\text{runtime} = \text{runtime of foo} + \text{runtime of bar}$ \\ (but --- constant factors don't matter for $\Theta$, $O$)};
+
+    \node[codeBox,draw=green!40!black,anchor=north west] (ifs) at ([yshift=-2cm]consecutive.south west) {
+\begin{lstlisting}
+if (quux()) {
     foo();
+} else {
+    bar();
+}
 \end{lstlisting}
 };
-\node[rt,right=1cm of forSimple] {$\text{runtime} = N \times (\text{runtime of \tt foo})$};
-
-\node[codeBox,below=1cm of forSimple] (nestedForSimple) {
-\begin{lstlisting}
-for (int i = 0; i < N; ++i)
-    for (int j = 0; j < M; ++j)
-        foo();
-\end{lstlisting}
-};
-\node[rt,right=1cm of nestedForSimple] {$\text{runtime} = N \times (M \times \text{runtime of \tt foo})$};
-
-\node[codeBox,below=1cm of nestedForSimple] (nestedForHard) {
-\begin{lstlisting}
-for (int i = 0; i < N; ++i)
-    for (int j = 0; j < i; ++j)
-        foo();
-\end{lstlisting}
-};
-\node[rt,right=1cm of nestedForHard] {$\text{runtime} = \sum_i^N j \times \text{runtime of \tt foo} = \Theta(N^2 \cdot \text{runtime of \tt foo})$};
+    \node[rt,anchor=north west,align=left,text=green!40!black] at (ifs.south west) {$\text{runtime} \approx \text{runtime of quux} + \max(\text{runtime of foo}, \text{runtime of bar})$ \\ (max because we measure the \myemph{worst-case})};
 \end{tikzpicture}
 \end{frame}

@@ -1,0 +1,88 @@
+\begin{frame}{$\Theta(1)$: constant time}
+    \begin{itemize}
+    \item constant time ($\Theta(1)$ time) --- runtime does not depend on input
+    \vspace{.5cm}
+    \item accessing an array element
+    \item linked list insert/delete (at known end)
+    \item getting a vector's size
+    \item \ldots
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{is that really constant time}
+    \begin{itemize}
+    \item is getting vector's size really constant time?
+    \item vector stores its size, but, for, e.g. $N=2^{10000}$, the size itself is \myemph{huge}
+    \item our \textit{usual} assumption:
+        \begin{itemize}
+        \item treat ``sensible'' integer arithmetic as constant time
+        \item (anything we'd keep in a {\tt long} or smaller variable in practice?)
+        \end{itemize}
+    \item can do analysis where we don't assume this, usually not interesting
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{$\Theta(\log n)$: logarithmic time}
+    \begin{itemize}
+    \item binary search of sorted array
+        \begin{itemize}
+        \item search space cut in half each iteration --- $\left\lceil\log_2 N\right\rceil$ iterations
+        \end{itemize}
+    \item \textit{balanced} tree search/insert
+        \begin{itemize}
+        \item height of tree (somehow) gaurenteed to be $\Theta(\log N)$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{$\Theta(n)$: linear}
+    \begin{itemize}
+        \item constant \# operations/element
+            \vspace{.5cm}
+        \item printing a list
+        \item search in unsorted array
+        \item search in linked list
+        \item doubling the size of a vector
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{$\Theta(n \log n)$: log-linear}
+    \begin{itemize}
+        \item fast comparison-based sorting 
+            \begin{itemize}
+            \item merge sort, heap sort, \ldots
+            \end{itemize}
+        \item quicksort \textit{if pivot choices are good}
+        \item inserting $n$ elements into a balanced tree
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{$\Theta(n^2)$: quadratic}
+    \begin{itemize}
+        \item slow comparison-based sorting
+            \begin{itemize}
+            \item insertion sort, bubble sort, selection sort, \ldots
+            \end{itemize}
+        \item quicksort \textit{if pivot choices are bad}
+        \item most doubly nested for loops that go up to $n$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{$\Theta(2^{n^c})$, $c\ge1$: exponential}
+    \begin{itemize}
+        \item $n$-bit solution; try every $2^n$ of the possiblities
+            \vspace{.5cm}
+        \item crack a combination lock by trying every possiblity
+        \item finding the best move in an $N\times N$ Go game (with Japanese rules)
+        \item checking satisfiablity of Boolean expression*
+        \item the Traveling Salesman problem*
+        \item {\scriptsize *known algorithms --- maybe can do better?}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{more?}
+    \begin{itemize}
+    \item $\Theta(n^3)$ --- find shortest paths between all pairs of $n$ nodes on a fully-connected graph
+    \item approx. order $2^{n^{1/3}}$ --- best known integer factorization algorithm
+    \end{itemize}
+\end{frame}
