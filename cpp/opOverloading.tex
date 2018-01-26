@@ -1,10 +1,73 @@
-\begin{frame}[fragile,label=implMeth]{operator overloading with methods}
+\begin{frame}[fragile,label=opOverload1]{operator=}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+class Foo { public:
+    Foo& operator=(const Foo& other);
+}
+Foo & Foo::operator=(const Foo& other) {
+    cout << "called Foo::operator=";
+    return *this;
+}
+int main() {
+    Foo x, y;
+    x = y;  // output:  called Foo::operator=
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=opOverload2]{overrided operators can do whatever}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+class Bar {};
+class Foo { public:
+    Foo();
+    Foo& operator=(const Bar& other);
+    int count;
+}
+Foo::Foo() : count(0) {}
+Foo & Foo::operator=(const Bar& other) {
+    cout << "count=" << ++count;
+    return *this;
+}
+int main() {
+    Foo x;
+    x = Bar();
+        // output count=1
+    x = Bar();
+        // output count=2
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile,label=opOverExs]{more operator overloading}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+cout << "Foo" << endl;
+
+string x = "This is the first part.";
+string y = x + " And this is the second part.";
+
+class Rational {
+    ...
+    Rational operator*(const Rational& a,
+                       const Rational& b) const;
+    Rational operator+(const Rational& a,
+                       const Rational& b) const;
+    ...
+};
+Rational x(2, 4), y(4, 5);
+Rational z = x * y + y;
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=opImplMeth]{operator overloading with methods}
 \lstset{language=C++,style=smaller}
 \begin{lstlisting}
 int x = 42;
-cout << "The value is: " << x;
+cout << "The value is: " << x << endl;
 // same as:
-cout.operator<<("The value is: ").operator<<(x);
+cout.operator<<("The value is: ").operator<<(x).operator<<(endl);
 \end{lstlisting}
 \hrule
 \begin{lstlisting}
@@ -21,7 +84,7 @@ ostream &ostream::operator<<(int value) {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile,label=implMeth]{operator overloading with functions}
+\begin{frame}[fragile,label=opImplFunc]{operator overloading with functions}
 \lstset{language=C++,style=smaller}
 \begin{lstlisting}
 #include <string>
@@ -39,4 +102,5 @@ ostream& operator<<(ostream& out, const string &s) {
 }
 \end{lstlisting}
 \end{frame}
+
 

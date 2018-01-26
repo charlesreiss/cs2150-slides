@@ -138,14 +138,22 @@ void showTwoThirds() {
     // accessing twoThirdsPointer is now an ERROR
 }
 \end{lstlisting}
+\begin{visibleenv}<2->
+an error --- but may or may not crash (!) \\
+whatever ends up at same address
+\end{visibleenv}
 \end{frame}
 
+
 \begin{frame}[fragile,label=cppArray]{C++: fixed-sized arrays}
-\lstset{language=C++,style=small}
+\lstset{language=C++,style=small,
+    moredelim={**[is][\btHL<all:1>]{@2}{2@}},
+    }
 \begin{lstlisting}
-int arrayOfTenValues[10];
+@2int arrayOfTenValues[10]2@;
 ...
 int fourthValue = arrayOfTenValues[3];
+arrayOfTenValues[5] = newSixthValue;
 \end{lstlisting}
 \end{frame}
 
@@ -287,7 +295,7 @@ Rational *p;    p = @3new Rational(3,4)3@;  delete p;
 \end{visibleenv}
 \begin{visibleenv}<3>
     \node[markBox] {\texttt{new \textit{TYPE}(arg1, arg2)} --- calls constructor \\
-                    built-in constructors that take existing objects};
+                    built-in constructors for primitive types takes value to copy};
 \end{visibleenv}
 \end{tikzpicture}
 \end{frame}

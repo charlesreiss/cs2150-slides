@@ -52,6 +52,7 @@ class test {
     moredelim={**[is][\btHL<all:2>]{@2}{2@}},
     moredelim={**[is][\btHL<all:3>]{@3}{3@}},
     moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
 }
 \begin{lstlisting}
 // test.cpp:
@@ -60,7 +61,7 @@ class test {
 ostream &operator<<(ostream &out, const test &f) {
   out << "test[id=" << f.id << ",v="
       << f.value << "]@" << &f;
-  return out;
+  @5return out;5@
 }
 
 test::test(const test& x) : id(x.id), @3value(x.value)3@ {
@@ -88,12 +89,15 @@ test &@4test::operator=4@(const test &other) {
     \begin{visibleenv}<4>
         \node[box] {called like assignment doesn't actually assign!};
     \end{visibleenv}
+    \begin{visibleenv}<5>
+        \node[box] {return {\tt out} so chains of \lstinline|<<| work};
+    \end{visibleenv}
 \end{tikzpicture}
 \end{frame}
 
 % FIXME: show constructors?
 
-\begin{frame}[fragile,label=testtrivial]{trivial test object: testtrivial.cpp}
+\begin{frame}[fragile,label=testtrivial]{trivial test object}
 \lstset{
     language=C++,
     style=smaller,
@@ -124,7 +128,7 @@ aa is: test[id=0,v=0]@0x7ffc82ba9440
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile,label=usingTest2]{trivial test object: testint.cpp}
+\begin{frame}[fragile,label=usingTest2]{trivial test object}
 \lstset{
     language=C++,
     style=smaller,
@@ -155,7 +159,7 @@ calling ~test() on test[id=0,v=0]@0x7ffed5659d70
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile,label=gotcha]{Type foo(): not a constructor call}
+\begin{frame}[fragile,label=gotcha]{gotcha: Type foo() makes no Type}
 \lstset{
     language=C++,
     style=smaller,
@@ -197,6 +201,30 @@ testgotcha.cpp:8:25: warning: address of function 'a'
                      will always evaluate to 'true'
                      [-Wpointer-bool-conversion]
     cout << "a is: " << a << endl;
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=funcInFuncQ]{declaring function inside a function???}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+#include <iostream>
+using namespace std;
+// instead of declaring here...
+int main() {
+    // legal to declare here, but...
+    // you probably should NEVER do this
+    int foo(int x);
+    cout << foo(21) << endl;
+    // output: 42
+    return 0;
+}
+int foo() { return x * 2; }
 \end{lstlisting}
 \end{frame}
 
@@ -306,6 +334,9 @@ calling ~test() on @3test[id=1,v=10]@0x7ffcea9375303@
         \node[box] {return value optimization: \\
                     compiler omitted copy constructor call \\
                     (but could have included it)};
+    \end{visibleenv}
+    \begin{visibleenv}<4>
+        \node[box] {very different addresses for local vars \\ versus {\tt new}'d objects};
     \end{visibleenv}
 \end{tikzpicture}
 \end{frame}

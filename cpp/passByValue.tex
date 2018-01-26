@@ -67,7 +67,7 @@ int main(void) {
 \begin{itemize}
     \item what is the output?
         \begin{tabular}{ll}
-            A: 42  & C: \myemph<2->{\textbf<2->{crashes}}/doesn't compile \\
+            A: 42  &: \myemph<2->{\textbf<2->{C: crashes/doesn't compile}} \\
         B: 100 & D: none of the above
         \end{tabular}
     \item<3-> pointers don't have member variables
@@ -99,16 +99,25 @@ int main(void) {
 \end{frame}
 
 \begin{frame}[fragile,label=avoidingCopying]{avoiding copying}
-\lstset{language=C++,style=small}
+\lstset{
+    language=C++,
+    style=small,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+}
 \begin{lstlisting}
-bool lessThanCopy(Rational first, Rational second) {
+@2bool lessThanCopy(Rational first, Rational second)2@ {
     return first.num * second.den < second.num * first.den;
 }
-bool lessThanNoCopy(const Rational &first, const Rational &second) {
+@3bool lessThanNoCopy(const Rational &first,3@
+                    @3const Rational &second)3@ {
     return first.num * second.den < second.num * first.den;
 }
 \end{lstlisting}
 \begin{tikzpicture}
+\begin{visibleenv}<2>
 \node[draw,rectangle split,rectangle split parts=7,label={north:caller's memory}] (caller) {
     \ldots
     \nodepart{two} first.num
@@ -124,6 +133,24 @@ bool lessThanNoCopy(const Rational &first, const Rational &second) {
     second.num \nodepart{four}
     second.den
 };
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[draw,rectangle split,rectangle split parts=7,label={north:caller's memory}] (caller) {
+    \ldots
+    \nodepart{two} first.num
+    \nodepart{three} first.den
+    \nodepart{four} \ldots
+    \nodepart{five} second.num
+    \nodepart{six} second.den
+    \nodepart{seven} \ldots
+};
+\node[right=3cm of caller,draw,rectangle split,rectangle split parts=2,label={north:lessThanNoCopy locals}] (nCLocal) {
+    first
+    \nodepart{two} second
+};
+\draw[-Latex,thick] (nCLocal.one west) -- (caller.two east);
+\draw[-Latex,thick] (nCLocal.two west) -- (caller.five east);
+\end{visibleenv}
 \end{tikzpicture}
 \end{frame}
 
@@ -177,8 +204,7 @@ int &get_counter_reference() {
     return counter;   // ERROR
 }
 ...
-get_counter_reference() = 42;   // ERROR -- writing unallocated object
+get_counter_reference() = 42; 
+    // ERROR -- writing unallocated object
 \end{lstlisting}
 \end{frame}
-
-// FIXME: return-by-pointer?

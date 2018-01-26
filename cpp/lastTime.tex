@@ -27,11 +27,56 @@
         \item pointers --- indices into array --- addresses
         \item {\tt T *} --- pointer to T type
         \item {\tt *somePointer} --- same as {\tt thingPointedTo}
-        \item {\tt &someVariable} --- address of someVariable
+        \item {\tt \&someVariable} --- address of someVariable
             \begin{itemize}
             \item AKA ``pointer to'' someVariable
             \end{itemize}
         \end{itemize}
     \item started {\tt new}/{\tt delete}
     \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=inlineMethod]{inline methods}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:2-3>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+}
+\begin{lstlisting}
+class Foo {
+public:
+    Foo();
+    @2int getValue() const {2@
+        @2return value;2@
+    @2}2@
+
+    void setValue(int newValue) {
+        value = newValue;
+    }
+    ...
+private:
+    int value;
+    ...
+};
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+\tikzset{
+    explainBox/.style={draw=red,ultra thick,align=left,fill=white},
+}
+\coordinate (c) at (current page.center);
+    \coordinate (c2) at ([yshift=-2cm]current page.center);
+\begin{visibleenv}<2>
+\node[explainBox] at (c2) {
+    member function \myemph{implemented} in class declaration \\
+    this is allowed --- even though implementation in many {\tt .cpp} files 
+};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[explainBox] at (c2) {
+    only advisible for very short methods \\
+    one copy of method \textit{for each C++ file that uses class}
+};
+\end{visibleenv}
+\end{tikzpicture}
 \end{frame}

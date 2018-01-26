@@ -1,4 +1,4 @@
-\begin{frame}[fragile,label=implMeth]{implicit methods}
+\begin{frame}[fragile,label=implicitMeth]{implicit methods}
     \lstset{language=C++,style=small}
 \begin{lstlisting}
 class Foo {};
@@ -50,7 +50,7 @@ Foo::~Foo()
 \end{tikzpicture}
 \end{frame}
 
-\begin{frame}[fragile,label=whyDestructor]{why destructors}
+\begin{frame}[fragile,label=whyDestructor]{why destructors (1)}
 \lstset{language=C++,style=small}
 \begin{tikzpicture}
 \node[] (foo) {
@@ -70,12 +70,28 @@ DynamicArray::~DynamicArray() {
 \end{tikzpicture}
 \end{frame}
 
+\begin{frame}[fragile,label=whyDestructor2]{why destructors (2)}
+\lstset{language=C++,style=small}
+\begin{itemize}
+\item close files, network connections, \ldots
+\begin{lstlisting}
+#include <fstream>
+void writeSomeText() {
+    std::ofstream out("output.txt");
+    out << "This is some text\n";
+    // ofstream::~ofstream() called here
+    // no explicit close needed!
+}
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
 \begin{frame}[fragile,label=copyConstructor1]{copy constructors, operator=  (1)}
 \lstset{language=C++,style=small}
 \begin{tikzpicture}
 \node[] (foo) {
 \begin{lstlisting}
-Foo a, b;
+Foo a, b; // invokes Foo::Foo() twice
 
 // invokes Foo::Foo(const Foo&)
 Foo copy1(a);   
@@ -90,7 +106,7 @@ b = a;
 \end{tikzpicture}
 \end{frame}
 
-\begin{frame}[fragile,label=exampleCCOpEq]{default implementations}
+\begin{frame}[fragile,label=exampleCCOpEq]{default implementations (1)}
 \lstset{language=C++,style=smaller}
     \vspace{-.75cm}
 \begin{tikzpicture}
@@ -114,6 +130,43 @@ Rational &Rational::operator=(
     // works
     return *this;
 }
+\end{lstlisting}
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=exampleCCImplDest]{default implementations (2)}
+\lstset{language=C++,style=smaller}
+    \vspace{-.75cm}
+\begin{tikzpicture}
+\node[] (foo) {
+\begin{lstlisting}
+class Foo { public: Foo(); ~Foo(); };
+Foo::Foo() { cout << "Foo::Foo()" << endl; }
+Foo::~Foo() { cout << "Foo::~Foo()" << endl; }
+class Bar { public: Foo x; };
+int main() {
+    Bar local; 
+    cout << "(1)\n";
+    Bar *ptr = new Bar;  
+    cout << "(2)\n";
+    delete ptr;
+    cout << "(3)\n";
+    return 0;
+};
+\end{lstlisting}
+};
+\node[draw,thick,anchor=north west,align=left] at ([xshift=7.75cm,yshift=-2cm]foo.north west) {
+\lstset{language={}}
+output: \\
+\begin{lstlisting}
+Foo::Foo()
+(1)
+Foo::Foo()
+(2)
+Foo::~Foo()
+(3)
+Foo::~Foo()
 \end{lstlisting}
 };
 \end{tikzpicture}
