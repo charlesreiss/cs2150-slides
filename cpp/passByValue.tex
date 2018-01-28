@@ -172,12 +172,12 @@ void fooBroken1(Rational value) {
 }
 
 // makes const(ant) copy, error modifying
-void fooBroken1(const Rational value) { 
+void fooBroken2(const Rational value) { 
     value = Rational(4, 3);  // ERROR
 }
 
 // no copy, error modifying
-void fooBroken2(const Rational& value) {
+void fooBroken3(const Rational& value) {
     value = Rational(4, 3);  // ERROR
 }
 \end{lstlisting}
@@ -207,4 +207,24 @@ int &get_counter_reference() {
 get_counter_reference() = 42; 
     // ERROR -- writing unallocated object
 \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=refMemVars]{reference member variables}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+class Foo {
+public:
+    Foo(int &x) : refToX(x) {}
+    int &refToX;
+};
+...
+  int value = 42;
+  Foo foo(value);
+  foo.refToX = 100;
+  cout << value << endl; // output: 100
+...
+\end{lstlisting}
+\begin{visibleenv}<2->
+Should you ever do this? \myemph{Almost certainly not.}
+\end{visibleenv}
 \end{frame}

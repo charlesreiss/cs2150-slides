@@ -15,7 +15,7 @@ class Foo {};
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile,label=defaultConstructor]{default constructor/destructor}
+\begin{frame}[fragile,label=defaultConstructor]{default constructor/destructor (1)}
 \lstset{language=C++,style=small}
 \begin{tikzpicture}
 \node[] (foo) {
@@ -44,6 +44,37 @@ Foo::Foo()
 (2)
 Foo::~Foo()
 (3)
+Foo::~Foo()
+\end{lstlisting}
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=defaultConstructor2]{default constructor/destructor (2)}
+\lstset{language=C++,style=small}
+\begin{tikzpicture}
+\node[] (foo) {
+\begin{lstlisting}
+class Foo { public: Foo(); ~Foo(); };
+Foo::Foo() { cout << "Foo::Foo()" << endl; }
+Foo::~Foo() { cout << "Foo::~Foo()" << endl; }
+int main() {
+    Foo *foos = new Foo[3]; 
+    cout << "(1)\n";
+    delete[] foo;
+};
+\end{lstlisting}
+};
+    \node[draw,thick,anchor=north west,align=left] at ([xshift=7.75cm,yshift=-2cm]foo.north west) {
+\lstset{language={}}
+output: \\
+\begin{lstlisting}
+Foo::Foo()
+Foo::Foo()
+Foo::Foo()
+(1)
+Foo::~Foo()
+Foo::~Foo()
 Foo::~Foo()
 \end{lstlisting}
 };
@@ -86,6 +117,7 @@ void writeSomeText() {
 \end{itemize}
 \end{frame}
 
+
 \begin{frame}[fragile,label=copyConstructor1]{copy constructors, operator=  (1)}
 \lstset{language=C++,style=small}
 \begin{tikzpicture}
@@ -101,6 +133,9 @@ Foo copy2 = a;
 
 // invokes Foo::operator=(const Foo&);
 b = a;
+
+// invokes Foo::operator=(const Foo&);
+b.operator=(a);
 \end{lstlisting}
 };
 \end{tikzpicture}
@@ -168,6 +203,77 @@ Foo::~Foo()
 (3)
 Foo::~Foo()
 \end{lstlisting}
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=exampleCCImplDest2]{default implementations (3)}
+\lstset{language=C++,style=smaller}
+    \vspace{-.75cm}
+\begin{tikzpicture}
+\node[] (foo) {
+\begin{lstlisting}
+class Foo { public: Foo(); ~Foo(); };
+Foo::Foo() { cout << "Foo::Foo()" << endl; }
+Foo::~Foo() { cout << "Foo::~Foo()" << endl; }
+class Bar { public: Bar(); ~Bar(); Foo x; }; Bar::Bar() {} Bar::~Bar() {}
+int main() {
+    Bar local; 
+    cout << "(1)\n";
+    Bar *ptr = new Bar;  
+    cout << "(2)\n";
+    delete ptr;
+    cout << "(3)\n";
+    return 0;
+};
+\end{lstlisting}
+};
+\node[draw,thick,anchor=north west,align=left] at ([xshift=7.75cm,yshift=-2cm]foo.north west) {
+\lstset{language={}}
+output: \\
+\begin{lstlisting}
+Foo::Foo()
+(1)
+Foo::Foo()
+(2)
+Foo::~Foo()
+(3)
+Foo::~Foo()
+\end{lstlisting}
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=missingDefault]{missing defaults?}
+\lstset{language=C++,style=smaller}
+    \vspace{-.75cm}
+\begin{tikzpicture}
+\node[] (foo) {
+\begin{lstlisting}
+#include <iostream>
+using namespace std;
+
+class Foo {
+public:
+    Foo(int x) { cout << "x = " << x << endl; }
+};
+
+int main(void) {
+    Foo x;
+}
+\end{lstlisting}
+};
+\node[draw,thick,anchor=north west,align=left] (error) at (foo.south west) {
+\lstset{language={}}
+\begin{lstlisting}
+example.cpp:10:9: error: no matching constructor for initialization of 'Foo'
+    Foo x;
+....
+\end{lstlisting}
+};
+\node[below=0cm of error,align=left] {
+    rule: \myemph{no implicit default constructor if there are others} \\
+    can still explicitly write \lstinline|Foo() {}|
 };
 \end{tikzpicture}
 \end{frame}
