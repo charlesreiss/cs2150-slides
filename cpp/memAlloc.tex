@@ -174,7 +174,7 @@ int brokenArrayOfNValues@1[n]1@;
 \begin{Verbatim}[fontsize=\small]
 $ clang++ -Wall -pedantic -c test.cpp
 test.cpp:3:29: warning: variable length arrays are a C99 feature [-Wvla-extension]
-    int brokenArrayOfNValues[1];
+    int brokenArrayOfNValues[n];
 \end{Verbatim}
 \end{frame}
 
@@ -291,7 +291,8 @@ Rational *p;    p = @3new Rational(3,4)3@;  delete p;
 }
 \begin{visibleenv}<2>
     \node[markBox] {\texttt{delete[]} form needed for new with arrays \\
-                    otherwise, delete won't know the size to free};
+                    idea: size information must be stored for arrays, \\
+                    but single values};
 \end{visibleenv}
 \begin{visibleenv}<3>
     \node[markBox] {\texttt{new \textit{TYPE}(arg1, arg2)} --- calls constructor \\

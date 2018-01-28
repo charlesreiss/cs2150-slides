@@ -79,7 +79,7 @@ int main(void) {
 \begin{lstlisting}
 class IntWrapper { public: int value; };
 void foo(IntWrapper *arg) {
-    arg->value = 42;
+    arg->value = 42;  // same as:  (*arg).value = 42;
 }
 int main(void) {
     IntWrapper iw;
