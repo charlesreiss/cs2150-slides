@@ -1,0 +1,17 @@
+\begin{frame}[fragile,label=arrowSyn]{reminder: re arrow syntax}
+\lstset{
+    language=C,
+    style=small
+}
+\begin{lstlisting}
+Rational r; r.num = 4;
+Rational *p = new Rational;
+(*p).num = 4;
+(*p).print();
+p->num = 4;  // "follow the pointer"
+p->print();
+Rational &ref = r;
+ref.num = 4;
+ref.print();
+\end{lstlisting}
+\end{frame}
