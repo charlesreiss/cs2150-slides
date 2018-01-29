@@ -21,8 +21,8 @@ cout << example[0] << " "
 \begin{itemize}
 \item can't resize arrays
 \item can't assign arrays with =
-\item doesn't track capacity
-\item no bounds checking
+\item arrays don't track capacity
+\item arrays don't have bounds checking
 \end{itemize}
 \end{frame}
 
@@ -61,13 +61,16 @@ vector<int> example;
 const vector<int>& ref = example;
 cout << ref.at(2);  // OKAY: returns const reference
 cout << ref[2];  // OKAY: returns const reference
+cout << ref.front();  // OKAY: returns const reference
 ref.at(2) = 3;  // ERROR: const reference
-ref[2[ = 3;     // ERROR: const reference
+ref[2] = 3;     // ERROR: const reference
+example.at(2) = 3;  // OKAY
+example.front() = 5; // OKAY
 \end{lstlisting}
 \begin{itemize}
 \item \lstinline|const Type &operator[](int index) const|
 \item \lstinline|const Type &at(int index) const|
-\item \lstinline|const Type &front() cosnt|
+\item \lstinline|const Type &front() const|
 \item \lstinline|const Type &back() const|
 \end{itemize}
 \end{frame}
@@ -87,7 +90,7 @@ ref[2[ = 3;     // ERROR: const reference
 \end{frame}
 
 
-    \begin{frame}[fragile,label=vectMethApp]{vector methods: append/prepend}
+\begin{frame}[fragile,label=vectMethApp]{vector methods: append/prepend}
 \lstset{
     language=C++,
     style=small
@@ -96,7 +99,8 @@ ref[2[ = 3;     // ERROR: const reference
 \item \lstinline|void push_back(const T& newElement)| \\
       \lstinline|void pop_back()|
 \begin{itemize}\item add/remove last element\end{itemize}
-\item \lstinline|void push_front(const T& newElement)|
+\item \lstinline|void push_front(const T& newElement)| \\
+      \lstinline|void pop_front()|
 \begin{itemize}\item add/remove first element --- O(N)\end{itemize}
 \end{itemize}
 \end{frame}

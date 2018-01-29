@@ -20,10 +20,12 @@
     \end{itemize}
 \item methods within \lstinline|vector<T>::iterator iter|:
     \begin{itemize}
-        \item \lstinline|operator++| --- \lstinline|iter++|, \lstinline|++iter| (forward)
-    \item \lstinline|operator--| --- \lstinline|iter--|, \lstinline|--iter| (backward)
-                \item \lstinline|operator*| --- \lstinline|*iter| (access at position)
-                \item \lstinline|operator==|, \ldots --- \lstinline|iter1 == iter2|, \ldots (compare positions)
+        \item \lstinline|operator++|: \lstinline|iter++|, \lstinline|++iter| (forward)
+        \item \lstinline|operator--|: \lstinline|iter--|, \lstinline|--iter| (backward)
+            \item \lstinline|operator*|: \lstinline|*iter| (access at position)
+            \item \lstinline|operator->|: \lstinline|iter->member| (access at position)
+            \item \lstinline|operator==|: \lstinline|iter1 == iter2| (compare positions)
+            \item \lstinline|operator<|: \lstinline|iter1 < iter2| (compare positions)
     \end{itemize}
 \end{itemize}
 \end{frame}
@@ -68,3 +70,57 @@ for (vector<int>::iterator it = v.begin();
 \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile,label=modWithIt]{modifying values with iterators}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+vector<int> v;
+...
+for (vector<int>::iterator it = v.begin();
+     it != v.end();
+     ++it) {
+    *it += 1;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=constIt1]{const\_iterators (1)}
+\lstset{
+    language=C++,
+    style=small,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+}
+\begin{lstlisting}
+void print(@1const1@ vector<int> &v) {
+    for (vector<int>::@1const_iterator1@ it = v.begin();
+         it != v.end();
+         ++it) {
+        cout << *it << " ";
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=constIt2]{const\_iterators (2)}
+\lstset{
+    language=C++,
+    style=small,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+}
+\begin{lstlisting}
+void brokenAddOne(@1const1@ vector<int> &v) {
+    for (vector<int>::const_iterator it = v.begin();
+         it != v.end();
+         ++it) {
+         *it += 1;  // ERROR: trying to use modify const(ant)
+    }
+}
+
+void working(vector<int> &v) {
+    for (vector<int>::@1iterator1@ it = v.begin();
+         it != v.end();
+         ++it) {
+         *it += 1;  // OKAY, normal iterator
+    }
+}
+\end{lstlisting}
+\end{frame}

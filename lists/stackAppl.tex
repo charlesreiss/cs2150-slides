@@ -1,0 +1,41 @@
+\begin{frame}[fragile,label=stackAppl]{some stack applications}
+    \begin{itemize}
+    \item \myemph<2>{undo}
+    \item \myemph<3>{operator precedence}
+    \item parenthesis matching
+    \item tracking (recursive) function calls
+    \end{itemize}
+\begin{tikzpicture}[overlay,remember picture]
+\tikzset{
+    >=Latex,
+    point/.style={draw,very thick,<-},
+    change/.style={black!50,draw,line width=2mm,->},
+    stack/.style={tight matrix,nodes={draw,thick,align=center,text width=4cm}},
+    stackS/.style={tight matrix,nodes={draw,thick,align=center,text width=4cm,font=\small}},
+    isTop/.style={},
+};
+\coordinate (anchor) at ([xshift=3.5cm]current page.center);
+\begin{visibleenv}<2>
+\matrix[stackS] (undoStack) at (anchor){
+    |[isTop]| insert ``rest of the paragraph.'' at character 262 \\
+    delete ``end of it.'' at character 262 \\
+    make ``This'' at character 250 bold \\
+    insert ``This is the end of it.'' at character 250 \\
+    \ldots \\
+    \ldots \\
+};
+    
+    \node[anchor=north east,draw,text width=9cm] (textEditBox) at ([yshift=-.6cm]undoStack.south east) {
+        \ldots \ldots \textbf{This} is the rest of the paragraph.
+    };
+    \node[draw,pattern=horizontal lines,text width=9cm,minimum height=0.5cm,anchor=south] (title) at (textEditBox.north) {
+        ~
+    };
+    \node[draw,fill=white,inner sep=0mm, minimum height=4mm, minimum width=4mm] at ([xshift=2.5mm]title.west) {};
+    \node[fill=white,anchor=south,font=\small,inner sep=0mm] at (textEditBox.north) {
+        generic text editor.exe
+    };
+    \node[fit = (textEditBox) (title),inner sep=0mm,very thick,draw] {};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}

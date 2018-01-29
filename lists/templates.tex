@@ -84,7 +84,7 @@ const IntCell& findMax(const vector<IntCell> &a) {
 }
 \begin{visibleenv}<3>
 \node[box] {
-    compile error! \\
+    compile error (unless \lstinline|IntCell::operator<| created)! \\
     can't use \lstinline|<| on \lstinline|IntCell|
 };
 \end{visibleenv}
@@ -188,12 +188,12 @@ class Buffer {
 
 \begin{frame}[fragile,label=defParam]{default paramters}
 \lstset{
-    language=C++,
+    language=c++,
     style=smaller,
-    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
-    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
-    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
-    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\bthl<all:1>]{@1}{1@}},
+    moredelim={**[is][\bthl<all:2>]{@2}{2@}},
+    moredelim={**[is][\bthl<all:3>]{@3}{3@}},
+    moredelim={**[is][\bthl<all:4>]{@4}{4@}},
 }
 \begin{lstlisting}
 template <typename ValueType=char, int size=4096>
@@ -208,3 +208,119 @@ Buffer<string, 2048> buf3;
 \end{lstlisting}
 \end{frame}
 
+\begin{frame}[fragile,label=templatesAndHeaders1]{no separate implementations (1)}
+\lstset{
+    language=c++,
+    style=smaller,
+    moredelim={**[is][\bthl<all:1>]{@1}{1@}},
+    moredelim={**[is][\bthl<all:2>]{@2}{2@}},
+    moredelim={**[is][\bthl<all:3>]{@3}{3@}},
+    moredelim={**[is][\bthl<all:4>]{@4}{4@}},
+}
+\begin{tikzpicture}
+\tikzset{myl/.style={draw,yshift=-2mm,fill=white}}
+    \node[draw,thick,align=left,label={[myl]north:BROKEN findmax.h}] (codeOne) {
+\begin{lstlisting}
+#ifndef FINDMAX_H
+#define FINDMAX_H
+template <typename Comparable>
+const Comparable& findMax(
+    const vector<Comparable> &a);
+#endif
+\end{lstlisting}
+};
+    \node[draw,thick,align=left,anchor=north west,label={[myl]north:test.cpp}] (codeTwo) at ([yshift=-8mm]codeOne.south west){
+\begin{lstlisting}
+#include "findmax.h"
+int main() {
+    vector<int> v;
+    ...
+    int theMax = findMax(v);
+}
+\end{lstlisting}
+};
+\begin{visibleenv}<2->
+    \node[draw=red,align=left,ultra thick,fill=white] at ([xshift=1.5cm]codeTwo.center) {
+    this is a \myemph{linker error}: \\
+\begin{lstlisting}
+$ clang++  test.cpp findmax.cpp
+/tmp/test-d6d266.o: In function 'main':
+test.cpp:(.text+0xd): undefined
+    reference to 'findMax<int>()'
+\end{lstlisting} \\
+compiler \myemph{needs implementation available} \\
+~ \\
+\myemph{required} to have imlpementation included in each .cpp file
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+
+% FIXME: correct implementation
+
+\begin{frame}[fragile,label=templatesAndHeaders2]{no separate implementations (2)}
+\lstset{
+    language=c++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{tikzpicture}
+\tikzset{myl/.style={draw,yshift=-2mm,fill=white}}
+    \node[draw,thick,align=left,label={[myl]north:findmax.h}] (codeOne) {
+\begin{lstlisting}
+#ifndef FINDMAX_H
+#define FINDMAX_H
+template <typename Comparable>
+const Comparable& findMax(
+    const vector<Comparable> &a);
+
+// implementation in header file directly
+@2template <typename Comparable>2@
+@2const Comparable& findMax(2@
+    @2const vector<Comparable> &a) {2@
+    @2...2@ /* implementation here */
+}
+#endif
+\end{lstlisting}
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=templatesAndHeaders3]{no separate implementations (3)}
+\lstset{
+    language=c++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{tikzpicture}
+\tikzset{myl/.style={draw,yshift=-2mm,fill=white}}
+\node[draw,thick,align=left,label={[myl]north:findmax.h}] (codeOne) {
+\begin{lstlisting}
+#ifndef FINDMAX_H
+#define FINDMAX_H
+template <typename Comparable>
+const Comparable& findMax(
+    const vector<Comparable> &a);
+
+// implementation file #include'd in header file
+#include "findmax_impl.h"
+#endif
+\end{lstlisting}
+};
+\node[anchor=north west,draw=red,ultra thick,align=left,label={[myl]north:findmax\_impl.h}] (codeTwo) at ([yshift=-8mm]codeOne.south west) {
+\begin{lstlisting}
+const Comparable& findMax(
+    const vector<Comparable> &a) {
+    @2...2@ /* implementation here */
+}
+\end{lstlisting}
+};
+\end{tikzpicture}
+\end{frame}
