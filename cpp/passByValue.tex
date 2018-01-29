@@ -154,30 +154,34 @@ int main(void) {
 \end{tikzpicture}
 \end{frame}
 
-\begin{frame}[fragile,label=constReferneces]{const}
+\begin{frame}[fragile,label=constReferneces]{const and args}
 \lstset{
     language=C++,
     style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
 }
     \vspace{-.75cm}
 \begin{lstlisting}
 // no copy, modifies original 
-void foo(Rational& value) { 
+@2void foo(Rational& value) {2@
     value = Rational(4, 3);
 }
 
 // makes copy, modifies copy
-void fooBroken1(Rational value) {  
+@3void fooBroken1(Rational value) {3@
     value = Rational(4, 3);  // BROKEN
 }
 
 // makes const(ant) copy, error modifying
-void fooBroken2(const Rational value) { 
+@4void fooBroken2(const Rational value) {4@
     value = Rational(4, 3);  // ERROR
 }
 
 // no copy, error modifying
-void fooBroken3(const Rational& value) {
+@5void fooBroken3(const Rational& value) {5@
     value = Rational(4, 3);  // ERROR
 }
 \end{lstlisting}
@@ -207,6 +211,18 @@ int &get_counter_reference() {
 get_counter_reference() = 42; 
     // ERROR -- writing unallocated object
 \end{lstlisting}
+\begin{visibleenv}<2->
+same problem as:
+\begin{lstlisting}
+int &get_counter_pointer() {
+    int counter = 0;
+    return &counter;   // ERROR
+}
+...
+*get_counter_pointer() = 42; 
+    // ERROR -- writing unallocated object
+\end{lstlisting}
+\end{visibleenv}
 \end{frame}
 
 \begin{frame}[fragile,label=refMemVars]{reference member variables}

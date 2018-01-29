@@ -38,24 +38,55 @@
 \end{frame}
 \end{comment}
 
+\begin{comment}
 \begin{frame}[fragile,label=lastTime]{last time}
 \lstset{language=C++,style=small}
     \begin{itemize}
     \item arrays in C++
         \begin{itemize}
         \item \lstinline|int foo[100];|
-        \item \lstinline|int *foo = new int[100]; ... delete foo;|
+        \item \lstinline|int *foo = new int[100]; ... delete[] foo;|
         \item \lstinline|foo[42]|
         \end{itemize}
     \item references
         \begin{itemize}
         \item \lstinline|int &refToX = x;|
         \item \lstinline|refToX = valueToAssignToX;|
+        \item \lstinline|funcNeedingInt(refToX);|
         \item automatically dereferenced pointers
         \end{itemize}
-    \item started references as function arguments/pass
+    \item references as function arguments/pass (started)
     \end{itemize}
 \end{frame}
 
 \begin{frame}{SDAC note-taking assistence}
+    \begin{itemize}
+    \item Student Disability Access Center website ---
+        \begin{itemize}
+        \item \url{https://studenthealth.virginia.edu/sdac}
+        \item ``Notetaker Application'' link
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+\end{comment}
+
+\begin{frame}[fragile,label=lastTime]{last time}
+\lstset{language=C++,style=small}
+    \begin{itemize}
+    \item references to const
+    \item default methods and destructors
+        \begin{itemize}
+            \item \lstinline|Foo::Foo()| --- default constructor
+            \item \lstinline|Foo::Foo(const Foo& other)| --- copy constructor
+            \item \lstinline|Foo::~Foo()| --- destructors
+            \item \lstinline|Foo &Foo::operator=(const Foo& other)| --- assignment operator
+        \end{itemize}
+    \item overriding operators
+        \begin{itemize}
+            \item \lstinline|operator>>|, \lstinline|opreator<<| for \lstinline|cin|, \lstinline|cout|
+            \item \lstinline|operator+|, \lstinline|operator+=| for \lstinline|string|
+            \item \ldots
+        \end{itemize}
+    \item \lstinline|operator<<|, etc. as method or global function
+    \end{itemize}
 \end{frame}

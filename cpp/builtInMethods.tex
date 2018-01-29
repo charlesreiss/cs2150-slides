@@ -9,7 +9,7 @@ class Foo {};
     \item \texttt{Foo()} --- default constructor
     \item \texttt{Foo(const Foo\&)} --- copy constructor
     \item \texttt{\textasciitilde{}Foo()} --- destructor
-    \item \texttt{operator=(const Foo\&)} --- assignment operator
+    \item \texttt{Foo \&operator=(const Foo\&)} --- assignment operator
     \end{itemize}
     \item created by compiler, but you can override
 \end{itemize}
@@ -148,10 +148,8 @@ b.operator=(a);
 \node[] (foo) {
 \begin{lstlisting}
 // equivalent to default implementation:
-Rational::Rational(const Rational &other) {
-    // copy all member variables
-    den = other.den;
-    num = other.num;
+Rational::Rational(const Rational &other) 
+    : den(other.den), num(other.num) {
 }
 
 // equivalent to default implementation:
@@ -171,7 +169,9 @@ Rational &Rational::operator=(
 \end{frame}
 
 \begin{frame}[fragile,label=exampleCCImplDest]{default implementations (2)}
-\lstset{language=C++,style=smaller}
+\lstset{language=C++,style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    }
     \vspace{-.75cm}
 \begin{tikzpicture}
 \node[] (foo) {
@@ -179,9 +179,9 @@ Rational &Rational::operator=(
 class Foo { public: Foo(); ~Foo(); };
 Foo::Foo() { cout << "Foo::Foo()" << endl; }
 Foo::~Foo() { cout << "Foo::~Foo()" << endl; }
-class Bar { public: Foo x; };
+@1class Bar { public: Foo x; };1@
 int main() {
-    Bar local; 
+    Bar local;
     cout << "(1)\n";
     Bar *ptr = new Bar;  
     cout << "(2)\n";
@@ -208,7 +208,13 @@ Foo::~Foo()
 \end{frame}
 
 \begin{frame}[fragile,label=exampleCCImplDest2]{default implementations (3)}
-\lstset{language=C++,style=smaller}
+\lstset{language=C++,style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+    }
     \vspace{-.75cm}
 \begin{tikzpicture}
 \node[] (foo) {
@@ -216,7 +222,8 @@ Foo::~Foo()
 class Foo { public: Foo(); ~Foo(); };
 Foo::Foo() { cout << "Foo::Foo()" << endl; }
 Foo::~Foo() { cout << "Foo::~Foo()" << endl; }
-class Bar { public: Bar(); ~Bar(); Foo x; }; Bar::Bar() {} Bar::~Bar() {}
+class Bar { public: Bar(); ~Bar(); Foo x; };
+@1Bar::Bar() {} Bar::~Bar() {}1@
 int main() {
     Bar local; 
     cout << "(1)\n";
@@ -266,12 +273,13 @@ int main(void) {
 \node[draw,thick,anchor=north west,align=left] (error) at (foo.south west) {
 \lstset{language={}}
 \begin{lstlisting}
-example.cpp:10:9: error: no matching constructor for initialization of 'Foo'
+example.cpp:10:9: error: no matching constructor for
+                         initialization of 'Foo'
     Foo x;
 ....
 \end{lstlisting}
 };
-\node[below=0cm of error,align=left] {
+\node[align=left,anchor=north west]  at (error.south west){
     rule: \myemph{no implicit default constructor if there are others} \\
     can still explicitly write \lstinline|Foo() {}|
 };

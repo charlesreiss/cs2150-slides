@@ -1,0 +1,15 @@
+\begin{frame}{argument-dependent lookup}
+    \begin{itemize}
+        \item given {\tt foo(x, y, z)} where {\tt x} is an {\tt XNamespace::X}, etc.
+        \item C++ looks for {\tt foo} in: (not necessairily in this order)
+            \begin{itemize}
+            \item the current namespace
+            \item the global namespace
+            \item {\tt XNamespace}
+            \item {\tt YNamespace}
+            \item {\tt ZNamespace}
+            \item anything from using directives
+            \end{itemize}
+        \item {\tt x + y} is a like {\tt operator+(x, y)} for this purpose
+    \end{itemize}
+\end{frame}

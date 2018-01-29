@@ -40,20 +40,37 @@ int main() {
 \end{frame}
 
 
-\begin{frame}[fragile,label=opOverExs]{more operator overloading}
+\begin{frame}[fragile,label=opOverExs]{more operator overriding (1)}
 \lstset{language=C++,style=smaller}
 \begin{lstlisting}
+    // ostream &ostream::operator<<(const char*)
 cout << "Foo" << endl;
-
+    // istream &istream::operator>>(int&)
+cin >> number;
+\end{lstlisting}
+\hrule
+\begin{lstlisting}
+#include <string>
+using std::string;
+...
+    // string::string(const char*)
 string x = "This is the first part.";
-string y = x + " And this is the second part.";
+string y = " And this is the second part.";
 
+    // string string::operator+(const string&) const
+string y = x + z;
+
+    // string &string::operator+=(const char*)
+y += " And this is the third part.";
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=opOverExs2]{more operator overloading (2)}
+\begin{lstlisting}
 class Rational {
     ...
-    Rational operator*(const Rational& a,
-                       const Rational& b) const;
-    Rational operator+(const Rational& a,
-                       const Rational& b) const;
+    Rational operator*(const Rational& other) const;
+    Rational operator+(const Rational& other) const;
     ...
 };
 Rational x(2, 4), y(4, 5);
@@ -88,6 +105,7 @@ ostream &ostream::operator<<(int value) {
 \lstset{language=C++,style=smaller}
 \begin{lstlisting}
 #include <string>
+using std::cout; using std::string;
 ...
 string x = ...;  // like Java String class
 cout << x;
@@ -102,5 +120,3 @@ ostream& operator<<(ostream& out, const string &s) {
 }
 \end{lstlisting}
 \end{frame}
-
-
