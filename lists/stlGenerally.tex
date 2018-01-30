@@ -2,14 +2,14 @@
     \begin{itemize}
     \item STL = Standard Template Library
         \begin{itemize}
-        \item part of the standard library
-        \item (used to be seperate\ldots)
+        \item containers in the C++ standard library
+        \item (used to be seperate --- why it has its own name)
         \end{itemize}
     \item many list-like containers:
         \begin{itemize}
         \item \texttt{vector} --- dynamic array class
         \item \texttt{string}
-        \item \texttt{list}, \texttt{slist} --- doubly-, and singly-linked list
+        \item \texttt{list} --- doubly-linked list
         \item \texttt{map}, \texttt{hash\_map}
         \item \texttt{stack}
         \item \texttt{deque} --- double-ended queue
@@ -40,5 +40,24 @@
             \begin{itemize}
             \item certianly what to do in a job
             \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{standard library documentation}
+    \begin{itemize}
+    \item my recommendation: \url{http://en.cppreference.com/} -
+        \begin{itemize}
+        \item NB: we won't be using C++14/17/20 features
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=secTemp]{secret templates}
+    \begin{itemize}
+    \item \lstinline|std::string| = \lstinline|std::basic_string<char>|
+    \item \lstinline|std::ostream| = \lstinline|std::basic_ostream<char>|
+    \begin{itemize}\item what \texttt{cout} is\end{itemize}
+    \item \lstinline|std::istream| = \lstinline|std::basic_istream<char>|
+    \begin{itemize}\item what \texttt{cin} is\end{itemize}
     \end{itemize}
 \end{frame}

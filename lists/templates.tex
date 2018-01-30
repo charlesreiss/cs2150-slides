@@ -1,9 +1,13 @@
-\begin{frame}{templates}
+\begin{frame}[fragile,label=templateIntro]{templates}
+\lstset{
+    language=C++,
+    style=small,
+}
     \begin{itemize}
     \item \textit{templates} --- C++'s equivalent to \textit{generics}
     \vspace{.5cm}
     \item idea --- code with `fill in the blank'
-    \item compiler genreates seperate version for each blank
+    \item compiler generates \myemph{seperate version} for each blank
     \end{itemize}
 \end{frame}
 
@@ -28,7 +32,7 @@ const @3Comparable3@& findMax(const vector<@3Comparable3@> &a)
 \end{lstlisting}
 \hrule
 \begin{lstlisting}
-vector<int> v1(37);  cout << findMax(v1) << endl;
+vector<int> v1(37); ... cout << findMax(v1) << endl;
 \end{lstlisting}
 \begin{visibleenv}<2->
 \hrule
@@ -44,6 +48,42 @@ const @3int3@& findMax(const vector<@3int3@> &a) {
 \end{frame}
 
 \begin{frame}[fragile,label=findMax2]{template example: findMax.cpp (2)}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+template <typename Comparable>
+const @3Comparable3@& findMax(const vector<@3Comparable3@> &a)
+{
+  int maxIndex = 0; 
+  for( int i = 1; i < a.size(); i++ ) 
+    if( a[ maxIndex ] < a[ i ] ) maxIndex = i; 
+  return a[ maxIndex ]; 
+}
+\end{lstlisting}
+\hrule
+\begin{lstlisting}
+vector<string> v1(37); ... cout << findMax(v1) << endl;
+\end{lstlisting}
+\begin{visibleenv}<2->
+\hrule
+\begin{lstlisting}
+const @3string3@& findMax(const vector<@3string3@> &a) {
+  int maxIndex = 0; 
+  for( int i = 1; i < a.size(); i++ ) 
+    if( a[ maxIndex ] < a[ i ] ) maxIndex = i; 
+  return a[ maxIndex ]; 
+}
+\end{lstlisting}
+\end{visibleenv}
+\end{frame}
+
+\begin{frame}[fragile,label=findMax3]{template example: findMax.cpp (3)}
 \lstset{
     language=C++,
     style=smaller,
@@ -80,15 +120,21 @@ const IntCell& findMax(const vector<IntCell> &a) {
 \begin{tikzpicture}[overlay,remember picture]
 \coordinate (place) at ([yshift=5cm]current page.south);
 \tikzset{
-    box/.style={at=(place),draw=red,very thick,fill=white,align=left}
+    box/.style={at=(place),draw=red,very thick,fill=white,align=left,inner sep=2mm}
 }
 \begin{visibleenv}<3>
 \node[box] {
-    compile error (unless \lstinline|IntCell::operator<| created)! \\
-    can't use \lstinline|<| on \lstinline|IntCell|
+    compile error until \lstinline|IntCell::operator<| created!
 };
 \end{visibleenv}
 \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{generating template}
+    \begin{itemize}
+    \item exact same effect as replacing the typename everywhere
+    \item compiler only \myemph{creates versions that are used}
+    \end{itemize}
 \end{frame}
 
 
@@ -242,15 +288,13 @@ int main() {
 \begin{visibleenv}<2->
     \node[draw=red,align=left,ultra thick,fill=white] at ([xshift=1.5cm]codeTwo.center) {
     this is a \myemph{linker error}: \\
-\begin{lstlisting}
+\begin{lstlisting}[language={}]
 $ clang++  test.cpp findmax.cpp
 /tmp/test-d6d266.o: In function 'main':
-test.cpp:(.text+0xd): undefined
-    reference to 'findMax<int>()'
+test.cpp:(.text+0xd): undefined reference to 'findMax<int>()'
 \end{lstlisting} \\
-compiler \myemph{needs implementation available} \\
 ~ \\
-\myemph{required} to have imlpementation included in each .cpp file
+    \myemph{required} to have \textit{implementation} \myemph{included in each .cpp file}
 };
 \end{visibleenv}
 \end{tikzpicture}

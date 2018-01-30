@@ -26,20 +26,20 @@ cout << example[0] << " "
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile,label=vectMeth]{vector methods: accessing elements}
+\begin{frame}[fragile,label=vectMeth]{vector member functions: accessing elements}
 \lstset{
     language=C++,
     style=small
 }
 \begin{itemize}
 \item given \lstinline|vector<Type>|
-\item \lstinline|Type &operator[](int index)|
+\item \lstinline|Type &vector<Type>::operator[](int index)|
     \begin{itemize}
     \item may or may not crash if \lstinline|index| out of bounds
     \item \lstinline|cout << someVector[idx]|
     \item \lstinline|someVector[idx] = value;|
     \end{itemize}
-\item \lstinline|Type &at(int index)|
+\item \lstinline|Type &vector<Type>::at(int index)|
     \begin{itemize}
         \item throws exception if \lstinline|index| out of bounds
         \item \lstinline|cout << someVector.at(idx)|
@@ -50,7 +50,7 @@ cout << example[0] << " "
 \end{itemize}
 \end{frame}
 
-    \begin{frame}[fragile,label=vectMethConst]{vector methods: const variants}
+    \begin{frame}[fragile,label=vectMethConst]{vector member functions: const variants}
 \lstset{
     language=C++,
     style=small
@@ -75,7 +75,7 @@ example.front() = 5; // OKAY
 \end{itemize}
 \end{frame}
 
-    \begin{frame}[fragile,label=vectMethSize]{vector methods: size and capacity}
+    \begin{frame}[fragile,label=vectMethSize]{vector member functions: size and capacity}
 \lstset{
     language=C++,
     style=small
@@ -90,7 +90,7 @@ example.front() = 5; // OKAY
 \end{frame}
 
 
-\begin{frame}[fragile,label=vectMethApp]{vector methods: append/prepend}
+\begin{frame}[fragile,label=vectMethApp]{vector member functions: append/prepend}
 \lstset{
     language=C++,
     style=small

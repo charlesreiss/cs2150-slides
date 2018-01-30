@@ -20,6 +20,7 @@
 \path[point] (theStack-1-1.west) -- ++(-1cm,0cm) node[left] {`top'};
 \path[point] (theStack-7-1.west) -- ++(-1cm,0cm) node[left] {`bottom'};
 
+\begin{visibleenv}<2->
     \matrix[stack] (afterPush) at ([xshift=4cm,yshift=2cm]theStack) {
     |[isTop]| X \\
     A \\
@@ -47,10 +48,11 @@
         node[align=center,black,midway,sloped,above=1.5mm,font=\bfseries] {pop};
 
     \path[point] (afterPop-1-1.east) -- ++(1cm,0cm) node[right] {new `top'};
+\end{visibleenv}
 
-\begin{visibleenv}<2>
-    \node[align=left,above=.25cm of theStack,draw=red,thick] {
-        operations only access/manipulate \\
+\begin{visibleenv}<3>
+    \node[align=left,above=1cm of theStack,draw=red,thick] {
+        operations only access \\
         \textit{top} of stack \\
         (rest is hidden)
     };

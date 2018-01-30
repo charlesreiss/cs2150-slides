@@ -13,7 +13,7 @@
     style=smaller,
 }
 \begin{itemize}
-\item methods within vector:
+\item methods within \lstinline|vector<T>|:
     \begin{itemize}
     \item \lstinline|iterator begin()|
     \item \lstinline|iterator end()| --- one past end
@@ -46,24 +46,24 @@ for (vector<int>::iterator it = v.begin();
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile,label=moreItMethods]{methods that take iterators}
+\begin{frame}[fragile,label=moreItMethods]{member functions that take iterators}
 \lstset{
     language=C++,
     style=smaller
 }
 \begin{itemize}
-\item (assuming \lstinline|vector<Type>|\ldots)
-\item \lstinline|iterator insert(iterator pos, const Type &x)|
+\item (assuming \lstinline|vector<T>|\ldots)
+\item \lstinline|iterator vector<T>::insert(iterator pos, const T &x)|
 \begin{itemize}
     \item insert \textit{before} \texttt{pos}
     \item return iterator pointing to position of inserted element
     \item O(N) unless \texttt{pos} is the end
 \end{itemize}
-\item \lstinline|iterator erase(iterator pos)| 
+\item \lstinline|iterator vector<T>::erase(iterator pos)| 
     \begin{itemize}
     \item return iterator pointing to position after the end
     \end{itemize}
-\item \lstinline|iterator erase(iterator start, iterator end)| 
+\item \lstinline|iterator vector<T>::erase(iterator start, iterator end)| 
     \begin{itemize}
         \item erase from \texttt{start} up to \textit{and not including} \texttt{end}
     \end{itemize}
@@ -115,7 +115,7 @@ void brokenAddOne(@1const1@ vector<int> &v) {
     }
 }
 
-void working(vector<int> &v) {
+void workingAddOne(vector<int> &v) {
     for (vector<int>::@1iterator1@ it = v.begin();
          it != v.end();
          ++it) {
