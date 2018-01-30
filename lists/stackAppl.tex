@@ -1,9 +1,10 @@
-\begin{frame}[fragile,label=stackAppl]{some stack applications}
+\begin{frame}<1-4>[fragile,label=stackAppl]{some stack applications}
     \begin{itemize}
-    \item \myemph<2>{undo}
-    \item \myemph<3>{operator precedence}
-    \item parenthesis matching
-    \item tracking (recursive) function calls
+    \item \myemph<2-3>{undo}
+    \item \myemph<4-5>{parenthesis matching}
+    \item \myemph<6-7>{postfix calculators}
+    \item \myemph<8-9>{operator precedence}
+    \item \myemph<10>{tracking (recursive) function calls}
     \end{itemize}
 \begin{tikzpicture}[overlay,remember picture]
 \tikzset{
@@ -15,7 +16,7 @@
     isTop/.style={},
 };
 \coordinate (anchor) at ([xshift=3.5cm]current page.center);
-\begin{visibleenv}<2>
+\begin{visibleenv}<3>
 \matrix[stackS] (undoStack) at (anchor){
     |[isTop]| insert ``rest of the paragraph.'' at character 262 \\
     delete ``end of it.'' at character 262 \\
@@ -37,5 +38,101 @@
     };
     \node[fit = (textEditBox) (title),inner sep=0mm,very thick,draw] {};
 \end{visibleenv}
+\begin{visibleenv}<5>
+\matrix[stack] (parenStack) at (anchor) {
+    \tt \myemph{(} \\
+    \tt [ \\
+    \tt \{ \\
+};
+\node[anchor=north east,inner sep=.25mm] (expr2) at ([yshift=-1cm]parenStack.south east) {
+    \tt \myemph{)} ] \} \strut
+};
+\node[anchor=base east,text=blue!70!black,inner sep=.25mm] (expr1) at (expr2.base west) {
+    \tt \{ [ ( 
+};
+\node[anchor=north east,text=blue!70!black,inner sep=.25mm] (expr1B) at ([yshift=-1cm]expr1.south east) {
+    \tt ( [ \{ 
+};
+\node[anchor=base west,text=blue!70!black,inner sep=.25mm] (expr2B) at (expr1B.base east) {
+    \tt \myemph{\}} ) ]
+};
+\node[inner sep=0mm,fit=(expr1) (expr2),draw=green,ultra thick] {};
+\node[inner sep=0mm,fit=(expr1B) (expr2B),draw=red,ultra thick] {};
+\end{visibleenv}
+\begin{visibleenv}<9>
+\matrix[stack] (shuntStack) at (anchor) {
+    \tt ( \\
+    \tt / \\
+    \tt + \\
+};
+\node[anchor=north west,inner sep=.25mm] (expr2) at (shuntStack.south west) {
+    \tt + E) + F \strut
+};
+\node[anchor=north east,text=blue!70!black,inner sep=.25mm] (expr1) at (expr2.north west) {
+    \tt A \myemph{+} B * C \myemph{/} \myemph{(}D  \strut
+};
+\node[inner sep=0mm,fit=(expr1) (expr2),draw,thick] {};
+\node[anchor=north west] (exprOut1) at (expr1.south west) {
+    \tt A B C * D
+};
+\node[anchor=north west,text=black!50] (exprOut1) at (exprOut1.north east) {
+    \tt E + / + F +
+};
+\end{visibleenv}
 \end{tikzpicture}
 \end{frame}
+
+\begin{frame}{parenthsis matching}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    point/.style={draw,very thick,<-},
+    change/.style={black!50,draw,line width=2mm,->},
+    stack/.style={tight matrix,nodes={draw,thick,align=center,text width=4cm}},
+    stackS/.style={tight matrix,nodes={draw,thick,align=center,text width=4cm,font=\small}},
+    isTop/.style={},
+};
+\matrix[stack] (parenStack) {
+    \tt \only<4-5>{\sout<5>{\myemph<4,5>{(}}}\only<6-7>{\sout<7>{\myemph<6-7>{[}}}\only<8-9>{\myemph<8,9>{\sout<9>{(}}} \\
+    \tt \only<3->{\textbf<10>{\myemph<3>{[}}} \\
+    \tt \only<2->{\myemph<2>{\{}} \\
+};
+\node[anchor=north east,inner sep=.25mm] (expr2) at ([yshift=-1cm]parenStack.south east) {
+    \tt \myemph<2->{\{} \myemph<3->{[} \myemph<4->{(} \myemph<5->{)} \myemph<6->{[} \myemph<7->{]} \myemph<8->{(} \myemph<9->{)} \textbf<10->{\color{green!50!black}\}}
+};
+\node[right=.5cm of expr2,visible on=<11->] { mismatched! };
+\node[anchor=north west,inner sep=.25mm,visible on=<11>] (expr3) at ([yshift=-1cm]expr2.south west) {
+    \tt \{ [ ( ) [ ] ( ) \textbf{\color{green!50!black}] \}}
+};
+\end{tikzpicture}
+\end{frame}
+
+\againframe<6>{stackAppl}
+
+\begin{frame}{postfix calculations}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    point/.style={draw,very thick,<-},
+    change/.style={black!50,draw,line width=2mm,->},
+    stack/.style={tight matrix,nodes={draw,thick,align=center,text width=4cm}},
+    stackS/.style={tight matrix,nodes={draw,thick,align=center,text width=4cm,font=\small}},
+    isTop/.style={},
+};
+\matrix[stack] (stack) {
+    \only<5-6>{8} \\
+    \only<5-6>{7}\only<7-8>{$\frac{7}{8}$} \\
+    \only<2-3>{7}\only<5-8>{4}\only<9-10>{$\frac{7}{2}$} \\
+    \only<2-3>{3}\only<4->{21}\only<11>{$\frac{49}{2}$} \\
+};
+\node[draw,anchor=north east,inner sep=.25mm] (exprInfix) at ([yshift=-2cm]stack.south east) {
+    \tt (3 * 7) + (4 * (7 / 8))
+};
+\node[draw,anchor=north east,inner sep=.25mm] (exprPostfix) at ([yshift=-1cm]stack.south east) {
+    \tt \myemph<2>{3 7} \myemph<3-4>{*} \myemph<5>{4 7 8} \myemph<6-7>{/} \myemph<8-9>{*} \myemph<10-11>{+}
+};
+\draw[-Latex,line width=.5mm] (exprInfix) -- (exprPostfix);
+\end{tikzpicture}
+\end{frame}
+
+\againframe<8-10>{stackAppl}
