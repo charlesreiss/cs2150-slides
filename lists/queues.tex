@@ -60,6 +60,14 @@
 \end{itemize}
 \end{frame}
 
+\begin{frame}{queue applications}
+    \begin{itemize}
+    \item print queue --- waiting line of print jobs
+    \item web servers --- waiting line of web brwoser
+    \item \ldots
+    \end{itemize}
+\end{frame}
+
 \begin{frame}[fragile,label=arrayQueue]{array-based queue of ints}
 \lstset{
     language=C++,
@@ -151,7 +159,7 @@ public:
   int dequeue();
   bool isEmpty() const;
 private:
-  QueueNode *head, *tail;
+  QueueNode *front, *back;
 };
 \end{lstlisting}
 };
@@ -184,4 +192,46 @@ isEmpty()
         coordinate (forNull);
     \path (forNull) pic {null};
 \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=llEnqueue]{linked-list queue: enqueue}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+class Queue {
+    ...
+    QueueNode *front, *back;
+};
+
+void Queue::enqueue(int value) {
+    // one implementation: insert at back
+    QueueNode *node = new QueueNode;
+    node->value = value;
+    if (back) {
+        back->next = node;
+        back = node;
+    } else {
+        // other case?
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile,label=llDequeue]{linked-list queue: dequeue}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+class Queue {
+    ...
+    QueueNode *front, *back;
+};
+
+void Queue::dequeue() {
+    if (front) {
+        front = front->next;
+        return ...
+    } else {
+        // other case?
+    }
+}
+\end{lstlisting}
 \end{frame}

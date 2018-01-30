@@ -9,6 +9,7 @@
 \end{itemize}
 \end{frame}
 
+
 \begin{frame}{implementing ADT options}
     \begin{itemize}
     \item C++ or Java class
@@ -26,6 +27,34 @@
         \item multiple reasonable implementations
         \item same interface
     \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile,label=stackAdt]{C++ standard library: stack ADT?}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{itemize}
+\item \texttt{stack} in C++ standard library
+\item wrapper for several containers
+    \begin{itemize}
+    \item default: deque (double-ended queue)
+    \item linked list
+    \item vector
+    \item \ldots
+    \end{itemize}
+\item \myemph{one generic interface!}
+\end{itemize}
+\begin{lstlisting}
+stack<int> s1;
+    // stack based on deque
+stack<int, vector<int> > s2;
+    // stack based on vector
+stack<int, forward_list<int> > s3;
+    // stack based on singly-linked list
+...
+\end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile,label=listAdt]{list ADT operations}
@@ -98,6 +127,5 @@ insert/erase (with index at end) & constant time & linear time \\
 insert/erase (with iterator) & linear time & constant time \\
 \end{tabular}
     (* fixed-capacity array)
-\\~\\
-    \only<2->{lab --- implement linked list}
 \end{frame}
+
