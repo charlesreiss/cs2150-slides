@@ -1,11 +1,10 @@
 \begin{frame}{abstract data type}
 \begin{itemize}
-\item definition: collection of operations \\
+\item definition: \myemph{collection of operations} \\
       that can be done on data structure
 \vspace{.5cm}
 \item<2-> hide \myemph{implementation details} from (library) users
-\item<2-> library can change implementation without library user code changing
-\item<2-> functions can be written atop C function with that
+\item<2-> library can change without library users changing code
 \end{itemize}
 \end{frame}
 
@@ -24,8 +23,8 @@
         \item queues
         \item lists
             \vspace{.5cm}
-        \item multiple reasonable implementations
-        \item same interface
+        \item \textit{multiple reasonable implementations}
+        \item \textit{single set of operations}
     \end{itemize}
 \end{frame}
 
@@ -47,12 +46,9 @@
 \item \myemph{one generic interface!}
 \end{itemize}
 \begin{lstlisting}
-stack<int> s1;
-    // stack based on deque
-stack<int, vector<int> > s2;
-    // stack based on vector
-stack<int, forward_list<int> > s3;
-    // stack based on singly-linked list
+stack<int> s1; // stack based on deque
+stack<int, vector<int> > s2; // stack based on vector
+stack<int, forward_list<int> > s3; // stack based on singly-linked list
 ...
 \end{lstlisting}
 \end{frame}

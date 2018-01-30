@@ -56,7 +56,7 @@
 \item queue --- first-in, first-out (FIFO)
 \item stack --- last-in, first-out (LIFO)
 \vspace{.5cm}
-\item both have linked list, array-based implementations
+\item both have linked list and array-based implementations
 \end{itemize}
 \end{frame}
 
@@ -95,6 +95,7 @@ private:
 };
 \end{lstlisting}
 };
+\begin{visibleenv}<2->
 \node[draw,anchor=north west] at ([xshift=-2cm,yshift=1.5cm]queueCode.north east) {
 \begin{lstlisting}
 void Queue::enqueue(int value) {
@@ -105,6 +106,8 @@ void Queue::enqueue(int value) {
 }
 \end{lstlisting}
 };
+\end{visibleenv}
+\begin{visibleenv}<3->
 \node[draw,anchor=north west] at ([xshift=-2cm,yshift=-3cm]queueCode.north east) {
 \begin{lstlisting}
 int Queue::dequeue() {
@@ -116,6 +119,7 @@ int Queue::dequeue() {
 }
 \end{lstlisting}
 };
+\end{visibleenv}
 \end{tikzpicture}
 \end{frame}
 

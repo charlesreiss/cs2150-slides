@@ -11,7 +11,7 @@
     >=Latex,
     point/.style={draw,very thick,<-},
     change/.style={black!50,draw,line width=2mm,->},
-    stack/.style={tight matrix,nodes={draw,thick,align=center,text width=4cm}},
+    stack/.style={tight matrix,nodes={draw,thick,align=center,minimum height=.6cm,text width=4cm}},
     stackS/.style={tight matrix,nodes={draw,thick,align=center,text width=4cm,font=\small}},
     isTop/.style={},
 };
@@ -60,16 +60,17 @@
 \node[inner sep=0mm,fit=(expr1B) (expr2B),draw=red,ultra thick] {};
 \end{visibleenv}
 \begin{visibleenv}<9>
-\matrix[stack] (shuntStack) at (anchor) {
+\matrix[stack,nodes={text width=1cm}] (shuntStack) at ([xshift=-2cm,yshift=-1cm]anchor) {
     \tt ( \\
     \tt / \\
     \tt + \\
 };
-\node[anchor=north west,inner sep=.25mm] (expr2) at (shuntStack.south west) {
+\node[right=0cm of shuntStack] {unfinished operators};
+    \node[anchor=north west,inner sep=.25mm] (expr2) at ([yshift=-.5cm]shuntStack.south west) {
     \tt + E) + F \strut
 };
 \node[anchor=north east,text=blue!70!black,inner sep=.25mm] (expr1) at (expr2.north west) {
-    \tt A \myemph{+} B * C \myemph{/} \myemph{(}D  \strut
+    \tt A \myemph{+} \color{blue!70!black} B * C \myemph{/} \myemph{(}\color{blue!70!black}D  \strut
 };
 \node[inner sep=0mm,fit=(expr1) (expr2),draw,thick] {};
 \node[anchor=north west] (exprOut1) at (expr1.south west) {
@@ -82,8 +83,8 @@
 \end{tikzpicture}
 \end{frame}
 
-\begin{frame}[fragile,label=parenMatching]{parenthsis matching}
-\renewcommand<>{\myemph}[1]{\color#2{green!50!black}}
+\begin{frame}[fragile,label=parenMatching]{parenthesis matching}
+    \renewcommand<>{\myemph}[1]{{\color#2{green!40!black}\bfseries#1}}
 \begin{tikzpicture}
 \tikzset{
     >=Latex,
