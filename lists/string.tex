@@ -1,23 +1,79 @@
-\begin{frame}[fragile,label=cppStr]{C++ strings}
-    \lstset{
-        language=C++,
-        style=smaller
-    }
+\begin{frame}[fragile,label=cppStr]{C++ strings (1)}
+\lstset{
+    language=C++,
+    style=small
+}
 \begin{lstlisting}
 #include <string>
 ...
-    std::string s, s2;
+    std::string s = "example";
+
 // Mostly same as vector<char>:
-    s.size() == size.length()
-    s.at(index), s[index]
+    s.size() == 8
+    s.at(3) == 'm'
+    s[3] == 'm'
+    s[0] = 'E'  // string becomes "Example"
 
-// Additional operations:
-    s = "some string constant";
-    s += "additional text";
-    const char *c_style_string = s.c_str();
-    cout << s.substr(1, 3);  // output: ome
-
-    if (s == s2) { ... }
+    for (string::iterator it = s.begin();
+         it != s.end(); ++it) {
+        char c = *it;
+    }
 \end{lstlisting}
 \end{frame}
 
+\begin{frame}[fragile,label=cppStrAddtl]{C++ strings (2)}
+\lstset{
+    language=C++,
+    style=small
+}
+\texttt{string} operations not supported by {\tt vector}:
+\begin{lstlisting}
+    s = "some string constant";
+    s += "additional text";
+    const char *c_style_string = s.c_str();
+    cout << s;
+        // output: some string constantadditional text
+    cout << s.substr(1, 3);  // output: ome
+
+    if (s == s2) { ... }
+    if (s < s2) { ... }
+    ...
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{a brief note on string constants}
+\lstset{
+    language=C++,
+    style=small
+}
+    \begin{itemize}
+        \item string constants are \myemph{pointers to const char arrays}
+    \end{itemize}
+\begin{lstlisting}
+const char *hello = "Hello, World!";
+// BROKEN:
+if (hello == "Hello, World!") {
+    // MAY OR MAY NOT BE TRUE
+    // compares addresses and NOT string values
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{string constants and std::strings}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{lstlisting}
+string helloString = "Hello, World!";
+    // uses string::string(const char*)
+
+if (helloString == "Hello, World!") {
+    // calls operator==(const string&, const char*)
+}
+
+if ("Hello, World!" == helloString) {
+    // calls operator==(const char*, const string&)
+}
+\end{lstlisting}
+\end{frame}
