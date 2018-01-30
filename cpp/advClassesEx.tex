@@ -291,7 +291,7 @@ calling ~test() on test[id=0,v=2]@0xe91c20
 % FIXME: copy constructor
 
 
-\begin{frame}[fragile,label=testbar]{function call}
+\begin{frame}[fragile,label=testbar]{function call (1)}
 \lstset{
     language=C++,
     style=smaller,
@@ -331,9 +331,9 @@ calling ~test() on @3test[id=1,v=10]@0x7ffcea9375303@
     box/.style={draw=red,very thick,at=(place),align=left,fill=white},
 }
     \begin{visibleenv}<3>
-        \node[box] {return value optimization: \\
-                    compiler omitted copy constructor call \\
-                    (but could have included it)};
+        \node[box] {``return value optimization'' or ``copy elision'': \\
+                    compiler omitted copy constructor call for \texttt{e} \\
+                    (created return value directly inside \texttt{e})};
     \end{visibleenv}
     \begin{visibleenv}<4>
         \node[box] {very different addresses for local vars \\ versus {\tt new}'d objects};

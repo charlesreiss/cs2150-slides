@@ -67,12 +67,13 @@ ref[2] = 3;     // ERROR: const reference
 example.at(2) = 3;  // OKAY
 example.front() = 5; // OKAY
 \end{lstlisting}
-\begin{itemize}
-\item \lstinline|const Type &operator[](int index) const|
-\item \lstinline|const Type &at(int index) const|
-\item \lstinline|const Type &front() const|
-\item \lstinline|const Type &back() const|
-\end{itemize}
+\hrule
+\begin{lstlisting}
+const Type &operator[](int index) const;
+const Type &at(int index) const;
+const Type &front() const;
+const Type &back() const;
+\end{lstlisting}
 \end{frame}
 
     \begin{frame}[fragile,label=vectMethSize]{vector member functions: size and capacity}
