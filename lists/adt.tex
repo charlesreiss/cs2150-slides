@@ -105,23 +105,24 @@ find(52) == a3
 find(2) == a6
     // not found
 
-insert('x', 2) 
-    // becomes {34,12,'x',52,16,12}
+insert(9999, 2) 
+    // becomes {34,12,9999,52,16,12}
 
 remove(52)
 \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile,label=listComplexity]{ADT complexity}
-\small
 \begin{tabular}{l|ll}
     operation & array* & \myemph<2>{linked list} \\ \hline
 find (by value) &  linear time & linear time \\
 findKth (by index) & constant time & linear time \\
+first or last & constant time & constant time \\
 insert/erase (with index) & linear time & linear time \\
 insert/erase (with index at end) & constant time & linear time \\
 insert/erase (with iterator) & linear time & constant time \\
 \end{tabular}
+\\
     (* fixed-capacity array)
 \end{frame}
 
