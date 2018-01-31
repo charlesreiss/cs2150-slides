@@ -107,12 +107,12 @@ ostream &ostream::operator<<(int value) {
 \lstset{language=C++,style=smaller}
 \begin{lstlisting}
 #include <string>
-using std::cout; using std::string;
+using std::cout; using std::string; using std::endl;
 ...
 string x = ...;  // like Java String class
-cout << x;
+cout << x << x << endl;
 // same as:
-operator<<(cout, x);
+operator<<(operator<<(cout, x), x).operator<<(endl);
 \end{lstlisting}
 \hrule
 \begin{lstlisting}

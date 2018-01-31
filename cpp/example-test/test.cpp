@@ -24,8 +24,7 @@ test::~test() {
 
 test& test::operator=(const test& other) {
     cout << "calling operator=(" << other << ")" << endl;
-    test *tmp = new test(other);
-    return *tmp;
+    return *this;
 }
 
 ostream& operator<<(ostream& out, const test& f) {

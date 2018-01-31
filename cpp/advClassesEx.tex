@@ -1,13 +1,13 @@
 \begin{frame}[fragile,label=overExOver]{C++ combined example}
     \begin{itemize}
     \item test class to demo constructors, operator=, etc.
-    \item single file with all examples for test class: cpptest.cpp
+    \item single file (slides page in git) with all examples for test class: \texttt{cpptest.cpp}
     \item this lecture: in independent pieces
     \end{itemize}
 \end{frame}
 
 
-\begin{frame}[fragile,label=overEx]{C++ combined example (test.h)}
+\begin{frame}[fragile,label=overEx]{C++ combined example (.h)}
 \lstset{
     language=C++,
     style=smaller,
@@ -28,7 +28,7 @@ class test {
     ~test();
     test& operator=(const test& other);
     friend @3ostream& operator<<3@(ostream& out,
-                                 const test& f);
+                               const test& f);
 };
 \end{lstlisting}
 \begin{tikzpicture}[overlay,remember picture]
@@ -64,8 +64,9 @@ ostream &operator<<(ostream &out, const test &f) {
   @5return out;5@
 }
 
-test::test(const test& x) : id(x.id), @3value(x.value)3@ {
-  cout << "calling test(" << x <<"); object created is " << *this << endl;
+test::test(const test& x) : @3id(x.id)3@, value(x.value) {
+  cout << "calling test(" << x <<"); object created is " << *this
+       << endl;
 }
 
 test &@4test::operator=4@(const test &other) {
@@ -97,7 +98,7 @@ test &@4test::operator=4@(const test &other) {
 
 % FIXME: show constructors?
 
-\begin{frame}[fragile,label=testtrivial]{trivial test object}
+\begin{frame}[fragile,label=testtrivial]{trivial test object (1)}
 \lstset{
     language=C++,
     style=smaller,
@@ -121,14 +122,13 @@ int main() {
     }
 \begin{lstlisting}
 about to create aa
-@2calling test(); object created is2@
-     @2test[id=0,v=0]@0x7ffc82ba94402@
+@2calling test(); object created is2@ @2test[id=0,v=0]@0x7ffc82ba94402@
 aa is: test[id=0,v=0]@0x7ffc82ba9440
 @3calling ~test() on test[id=0,v=0]@0x7ffc82ba94403@
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile,label=usingTest2]{trivial test object}
+\begin{frame}[fragile,label=usingTest2]{trivial test object (2)}
 \lstset{
     language=C++,
     style=smaller,
@@ -141,7 +141,7 @@ int main() {
     cout << "about to create b" << endl;
     @2test b(1);2@
     cout << "b is: " << b << endl;
-    return 0;
+    @3return 0;3@
 }
 \end{lstlisting}
 \hrule
@@ -151,15 +151,14 @@ int main() {
     moredelim={**[is][\btHL<all:4>]{@4}{4@}},
     }
 \begin{lstlisting}
-about to create aa
-@2calling test(); object created is2@
-    @2test[id=0,v=0]@0x7ffed5659d702@
-aa is: test[id=0,v=0]@0x7ffed5659d70
-calling ~test() on test[id=0,v=0]@0x7ffed5659d70
+about to create b
+@2calling test(1); object created is test[id=0,v=1]@0x7fffb14385902@
+b is: test[id=0,v=1]@0x7fffb1438590
+@3calling ~test() on test[id=0,v=1]@0x7fffb14385903@
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile,label=gotcha]{gotcha: Type foo() makes no Type}
+\begin{frame}[fragile,label=gotcha]{gotcha: Object foo() makes no Object}
 \lstset{
     language=C++,
     style=smaller,
@@ -179,7 +178,7 @@ int main() {
 ``a is: 1''
 \end{frame}
 
-\begin{frame}[fragile,label=gotchaWarnings]{Type foo(): warnings}
+\begin{frame}[fragile,label=gotchaWarnings]{Object foo(): warnings}
 \lstset{language={},style=smaller,
     moredelim={**[is][\btHL<all:2>]{@2}{2@}},
     moredelim={**[is][\btHL<all:3>]{@3}{3@}},
@@ -187,7 +186,7 @@ int main() {
     }
 \begin{lstlisting}
 $ clang++ -Wall -pedantic -o testgotcha \
-                 testgotcha.cpp test.cpp -I.
+                 testgotcha.cpp test.cpp
 testgotcha.cpp:7:11: warning: empty parentheses
                     interpreted as a function
                     declaration [-Wvexing-parse]
@@ -224,7 +223,7 @@ int main() {
     // output: 42
     return 0;
 }
-int foo() { return x * 2; }
+int foo(int x) { return x * 2; }
 \end{lstlisting}
 \end{frame}
 
@@ -291,7 +290,7 @@ calling ~test() on test[id=0,v=2]@0xe91c20
 % FIXME: copy constructor
 
 
-\begin{frame}[fragile,label=testbar]{function call (1)}
+\begin{frame}[fragile,label=testbar]{function call}
 \lstset{
     language=C++,
     style=smaller,
@@ -339,4 +338,41 @@ calling ~test() on @3test[id=1,v=10]@0x7ffcea9375303@
         \node[box] {very different addresses for local vars \\ versus {\tt new}'d objects};
     \end{visibleenv}
 \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=testassign]{assignment}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+int main() {
+    test b(1);
+    test aa;
+    cout << "b is: " << b << endl;
+    cout << "aa is: " << aa << endl;
+    @2aa = b;2@
+    cout << "aa is: " << aa << endl;
+    return 0;
+}
+\end{lstlisting}
+\hrule
+\lstset{language={},style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    }
+\begin{lstlisting}
+calling test(1); object created is test[id=0,v=1]@0x7ffc153722a0
+calling test(); object created is test[id=1,v=0]@0x7ffc15372298
+b is: test[id=0,v=1]@0x7ffc153722a0
+aa is: @3test[id=1,v=0]@0x7ffc153722983@
+@2calling operator=(test[id=0,v=1]@0x7ffc153722a0)2@
+aa is: @3test[id=1,v=0]@0x7ffc153722983@
+calling ~test() on test[id=1,v=0]@0x7ffc15372298
+calling ~test() on test[id=0,v=1]@0x7ffc153722a0
+\end{lstlisting}
 \end{frame}
