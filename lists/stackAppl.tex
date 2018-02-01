@@ -65,7 +65,7 @@
     \tt / \\
     \tt + \\
 };
-\node[right=0cm of shuntStack] {unfinished operators};
+\node[right=0cm of shuntStack,align=left] {stack of \\ unfinished operators};
     \node[anchor=north west,inner sep=.25mm] (expr2) at ([yshift=-.5cm]shuntStack.south west) {
     \tt + E) + F \strut
 };
@@ -128,7 +128,7 @@
     \only<2-3>{3}\only<4-10>{21}\only<11>{49/2} \\
 };
 \node[draw,anchor=north east,dotted] (exprInfix) at ([xshift=2cm,yshift=-4cm]stack.south east) {
-    \tt (3 * 7) + (4 * (7 / 8))
+    \tt (\myemph<3-4>{\myemph<2>{3} * \myemph<2>{7}}) \myemph<10-11>{+} (\myemph<5>{4} \myemph<8-9>{*} \myemph<6-7>{(\myemph<5>{7} / \myemph<5>{8})})
 };
 \node[right=.25cm of exprInfix] {infix expression};
 \node[draw,anchor=north east] (exprPostfix) at ([yshift=-1cm]stack.south east) {

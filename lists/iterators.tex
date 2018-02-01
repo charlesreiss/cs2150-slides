@@ -37,12 +37,14 @@
 }
 \begin{lstlisting}
 vector<int> v;
+v.push_back(1); v.push_back(2); v.push_back(3);
 ...
 for (vector<int>::iterator it = v.begin();
      it != v.end();
      ++it) {
   cout << *it << " ";
 }
+// output: 1 2 3 
 \end{lstlisting}
 \end{frame}
 
@@ -52,7 +54,6 @@ for (vector<int>::iterator it = v.begin();
     style=smaller
 }
 \begin{itemize}
-\item (assuming \lstinline|vector<T>|\ldots)
 \item \lstinline|iterator vector<T>::insert(iterator pos, const T &x)|
 \begin{itemize}
     \item insert \textit{before} \texttt{pos}
@@ -67,6 +68,16 @@ for (vector<int>::iterator it = v.begin();
     \begin{itemize}
         \item erase from \texttt{start} up to \textit{and not including} \texttt{end}
     \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{iterator ranges, generally}
+\begin{itemize}
+    \item lots of functions in the standard library take two iterators to mean a range
+    \item always: starting position \textit{up to but not including} ending position
+        \begin{itemize}
+        \item why {\tt vector.end()} is one-past-the-end
+        \end{itemize}
 \end{itemize}
 \end{frame}
 

@@ -175,7 +175,15 @@ int main() {
 }
 \end{lstlisting}
 \hrule
-``a is: 1''
+\lstset{language={},style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    }
+\begin{lstlisting}
+before test a()
+a is: 1
+\end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile,label=gotchaWarnings]{Object foo(): warnings}
@@ -287,6 +295,77 @@ calling ~test() on test[id=0,v=2]@0xe91c20
 \end{lstlisting}
 \end{frame}
 
+\begin{frame}[fragile,label=testassign]{assignment}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+int main() {
+    test b(1);
+    test aa;
+    cout << "b is: " << b << endl;
+    cout << "aa is: " << aa << endl;
+    @2aa = b;2@
+    cout << "aa is: " << aa << endl;
+    return 0;
+}
+\end{lstlisting}
+\hrule
+\lstset{language={},style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    }
+\begin{lstlisting}
+calling test(1); object created is test[id=0,v=1]@0x7ffc153722a0
+calling test(); object created is test[id=1,v=0]@0x7ffc15372298
+b is: test[id=0,v=1]@0x7ffc153722a0
+aa is: @3test[id=1,v=0]@0x7ffc153722983@
+@2calling operator=(test[id=0,v=1]@0x7ffc153722a0)2@
+aa is: @3test[id=1,v=0]@0x7ffc153722983@
+calling ~test() on test[id=1,v=0]@0x7ffc15372298
+calling ~test() on test[id=0,v=1]@0x7ffc153722a0
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=testassigncopy]{copy-construction}
+\lstset{
+    language=C++,
+    style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+int main() {
+    test b(1);
+    @2test aa = b2@;
+    cout << "b is: " << b << endl;
+    cout << "aa is: " << aa << endl;
+    return 0;
+}
+\end{lstlisting}
+\hrule
+\lstset{language={},style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    }
+\begin{lstlisting}
+calling test(1); object created is test[id=0,v=1]@0x7ffc3f61b630
+@2calling test(test[id=0,v=1]@0x7ffc3f61b630)2@;
+    object created is test[id=0,v=1]@0x7ffc3f61b628
+b is: test[id=0,v=1]@0x7ffc3f61b630
+aa is: test[id=0,v=1]@0x7ffc3f61b628
+calling ~test() on test[id=0,v=1]@0x7ffc3f61b628
+calling ~test() on test[id=0,v=1]@0x7ffc3f61b630
+\end{lstlisting}
+\end{frame}
+
 % FIXME: copy constructor
 
 
@@ -340,39 +419,3 @@ calling ~test() on @3test[id=1,v=10]@0x7ffcea9375303@
 \end{tikzpicture}
 \end{frame}
 
-\begin{frame}[fragile,label=testassign]{assignment}
-\lstset{
-    language=C++,
-    style=smaller,
-    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
-    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
-    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
-}
-\begin{lstlisting}
-int main() {
-    test b(1);
-    test aa;
-    cout << "b is: " << b << endl;
-    cout << "aa is: " << aa << endl;
-    @2aa = b;2@
-    cout << "aa is: " << aa << endl;
-    return 0;
-}
-\end{lstlisting}
-\hrule
-\lstset{language={},style=smaller,
-    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
-    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
-    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
-    }
-\begin{lstlisting}
-calling test(1); object created is test[id=0,v=1]@0x7ffc153722a0
-calling test(); object created is test[id=1,v=0]@0x7ffc15372298
-b is: test[id=0,v=1]@0x7ffc153722a0
-aa is: @3test[id=1,v=0]@0x7ffc153722983@
-@2calling operator=(test[id=0,v=1]@0x7ffc153722a0)2@
-aa is: @3test[id=1,v=0]@0x7ffc153722983@
-calling ~test() on test[id=1,v=0]@0x7ffc15372298
-calling ~test() on test[id=0,v=1]@0x7ffc153722a0
-\end{lstlisting}
-\end{frame}
