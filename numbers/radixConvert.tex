@@ -3,7 +3,7 @@
     \item base-$X$ number --- $X$ is the \myemph{radix}
     \item I will call components of base $X$ number `digits'
         \begin{itemize}
-        \item but not a great term --- digit sometimes implies baes-10
+        \item but not a great term --- digit sometimes implies base-10
         \item sometimes ``radit''
         \item base-2 digit = bit
         \item base-16 digit = nibble (sometimes)
@@ -21,13 +21,13 @@
                    & \onslide<2->{=} & \onslide<3->{20_\text{TEN} + 2 = 22_\text{TEN}} \\
                    ~\\
     121_\text{THREE} & = & \onslide<4->{1\cdot 3^2 + 2 \cdot 3^1 + 1 \cdot 3^0} \\
-                     & \onslide<4->{=} = \onslide<5->{9 + 6 + 1 = 16_\text{TEN}} \\
+                     & \onslide<4->{=} & \onslide<5->{9 + 6 + 1 = 16_\text{TEN}} \\
 \end{eqnarray*}
 \end{frame}
 
 \begin{frame}{convert to something (1)}
 \begin{eqnarray*}
-    42_\text{TEN} \text{~as radix 5} &=& \only<2>{\_\_\myemph<2>{2}}\only<3>{\_\myemph<3>{3}2}\only<4->{\myemph<4>{1}32} \\
+    42_\text{TEN} \text{~as radix 5} &=& \only<2>{\_\_\myemph<2>{2}}\only<3>{\_\myemph<3>{3}2}\only<4->{\myemph<4>{1}32_\text{FIVE}} \\
     ~ \\
     \onslide<2->{42 \div 5} & \onslide<2->{=} & \onslide<2->{8 + \ldots} \\
     \onslide<2->{42 \text{~mod~} 5} & \onslide<2->{=} & \onslide<2->{2} \\
@@ -40,8 +40,8 @@
 
 \begin{frame}{convert to something (2)}
 \begin{eqnarray*}
-    121_\text{TEN} \text{~as radix 11} &=& \only<2>{\_\_\myemph<2>{0}}\only<3>{\_\myemph<3>{0}0}%
-    \only<4->{\myemph<4>{1}00} \\
+    121_\text{TEN} \text{~as radix 11} &=& \only<2>{\_\_\myemph<2>{0}_{ELEVEN}}\only<3>{\_\myemph<3>{0}0_{ELEVEN}}%
+    \only<4->{\myemph<4>{1}00_{ELEVEN}} \\
     ~ \\
     \onslide<2->{121 \div 11} & \onslide<2->{=} & \onslide<2->{11} \\
     \onslide<2->{121 \text{~mod~} 11} & \onslide<2->{=} & \onslide<2->{0} \\
@@ -60,11 +60,13 @@
     \myemph<3>{$\mathtt{1}$} & \myemph<4>{$\mathtt{2}$} & $\mathtt{3}$ & $\mathtt{4}_\text{SIXTEEN}$ \\
     \onslide<2->{\myemph<3>{$\mathtt{0001}$}} & \onslide<2->{\myemph<4>{$\mathtt{0010}$}} & \onslide<2->{$\mathtt{0011}$} & \onslide<2->{$\mathtt{0100}_\text{TWO}$} \\
 \end{tabular}
+
     \vspace{1cm}
+
 \begin{visibleenv}<5->
 \begin{tabular}{l|l|l|l}
     $\mathtt{1101}$ & $\mathtt{1110}$ & $\mathtt{0011}$ & $\mathtt{0000}_\text{TWO}$ \\
-    \onslide<6->{$\mathtt{C}$} & $\mathtt{D}$ & $\mathtt{3}$ & $\mathtt{0}_\text{SIXTEEN}$ \\
+    \onslide<6->{$\mathtt{C}$} & \onslide<6->{$\mathtt{D}$} & \onslide<6->{$\mathtt{3}$} & \onslide<6->{$\mathtt{0}_\text{SIXTEEN}$} \\
 \end{tabular}
 \end{visibleenv}
 \end{frame}

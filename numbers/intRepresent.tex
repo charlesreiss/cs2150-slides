@@ -54,11 +54,11 @@
 \begin{frame}{base-2 bit addition}
 \begin{tabular}{l|ll}
 \textbf{+} & 0 & 1 \\
-0 & 0 & \myemph<2>{1} \\
-1 & \myemph<2>{1} & \myemph<2>{1} \myemph<3>{carry 1} \\
+0 & 00 & \myemph<2>{01} \\
+1 & \myemph<2>{01} & \myemph<2>{10} \\
 \end{tabular}
 \begin{itemize}
-\item<2-> any set to 1 --- result is 1; otherwise 0
+\item<2-> exactly one set to 1 --- result is 1; otherwise 0
 \item<3-> both set to 1 --- carry is 1; otherwise 0
 \end{itemize}
 \end{frame}

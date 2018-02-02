@@ -4,7 +4,7 @@
     \item \myemph<4-5>{parenthesis matching}
     \item \myemph<6-7>{postfix calculators}
     \item \myemph<8-9>{operator precedence}
-    \item \myemph<10>{tracking (recursive) function calls}
+    \item \myemph<10-11>{tracking function calls}
     \end{itemize}
 \begin{tikzpicture}[overlay,remember picture]
 \tikzset{
@@ -80,6 +80,29 @@
     \tt E + / + F +
 };
 \end{visibleenv}
+\begin{visibleenv}<11-12>
+\matrix[stack,text width=2cm] (callStack) at (anchor) {
+    fib(0) \\
+    fib(1) \\
+    fib(2) \\
+    fib(3) \\
+    fib(4) \\
+    |[draw=none]| \ldots \\
+    fib(100) \\
+    main() \\
+};
+\begin{visibleenv}<12>
+    \node[draw,fill=white,left=1cm of callStack,align=left] (actRec) {
+        \textbf{activation record:} \\
+        argument: \texttt{2} \\
+        local vars: \ldots \\
+        return loc.: \ldots \\
+        \ldots
+    };
+    \draw (actRec.south east) -- (callStack-3-1.south west);
+    \draw (actRec.north east) -- (callStack-3-1.north west);
+\end{visibleenv}
+\end{visibleenv}
 \end{tikzpicture}
 \end{frame}
 
@@ -99,13 +122,21 @@
     \tt \only<3->{\textbf<10>{\color<10>{red!70!black}{\myemph<3>{[}}}} \\
     \tt \only<2->{\myemph<2>{\{}} \\
 };
-\node[anchor=north east,inner sep=.25mm] (expr2) at ([yshift=-1cm]parenStack.south east) {
+\node[anchor=north east,inner sep=.25mm] (expr2) at ([yshift=-.5cm]parenStack.south east) {
     \tt \myemph<2->{\{} \myemph<3->{[} \myemph<4->{(} \myemph<5->{)} \myemph<6->{[} \myemph<7->{]} \myemph<8->{(} \myemph<9->{)} \textbf<10->{\color<10->{red!70!black}\}}
 };
 \node[right=.5cm of expr2,visible on=<11->] { mismatched! };
-\node[anchor=north west,inner sep=.25mm,visible on=<11>] (expr3) at ([yshift=-1cm]expr2.south west) {
+\node[anchor=north west,inner sep=.25mm,visible on=<11>] (expr3) at ([yshift=-.5cm]expr2.south west) {
     \tt \{ [ ( ) [ ] ( ) \textbf{\color{red!70!black}] \}}
 };
+    \node[draw,below=0.25cm of expr3,align=left] {
+        \textit{for each symbol:} \\
+        opening symbol? $\rightarrow$ push(symbol) \\
+        closing symbol? $\rightarrow$ \\
+        \hspace{.5cm} !empty() and top() is opposite symbol $\rightarrow$ pop() \\
+        \hspace{.5cm} otherwise $\rightarrow$ output \textbf{mismatched}\\
+        EOF and !empty()? $\rightarrow$ output \textbf{mismatched}
+    };
 \end{tikzpicture}
 \end{frame}
 
@@ -127,17 +158,23 @@
     \only<2-3>{7}\only<5-8>{4}\only<9-10>{7/2} \\
     \only<2-3>{3}\only<4-10>{21}\only<11>{49/2} \\
 };
-\node[draw,anchor=north east,dotted] (exprInfix) at ([xshift=2cm,yshift=-4cm]stack.south east) {
+\node[draw,anchor=north east,dotted,opacity=0.5] (exprInfix) at ([xshift=0cm,yshift=-1.5cm]stack.south east) {
     \tt (\myemph<3-4>{\myemph<2>{3} * \myemph<2>{7}}) \myemph<10-11>{+} (\myemph<5>{4} \myemph<8-9>{*} \myemph<6-7>{(\myemph<5>{7} / \myemph<5>{8})})
 };
-\node[right=.25cm of exprInfix] {infix expression};
-\node[draw,anchor=north east] (exprPostfix) at ([yshift=-1cm]stack.south east) {
+\node[align=left,right=.25cm of exprInfix] {equivalent \\ infix expression};
+\node[ultra thick,draw,anchor=north east] (exprPostfix) at ([yshift=-.25cm]stack.south east) {
     \tt \myemph<2>{3 7} \myemph<3-4>{*} \myemph<5>{4 7 8} \myemph<6-7>{/} \myemph<8-9>{*} \myemph<10-11>{+}
 };
 \node[right=.25cm of exprPostfix] {postfix expression};
 %\draw[-Latex,line width=.5mm] (exprInfix) -- (exprPostfix);
-    \draw[-Latex,ultra thick,draw=black!50,dashed] ([yshift=2mm]exprPostfix.north west) -- ++(2cm, 0cm);
+    %\draw[-Latex,ultra thick,draw=black!50,dashed] ([yshift=2mm]exprPostfix.north west) -- ++(2cm, 0cm);
+
+    \node[draw,xshift=1cm,below=0.25cm of exprInfix,align=left] {
+        number? $\rightarrow$ push(number) \\
+        operator? $\rightarrow$ \\ 
+        \hspace{.5cm}a = top(), pop(), b = top(), pop(), push(a \textit{OP} b)
+    };
 \end{tikzpicture}
 \end{frame}
 
-\againframe<8-10>{stackAppl}
+\againframe<8-12>{stackAppl}

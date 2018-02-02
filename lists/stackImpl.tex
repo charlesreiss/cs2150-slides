@@ -186,10 +186,15 @@ void Stack::push(int value) {
     data.push_back(value);
 }
 
+void Stack::pop() {
+    data.pop_back();
+}
+
 // ...
 \end{lstlisting}
 \end{frame}
 
+\begin{comment}
 \begin{frame}[fragile,label=vectorStackImplPop]{implementing pop?}
 \lstset{language=C++,style=small}
 \begin{lstlisting}
@@ -212,6 +217,7 @@ What could go here? \\
 }
 \end{visibleenv}
 \end{frame}
+\end{comment}
 
 \begin{frame}[fragile,label=vectorStackImplTop]{implementing top?}
 \lstset{language=C++,style=small}

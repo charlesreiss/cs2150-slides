@@ -28,7 +28,6 @@
     \end{itemize}
 \end{frame}
 
-
 \begin{frame}[fragile,label=stackAdt]{C++ standard library: stack ADT?}
 \lstset{
     language=C++,
@@ -51,6 +50,25 @@ stack<int, vector<int> > s2; // stack based on vector
 stack<int, forward_list<int> > s3; // stack based on singly-linked list
 ...
 \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=stackAdtOps]{ADTs we've seen}
+    \begin{itemize}
+    \item stack --- operations:
+        \begin{itemize}
+        \item push(Type), pop(Type)
+        \item isEmpty(), top()
+        \end{itemize}
+    \item queue --- operations
+        \begin{itemize}
+        \item enqueue(Type), dequeue()
+        \item isEmpty()
+        \end{itemize}
+    \item list  --- operations
+        \begin{itemize}
+        \item ????
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile,label=listAdt]{list ADT operations}
@@ -126,3 +144,20 @@ insert/erase (with iterator) & linear time & constant time \\
     (* fixed-capacity array)
 \end{frame}
 
+\begin{frame}{C++ standard library: ``sequence container''}
+    \begin{itemize}
+    \item \texttt{vector}, \texttt{list}, \texttt{deque} classes in C++ standard library all have:
+        \begin{itemize}
+        \item iterator type
+        \item \texttt{begin()}, \texttt{end()}, \texttt{front()}, \texttt{back()}
+        \item \texttt{empty()}, \texttt{size()}
+        \item \texttt{clear()}, \texttt{insert(iterator, Type)}, \texttt{erase(iterator)}
+        \item \texttt{push\_back(Type)}, \texttt{pop\_back()}
+        \end{itemize}
+    \item above methods/types sort of an informal ADT
+        \begin{itemize}
+        \item write \myemph{template function/class} that works any of them!
+        \item this is how \texttt{std::stack} works
+        \end{itemize}
+    \end{itemize}
+\end{frame}
