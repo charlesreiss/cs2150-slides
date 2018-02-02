@@ -1,0 +1,38 @@
+
+\begin{frame}{rounding errors (1)}
+\[
+2^{100} + 1
+\]
+\begin{itemize}
+\item $2^{100}+1$ cannot be represented exactly
+    \begin{itemize}
+    \item would need 99 mantissa bits
+    \item rounds to $2^{100}$
+    \end{itemize}
+\item (but $2^{100}$ and $1$ can)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{rounding errors (2)}
+\[
+(2^{100} + 1) - 2^{100} 
+\]
+\[
+2^{100} - 2^{100}
+\]
+\[
+0
+\]
+\vspace{.25cm}
+\hrule
+\vspace{.25cm}
+\[
+(2^{100} - 2^{100}) + 1
+\]
+\[
+0 + 1
+\]
+\[
+1
+\]
+\end{frame}

@@ -1,0 +1,212 @@
+
+\begin{frame}{\texttt{float} example: manually}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    labelLine/.style={draw,thick,dotted},
+    myLabel/.style={align=center,font=\small},
+    pm/.style={blue!70!black},
+    mant/.style={green!60!black},
+    expt/.style={orange!80!black},
+}
+\node (calc) at (6, 0) { 
+    $25.25 = \frac{101}{4} = 11001.01_{\text{TWO}} = $
+};
+\begin{scope}[every node/.style={inner sep=0mm}]
+\node[pm] (pm) at ([yshift=-1cm,xshift=-4cm]calc) {+};
+\node[anchor=base west] (onePt) at (pm.base east) {$1.$};
+\node[anchor=base west,mant] (mant) at (onePt.base east) {$1001\,0100\,0000\,0000\,0000\,000_\text{TWO}$};
+\node[anchor=base west] (cdot) at (mant.base east) {\cdot};
+\node[anchor=base west] (expt) at (cdot.base east) {$2^{\color{orange!80!black}4}$};
+\end{scope}
+\begin{visibleenv}<2->
+\node[pm,below left=1cm and -.5cm of pm,myLabel] (signLabel) {sign (1 bit) };
+\node[pm,below=0cm of signLabel,align=left,font=\small] {
+    $0$ for $+$
+};
+\draw[pm,labelLine] (pm) -- (signLabel);
+\node[mant,right=1cm of signLabel,myLabel] (mantLabel) {mantissa ($23$ bits)};
+\draw[mant,labelLine] (mant) -- (mantLabel);
+\node[mant,below=0cm of mantLabel,align=left,font=\small] {
+    (leading ``$1.$'' not stored)\\
+};
+\node[right=1.5cm of mantLabel,myLabel,expt] (exptLabel) {exponent ($5$ bits)};
+\draw[expt,labelLine] (expt) -- (exptLabel);
+\node[expt,below=0cm of exptLabel,align=left,font=\small] {
+    store ``$4+127=$\\
+    $1000\,0011_\text{TWO}$'' \\
+    $127$ is bias for \texttt{float}
+};
+\end{visibleenv}
+\begin{visibleenv}<3->
+\node[below=2cm of mantLabel,font=\small\tt] (value) {
+    {\color{blue!70!black}0} {\color{orange!80!black}1000$\,$0011} {\color{green!60!black}1001$\,$0100$\,$0000$\,$0000$\,$0000$\,$000}
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{diversion: 25.25 to binary}
+\begin{eqnarray*}
+    25.25 &=& 2^4 + (25.25-2^4) = 2^4 + 9.25 \\
+          &=& 2^4 + 2^3 + (9.25-2^3) = 2^4 + 2^3 + 1.25 \\
+          &~& (1.25 < 2^2) \\
+          &~& (1.25 < 2^1) \\
+          &=& 2^4 + 2^3 + (1.25-2^0) = 2^4 + 2^3 + 2^0 + 0.25 \\
+          &~& (0.25 < 2^{-1}) \\
+          &=& 2^4 + 2^3 + 2^0 + (0.25 - 2^{-2}) = 2^4 + 2^3 + 2^0 + 2^{-2} \\
+          &=& 11001.01_\text{TWO}
+\end{eqnarray*}
+\end{frame}
+
+\begin{frame}[fragile,label=floatUnion]{\texttt{float} example: from C++}
+\lstset{
+    language=C++,
+    style=smaller
+}
+% FIXME: discussion about union
+\begin{lstlisting}
+#include <iostream>
+using std::cout; using std::hex; using std::endl;
+// union: all elements use the *same memory*
+union floatOrInt {
+    float f;
+    unsigned int u;
+};
+int main() {
+    union floatOrInt x;
+    x.f = 25.25;
+    cout << hex << x.u << endl;
+// OUTPUT: 41ca0000
+}
+\end{lstlisting}
+\begin{tikzpicture}
+    \matrix[tight matrix noline,nodes={font=\tt,text width=1.5cm,align=center}] {
+    4 \& 1 \& c \& a \& 0 \& 0 \& 0 \& 0 \\
+    {\color{blue!70!black}0}{\color{orange!80!black}100} \& \color{orange!80!black}0001 \& \color{green!60!black}1100 \& \color{green!60!black}1010 \& \color{green!60!black}0000 \& \color{green!60!black} 0000 \& \color{green!60!black}0000 \& \color{green!60!black}0000 \\
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{\texttt{float} example 2: manually}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    labelLine/.style={draw,thick,dotted},
+    myLabel/.style={align=center,font=\small},
+    pm/.style={blue!70!black},
+    mant/.style={green!60!black},
+    expt/.style={orange!80!black},
+}
+\node[align=center] (calc) at (6, 0) { 
+    $0.1_\text{TEN} = \frac{1}{16} + 0.0375 = \frac{1}{16} + \frac{1}{32} + 0.00625 = $ \\
+    \strut$\ldots = 0.00011001100110011\ldots_\text{TWO} \myemph<4>{\approx}$ 
+};
+\begin{scope}[every node/.style={inner sep=0mm}]
+\node[pm] (pm) at ([yshift=-1.5cm,xshift=-4cm]calc) {+};
+\node[anchor=base west] (onePt) at (pm.base east) {$1.$};
+    \node[anchor=base west,mant] (mant) at (onePt.base east) {$1001\,1001\,1001\,1001\,1001\,10\mathbf{1}_\text{TWO}$};
+\node[anchor=base west] (cdot) at (mant.base east) {\cdot};
+\node[anchor=base west] (expt) at (cdot.base east) {$2^{\color{orange!80!black}-4}$};
+\end{scope}
+\begin{visibleenv}<2->
+\node[pm,below left=1cm and -.5cm of pm,myLabel] (signLabel) {sign (1 bit) };
+\node[pm,below=0cm of signLabel,align=left,font=\small] {
+    $0$ for $+$
+};
+\draw[pm,labelLine] (pm) -- (signLabel);
+\node[mant,right=1cm of signLabel,myLabel] (mantLabel) {mantissa ($23$ bits)};
+\draw[mant,labelLine] (mant) -- (mantLabel);
+\node[mant,below=0cm of mantLabel,align=left,font=\small] {
+    last $\mathbf{1}$ from \myemph<4>{rounding}
+};
+\node[right=1.5cm of mantLabel,myLabel,expt] (exptLabel) {exponent ($5$ bits)};
+\draw[expt,labelLine] (expt) -- (exptLabel);
+\node[expt,below=0cm of exptLabel,align=left,font=\small] {
+    store ``$-4+127=$\\
+    $0111\,1011_\text{TWO}$''
+};
+\end{visibleenv}
+\begin{visibleenv}<3->
+\node[below=1cm of mantLabel,font=\small\tt] (value) {
+    {\color{blue!70!black}0} {\color{orange!80!black}0111$\,$1011} {\color{green!60!black}1001$\,$1001$\,$1001$\,$1001$\,$1001$\,$001}
+};
+\end{visibleenv}
+\begin{visibleenv}<4->
+\node[below=0cm of value] {
+    \myemph<4>{closest} \texttt{float} to 0.1
+    between $0.1$ and $0.1000001$
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+
+\begin{frame}[fragile,label=floatEx2In1]{\texttt{float} example 2: inaccurate (1)}
+\lstset{
+    language=C++,
+    style=smaller
+}
+\begin{lstlisting}
+#include <iostream>
+using std::cout; using std::endl;
+
+int main(void) {
+    int count;
+    float base = 0.1f;
+    for (count = 0; base * count < 10000000; ++count) {}
+    cout << count << endl;
+    // OUTPUT: 99999996
+    return 0;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=floatEx2In2]{\texttt{float} example 2: inaccurate (2)}
+\lstset{
+    language=C++,
+    style=smaller
+}
+\begin{lstlisting}
+#include <iostream>
+using std::cout; using std::endl;
+
+int main(void) {
+    int count = 0;
+    for (float f = 0; f < 2000.0; f += 0.1) {
+        ++count;
+    }
+    cout << count << endl;
+    // OUTPUT: 20004
+    return 0;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=floatEx2In3]{\texttt{float} example 2: inaccurate (3)}
+\lstset{
+    language=C++,
+    style=smaller
+}
+\begin{lstlisting}
+#include <iostream>
+using std::cout; using std::endl;
+int main(void) {
+    cout.precision(30);
+    for (float f = 0; f < 2000.0; f += 0.1) {
+        cout << f << endl;
+    }
+    return 0;
+}
+\end{lstlisting}
+\hrule
+\small\tt
+0 \\
+0.100000001490116119384765625 \\
+0.20000000298023223876953125 \\
+\ldots \\
+2.2000000476837158203125 \\
+2.2999999523162841796875 \\
+\ldots
+\end{frame}
+

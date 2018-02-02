@@ -1,0 +1,68 @@
+\begin{frame}{IEEE half-precision floating point}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    labelLine/.style={draw,thick,dotted},
+    myLabel/.style={align=center,font=\small},
+    pm/.style={blue!70!black},
+    mant/.style={green!60!black},
+    expt/.style={orange!80!black},
+}
+\begin{scope}[every node/.style={inner sep=0mm}]
+\node[pm] (pm) {-};
+\node[anchor=base west] (onePt) at (pm.base east) {$1.$};
+\node[anchor=base west,mant] (mant) at (onePt.base east) {$1100010010_\text{TWO}$};
+\node[anchor=base west] (cdot) at (mant.base east) {\cdot};
+\node[anchor=base west] (expt) at (cdot.base east) {$2^{\color{orange!80!black}3}$};
+\end{scope}
+\begin{visibleenv}<2->
+\node[pm,below left=1cm of pm,myLabel] (signLabel) {sign (1 bit) };
+\node[pm,below=0cm of signLabel,align=left] {
+    $0$ for $+$ \\
+    $1$ for $-$
+};
+\draw[pm,labelLine] (pm) -- (signLabel);
+\node[mant,right=1.5cm of signLabel,myLabel] (mantLabel) {mantissa ($10$ bits)};
+\draw[mant,labelLine] (mant) -- (mantLabel);
+\node[mant,below=0cm of mantLabel,align=left] {
+    don't store leading ``$1.$'' \\
+    (because always present)
+};
+\node[right=1.5cm of mantLabel,myLabel,expt] (exptLabel) {exponent ($5$ bits)};
+\draw[expt,labelLine] (expt) -- (exptLabel);
+\node[expt,below=0cm of exptLabel,align=left] {
+    store ``$3+15$'' \\
+    $15$ is `bias'
+};
+\end{visibleenv}
+\begin{visibleenv}<3->
+    \node[below=2cm of mantLabel] (value) {
+    \tt {\color{blue!70!black}1} {\color{orange!80!black}10010} {\color{green!60!black}1100010010}
+};
+\end{visibleenv}
+\begin{visibleenv}<4->
+\node[below=1cm of value,align=left] {
+    on typical little endian system: \\
+    byte 0: {\tt \color{green!60!black}00010010} \\
+    byte 1: {\tt {\color{blue!70!black}1}{\color{orange!80!black}10010}\color{green!60!black}11}
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{IEEE half precision float}
+\begin{itemize}
+\item 1 sign bit ($1$ for negative)
+\item 5 expontent bits
+    \begin{itemize}
+    \item bias of 15 --- if bits as unsigned are $e$, exponent is $E=e-127$
+    \end{itemize}
+\item 10 mantissa bits
+    \begin{itemize}
+    \item leading ``1.'' not stored
+    \end{itemize}
+\vspace{.5cm}
+\item $\text{value} = (1-2\cdot \text{sign}) \cdot (1.\text{mantissa}_\text{TWO}) \cdot 2^{\text{exponent}-15}$
+\end{itemize}
+\end{frame}
+

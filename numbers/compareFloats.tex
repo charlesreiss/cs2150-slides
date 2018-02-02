@@ -1,0 +1,31 @@
+\begin{frame}{on comparing floats}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{lstlisting}
+#include <cmath>
+using std::fabs;
+// or #include <math.h> and use fabs
+    // without a using statement
+...
+    // chose based on expected accuracy
+const float EPSILON= 1e-6; 
+float x, y;
+...
+if (fabs(x - y) < EPSILON) {
+    ...
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=floatAcc]{floating point accuracy}
+\lstset{
+    language=C++,
+    style=small
+}
+    \begin{itemize}
+    \item \texttt{float} --- about 7 decimal places
+    \item \texttt{double} --- about 15 decimal places
+    \end{itemize}
+\end{frame}
