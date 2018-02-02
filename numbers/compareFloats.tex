@@ -1,4 +1,4 @@
-\begin{frame}{on comparing floats}
+\begin{frame}[fragile,label=onCompareFloats]{on comparing floats}
 \lstset{
     language=C++,
     style=small
@@ -10,7 +10,7 @@ using std::fabs;
     // without a using statement
 ...
     // chose based on expected accuracy
-const float EPSILON= 1e-6; 
+const float EPSILON = 1e-6; 
 float x, y;
 ...
 if (fabs(x - y) < EPSILON) {
