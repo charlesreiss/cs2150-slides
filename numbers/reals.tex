@@ -7,10 +7,7 @@
 \item $\sqrt{2}$
 \item \ldots
 \vspace{.5cm}
-\item want to represent these:
-    \begin{itemize}
-    \item accurately? compactly? efficiently?
-    \end{itemize}
+\item want to represent these: {\small accurately? compactly? efficiently?}
 \end{itemize}
 \end{frame}
 
@@ -22,7 +19,7 @@
             &\approx& -1110.0010_\text{TWO} \text{--- represent as {\tt 01110 0010}} \\
 \end{eqnarray*}
 \begin{itemize}
-\item<2-> $x \approx y/2^K$ --- $y$ is a fixed-sized integer
+\item<2-> $x \approx y/2^K$ --- represent with fixed-sized signed integer $y$
 \begin{itemize}
     \item this case: $y/2^4$ and $y$ is 9 bits.
 \end{itemize}
@@ -31,7 +28,7 @@
 
 \begin{frame}{why fixed-point?}
 \begin{itemize}
-\item $x \approx y/2^K$ ($y$ fixed-sized integer)
+\item $x \approx y/2^K$ ($y$ fixed-sized singed integer)
 \item math similar to integer math:
     \begin{itemize}
     \item addition/subtraction --- same
@@ -147,7 +144,7 @@ exponent bits & 5 & 8 & 11 \\
     exponent bias & 15 {\small ($2^5-1$)} & 127 {\small ($2^7-1$)} & 1023 {\small ($2^{10}-1$)}\\
 mantissa bits & 10 & 23 & 52 \\
 total bits & 16 & 32 & 64 \\
-\end{tabular}
+\end{tabular}\\
     {\scriptsize (* = typical C++ type; might vary in some implementations)}
 \end{frame}
 
@@ -363,6 +360,26 @@ int main(void) {
 2.2000000476837158203125 \\
 2.2999999523162841796875 \\
 \ldots
+\end{frame}
+
+\begin{frame}{on comparing floats}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{lstlisting}
+#include <cmath>
+using std::fabs;
+// or #include <math.h> and use fabs
+    // without a using statement
+...
+
+float x, y;
+...
+if (fabs(x - y) < 1e-6) {
+    ...
+}
+\end{lstlisting}
 \end{frame}
 
 \begin{frame}{the problem of 0}
