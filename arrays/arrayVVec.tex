@@ -1,4 +1,4 @@
-\begin{frame}[fragile,label=nativeArray1]{`primtive' arrays v. vectors (1)}
+\begin{frame}[fragile,label=nativeArray1]{`primitive' arrays v. vectors (1)}
 \lstset{
     language=C++,
     style=small
@@ -118,6 +118,7 @@ for (int i = 0; i < 10; ++i)
 \begin{lstlisting}
 vector<int> a;
 vector<int> b;
+...
 
 bool isEqual = (a == b);
 \end{lstlisting}
@@ -126,3 +127,43 @@ bool isEqual = (a == b);
 \end{visibleenv}
 \end{tikzpicture}
 \end{frame}
+
+% FIXME: keep this here? (and remove coverage later)
+\begin{comment}
+\begin{frame}[fragile,label=nativeArray4]{`primitive' arrays v. vectors (4)}
+\lstset{
+    language=C++,
+    style=smaller
+}
+\begin{tikzpicture}
+\tikzset{
+    mylabel/.style={}
+}
+\begin{visibleenv}<1->
+\node[anchor=north west] (nativePass) at ([yshift=-1cm]nativeCopy.south west |- vectorDecl.south) {
+\begin{lstlisting}
+// size is not passed automatically
+void function(int *ptr, int size) {
+    ...
+}
+...
+    int a[100];
+    function(a, size);
+\end{lstlisting}
+};
+\node[anchor=north west] (vectorCopy) at ([xshift=6cm]nativeEqual.north west) {
+\begin{lstlisting}
+// one object, includes size
+void function(std::vector<int> &ref) {
+    ...
+}
+... 
+    std::vector<int> a;
+    function(vec);
+\end{lstlisting}
+};
+\node[anchor=south,mylabel] at (vectorEqual.north west) {passing to function};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+\end{comment}

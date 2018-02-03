@@ -36,6 +36,7 @@ int *pointer = someInts;
 \end{tikzpicture}
 \end{frame}
 
+% FIXME: skip or omit or move to backup the slide
 \begin{frame}[fragile,label=arrayAndMmeEx]{arrays, pointers, and memory (2)}
 \lstset{
     language=C++,
@@ -77,7 +78,7 @@ someInts[1] is: 4
 \coordinate (place) at ([yshift=5cm]current page.south);
 \begin{visibleenv}<2>
 \node[box] {
-    array (almost) the same as pointer to its first element
+    array implicitly converted to pointer to first element
 };
 \end{visibleenv}
 \begin{visibleenv}<3>
@@ -94,6 +95,7 @@ someInts[1] is: 4
 \end{tikzpicture}
 \end{frame}
 
+\begin{comment}
 \begin{frame}[fragile,label=arrayNotPtr]{array aren't quite pointers}
 \lstset{
     language=C++,
@@ -113,8 +115,12 @@ pointer = someIntsB;
 
 // NOT OK:
 someIntsA = someIntsB;  // COMPILE ERROR
+
+cout << sizeof(pointer) << endl;   // typical output: 8
+cout << sizeof(someIntsA) << endl; // typical output: 12
 \end{lstlisting}
 \end{frame}
+\end{comment}
 
 \begin{frame}[fragile,label=arrayFuncParam]{arrays as function parameters}
 \lstset{
@@ -126,19 +132,19 @@ someIntsA = someIntsB;  // COMPILE ERROR
     moredelim={**[is][\btHL<all:4>]{@4}{4@}},
 }
 \begin{lstlisting}
-void someFunc(int arrayofInts[]) { /* code */ }
+void someFunc(int ptrToArray[], int size) { /* code */ }
 int main() {
     int someInts[3];
-    someFunc(someInts);
+    someFunc(someInts, 3);
     return 0;
 }
 \end{lstlisting}
 is \myemph{exactly} equivalent to:
 \begin{lstlisting}
-void someFunc(int *arrayofInts) { /* code */ }
+void someFunc(int *ptrToArray, int size) { /* code */ }
 int main() {
     int someInts[3];
-    someFunc(someInts);
+    someFunc(someInts, 3);
     return 0;
 }
 \end{lstlisting}
@@ -149,10 +155,9 @@ int main() {
 \coordinate (place) at ([yshift=5.5cm]current page.south);
 \begin{visibleenv}<2>
 \node[box] {
-    example: \lstinline|arrayOfInts = otherArray;| is allowed \\
-    (and doesn't change \lstinline|someInts|) \\
-    (even though this is inconsistent with how \\
-     arrays usualy work)
+    \texttt{ptrToArray} is always an array \\
+    example: \lstinline|sizeof(ptrToArray) == sizeof(int*)| \\
+    (even though \lstinline|sizeof(someInts) == 3 * sizeof(int)|)
 };
 \end{visibleenv}
 \end{tikzpicture}
