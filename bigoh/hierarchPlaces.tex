@@ -1,13 +1,12 @@
 
 
-\begin{frame}{selected relationships}
+\begin{frame}{selected asymptotic relationships}
 \begin{itemize}
 \item for $k>0$, $c>1$, $\epsilon>0$:
 \item $n^k \in o(c^n)$ (polynomial always smaller than exponential)
-\item $\log_k(n) \in o(\log_l(n))$ (since $\log_k(n) = \frac{1}{\log_l(k)}\log_l(n)$)
-\item $n^k \in o(n^k \log n)$
-\item $n^k \in o(n^{k+\epsilon})$
-\item $n^k+cn^{k-1} \in \Theta(n^k)$
+\item $n^k \in o(n^k \log n)$ (adding $\log$ makes something bigger)
+\item $\log_k(n) \in \Theta(\log_l(n))$ (all log bases are the same)
+\item $n^k+cn^{k-1} \in \Theta(n^k)$ (only polynomial degree matters)
 \end{itemize}
 \end{frame}
 
@@ -31,9 +30,6 @@
     \item sorting an array by comparing elements
     \end{itemize}
 \item $\Theta(n^2)$ --- quadratic
-    \begin{itemize}
-    \item naively compare every pair of elements in unsorted array
-    \end{itemize}
 \item $\Theta(n^3)$ --- cubic
 \item $\Theta(2^n)$, $\Theta(c^n)$ --- exponential
 \end{itemize}

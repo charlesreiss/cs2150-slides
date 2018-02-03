@@ -54,10 +54,11 @@
         \hspace{.5cm}$f(n) \le c \cdot g(n)$ for all $n > n_0$
     \item Is $n^2 \in O(n)$?
         \begin{itemize}
-        \item<2-> no --- consider any $c, n_0 > 0$
-        \item<2-> consider $n_{bad} = (c + 100) + (n_0 + 100) > n_0$ \\
-            $n_{bad}^2 > (c + 100)^2 + (n_0 + 100)^2 > c + 100 + n_0 + 100 = n_{bad}$ \\
+        \item<2-> no --- consider any $c, n_0 > 0$ and $c' > \max\{c,1\}$
+        \item<2-> consider $n_{bad} = (c + 100)(n_0 + 100) > n_0$ \\
+            $n_{bad}^2 = (c + 100)^2(n_0 + 100)^2 > c(c + 100)(n_0 + 100) = cn_{bad}$ \\
         \item<2-> so can't find $c, n_0$ that sastisfy definition
+        \item<2-> (i.e. $f(n) = n_{bad}^2 \not\le c \cdot g(n_{bad}) = c n_{bad}$)
         \end{itemize}
     \end{itemize}
 \end{frame}

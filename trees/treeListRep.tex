@@ -1,0 +1,39 @@
+\begin{frame}[fragile,label=firstChildNextSib]{first child/next sibling}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{tikzpicture}
+\node (code) {
+\begin{lstlisting}
+class TreeNode {
+  private:
+    string element;
+    TreeNode *firstChild;
+    TreeNode *nextSibling;
+  public:
+    ...
+};
+\end{lstlisting}
+};
+\begin{scope}[xscale=.5,yscale=.75]
+\tikzset{
+    g/.style={draw,thick,font=\small},
+    c/.style={draw,-Latex,very thick},
+}
+\node[g] at ([xshift=3cm]code.north east) (home) {home};
+\node[g,below=1cm of home] (aaron) {aaron}; \draw[c] (home) -- (aaron);
+\node[g,below=1cm of aaron,draw=red!90!black] (cs2150) {cs2150}; \draw[c] (aaron) -- (cs2150);
+\node[g,right=1.5cm of cs2150] (cs4970) {cs4970}; \draw[c,draw=red!90!black] (cs2150) -- (cs4970);
+    \draw[red] ($(cs2150)!.5!(cs4970)$) -- ++(0cm,.5cm) node[red!90!black,above,inner sep=0.5mm,font=\small\tt] {nextSibling};
+\node[g,right=1.5cm of cs4970] (mail) {mail}; \draw[c] (cs4970) -- (mail);
+\node[g,below=1cm of cs2150] (lab1) {lab1}; \draw[c,draw=red!90!black] (cs2150) -- (lab1);
+    \draw[red] ($(cs2150)!.5!(lab1)$) -- ++(-.5cm,0cm) node[red!90!black,left,inner sep=0.5mm,font=\small\tt] {firstChild};
+\node[g,right=1.5cm of lab1] (lab2) {lab2}; \draw[c] (lab1) -- (lab2);
+\node[g,right=1.5cm of lab2] (proj1) {proj1}; \draw[c] (lab2) -- (proj1);
+\node[g,below=1cm of proj1] (projH) {proj.h}; \draw[c] (proj1) -- (projH);
+\node[g,below=1cm of lab1] (collH) {coll.h}; \draw[c] (lab1) -- (collH);
+\node[g,right=1.5cm of collH] (collCpp) {coll.cpp}; \draw[c] (collH) -- (collCpp);
+\end{scope}
+\end{tikzpicture}
+\end{frame}
