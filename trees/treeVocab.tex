@@ -1,0 +1,154 @@
+\begin{frame}[fragile,label=treeTerms1]{tree terms (1)}
+\newcommand{\term}[1]{\textit{\textbf{#1}}}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    treeNode/.style={draw, thick},
+    treeConnect/.style={draw, very thick,->},
+    nameLabel/.style={ultra thick,<-},
+}
+\tikzset{
+    leafColor/.style={blue!70!black},
+    siblingColor/.style={green!70!black},
+}
+\node[treeNode] (a) {A};
+\node[treeNode,below=1cm of a,xshift=-1cm] (b) {B};
+\node[treeNode,below=1cm of a,xshift=1cm] (c) {C};
+\node[treeNode,below=1cm of c,xshift=-.5cm] (e) {E};
+\node[treeNode,below=1cm of c,xshift=1cm] (f) {F};
+\node[treeNode,below=1cm of c,xshift=3cm] (g) {G};
+\node[treeNode,below=1cm of b,xshift=-.5cm] (d) {D};
+\node[treeNode,below=1cm of d] (h) {H};
+
+\foreach \x/\y in {a/b,a/c,c/e,c/f,c/g,b/d,d/h} {
+    \draw[treeConnect] (\x) -- (\y);
+}
+
+\node at ([xshift=2cm,yshift=.5cm]a.north) (parentKey) { parent };
+\draw[treeConnect] (parentKey.east) -- ++(1cm,0cm) node[right] { child };
+\draw[nameLabel,orange!70!black] ([xshift=.5mm]a.east) -- ++(2cm,0cm) node[right] { \term{root}: node with no parents };
+\draw[nameLabel,leafColor] ([yshift=-.5mm]g.south) -- ++(-1cm,-1cm) node[right] (leafsLabel) { \term{leafs}: nodes with no children };
+\draw[nameLabel,leafColor] ([yshift=-.5mm]f.south) -- (leafsLabel.west);
+\draw[nameLabel,leafColor] ([yshift=-.5mm]e.south) -- (leafsLabel.west);
+\draw[nameLabel,leafColor] ([xshift=.5mm]h.east) -- (leafsLabel.west);
+
+\node[draw,fill=green!70!black,fill opacity=0.025,inner sep=0mm,ellipse,nameLabel,siblingColor,fit=(e) (f) (g)] (siblingEllip) {};
+\node[above right=.1mm of siblingEllip,siblingColor] { \term{siblings}: nodes with the same parent};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=nodeHeight]{tree/node height}
+\newcommand{\term}[1]{\textit{\textbf{#1}}}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    treeNode/.style={draw, thick},
+    treeConnect/.style={draw, very thick,->},
+    nameLabel/.style={ultra thick,<-},
+}
+\tikzset{
+    heightColor/.style={orange!70!black}
+}
+\node[treeNode] (a) {A};
+\node[treeNode,below=1cm of a,xshift=-1cm] (b) {B};
+\node[treeNode,below=1cm of a,xshift=1cm] (c) {C};
+\node[treeNode,below=1cm of c,xshift=-.5cm] (e) {E};
+\node[treeNode,below=1cm of c,xshift=1cm] (f) {F};
+\node[treeNode,below=1cm of c,xshift=3cm] (g) {G};
+\node[treeNode,below=1cm of b,xshift=-.5cm] (d) {D};
+\node[treeNode,below=1cm of d] (h) {H};
+
+\foreach \x/\y in {a/b,a/c,c/e,c/f,c/g,b/d,d/h} {
+    \draw[treeConnect] (\x) -- (\y);
+}
+
+\node at ([xshift=2cm,yshift=.5cm]a.north) (parentKey) { parent };
+\draw[treeConnect] (parentKey.east) -- ++(1cm,0cm) node[right] (childKey) { child };
+\node[below right=.5cm and -3cm of childKey,heightColor] (heightDesc) { \term{height} (of a node): length of longest path to leaf };
+\node[below=1cm of heightDesc,heightColor,align=left] (heightDesc2) { \term{height} (of a tree): height of tree's root \\ \hspace{2cm}(this example: 3) };
+\node[heightColor,right=0cm of a] {3};
+\node[heightColor,right=0cm of b] {2};
+\node[heightColor,right=0cm of d] {1};
+\node[heightColor,right=0cm of h] {0};
+\node[heightColor,right=0cm of c] {1};
+\node[heightColor,right=0cm of e] {0};
+\node[heightColor,right=0cm of f] {0};
+\node[heightColor,right=0cm of g] {0};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=nodeDepth]{tree/node depth}
+\newcommand{\term}[1]{\textit{\textbf{#1}}}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    treeNode/.style={draw, thick},
+    treeConnect/.style={draw, very thick,->},
+    nameLabel/.style={ultra thick,<-},
+}
+\tikzset{
+    depthColor/.style={green!70!black}
+}
+\node[treeNode] (a) {A};
+\node[treeNode,below=1cm of a,xshift=-1cm] (b) {B};
+\node[treeNode,below=1cm of a,xshift=1cm] (c) {C};
+\node[treeNode,below=1cm of c,xshift=-.5cm] (e) {E};
+\node[treeNode,below=1cm of c,xshift=1cm] (f) {F};
+\node[treeNode,below=1cm of c,xshift=3cm] (g) {G};
+\node[treeNode,below=1cm of b,xshift=-.5cm] (d) {D};
+\node[treeNode,below=1cm of d] (h) {H};
+
+\foreach \x/\y in {a/b,a/c,c/e,c/f,c/g,b/d,d/h} {
+    \draw[treeConnect] (\x) -- (\y);
+}
+
+\node at ([xshift=2cm,yshift=.5cm]a.north) (parentKey) { parent };
+\draw[treeConnect] (parentKey.east) -- ++(1cm,0cm) node[right] (childKey) { child };
+\node[below right=.5cm and -3cm of childKey,depthColor] (depthDesc) { \term{depth} (of a node): length of path to root };
+\node[depthColor,right=0cm of a] {0};
+\node[depthColor,right=0cm of b] {1};
+\node[depthColor,right=0cm of d] {2};
+\node[depthColor,right=0cm of h] {3};
+\node[depthColor,right=0cm of c] {1};
+\node[depthColor,right=0cm of e] {2};
+\node[depthColor,right=0cm of f] {2};
+\node[depthColor,right=0cm of g] {2};
+\end{tikzpicture}
+\end{frame}
+
+
+\begin{frame}[fragile,label=paths]{paths and path lengths}
+\newcommand{\term}[1]{\textit{\textbf{#1}}}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    treeNode/.style={draw, thick},
+    treeConnect/.style={draw, very thick,->},
+    nameLabel/.style={ultra thick,<-},
+}
+\tikzset{
+    pathColor/.style={orange!70!black}
+}
+\node[treeNode] (a) {A};
+\node[pathColor,treeNode,below=1cm of a,xshift=-1cm] (b) {B};
+\node[treeNode,below=1cm of a,xshift=1cm] (c) {C};
+\node[treeNode,below=1cm of c,xshift=-.5cm] (e) {E};
+\node[treeNode,below=1cm of c,xshift=1cm] (f) {F};
+\node[treeNode,below=1cm of c,xshift=3cm] (g) {G};
+\node[pathColor,treeNode,below=1cm of b,xshift=-.5cm] (d) {D};
+\node[pathColor,treeNode,below=1cm of d] (h) {H};
+
+\foreach \x/\y in {a/b,a/c,c/e,c/f,c/g,b/d,d/h} {
+    \draw[treeConnect] (\x) -- (\y);
+}
+\draw[treeConnect,orange] (b) -- (d);
+\draw[treeConnect,orange] (d) -- (h);
+\node[below right=.5cm and -3cm of childKey,pathColor,align=left] (pathDesc) { \term{path}: sequence of nodes $n_1, n_2, \ldots, n_k$ \\ \hspace{2cm} such that $n_i$ is parent of $n_{i+1}$  \\
+example: $\{B, D, H\}$};
+\node[align=left,anchor=north west] (lengthDesc) at ([yshift=-.5cm,xshift=-3cm]g.south west) { \term{length} (of path): number of \textit{edges} in path \\ example: 2 ($B\rightarrow D$ and $D\rightarrow H$) };
+
+\node[align=left,anchor=north west] (iLengthDesc) at ([yshift=-.5cm]lengthDesc.south west) { \term{internal path length}: sum of depth of nodes \\ example: $6 = 1 + 2 + 3$ };
+\end{tikzpicture}
+\end{frame}
+
+% FIXME: CHECK internal path length
