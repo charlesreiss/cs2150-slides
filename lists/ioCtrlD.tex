@@ -1,0 +1,45 @@
+\begin{frame}[fragile,label=EOFAndIoStreamsA]{cin and errors}
+    \lstset{language=C++,style=small}
+    \begin{itemize}
+    \item when \texttt{cin} experiences an error, \\ it \myemph{doesn't throw an exception} (by default)
+    \item can test for errors by using \texttt{cin} as true/false value
+        \begin{itemize}
+        \item or \lstinline|!cin.fail()|
+        \end{itemize}
+    \item test for EOF (\myemph{after trying to read there}) with \lstinline|cin.eof()|
+    \end{itemize}
+\begin{lstlisting}
+cin >> number;
+if (cin) {  // same as:
+    // read 'number' successfully
+} else {
+    // some sort of error happened
+    if (cin.eof()) {
+        // the error was trying to read at EOF
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=EOFAndIoStreamsB]{iostreams and failures}
+    \lstset{language=C++,style=small}
+\begin{lstlisting}
+string s = "old value";
+cout << "cin.eof() = " << cin.eof() << "\n";
+cin >> s;  // tries to read a word
+if (!cin) {
+    cout << "cin had an error\n";
+}
+cout << "s = " <<s;
+cout << "cin.eof() = " << cin.eof() << "\n";
+\end{lstlisting}
+\hrule
+If I just type control-D (``end of file''):
+\begin{Verbatim}[commandchars=\\\{\},fontsize=\small]
+$ ./a.out 
+cin.eof() = 0
+\textbf{^D}cin had an error!
+s = old value
+cin.eof() = 1
+\end{Verbatim}
+\end{frame}
