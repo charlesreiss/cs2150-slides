@@ -1,0 +1,81 @@
+
+\usetikzlibrary{graphs}
+\usetikzlibrary{graphdrawing}
+\usegdlibrary{trees}
+
+\begin{frame}{tree traversal}
+\begin{tikzpicture}
+\graph[tree layout,
+    nodes={draw,thick,circle,text width=.25cm,align=center,text height=.25cm,text depth=0cm},
+    edges={thick,-Latex}] {
+    [fresh nodes] 
+        "$/$" -> {
+            "$\times$" -> {
+                "+" -> {
+                    [name=plus] 1, 2
+                },
+                "-" -> {
+                    [name=minus] 3, 4
+                },
+            },
+            "$\times$" -> {
+                [name=times] 5, 6
+            }
+        }
+};
+\node[anchor=north west,align=left]  at ([yshift=-1cm]plus 1.south west){
+    pre-order: {\tt / * + 1 2 - 3 4 * 5 6} \\
+    in-order: {\tt (((1+2) * (3-4)) / (5*6))} (parenthesis optional?) \\
+    post-order: {\tt 1 2 + 3 4 - * 5 6 * / } \\
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=prePostPrint]{pre/post-order traversal printing}
+\lstset{language=C++,style=small}
+(this is pseudocode)
+\begin{lstlisting}
+TreeNode::printPreOrder() {
+    this->print();
+    for each child c of this:
+        c->printPreOrder()
+}
+
+TreeNode::printPostOrder() {
+    for each child c of this:
+        c->printPreOrder()
+    this->print();
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=inPrint]{in-order traversal printing}
+\lstset{language=C++,style=small}
+(this is pseudocode)
+\begin{lstlisting}
+BinaryTreeNode::printInOrder() {
+    if (this->left)
+        this->left->printInOrder();
+    cout << this->element << " ";
+    if (this->right)
+        this->right->printInOrder();
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=nonPrintTrav]{post-order traversal counting}
+\lstset{language=C++,style=small}
+(this is pseudocode)
+\begin{lstlisting}
+int numNodes(TreeNode *tnode) {
+  if ( tnode == NULL )
+      return 0;
+  else {
+      sum=0;
+      for each child c of tnode
+          sum += numNodes(c);
+      return 1 + sum;
+  }
+}
+\end{lstlisting}
+\end{frame}
