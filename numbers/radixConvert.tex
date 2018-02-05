@@ -40,8 +40,8 @@
 
 \begin{frame}{convert to something (2)}
 \begin{eqnarray*}
-    121_\text{TEN} \text{~as radix 11} &=& \only<2>{\_\_\myemph<2>{0}_{ELEVEN}}\only<3>{\_\myemph<3>{0}0_{ELEVEN}}%
-    \only<4->{\myemph<4>{1}00_{ELEVEN}} \\
+    121_\text{TEN} \text{~as radix 11} &=& \only<2>{\_\_\myemph<2>{0}_\text{ELEVEN}}\only<3>{\_\myemph<3>{0}0_\text{ELEVEN}}%
+    \only<4->{\myemph<4>{1}00_\text{ELEVEN}} \\
     ~ \\
     \onslide<2->{121 \div 11} & \onslide<2->{=} & \onslide<2->{11} \\
     \onslide<2->{121 \text{~mod~} 11} & \onslide<2->{=} & \onslide<2->{0} \\
@@ -55,6 +55,19 @@
     \begin{itemize}
         \item each ``nibble'' (hexadecimal digit) = 4 binary bits
     \end{itemize}
+\begin{eqnarray*}
+    uz_\text{SIXTEEN} &=& u\cdot 16^1 + z\cdot 16^0 \\
+    &=& (u_3\cdot2^3+u_2\cdot2^2+u_1\cdot2^1+u_0\cdot2^0)2^4 + z_3\cdot2^3+\ldots \\
+    &=& u_3\cdot2^7+u_2\cdot2^6+u_1\cdot2^5+u_0\cdot2^4+z_3\cdot2^3+\ldots \\
+    &=&\left(u_3u_2u_1u_0z_3z_2z_1z_0\right)_\text{TWO}
+\end{eqnarray*}
+\end{frame}
+\begin{frame}{special case: base-16 to base-2}
+    \begin{itemize}
+        \item each ``nibble'' (hexadecimal digit) = 4 binary bits
+    \end{itemize}
+\hrule
+    \vspace{.5cm}
 
 \begin{tabular}{l|l|l|l}
     \myemph<3>{$\mathtt{1}$} & \myemph<4>{$\mathtt{2}$} & $\mathtt{3}$ & $\mathtt{4}_\text{SIXTEEN}$ \\
@@ -79,7 +92,7 @@
         \vspace{.5cm}
         \item this class --- byte is always eight bits
             \begin{itemize}
-                \item (some very old machines sometimes called different sizes ``bytes'')
+                \item (some very old machines called different sizes ``bytes'')
             \end{itemize}
     \end{itemize}
 \end{frame}

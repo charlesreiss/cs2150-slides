@@ -136,6 +136,7 @@ next
 \end{tikzpicture}
 \end{frame}
 
+\begin{comment}
 \begin{frame}[fragile,label=implLLStack]{implementing linked list stack}
 \lstset{language=C++,style=small}
 \begin{lstlisting}
@@ -149,6 +150,7 @@ int Stack::top() const {
 }
 \end{lstlisting}
 \end{frame}
+\end{comment}
 
 \begin{frame}[fragile,label=vectorStack]{vector stack of ints}
 \lstset{language=C++,style=smaller}
@@ -194,7 +196,6 @@ void Stack::pop() {
 \end{lstlisting}
 \end{frame}
 
-\begin{comment}
 \begin{frame}[fragile,label=vectorStackImplPop]{implementing pop?}
 \lstset{language=C++,style=small}
 \begin{lstlisting}
@@ -217,7 +218,6 @@ What could go here? \\
 }
 \end{visibleenv}
 \end{frame}
-\end{comment}
 
 \begin{frame}[fragile,label=vectorStackImplTop]{implementing top?}
 \lstset{language=C++,style=small}
@@ -241,4 +241,14 @@ What could go here? \\
     \lstinline|*(data.end() - 1);|
 }
 \end{visibleenv}
+\end{frame}
+
+\begin{frame}{implementing with stack with arrays}
+    \begin{itemize}
+    \item track \textit{index} of top
+    \item push(X): increment top index, place $X$ in index in array
+    \item top(): read from array at top index
+    \item pop(): decrement top index
+    \item plus special case for full array
+    \end{itemize}
 \end{frame}

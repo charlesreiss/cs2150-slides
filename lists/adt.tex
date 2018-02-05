@@ -1,10 +1,10 @@
 \begin{frame}{abstract data type}
 \begin{itemize}
-\item definition: \myemph{collection of operations} \\
-      that can be done on data structure
+\item definition: \myemph{data with set of operations}
 \vspace{.5cm}
 \item<2-> hide \myemph{implementation details} from (library) users
 \item<2-> library can change without library users changing code
+\item<2-> users can choose implementation based on performance, etc.
 \end{itemize}
 \end{frame}
 
@@ -28,29 +28,6 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile,label=stackAdt]{C++ standard library: stack ADT?}
-\lstset{
-    language=C++,
-    style=small
-}
-\begin{itemize}
-\item \texttt{stack} in C++ standard library
-\item wrapper for several containers
-    \begin{itemize}
-    \item default: deque (double-ended queue)
-    \item linked list
-    \item vector
-    \item \ldots
-    \end{itemize}
-\item \myemph{one generic interface!}
-\end{itemize}
-\begin{lstlisting}
-stack<int> s1; // stack based on deque
-stack<int, vector<int> > s2; // stack based on vector
-stack<int, forward_list<int> > s3; // stack based on singly-linked list
-...
-\end{lstlisting}
-\end{frame}
 
 \begin{frame}[fragile,label=stackAdtOps]{ADTs we've seen}
     \begin{itemize}
@@ -112,6 +89,7 @@ someList.insert(value, index)
 \end{tikzpicture}
 \end{frame}
 
+% FIXME: this looks out of context
 \begin{frame}[fragile,label=listAdtExample]{list ADT examples}
 \begin{tabular}{l|llllll}
 values & 34 & 12 & 52 & 16 & 12 \\
@@ -160,4 +138,27 @@ insert/erase (with iterator) & linear time & constant time \\
         \item this is how \texttt{std::stack} works
         \end{itemize}
     \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=stackAdt]{C++ standard library: stack ADT?}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{itemize}
+\item \texttt{stack} in C++ standard library
+\item wrapper for several containers
+    \begin{itemize}
+    \item default: deque (double-ended queue)
+    \item linked list
+    \item vector
+    \item \ldots
+    \end{itemize}
+\item \myemph{one generic interface!}
+\end{itemize}
+\begin{lstlisting}
+stack<int> s1; // stack based on deque
+stack<int, vector<int> > s2; // stack based on vector
+...
+\end{lstlisting}
 \end{frame}

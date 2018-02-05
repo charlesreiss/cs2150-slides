@@ -9,6 +9,9 @@
 \begin{itemize}
 \item<2-> two viable ways to number bits
 \item<3-> does it matter which I use?
+    \begin{itemize}
+    \item do I have a way to ask for bit $i$?
+    \end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -16,12 +19,15 @@
 \begin{eqnarray*}
 \text{option 1: 4-byte number:}&\;&B_3B_2B_1B_0 \\
     & = & \sum_{i=0}^{3} B_i \cdot 256^i \\
-\text{option 2: $n$-bit number:}&\;&B_0B_1B_2B_3 \\
-    & = & \sum_{i=0}^{n3} b_i \cdot 256^{3-i} \\
+\text{option 2: $n$-byte number:}&\;&B_0B_1B_2B_3 \\
+    & = & \sum_{i=0}^{n} b_i \cdot 256^{3-i} \\
 \end{eqnarray*}
 \begin{itemize}
 \item<2-> two viable ways to number bytes
 \item<3-> does it matter which I use?
+    \begin{itemize}
+    \item in memory, yes --- each byte needs an address (number)
+    \end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -39,7 +45,9 @@
     16 \& 434093 \\
     \ldots \& \ldots \\
 };
-
+    \node[below=1cm of mem64] {
+        $123999 = 1\cdot 256^2 + 228\cdot 256^1 + 95 \cdot 256^0$
+    };
 \begin{visibleenv}<2>
 \matrix[tight matrix,
     column 1/.style={nodes={draw=none,text width=1cm}},

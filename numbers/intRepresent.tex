@@ -58,7 +58,7 @@
 1 & \myemph<2>{01} & \myemph<2>{10} \\
 \end{tabular}
 \begin{itemize}
-\item<2-> exactly one set to 1 --- result is 1; otherwise 0
+\item<2-> exactly one set to 1 --- result (w/o carry) is 1; otherwise 0
 \item<3-> both set to 1 --- carry is 1; otherwise 0
 \end{itemize}
 \end{frame}
@@ -100,7 +100,7 @@ type & \myemph<3>{minimum} & on lab machines \\
     box/.style={draw=red,fill=white,ultra thick,align=left,at=(place)},
 }
 \begin{visibleenv}<2>
-\node[box] { ``unsigned'' --- can't be negative (no sign) };
+\node[box] { ``unsigned'' --- can't be negative (no $\pm$ sign) };
 \end{visibleenv}
 \begin{visibleenv}<3>
 \node[box] { minimum size required by standard for all C++ compilers \\
