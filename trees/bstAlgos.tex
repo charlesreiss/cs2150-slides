@@ -1,0 +1,120 @@
+\usetikzlibrary{graphs,graphdrawing}
+\usegdlibrary{trees}
+
+\begin{frame}[fragile,label=bstFind]{BST: find}
+\lstset{language=C++,style=small}
+(pseudocode)
+\begin{lstlisting}
+find(node, key) {
+    if (node == NULL)
+        return NULL;
+    else if (key < node->key)
+        return find(node->left, key)
+    else if (key > node->key)
+        return find(node->right, key)
+    else // if (key == node->key)
+        return node;
+}
+\end{lstlisting}
+\end{frame}
+
+% FIXME: find example on graph
+
+\begin{frame}[fragile,label=bstInsert]{BST: insert}
+\lstset{language=C++,style=small}
+(pseudocode)
+\begin{lstlisting}
+insert(Node *&node, key) {
+    if (node == NULL)
+        node = new BinaryNode(key);
+    else if (key < node->key)
+        insert(node->left, key);
+    else if (key < root->key)
+        insert(node->right, key);
+    else // if (key > root->key)
+        ; // duplicate -- no new node needed
+}
+\end{lstlisting}
+\end{frame}
+
+% FIXME: example on graph
+
+\begin{frame}[fragile,label=findMin]{BST: findMin}
+\lstset{language=C++,style=small}
+(pseudocode)
+\begin{lstlisting}
+findMin(Node *node, key) {
+    if (node->left == NULL)
+        return node;
+    else
+        insert(node->left, key);
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=bstRemove1]{BST: remove (1)}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    mybst/.style={binary tree layout,level distance=10mm,sibling distance=15mm,nodes={draw,circle,inner sep=0.5mm,minimum width=.8cm}},
+}
+\begin{scope}[mybst]
+\graph {
+    [name=a] 5[desired at={(3,0)}] -> {4 -> 1 -> 3[second], 9 -> {7[red,very thick] edge from parent[red,very thick], 11}}
+};
+\end{scope}
+\begin{scope}[mybst]
+\graph {
+    [name=b] 5[desired at={(11,0)}] -> {4 -> 1 -> 3[second], 9 -> {11[second]}}
+};
+\end{scope}
+\node at (7, .5) {case 1: no children};
+\draw[black!50,line width=.1cm,->] (6, -2) -- (8, -2);
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=bstRemove2]{BST: remove (2)}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    mybst/.style={binary tree layout,level distance=10mm,sibling distance=15mm,nodes={draw,circle,inner sep=0.5mm,minimum width=.8cm}},
+}
+\begin{scope}[mybst]
+\graph {
+    [name=a] 5[desired at={(3,0)}] -> {4 ->[red,very thick] 1[red,very thick] ->[red, very thick] 3[second], 9 -> {7, 11}}
+};
+\end{scope}
+\begin{scope}[mybst]
+\graph {
+    [name=b] 5[desired at={(11,0)}] -> {4 ->[red, very thick] 3[red, very thick], 9 -> {7, 11}}
+};
+\end{scope}
+\node at (7, .5) {case 2: one child};
+\draw[black!50,line width=.1cm,->] (6, -2) -- (8, -2);
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=bstRemove3]{BST: remove (3)}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    mybst/.style={binary tree layout,level distance=10mm,sibling distance=15mm,nodes={draw,circle,inner sep=0.5mm,minimum width=.8cm}},
+}
+\begin{scope}[mybst]
+\graph {
+    [name=a] 5[desired at={(3,0)},red,very thick] -> {4 -> 1 -> 3[second], 9 -> {7[blue,dashed], 11}}
+};
+\end{scope}
+\begin{scope}[mybst]
+\graph {
+    [name=b] 7[red, very thick,desired at={(11,0)}] -> {4 -> 3, 9 -> 11[second]}
+};
+\end{scope}
+\node at (6, .5) (caseLabel) {case 3: two children};
+\draw[black!50,line width=.1cm,->] (6, -2) -- (8, -2);
+\node[below=5cm of caseLabel,align=center] {
+    \myemph{replace with minimum of right subtree} \\
+    (alternately: maximum of left subtree, \ldots)
+};
+\end{tikzpicture}
+\end{frame}

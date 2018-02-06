@@ -1,0 +1,49 @@
+\usetikzlibrary{graphs,graphdrawing}
+\usegdlibrary{trees}
+
+\begin{frame}[fragile,label=binTree]{binary trees}
+\lstset{language=C++,style=small}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex
+}
+\node[draw,thick] (code) {
+\begin{lstlisting}
+class BinaryNode {
+  ...
+  int element;
+  BinaryNode *left;
+  BinaryNode *right;
+};
+\end{lstlisting}
+};
+\node[anchor=south west] at (code.north west) {all nodes have \textit{at most} 2 children};
+\begin{scope}[binary tree layout, level distance=2mm, sibling distance=10mm, nodes={draw,circle}]
+\graph {
+    [name=long]
+    1[desired at={([xshift=2cm,yshift=0cm]code.north east)}] -> 2[second,alt=<2>{red,very thick}] -> 3[second] -> 4 -> 5[second] -> 6[second] -> 7[second] };
+\end{scope}
+\begin{scope}[binary tree layout, level distance=5mm, nodes={draw,circle}]
+\graph {
+    [name=short]
+    1[desired at={([xshift=0cm,yshift=-.5cm]code.south)}] -> {2 -> {4[name=exampleFour], 5}, 3 -> {6, 7[alt=<3>{red,very thick}]}}
+};
+\end{scope}
+\begin{visibleenv}<2>
+\node[draw,red,right=1cm of long 2,align=left] {
+    {\tt element} = \textit{2} \\
+    {\tt left} = \textit{NULL} \\
+    {\tt right} = \textit{addr of node 3}
+};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[draw,red,right=1cm of short 7,align=left,fill=white] {
+    {\tt element} = \textit{7} \\
+    {\tt left} = \textit{NULL} \\
+    {\tt right} = \textit{NULL}
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+% FIXME: pictures with NULLs

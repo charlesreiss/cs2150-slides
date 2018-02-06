@@ -1,0 +1,52 @@
+\usetikzlibrary{graphs,graphdrawing}
+\usegdlibrary{trees}
+
+
+\begin{frame}[fragile,label=bstDefn]{binary search trees}
+\begin{itemize}
+\item binary tree \textbf{and}\ldots
+\item each node has a \textit{key}
+\item for each node:
+\begin{itemize}
+    \item keys in node's left subtree are less than node's
+    \item keys in node's right subtree are greater than node's
+\end{itemize}
+\end{itemize}
+\begin{tikzpicture}
+\tikzset{>=Latex}
+\begin{scope}[binary tree layout, level distance=3mm, sibling distance=20mm,nodes={draw,circle,inner sep=0.5mm}]
+\graph {
+    [name=g] 4[alt={<2>{red,very thick}}] -> {2 -> {1, 3}, 5[alt={<3>{red,very thick}}] -> 7[second] -> {6, 8}}
+};
+\end{scope}
+\begin{visibleenv}<2>
+\node[draw=blue!70!black,ultra thick,fill=blue,inner sep=0.5mm,fill opacity=0.05,fit=(g 1) (g 2) (g 3)] (leftSubMark) {};
+\node[blue!70!black,below=0cm of leftSubMark] {left subtree of 4};
+\node[draw=green!70!black,ultra thick,fill=green,inner sep=0.5mm,fill opacity=0.05,fit=(g 5) (g 6) (g 8)] (rightSubMark) {};
+\node[green!70!black,right=0cm of rightSubMark] {right subtree of 4};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[draw=blue!70!black,ultra thick,fill=blue,inner sep=0.5mm,fill opacity=0.05,fit=(g 7) (g 6) (g 8)] (rightSubMarkB) {};
+\node[blue!70!black,below=0cm of rightSubMarkB] {right subtree of 5};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{not a binary search tree}
+\begin{tikzpicture}
+\begin{scope}[binary tree layout, level distance=3mm, sibling distance=20mm,nodes={draw,circle,inner sep=0.5mm}]
+\graph {
+    [name=g] 8 -> {5 -> {2 -> 4[second], 6}, 11 -> {10 -> 15[second,red,very thick], 18 -> 20[second] -> 21[red,very thick]}}
+};
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+
+% FIXME: is it a BST exercise?
+
+\begin{frame}{binary search tree versus binary tree}
+\begin{itemize}
+\item binary search trees are a kind of binary tree
+\item \ldots but --- often people say ``binary tree'' to mean ``binary search tree''
+\end{itemize}
+\end{frame}
