@@ -1,3 +1,26 @@
+\begin{frame}[fragile,label=whyNotEq]{don't compare with {\tt ==}/{\tt !=}}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{lstlisting}
+double x = 0.3;
+double y = 0.1;
+double y3 = y * 3;
+if (x != y3) {
+    cout << "not equal" << endl;
+}
+cout.setprecision(30);
+cout << x << endl;
+cout << y3 << endl;
+\end{lstlisting}
+\hrule
+\small \tt
+not equal \\
+0.299999999999999988897769753748 \\
+0.300000000000000044408920985006 
+\end{frame}
+
 \begin{frame}[fragile,label=onCompareFloats]{on comparing floats}
 \lstset{
     language=C++,
