@@ -1,0 +1,109 @@
+\usetikzlibrary{graphs,graphdrawing}
+\usegdlibrary{trees}
+
+\begin{frame}{binary tree: worst-case height}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    mybst/.style={binary tree layout,level distance=10mm,sibling distance=15mm,nodes={draw,circle,inner sep=0.5mm,minimum width=.8cm}},
+}
+\begin{scope}[mybst]
+\graph {
+    [name=a] 1 -> 2[second,desired at={(0,0)}] -> 3[second] -> 4[second] -> 5[second] -> 6[second] -> 7[second]
+};
+\end{scope}
+\node[align=left] at (-6, -1) {
+    $n$-node BST: worst-case height/depth $n-1$ \\
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{binary tree: best-case height}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    mybst/.style={binary tree layout,level distance=10mm,sibling distance=15mm,nodes={draw,circle,inner sep=0.5mm,minimum width=.8cm}},
+}
+\begin{scope}[mybst]
+\graph {
+    [name=a] 4[desired at={(0,0)}] -> {2 -> {1, 3}, 6 -> {5, 7}} 
+};
+\end{scope}
+\node[align=left] at (0, 1) {
+    height $h$: at most $2^{h+1}-1$ nodes
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{binary tree: proof best-case height is possible}
+\begin{itemize}
+\item proof \textbf{by induction}: can have $2^{h+1}-1$ nodes in $h$-height tree
+\vspace{.25cm}
+\item $\mathbf{h=0}$: $h=0$: exactly one node; $2^{h+1}-1=1$ nodes
+    \vspace{.25cm}
+\item $\mathbf{h=k\rightarrow h=k+1}$:
+    \item start with \textit{two copies} of a maximum tree of height $k$
+    \item create a new tree as follows:
+        \begin{itemize}
+        \item create a new root node
+        \item add edges from the root node to the roots of the copies
+        \end{itemize}
+    \item the height of this new tree is $k+1$
+        \begin{itemize}
+        \item path of length $k$ in old tree + either new edge
+        \end{itemize}
+    \item the number of nodes is $2(2^{k+0}-1) + 1= 2^{k+1}-2 + 1 = 2^{k+1} - 1$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{binary tree: best-case height is best}
+\begin{itemize}
+\item property of trees in root:
+    \begin{itemize}
+        \item except for the root, every node in tree has 2 children
+    \end{itemize}
+\item no way to add nodes without increasing height
+    \begin{itemize}
+    \item add below leaf --- longer path to root --- longer height
+    \item add above root --- every old node has longer path to root
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{binary tree height formula}
+    \begin{itemize}
+    \item $n$: number of nodes
+    \item $h$: height
+    \end{itemize}
+\begin{eqnarray*}
+    n + 1 &\le& 2^{h+1} \\
+    \log_2(n+1) &\le& \log_2\left(2^{h+1}\right) \\
+    \log(n+1) &\le& h+1 \\
+    h &\ge& \log_2\left(n+1\right)-1 \\
+\end{eqnarray*}
+    \begin{itemize}
+    \item shortest tree of $n$ nodes: $\sim \log_2(n)$ height
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{perfect binary trees}
+    \begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    mybst/.style={binary tree layout,level distance=10mm,sibling distance=15mm,nodes={draw,circle,inner sep=0.5mm,minimum width=.8cm,text=white}},
+}
+\begin{scope}[mybst]
+\graph {
+    [name=a] 4[desired at={(0,0)}] -> {2 -> {1, 3}, 6 -> {5, 7}} 
+};
+\end{scope}
+\end{tikzpicture}
+    \begin{itemize}
+    \item a binary tree is \myemph{perfect} if
+        \begin{itemize}
+        \item all leaves have same depth
+        \item all nodes have zero children (leaf) or two children
+        \end{itemize}
+    \item \myemph{exactly} the trees that achieve $2{h+1}-1$ nodes
+    \end{itemize}
+\end{frame}
