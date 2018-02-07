@@ -19,8 +19,8 @@
 \begin{eqnarray*}
 \text{option 1: 4-byte number:}&\;&B_3B_2B_1B_0 \\
     & = & \sum_{i=0}^{3} B_i \cdot 256^i \\
-\text{option 2: $n$-byte number:}&\;&B_0B_1B_2B_3 \\
-    & = & \sum_{i=0}^{n} b_i \cdot 256^{3-i} \\
+\text{option 2: 4-byte number:}&\;&B_0B_1B_2B_3 \\
+    & = & \sum_{i=0}^{3} b_i \cdot 256^{3-i} \\
 \end{eqnarray*}
 \begin{itemize}
 \item<2-> two viable ways to number bytes
@@ -259,6 +259,7 @@ big endian:
 \begin{itemize}
 \item endianness is about numbering, \\
     not (necessairily) placement on the page
+\item but, probably assume English order (left to right, etc.) if not otherwise specified
 \end{itemize}
 \begin{tikzpicture}
 \matrix[tight matrix,
@@ -306,4 +307,33 @@ big endian:
 };
 \node[font=\Huge] at ($(mem8A)!0.5!(mem8B)$) {=};
 \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{endianness and bit-order}
+    \begin{itemize}
+    \item we won't talk about \myemph{bit order}
+    \item because bits don't have addresses
+    \vspace{.5cm}
+    \item if I say ``bit $0$'', question: ``numbering from least significant or most significant''?
+        \begin{itemize}
+        \item nothing about how pointers, etc. work suggests either answer is correct
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{endianness and writing out bytes}
+    \begin{itemize}
+        \item \texttt{0x0102} in binary: \texttt{00000001000000010}
+            \begin{itemize}
+            \item English's order --- most significant first
+            \end{itemize}
+        \item bytes of \texttt{0x0102} in big endian: \\(byte 0) \texttt{00000001} (byte 1) \texttt{00000010}
+        \item bytes of \texttt{0x0102} in little endian: \\(byte 0) \texttt{00000010} (byte 1) \texttt{00000001}
+        \vspace{.5cm}
+        \item \textit{usually}, we don't change the order we write bits
+        \item if writing out bytes, first in reading order is usually lowest address
+            \begin{itemize}
+            \item (we'll specify if not)
+            \end{itemize}
+    \end{itemize}
 \end{frame}
