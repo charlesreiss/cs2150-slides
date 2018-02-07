@@ -11,7 +11,7 @@
 \begin{scope}[every node/.style={inner sep=0mm}]
 \node[pm] (pm) {-};
 \node[anchor=base west] (onePt) at (pm.base east) {$1.$};
-\node[anchor=base west,mant] (mant) at (onePt.base east) {$1100010010_\text{TWO}$};
+\node[anchor=base west,mant] (mant) at (onePt.base east) {$1100100101_\text{TWO}$};
 \node[anchor=base west] (cdot) at (mant.base east) {\cdot};
 \node[anchor=base west] (expt) at (cdot.base east) {$2^{\color{orange!80!black}3}$};
 \end{scope}
@@ -37,7 +37,7 @@
 \end{visibleenv}
 \begin{visibleenv}<3->
     \node[below=2cm of mantLabel] (value) {
-    \tt {\color{blue!70!black}1} {\color{orange!80!black}10010} {\color{green!60!black}1100010010}
+    \tt {\color{blue!70!black}1} {\color{orange!80!black}10010} {\color{green!60!black}1100100101}
 };
 \end{visibleenv}
 \begin{visibleenv}<4->
@@ -55,7 +55,7 @@
 \item 1 sign bit ($1$ for negative)
 \item 5 expontent bits
     \begin{itemize}
-    \item bias of 15 --- if bits as unsigned are $e$, exponent is $E=e-127$
+    \item bias of 15 --- if bits as unsigned are $e$, exponent is $E=e-15$
     \end{itemize}
 \item 10 mantissa bits
     \begin{itemize}
@@ -66,3 +66,12 @@
 \end{itemize}
 \end{frame}
 
+\begin{frame}{approximation}
+    \begin{itemize}
+    \item example: represented $\frac{100}{7}\approx 14.285$ as $\frac{1829}{128}\approx14.289$
+    \item too large by $\frac{3}{896}$
+        \begin{itemize}
+        \item 10 bits mantissa + implicit ``1'' --- about $\log_{10}(2^{11}) \approx 3.3$ decimal digits
+        \end{itemize}
+    \end{itemize}
+\end{frame}
