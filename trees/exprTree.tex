@@ -1,0 +1,68 @@
+\usetikzlibrary{graphs,graphdrawing}
+\usegdlibrary{trees}
+
+\begin{frame}{expression tree and traversals}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    myt/.style={binary tree layout,level distance=10mm,sibling distance=15mm,nodes={draw,circle,inner sep=0.5mm,minimum width=.8cm}},
+}
+\begin{scope}[myt]
+\graph{
+    [fresh nodes,name=g] top[as={+}] -> {
+        "a",
+        "*" -> {
+            "+" -> {"b", "c"},
+            "d"
+        }
+    }
+};
+\end{scope}
+\node[align=left,anchor=north west] at ([xshift=3cm]g top) {
+    \tt (a + ((b + c) * d)) \\
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{expression tree and traversals}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    myt/.style={binary tree layout,level distance=10mm,sibling distance=15mm,nodes={draw,circle,inner sep=0.5mm,minimum width=.8cm}},
+}
+\begin{scope}[myt]
+\graph{
+    [fresh nodes,name=g] top[as={+}] -> {
+        "a",
+        "*" -> {
+            "+" -> {"b", "c"},
+            "d"
+        }
+    }
+};
+\end{scope}
+\node[align=left,anchor=north west] at ([xshift=3cm]g top) {
+    infix: \tt (a + ((b + c) * d)) \\
+    postfix: \tt a b c + d * + \\
+    prefix: \tt + a * + b c d
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{postfix expression to tree}
+\begin{itemize}
+\item use a stack \myemph{of trees}
+\item number $n$ $\rightarrow$ push(\begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]\node[draw,circle,inner sep=0.5mm]{$n$};\end{tikzpicture})
+\item operator {\it OP} $\rightarrow$ 
+\begin{itemize}
+\item pop into $A$, $B$; then
+\item push\begin{tikzpicture}[baseline={(current bounding box.center)}]
+    \node[draw,circle, inner sep=0.5mm](op){\it OP};
+    \node[below right=0.25cm of op] (a) {$A$};
+    \node[below left=0.25cm of op] (b) {$B$};
+    \draw[-Latex,thick] (op) -- (a);
+    \draw[-Latex,thick] (op) -- (b);
+    \end{tikzpicture}
+\end{itemize}
+\end{itemize}
+\end{frame}
