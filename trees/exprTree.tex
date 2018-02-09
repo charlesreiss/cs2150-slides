@@ -58,11 +58,111 @@
 \item pop into $A$, $B$; then
 \item push\begin{tikzpicture}[baseline={(current bounding box.center)}]
     \node[draw,circle, inner sep=0.5mm](op){\it OP};
-    \node[below right=0.25cm of op] (a) {$A$};
-    \node[below left=0.25cm of op] (b) {$B$};
+    \node[below right=0.25cm of op,inner sep=.1mm] (a) {$A$};
+    \node[below left=0.25cm of op,inner sep=.1mm] (b) {$B$};
     \draw[-Latex,thick] (op) -- (a);
     \draw[-Latex,thick] (op) -- (b);
     \end{tikzpicture}
 \end{itemize}
 \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=postFixToExprExample]{example}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    myt/.style={binary tree layout,level distance=10mm,sibling distance=15mm,nodes={draw,circle,inner sep=0.5mm,minimum width=.8cm}},
+    box/.style={draw,thick},
+    line/.style={ultra thick,black!50},
+    >=Latex,
+}
+\node[font=\tt] (eqn){\myemph<2>{a b} \myemph<3>{+} \myemph<4>{c d e} \myemph<5>{+} \myemph<6>{*} \myemph<7>*};
+\coordinate (stackOne) at ([yshift=-6cm]eqn.south);
+\coordinate (stackTwo) at ([yshift=-4cm]eqn.south);
+\coordinate (stackThree) at ([yshift=-2.5cm]eqn.south);
+\coordinate (stackFour) at ([yshift=-1cm]eqn.south);
+\begin{visibleenv}<2-6>
+\draw[line,->] ([xshift=2.2cm,yshift=-1cm]stackOne) -- ++(0cm,3cm) node[above right,inner sep=.5mm,black] {top of stack};
+\end{visibleenv}
+\begin{visibleenv}<2>
+\begin{scope}[myt]
+\graph{
+    [fresh nodes,name=a1] a[desired at=(stackOne)]
+};
+\end{scope}
+\begin{scope}[myt]
+\graph{
+    [fresh nodes,name=b1] b[desired at=(stackTwo)]
+};
+\end{scope}
+\foreach \x in {stackOne,stackTwo} {
+\draw[box] ([xshift=-2cm,yshift=-1cm]\x) rectangle ([xshift=2cm,yshift=1cm]\x);
+}
+\end{visibleenv}
+\begin{visibleenv}<3-6>
+\begin{scope}[myt]
+\graph{
+    [fresh nodes,name=p1] plus[as={+},desired at={([yshift=.5cm]stackOne)}] -> {a, b}
+};
+\end{scope}
+\foreach \x in {stackOne} {
+\draw[box] ([xshift=-2cm,yshift=-1cm]\x) rectangle ([xshift=2cm,yshift=1cm]\x);
+}
+\end{visibleenv}
+\begin{visibleenv}<4>
+\begin{scope}[myt]
+\graph{
+    [fresh nodes,name=c1] c[desired at=(stackTwo)]
+};
+\end{scope}
+
+\begin{scope}[myt]
+\graph{
+    [fresh nodes,name=d1] d[desired at=(stackThree)]
+};
+\end{scope}
+\begin{scope}[myt]
+\graph{
+    [fresh nodes,name=e1] e[desired at=(stackFour)]
+};
+\end{scope}
+\foreach \x in {stackTwo} {
+\draw[box] ([xshift=-2cm,yshift=-1cm]\x) rectangle ([xshift=2cm,yshift=.75cm]\x);
+}
+\foreach \x in {stackThree,stackFour} {
+\draw[box] ([xshift=-2cm,yshift=-.75cm]\x) rectangle ([xshift=2cm,yshift=.75cm]\x);
+}
+\end{visibleenv}
+\begin{visibleenv}<5>
+\begin{scope}[myt]
+\graph{
+    [fresh nodes,name=c2] c[desired at=(stackTwo)]
+};
+\end{scope}
+\begin{scope}[myt]
+\graph{
+    [fresh nodes,name=plus2] plus[desired at={([yshift=1cm]stackThree)},as={+}] -> {c, d}
+};
+\end{scope}
+\foreach \x in {stackTwo} {
+\draw[box] ([xshift=-2cm,yshift=-1cm]\x) rectangle ([xshift=2cm,yshift=.75cm]\x);
+}
+\draw[box] ([xshift=-2cm,yshift=-.75cm]stackThree) rectangle ([xshift=2cm,yshift=.25cm]stackFour);
+\end{visibleenv}
+\begin{visibleenv}<6>
+\begin{scope}[myt]
+\graph{
+    [fresh nodes,name=times1] times[desired at={([xshift=-1cm,yshift=2cm]stackTwo)},as={*}] -> {c, "+" -> {d, e}}
+};
+\end{scope}
+\draw[box] ([xshift=-2cm,yshift=-1cm]stackTwo) rectangle ([xshift=2cm,yshift=0cm]stackFour);
+\end{visibleenv}
+\begin{visibleenv}<7>
+\begin{scope}[myt]
+\graph{
+    [fresh nodes,name=times2] times[desired at={([xshift=-1cm,yshift=3cm]stackTwo)},as={*}] -> {"+" -> {a, b},  "*" -> {c, "+" -> {d, e}}}
+};
+\end{scope}
+\end{visibleenv}
+\end{tikzpicture}
 \end{frame}
