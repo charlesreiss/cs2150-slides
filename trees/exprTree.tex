@@ -99,7 +99,7 @@
 \draw[box] ([xshift=-2cm,yshift=-1cm]\x) rectangle ([xshift=2cm,yshift=1cm]\x);
 }
 \end{visibleenv}
-\begin{visibleenv}<3-6>
+\begin{visibleenv}<3-7>
 \begin{scope}[myt]
 \graph{
     [fresh nodes,name=p1] plus[as={+},desired at={([yshift=.5cm]stackOne)}] -> {a, b}
@@ -149,10 +149,10 @@
 }
 \draw[box] ([xshift=-2cm,yshift=-.75cm]stackThree) rectangle ([xshift=2cm,yshift=.25cm]stackFour);
 \end{visibleenv}
-\begin{visibleenv}<6>
+\begin{visibleenv}<6-7>
 \begin{scope}[myt]
 \graph{
-    [fresh nodes,name=times1] times[desired at={([xshift=-1cm,yshift=2cm]stackTwo)},as={*}] -> {c, "+" -> {d, e}}
+    [fresh nodes,name=times1] times[desired at={([xshift=-.5cm,yshift=2cm]stackTwo)},as={*}] -> {c, "+" -> {d, e}}
 };
 \end{scope}
 \draw[box] ([xshift=-2cm,yshift=-1cm]stackTwo) rectangle ([xshift=2cm,yshift=0cm]stackFour);
@@ -160,9 +160,10 @@
 \begin{visibleenv}<7>
 \begin{scope}[myt]
 \graph{
-    [fresh nodes,name=times2] times[desired at={([xshift=-1cm,yshift=3cm]stackTwo)},as={*}] -> {"+" -> {a, b},  "*" -> {c, "+" -> {d, e}}}
+    [fresh nodes,name=times2] times[desired at={([xshift=8cm,yshift=3cm]stackTwo)},as={*}] -> {"+" -> {a, b},  "*" -> {c, "+" -> {d, e}}}
 };
 \end{scope}
+    \draw[line width=.1cm,black!50,-Latex] ([xshift=-2cm]times2 a.west) -- ++(1.5cm,0cm);
 \end{visibleenv}
 \end{tikzpicture}
 \end{frame}
