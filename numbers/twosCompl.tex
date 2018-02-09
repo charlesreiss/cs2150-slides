@@ -232,11 +232,11 @@
 \begin{scope}[yshift=-5cm]
 \draw[thick] (0, 0) -- (9, 0);
 \draw[thick] (0,2mm) -- (0,-2mm) node[below,myl] {0000\ldots0000 \\ = $+0$};
-\draw[thick] (9,2mm) -- (9,-2mm) node[below,myl] {1111\ldots1111 \\ = $-1$};
+\draw[thick] (9,2mm) -- (9,-2mm) node[below,myl] {1111\ldots1111 \\ = \myemph<1>{$-1$}};
 \draw[thick] (4.45,2mm) -- (4.45,-2mm);
 \draw[thick] (4.5,2mm) -- (4.5,-2mm);
 \draw[thick,dotted] (4.45,-2mm) -- ++(-1cm,-0.2cm) node[below,myl] {0111\ldots1111 \\ = $2^{n-1}-1$};
-\draw[thick,dotted] (4.5,2mm) -- ++(0cm,0.2cm) node[above,myl] {1000\ldots0000 \\ = $-2^{n-1}$};
+\draw[thick,dotted] (4.5,2mm) -- ++(0cm,0.2cm) node[above,myl] {1000\ldots0000 \\ = \myemph<1>{$-2^{n-1}$}};
 \begin{visibleenv}<2-3>
 \draw[thick, dotted, green!50!black] (.5,0mm) -- ++(0cm,15mm) node[above] {0000\ldots0101 = $6$};
 \draw[thick, dotted, green!50!black] (8.5,0mm) -- ++(0cm,15mm) node[above] {1111\ldots1010 = $-6$};
@@ -321,7 +321,7 @@
         \item subtraction also the same as unsigned
         \item multiplication --- repeated addition --- mostly the same
             \begin{itemize}
-                \item (but need some extra precision for overflow)
+                \item (but need some extra precision)
             \end{itemize}
     \end{itemize}
 \end{frame}
@@ -344,6 +344,20 @@
 \item $-127 \rightarrow 2^8 - 127 = 129 \rightarrow 10000001$
 \item $-128 \rightarrow 2^8 - 127 = 129 \rightarrow 10000000$
 \end{itemize}
+\end{frame}
+
+\begin{frame}{sign extension}
+    \begin{itemize}
+        \item have 8-bit 2's complement number {\tt 1101 0111}
+        \item what is this as a 16-bit 2's complement number?
+        \vspace{.5cm}
+        \item<2> general rule: extend by copying the \textit{sign bit}:
+            \begin{itemize}
+                \item {\tt \myemph{1}101 0111} $\rightarrow$ {\tt 1111 1111 1101 0111}
+                \item {\tt \myemph{0}010 1111} $\rightarrow$ {\tt 0000 0000 0010 1111}
+            \end{itemize}
+        \item<2> ``sign extension''
+    \end{itemize}
 \end{frame}
 
 
