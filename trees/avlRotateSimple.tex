@@ -1,0 +1,182 @@
+\usetikzlibrary{graphs,graphdrawing}
+\usegdlibrary{trees}
+
+\tikzset{
+    imbalanced/.style={fill=red!10},
+}
+
+\begin{frame}[fragile,label=avlRotateRight]{AVL: simple right rotation}
+\def\m{-}
+\newcommand{\B}[1]{b: #1}
+\begin{tikzpicture}
+\newcommand{\mynode}{\tikzgraphnodename\\\B{\tikzgraphnodetext}}
+\tikzset{
+    >=Latex,
+    myt/.style={binary tree layout,level distance=10mm,sibling distance=24mm,nodes={draw,circle,very thick,inner sep=0.5mm,minimum width=1.4cm,align=center,font=\small},
+        graphs/typeset=\mynode},
+}
+\node[align=left] at (0, 2) {just inserted \color{blue}0 \\ unbalanced root becomes new left child};
+\begin{scope}[myt]
+\graph {
+    [fresh nodes,name=before] 3/\m{}2[desired at={(-3, 0)},red,ultra thick,imbalanced] -> 2/\m{}1[green!50!black] -> 1/0[blue]
+};
+\end{scope}
+\begin{scope}[myt]
+\graph {
+    [fresh nodes,name=after] 2/0[green!50!black,desired at={(3,0)}] -> {1/0[blue], 3/0[red]}
+};
+\end{scope}
+\draw[->,line width=1mm,black!50] (-1, -1) -- (1, -1);
+\end{tikzpicture}
+\end{frame}
+
+% FIXME: lines where nodes are going?
+\begin{frame}[fragile,label=avlRotateRightB]{AVL: less simple right rotation (1)}
+\def\m{-}
+\newcommand{\B}[1]{b: #1}
+\begin{tikzpicture}
+\newcommand{\mynode}{\tikzgraphnodename\\\B{\tikzgraphnodetext}}
+\tikzset{
+    >=Latex,
+    myt/.style={binary tree layout,level distance=10mm,sibling distance=24mm,nodes={draw,circle,very thick,inner sep=0.5mm,minimum width=1.4cm,align=center,font=\small},
+        graphs/typeset=\mynode},
+}
+\node[align=left] at (0, 2) {just inserted \color{blue}0 \\ unbalanced root becomes new left child};
+\begin{scope}[myt]
+\graph {
+    [fresh nodes,name=before] 5/\m{}2[desired at={(-3, 0)},draw=blue,ultra thick,imbalanced] -> {3/\m{}1[draw=green,ultra thick] -> {2/\m{}1 -> 1/0, 4/0}, 10/0},
+};
+\end{scope}
+\begin{scope}[myt]
+\graph {
+    [fresh nodes,name=after] 3/0[desired at={(3, 0)},draw=green, ultra thick] -> {2/\m{}1 -> 1/0, 5/0[draw=blue,ultra thick] -> { 4/0, 10/0 }}
+};
+\end{scope}
+\draw[->,line width=1mm,black!50] (-1, -1) -- (1, -1);
+\end{tikzpicture}
+\end{frame}
+
+
+\begin{frame}[fragile,label=avlRotateLeft]{AVL: simple left rotation}
+\def\m{-}
+\newcommand{\B}[1]{b: #1}
+\begin{tikzpicture}
+\newcommand{\mynode}{\tikzgraphnodename\\\B{\tikzgraphnodetext}}
+\tikzset{
+    >=Latex,
+    myt/.style={binary tree layout,level distance=10mm,sibling distance=24mm,nodes={draw,circle,very thick,inner sep=0.5mm,minimum width=1.4cm,align=center,font=\small},
+        graphs/typeset=\mynode},
+}
+\node[align=left] at (0, 2) {just inserted \color{blue}1 \\ deepest unbalanced node is \color{red}3};
+\begin{scope}[myt]
+\graph {
+    [fresh nodes,name=before] 1/+2[desired at={(-3, 0)},red,ultra thick,imbalanced] ->2/+1[second,green!50!black] -> 3/0[second,blue]
+};
+\end{scope}
+\begin{scope}[myt]
+\graph {
+    [fresh nodes,name=after] 2/0[green!50!black,desired at={(3,0)}] -> {1/0[blue], 3/0[red]}
+};
+\end{scope}
+\draw[->,line width=1mm,black!50] (-1, -1) -- (1, -1);
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=avlUpDown]{AVL rotation: up and down}
+\def\m{-}
+\newcommand{\B}[1]{b: #1}
+\begin{tikzpicture}
+\newcommand{\mynode}{\tikzgraphnodename\\\B{\tikzgraphnodetext}}
+\tikzset{
+    >=Latex,
+    myt/.style={binary tree layout,level distance=10mm,sibling distance=24mm,nodes={draw,circle,very thick,inner sep=0.5mm,minimum width=1.4cm,align=center,font=\small},
+        graphs/typeset=\mynode},
+}
+\node[align=left] at (0, 2) {\textit{at least} one node moves up (this case: 1 and 2) \\ \textit{at least} one node moves down (this case: 3)};
+\begin{scope}[myt]
+\graph {
+    [fresh nodes,name=before] 3/\m{}2[desired at={(-3, 0)},red,ultra thick,imbalanced] -> 2/\m{}1[green!50!black] -> 1/0[blue]
+};
+\end{scope}
+\begin{scope}[myt]
+\graph {
+    [fresh nodes,name=after] 2/0[green!50!black,desired at={(3,0)}] -> {1/0[blue], 3/0[red]}
+};
+\end{scope}
+\draw[->,line width=1mm,black!50] (-1, -1) -- (1, -1);
+\begin{scope}[ultra thick,dotted]
+\draw[->] (before 3.south east) -- ++(.5cm, -.5cm);
+\draw[->] (before 2.east) .. controls ++(.25cm, 0cm) .. ++(.5cm, .75cm);
+\draw[->] (before 1.east) .. controls ++(.25cm, 0cm) .. ++(.5cm, .75cm);
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=avlRotateRightBig]{AVL: less simple right rotation (2)}
+\def\m{-}
+\newcommand{\B}[1]{b: #1}
+\begin{tikzpicture}
+\newcommand{\mynode}{\tikzgraphnodename\\\B{\tikzgraphnodetext}}
+\tikzset{
+    >=Latex,
+    myt/.style={binary tree layout,level distance=9mm,sibling distance=15mm,nodes={draw,circle,very thick,inner sep=0.25mm,minimum width=1.2cm,align=center,font=\small,fill=white},
+        graphs/typeset=\mynode},
+}
+\node[align=left] at (0, 1) {just inserted 1};
+\begin{scope}[myt]
+\graph {
+    [fresh nodes,name=before] 15/\m{}2[imbalanced,desired at={(0, 0)}] -> {
+        5/\m{}2[imbalanced,alt=<3->{draw=blue, ultra thick}] -> {3/\m{}1[alt=<3->{draw=green, ultra thick}] -> {2/\m{}1 -> 1/0[draw=red, ultra thick], 4/0}, 10/0},
+        20/0 -> {17/0, 21/0}
+    }
+};
+\end{scope}
+\begin{visibleenv}<4->
+\begin{scope}[myt]
+\graph {
+    [fresh nodes,name=after] 15/\m{}1[desired at={(7, 0)}] -> {
+        3/0[draw=green,ultra thick] -> {2/\m{}1 -> 1/0, 5/0[draw=blue, ultra thick] -> {4/0, 10/0}},
+        20/0 -> {17/0, 21/0}
+    }
+};
+\end{scope}
+\end{visibleenv}
+\begin{pgfonlayer}{bg}
+\begin{visibleenv}<2->
+\draw[dashed, black!50, line width=1.5mm,fill=green,fill opacity=0.025] ([yshift=.1cm]before 5.north) -- ++ (.8cm,0cm) -- ([xshift=.1cm]before 10.east)
+    |- ([yshift=-.1cm]before 1.south) -| ([xshift=-.1cm]before 1.west) -- ([yshift=.1cm,xshift=-.8cm]before 5.north) -- cycle;
+\end{visibleenv}
+\end{pgfonlayer}
+\begin{visibleenv}<2-3>
+\node[anchor=west,font=\large] at ([yshift=-2cm,xshift=.5cm]before 10.east) {deepest unbalanced subtree};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\draw[green,line width=1mm,->] (before 3.north west) .. controls ++(-0.5cm,1.5cm) and ++(-0.5cm,1cm) .. ([xshift=-.2cm]before 5.north west);
+\draw[blue,line width=1mm,->] (before 5.north east) .. controls ++(0.5cm,0.5cm) and ++(.75cm,0.5cm) .. ([xshift=.2cm]before 10.north east);
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{general right rotation}
+\def\m{-}
+\newcommand{\mynode}{\tikzgraphnodename\\\tikzgraphnodetext}
+\tikzset{
+    >=Latex,
+    myt/.style={binary tree layout,level distance=15mm,sibling distance=25mm,nodes={draw,circle,very thick,inner sep=0.25mm,minimum width=1.2cm,align=center,font=\small,fill=white},
+        graphs/typeset=\mynode},
+    tri/.style={regular polygon, regular polygon sides=3, shape border rotate=180}
+}
+\begin{tikzpicture}
+\begin{scope}[myt]
+\graph {
+    a/[desired at={(-3.5,0)}] -> {b/ -> { X/(h+1)[anchor=north,tri,minimum height=2.5cm], Y/(h)[anchor=north,tri,minimum height=1cm] }, Z/(h)[tri,minimum height=1cm] }
+};
+\end{scope}
+\begin{scope}[myt]
+\graph {
+    b/[desired at={(3.5,0)}] -> {X/(h+1)[anchor=north,tri,minimum height=2.5cm], a/ -> {Y/(h)[anchor=north,tri,minimum height=1cm], Z/(h)[anchor=north,tri,minimum height=1cm]} }
+};
+\end{scope}
+\draw[->,line width=1mm,black!50] (-1, -1) -- (1, -1);
+\end{tikzpicture}
+\end{frame}

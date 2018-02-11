@@ -1,0 +1,85 @@
+\usetikzlibrary{graphs,graphdrawing}
+\usegdlibrary{trees}
+
+
+\begin{frame}{AVL tree idea}
+\begin{itemize}
+\item AVL trees: one of many \myemph{balanced trees} ---
+    \begin{itemize}
+    \item search tree \textit{balanced} to keep height $\Theta(\log n)$
+    \item avoid ``tree is just a long linked list'' scenarios
+    \end{itemize}
+\item gaurentees $\Theta(\log n)$ for find, insert, remove
+\item AVL = Adelson-Velskii and Landis
+\end{itemize}
+\end{frame}
+
+\begin{frame}{AVL gaurentee}
+\begin{itemize}
+\item the height of the left and right subtrees of \textit{every node} differs by at most one
+\end{itemize}
+\end{frame}
+
+\begin{frame}{AVL state}
+\begin{itemize}
+\item normal binary search tree stuff:
+\begin{itemize}
+    \item data; and left, right, parent pointers
+\end{itemize}
+\item additional AVL stuff:
+\begin{itemize}
+    \item height of right subtree minus height of left subtree
+        \begin{itemize}
+        \item -1, 0, +1
+        \end{itemize}
+    \item (kept up to date  on insert/delete --- computing on demand is too slow)
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=exAVLT]{example AVL tree}
+\def\m{-}
+\newcommand{\B}[1]{\only<2->{b: #1}}
+\begin{tikzpicture}
+\newcommand{\mynode}{\tikzgraphnodename\\\B{\tikzgraphnodetext}}
+\tikzset{
+    >=Latex,
+    myt/.style={binary tree layout,level distance=10mm,sibling distance=45mm,nodes={draw,circle,inner sep=0.5mm,minimum width=1.4cm,align=center,font=\small},
+        graphs/typeset=\mynode},
+}
+\begin{scope}[myt]
+\graph{
+    [fresh nodes] 5/+1
+    -> {
+        4/\m{}1 -> 1/0,
+        9/\m{}1 -> {
+                7/+1 -> 8/0[second],
+                11/0
+        }
+    }
+};
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=exnonAVLT]{example non-AVL tree}
+\def\m{-}
+\newcommand{\B}[1]{b: #1}
+\begin{tikzpicture}
+\newcommand{\mynode}{\tikzgraphnodename\\\B{\tikzgraphnodetext}}
+\tikzset{
+    >=Latex,
+    myt/.style={binary tree layout,level distance=10mm,sibling distance=45mm,nodes={draw,circle,inner sep=0.5mm,minimum width=1.4cm,align=center,font=\small},
+        graphs/typeset=\mynode},
+}
+\begin{scope}[myt]
+\graph{
+    [fresh nodes] 5/\m{}2[red]
+    -> {
+        4/\m{}3[red] -> 1/+2[red] -> 3/\m{}1[second] -> 2/0,
+        8/0 -> { 7/0, 11/0 }
+    }
+};
+\end{scope}
+\end{tikzpicture}
+\end{frame}

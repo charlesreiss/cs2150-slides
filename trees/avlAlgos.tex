@@ -1,0 +1,26 @@
+\usetikzlibrary{graphs,graphdrawing}
+\usegdlibrary{trees}
+
+\tikzset{
+    imbalanced/.style={fill=red!10},
+}
+
+\begin{frame}{AVL tree algorithms}
+\begin{itemize}
+    \item find --- exactly the same as binary search tree
+        \begin{itemize}
+        \item just ignore balance factors
+        \end{itemize}
+    \item insert --- two extra steps:
+        \begin{itemize}
+        \item update balance factors
+        \item ``fix'' tree if it became unbalanced
+        \end{itemize}
+    \vspace{.5cm}
+    \item<2-> runtime for both $\Theta(d)$ where $d$ is depth of node found/inserted
+        \begin{itemize}
+        \item max balance factor $\pm 1$ at root
+        \item max depth of node is $\Theta(\log_2 n + 1) = \Theta(\log n)$
+        \end{itemize}
+\end{itemize} 
+\end{frame}

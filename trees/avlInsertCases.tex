@@ -1,0 +1,12 @@
+\begin{frame}{AVL insertion cases}
+\begin{itemize}
+    \item case 0: tree remains balanced (balance factors all -1, 0, +1)
+    \item otherwise, let $x$ be deepest imbalanced node (balance factor +2 or -2)
+    \begin{itemize}
+    \item insert in left subtree of left child of $x$: single rotation right
+    \item insert in right subtree of right child of $x$: single rotation left
+    \item insert in right subtree of left child of $x$: double rotation
+    \item insert in left subtree of right child of $x$: double rotation
+    \end{itemize}
+\end{itemize}
+\end{frame}
