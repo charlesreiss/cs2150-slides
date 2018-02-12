@@ -1,0 +1,13 @@
+\begin{frame}[fragile,label=optWithOFlow]{optimizing with overflow example}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+void foo(int x) {
+    while (--x < 0) {
+        bar();
+    }
+}
+\end{lstlisting}
+in latest version of {\tt clang++} or {\tt g++}  \\
+comples into an infinite loop if $x$ is initially negative\\
+if maximum optimizations are enabled ({\tt -O3} command-line option, not default) \\
+\end{frame}

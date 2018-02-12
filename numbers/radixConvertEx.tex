@@ -1,0 +1,26 @@
+\begin{frame}{exercise}
+    \begin{itemize}
+    \item $17_\text{NINE} = ?_\text{SEVEN}$
+    \item<2> $17_\text{NINE} = 7 + 9 = 2\cdot 7 + 2$
+    \item<2> $17_\text{NINE} = 22_\text{SEVEN}$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=otherBase]{on math in other bases}
+    \begin{itemize}
+    \item you can do math in other bases
+    \item usually makes most sense for base 2\ldots
+    \end{itemize}
+\begin{tabular}{llllll}
+    ~ &~   & \small$1$   & \small$1$  &  \small$1$  & ~  \\
+    ~& $1$ & $2$ & $3$ &  $4$ & $4_\text{SIXTEEN}$ \\
+    ~& $\times$ & ~ & ~ & $1$ & $5_\text{SIXTEEN}$ \\ \hline
+    ~   &$5$  & $\mathtt{B}$ & $0$  & $5$  & $4$ \\
+    $1$ & $2$ & $3$ & $4$ & $4$ & \\ \hline
+    $1$ & $7$ & $\mathtt{E}$  & $4$  &  $9$  & $4_\text{SIXTEEN}$ \\
+\end{tabular}
+\begin{lstlisting}[language={}]
+$ python3 -c 'print("{:x}".format(0x12344*0x15))'
+17e494
+\end{lstlisting}
+\end{frame}

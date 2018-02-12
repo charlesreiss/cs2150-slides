@@ -1,0 +1,32 @@
+\begin{frame}{decimal floating point}
+    \begin{itemize}
+        \item if storing $0.001$ exactly is important?
+        \item floating point formats base of $10$ instead of $2$
+            \begin{itemize}
+            \item $1.000\times 10^{-3}$
+            \end{itemize}
+        \item example: IEEE decimal floating point
+            \begin{itemize}
+            \item 32, 64, 128-bit formats
+            \item still store exponent+mantissa
+            \item no leading ``1.'' trick (doesn't work with $10^x$)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{binary-coded decimal}
+    \begin{itemize}
+        \item if integer conversion to/from base-10 is important?
+        \item but want to use binary hardware
+        \item one option: every 4 bits is a decimal digit
+            \begin{itemize}
+            \item not all possible bit patterns used
+            \end{itemize}
+        \item e.g. represent $147_\text{TEN}$ as {\tt 0001 0100 0111}
+            \vspace{.5cm}
+        \item part of family on decimal-in-binary encodings
+            \begin{itemize}
+            \item some more compact than this (e.g. store 2 digits at a time)
+            \end{itemize}
+    \end{itemize}
+\end{frame}

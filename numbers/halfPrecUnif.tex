@@ -1,0 +1,19 @@
+\begin{frame}{floating point is not uniform}
+    \begin{itemize}
+    \item in half-precision, next number after:
+    \item $1=1.000\,000\,000\,0_\text{TWO}\cdot2^0$ is $1.000\,000\,000\,1_\text{TWO}\cdot2^0\approx1.0010_\text{TEN}$
+        \begin{itemize}
+        \item $\sim+.001$
+        \end{itemize}
+    \item $100=1.100\,100\,000\,0_\text{TWO}\cdot2^6$ is $1.100\,100\,000\,1_\text{TWO}\cdot2^6\approx100.06_\text{TEN}$
+        \begin{itemize}
+        \item $\sim+.06$
+        \end{itemize}
+        \vspace{.5cm}
+    \item possible numbers are \myemph{unevenly spaced}
+    \item same as with `normal' scientific notation:
+        \begin{itemize}
+        \item $1=1.00\cdot10^0\rightarrow1.01\cdot10^0=1.01$ versus $1.00\cdot10^2\rightarrow1.01\cdot10^2=101$
+        \end{itemize}
+    \end{itemize}
+\end{frame}

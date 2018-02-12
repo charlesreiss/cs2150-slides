@@ -1,0 +1,66 @@
+\begin{comment}
+\begin{frame}{two's complement exercise}
+\begin{itemize}
+\item -45 as 8-bit two's complement?
+    \begin{itemize}
+    \item<2->
+        $-45 \rightarrow -00101101_\text{TWO} \rightarrow 11010010 + 1 \rightarrow 11010011$
+    \end{itemize}
+\item -128 as 8-bit two's complement?
+    \begin{itemize}
+    \item<2->
+        $-128 \rightarrow -10000000_\text{TWO} \rightarrow 01111111 + 1 \rightarrow 10000000$
+    \end{itemize}
+\item -129 as 8-bit two's complement?
+    \begin{itemize}
+    \item<2->
+        $-129 \rightarrow -10000001_\text{TWO} \rightarrow 01111110 + 1 \rightarrow 01111111$
+    \item<2-> \myemph{OVERFLOW} --- result not negative
+    \end{itemize}
+\end{itemize}
+\end{frame}
+\end{comment}
+
+
+\begin{frame}{integer overflow}
+    \begin{itemize}
+    \item ``wrap around''
+    \item 8-bit signed: $127 + 1 \rightarrow -128$
+    \item 8-bit unsigned: $255 + 1 \rightarrow 0$ 
+    \item 16-bit signed: $32\,767 + 1 \rightarrow -32\,768$
+    \item 16-bit unsigned: $65\,536 + 1 \rightarrow 0$ 
+    \item 32-bit signed: around $2$ billion
+    \item 64-bit signed: around $9\times 10^{18}$
+    \item \ldots
+    \end{itemize}
+\end{frame}
+
+% FIXME: possibly skip
+
+\begin{frame}[fragile,label=cppIO1]{on integer overflow in C++ (1)}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+unsigned int x; // lab machines: 32-bit unsigned
+x = 4294967295; // (2 to the 32) minus 1
+x += 10;
+cout << x << endl; // OUTPUT: 9
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=cppIO2]{on integer overflow in C++ (1)}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+int x; // lab machines: 32-bit signed
+x = 2147483647;  // mxaimum integer
+x += 10;  // UNDEFINED!
+cout << x << endl; // EXPECT big negative number,
+                   // but not gaurenteed
+\end{lstlisting}
+    \begin{itemize}
+    \item in practice: usually get wraparound behavior\ldots
+    \item but compiler is not required to do this for signed numbers
+        \begin{itemize}
+        \item and takes advantage of this to optimize, sometimes
+        \end{itemize}
+    \end{itemize}
+\end{frame}

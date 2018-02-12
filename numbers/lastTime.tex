@@ -1,0 +1,45 @@
+\begin{comment}
+\begin{frame}{last time}
+    \begin{itemize}
+        \item implementing stacks
+        \item queues
+        \item abstract data type --- data + set of operations on it
+            \begin{itemize}
+            \item can be represented as a class or not
+            \item multiple, interchangeable representations
+            \end{itemize}
+        \item base-$X$ numbers: $ab.ef\rightarrow aX^1+bX^0+eX^{-1}+fX^{-2}$
+        \item C constants: {\tt 99} (base 10), {\tt 0143} (base 8), {\tt 0x63} (base 16)
+        \item converting to base $X$ (one way)
+            \begin{itemize}
+            \item divide by X, remainder is last digit
+            \item divide by X again, remainder is next to last digit
+            \item \ldots
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=realCpp]{on real numbers in C++}
+\lstset{language=C++,style=small}
+    \begin{itemize}
+        \item \lstinline|x = 009;| --- syntax error
+        \item \lstinline|x = 070;| --- base 8, same as \lstinline|x = 56;|
+        \item \lstinline|x = 009.9;| --- base 10, same as \lstinline|x = 9.9;|
+        \item \lstinline|x = 070.0;| --- base 10, same as \lstinline|x = 70.0;|
+    \end{itemize}
+\end{frame}
+\end{comment}
+
+\begin{frame}{last time}
+    \begin{itemize}
+    \item why bits and not base-10?
+    \item endianness
+    \item maximum unsigned integers
+    \item started representing negative numbers
+        \begin{itemize}
+        \item key property: same bits as unsigned numbers if in range
+        \item top bit becomes ``sign bit'' (1 if negative, 0 otherwise)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
