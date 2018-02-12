@@ -1,9 +1,31 @@
+\begin{frame}{diversion: 25.25 to binary}
+\begin{eqnarray*}
+    25.25 &=& \frac{101}{4} \\
+          &=& \frac{1100101_\text{TWO}}{2^2} \\
+          &=& 11001.01_\text{TWO}
+\end{eqnarray*}
+\end{frame}
+
+\begin{frame}{diversion: 25.25 to binary}
+\begin{eqnarray*}
+    25.25 &=& 2^4 + (25.25 - 2^4) = 2^4 + 9.25 \\
+          &=& 2^4 + 2^3 + (9.25-2^3) = 2^4 + 2^3 + 1.25 \\
+          &=& 2^4 + 2^3 + (9.25-2^3) = 2^4 + 2^3 + 1.25 \\
+          &~& (1.25 < 2^2) \\
+          &~& (1.25 < 2^1) \\
+          &=& 2^4 + 2^3 + (1.25-2^0) = 2^4 + 2^3 + 2^0 + 0.25 \\
+          &~& (0.25 < 2^{-1}) \\
+          &=& 2^4 + 2^3 + 2^0 + 2^{-2} + (0.25 - 2^{-2}) = 2^4 + 2^3 + 2^0 + 2^{-2} \\
+\end{eqnarray*}
+\end{frame}
+
 
 \begin{frame}{\texttt{float} example: manually (1)}
 \begin{eqnarray*}
     25.25 &=& \frac{101}{4} = \frac{101}{2^2}
 \end{eqnarray*}
-largest power of two $<25.25$? $16=2^4$
+largest power of two $<25.25$? $16=2^4$ \\
+(means $1 < 25.25/16 < 2$)
 \begin{eqnarray*}
     \frac{101}{4} \cdot \frac{2^4}{2^4} &=& \frac{101 \cdot 2^4}{2^6} \\
                 &=& \frac{101}{2^6}\times 2^4 \\
@@ -57,26 +79,6 @@ largest power of two $<25.25$? $16=2^4$
 };
 \end{visibleenv}
 \end{tikzpicture}
-\end{frame}
-
-
-\begin{frame}{diversion: 25.25 to binary}
-\begin{eqnarray*}
-    25.25 &=& \frac{101}{4} \\
-          &=& \frac{1100101_\text{TWO}}{2^2} \\
-          &=& 11001.01_\text{TWO}
-\end{eqnarray*}
-\end{frame}
-
-\begin{frame}{diversion: 25.25 to binary}
-\begin{eqnarray*}
-    25.25 &=& 2^4 + 2^3 + (9.25-2^3) = 2^4 + 2^3 + 1.25 \\
-          &~& (1.25 < 2^2) \\
-          &~& (1.25 < 2^1) \\
-          &=& 2^4 + 2^3 + (1.25-2^0) = 2^4 + 2^3 + 2^0 + 0.25 \\
-          &~& (0.25 < 2^{-1}) \\
-          &=& 2^4 + 2^3 + 2^0 + 2^{-2} + (0.25 - 2^{-2}) = 2^4 + 2^3 + 2^0 + 2^{-2} \\
-\end{eqnarray*}
 \end{frame}
 
 \begin{frame}[fragile,label=floatUnion]{\texttt{float} example: from C++}

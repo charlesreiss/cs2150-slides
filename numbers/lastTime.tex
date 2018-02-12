@@ -28,7 +28,6 @@
         \item \lstinline|x = 070.0;| --- base 10, same as \lstinline|x = 70.0;|
     \end{itemize}
 \end{frame}
-\end{comment}
 
 \begin{frame}{last time}
     \begin{itemize}
@@ -42,4 +41,19 @@
         \end{itemize}
     \end{itemize}
 \end{frame}
+\end{comment}
 
+\begin{frame}{last time}
+    \begin{itemize}
+    \item representating negative numbers
+    \begin{itemize}
+    \item common property: top bit is ``sign bit'' --- 1=negative, 0=positive
+    \item sign and magnitude: flip sign bit to negate number
+    \item 1's complement: flip all bits to negate number
+    \item 2's complement: flip all bits and add one to negate number
+    \end{itemize}
+    \item 2's complement: add/subtraction same bits as unsigned
+    \item fixed point --- store $Y$ to represent $Y/2^K$
+    \item floating point --- store base 2 scientific notation
+    \end{itemize}
+\end{frame}

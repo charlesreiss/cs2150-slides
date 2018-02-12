@@ -1,0 +1,24 @@
+\begin{frame}{\texttt{float} to number}
+\begin{itemize}
+\item 1 sign bit
+\item 8 exponent bits ($2^{8-1}-1$ bias)
+\item 23 mantissa bits
+\vspace{.5cm}
+\item {\fontsize{12}{13}\selectfont\texttt{1$\;$1000$\;$0000$\;\;$1100 0000 0000 0000 0000 000} = ???}
+\item<2->
+\iftoggle{heldback}{}{$-1.11\cdot 2^1 = -11.1 = -3.5_\text{TEN}$}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{\texttt{float} addition}
+\begin{itemize}
+\item 1 sign bit
+\item 8 exponent bits ($2^{8-1}-1$ bias)
+\item 23 mantissa bits
+\vspace{.5cm}
+\item {\fontsize{12}{13}\selectfont\texttt{0$\;$1000$\;$0000$\;\;$1000 1000 0000 0000 0000 000} + \\
+      \texttt{0$\;$0111$\;$1111$\;\;$0001 0000 0000 0000 0000 000} = ???}
+\item<2->
+\iftoggle{heldback}{}{$1.10001\cdot2^1 + 1.0001\cdot2^0 = (11.0001+1.0001)\cdot2^0 = 100.0010\cdot2^0 = 4.125_\text{TEN}$}
+\end{itemize}
+\end{frame}
