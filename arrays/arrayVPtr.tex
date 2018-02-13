@@ -78,7 +78,7 @@ someInts[1] is: 4
 \coordinate (place) at ([yshift=5cm]current page.south);
 \begin{visibleenv}<2>
 \node[box] {
-    array implicitly converted to pointer to first element
+    array implicitly \myemph{converted} to pointer to first element
 };
 \end{visibleenv}
 \begin{visibleenv}<3>
@@ -89,7 +89,7 @@ someInts[1] is: 4
 \end{visibleenv}
 \begin{visibleenv}<4>
 \node[box] {
-    general rule: \lstinline|&array[i] = array-addr + sizeof(array-elem) * i|
+    general rule: \\ \lstinline|(long) &array[i] == (long) array-addr + sizeof(array-elem) * i|
 };
 \end{visibleenv}
 \end{tikzpicture}

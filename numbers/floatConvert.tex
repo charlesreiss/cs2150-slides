@@ -1,6 +1,6 @@
 \begin{frame}{diversion: 25.25 to binary}
 \begin{eqnarray*}
-    25.25 &=& \frac{101}{4} \\
+    25.25 &=& 25+\frac{1}{4} = \frac{101}{4} \\
           &=& \frac{1100101_\text{TWO}}{2^2} \\
           &=& 11001.01_\text{TWO}
 \end{eqnarray*}
@@ -30,7 +30,7 @@ largest power of two $<25.25$? $16=2^4$ \\
     \frac{101}{4} \cdot \frac{2^4}{2^4} &=& \frac{101 \cdot 2^4}{2^6} \\
                 &=& \frac{101}{2^6}\times 2^4 \\
                 &=& \frac{1100101_\text{TWO}}{2^6}\times 2^4 \\
-                &=& 1.000101_\text{TWO} \times 2^4
+                &=& 1.100101_\text{TWO} \times 2^4
 \end{eqnarray*}
 \end{frame}
 
@@ -65,7 +65,7 @@ largest power of two $<25.25$? $16=2^4$ \\
 \node[mant,below=0cm of mantLabel,align=left,font=\small] {
     (leading ``$1.$'' not stored)\\
 };
-\node[right=1.5cm of mantLabel,myLabel,expt] (exptLabel) {exponent ($5$ bits)};
+\node[right=1.5cm of mantLabel,myLabel,expt] (exptLabel) {exponent ($8$ bits)};
 \draw[expt,labelLine] (expt) -- (exptLabel);
 \node[expt,below=0cm of exptLabel,align=left,font=\small] {
     store ``$4+127=$\\
@@ -122,10 +122,11 @@ int main() {
 }
 \node[align=center] (calc) at (6, 0) { 
     $0.1_\text{TEN} = \frac{1}{16} + 0.0375 = \frac{1}{16} + \frac{1}{32} + 0.00625 = $ \\
+    $\frac{1}{16} + \frac{1}{32} + \frac{1}{256} + 0.00234375 = \ldots$ \\
     \strut$\ldots = 0.00011001100110011\ldots_\text{TWO} \myemph<4>{\approx}$ 
 };
 \begin{scope}[every node/.style={inner sep=0mm}]
-\node[pm] (pm) at ([yshift=-1.5cm,xshift=-4cm]calc) {+};
+\node[pm] (pm) at ([yshift=-2cm,xshift=-4cm]calc) {+};
 \node[anchor=base west] (onePt) at (pm.base east) {$1.$};
     \node[anchor=base west,mant] (mant) at (onePt.base east) {$1001\,1001\,1001\,1001\,1001\,10\mathbf{1}_\text{TWO}$};
 \node[anchor=base west] (cdot) at (mant.base east) {\cdot};
@@ -142,7 +143,7 @@ int main() {
 \node[mant,below=0cm of mantLabel,align=left,font=\small] {
     last $\mathbf{1}$ from \myemph<4>{rounding}
 };
-\node[right=1.5cm of mantLabel,myLabel,expt] (exptLabel) {exponent ($5$ bits)};
+\node[right=1.5cm of mantLabel,myLabel,expt] (exptLabel) {exponent ($8$ bits)};
 \draw[expt,labelLine] (expt) -- (exptLabel);
 \node[expt,below=0cm of exptLabel,align=left,font=\small] {
     store ``$-4+127=$\\
@@ -161,6 +162,10 @@ int main() {
 };
 \end{visibleenv}
 \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{aside: binary long division}
+    \includegraphics[height=0.9\textheight]{long-division}
 \end{frame}
 
 

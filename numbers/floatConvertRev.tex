@@ -1,12 +1,33 @@
-\begin{frame}{\texttt{float} to number}
+\begin{frame}{\texttt{float} to number (1)}
 \begin{itemize}
 \item 1 sign bit
 \item 8 exponent bits ($2^{8-1}-1$ bias)
 \item 23 mantissa bits
 \vspace{.5cm}
-\item {\fontsize{12}{13}\selectfont\texttt{1$\;$1000$\;$0000$\;\;$1100 0000 0000 0000 0000 000} = ???}
+\item {\fontsize{12}{13}\selectfont\texttt{\myemph<3>{\color<2,4->{blue!70!black}1}$\;$\myemph<4>{\color<2-3,5->{orange}1000$\;$0000}$\;\;$\myemph<5>{1100 0000 0000 0000 0000 000}} = ???}
 \item<2->
-\iftoggle{heldback}{}{$-1.11\cdot 2^1 = -11.1 = -3.5_\text{TEN}$}
+    \iftoggle{heldback}{}{$\myemph<3>{\color<2,4->{blue!70!black}-}1.\myemph<5>{1100\ldots}\cdot 2^{\myemph<4>{{\color<2-3,5->{orange}128} - 127 = 1}} = -11.1 = -3.5_\text{TEN}$}
+        \begin{itemize}
+            \item<4-> ${\color{orange}10000000_\text{TWO}} = 128_\text{TEN}$
+        \end{itemize}
+\item<5-> \iftoggle{heldback}{}{or $-1.11\cdot2^1 = -(2^0 + 2^{-1} + 2^{-2})2^1 = -(1.75)\cdot2 = -3.5$}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{\texttt{float} to number (2)}
+\begin{itemize}
+\item 1 sign bit
+\item 8 exponent bits ($2^{8-1}-1$ bias)
+\item 23 mantissa bits
+\vspace{.5cm}
+\item {\fontsize{12}{13}\selectfont\texttt{\myemph<3>{\color{blue!70!black}0}$\;$\myemph<4>{\color{orange}1000$\;$0011}$\;\;$\myemph<5>{1001 0000 0000 0000 0000 000}} = ???}
+\item<2->
+    \iftoggle{heldback}{}{$\myemph<3>{\color<2,4->{blue!70!black}+}1.\myemph<5>{10010000\ldots}\cdot 2^{\myemph<4>{{\color<2-3,5->{orange}131} - 127 = 4}} = +1.1001\cdot2^4 = +11001 = 25_\text{TEN}$}
+        \begin{itemize}
+            \item<4> $10000011_\text{TWO} = 131_\text{TEN}$
+        \end{itemize}
+\item<6->
+    \iftoggle{heldback}{}{or $(2^0 + 2^{-1} + 2^{-4})2^4 = (1 + .5 + .0625)16 = (1.5625)16 = 25$}
 \end{itemize}
 \end{frame}
 
@@ -19,6 +40,7 @@
 \item {\fontsize{12}{13}\selectfont\texttt{0$\;$1000$\;$0000$\;\;$1000 1000 0000 0000 0000 000} + \\
       \texttt{0$\;$0111$\;$1111$\;\;$0001 0000 0000 0000 0000 000} = ???}
 \item<2->
-\iftoggle{heldback}{}{$1.10001\cdot2^1 + 1.0001\cdot2^0 = (11.0001+1.0001)\cdot2^0 = 100.0010\cdot2^0 = 4.125_\text{TEN}$}
+\iftoggle{heldback}{}{$1.10001_\text{TWO}\cdot2^1 + 1.0001\cdot2^0 = (11.0001+1.0001)\cdot2^0 = 100.0010\cdot2^0 = 4.125_\text{TEN}$}
+\item<3-> use difference between exponents to `shift' mantissa; then add
 \end{itemize}
 \end{frame}
