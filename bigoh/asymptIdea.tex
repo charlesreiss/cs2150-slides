@@ -39,3 +39,22 @@
         \end{itemize}
 \end{itemize}
 \end{frame}
+
+\begin{frame}{theory, not empirical}
+    \begin{itemize}
+    \item yes, you can make \textit{guesses} about big-oh behavior from actual measurements
+    \item but, no, comparing graphs doesn't tell you big-oh
+    \begin{itemize}
+        \item what happens further to the right?
+        \item asymptotic difference may only be \myemph{bigger than you can physically run}
+    \end{itemize}
+    \vspace{.5cm}
+    \item want to write down \myemph{formula}
+    \item<2-> example: summing a list of $n$ items:
+        \begin{itemize}
+        \item exactly $n$ addition operations
+        \item \textit{assume} each one takes $k$ unit of time
+        \item $\text{runtime} = f(n) = kn$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
