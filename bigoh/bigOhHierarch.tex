@@ -73,7 +73,7 @@
         \path[red,draw,dotted,ultra thick] (0, 0) decorate [decoration={name=zigzag}] {to (0, 6)} to (3, 6) to (3, 0) to cycle;
         \node[anchor=east,fill=white,draw=red,dotted,very thick, inner sep=0.5mm] at (1.5, 3) {$o(n^2)$};
         \node[box] {$g\in o(f)$ (``little-oh'')--- strict upper bound \\
-            $f(n) \myemph{<} c \cdot g(n)$ (versus $O(f)$: $f(n) \myemph{\le} c \cdot g(n)$)
+            $f(n) \myemph{<} c \cdot g(n)$ (all $c$); (versus $O(f)$: $f(n) \myemph{\le} c \cdot g(n)$)
         };
     \end{visibleenv}
 
@@ -81,7 +81,7 @@
         \path[red,draw,dotted,ultra thick] (12, 0) decorate [decoration={name=zigzag}] {to (12, 6)} to (7, 6) to (7, 0) to cycle;
         \node[anchor=east,fill=white,draw=red,dotted,very thick, inner sep=0.5mm] at (9.5, 3) {$\omega(n^2)$};
         \node[box] {$g\in \omega(f)$ --- strict lower bound \\
-            $f(n) \myemph{>} c \cdot g(n)$ (versus $\Omega(f)$: $f(n) \myemph{\ge} c \cdot g(n)$)
+            $f(n) \myemph{>} c \cdot g(n)$ (all $c$); (versus $\Omega(f)$: $f(n) \myemph{\ge} c \cdot g(n)$)
         };
     \end{visibleenv}
 

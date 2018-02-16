@@ -1,3 +1,10 @@
+\begin{frame}{aside: forall/exists}
+    \begin{itemize}
+        \item $\forall n > 0$: for all $n > 0$
+        \item $\exists n < 0 $: there exists an $n < 0$
+    \end{itemize}
+\end{frame}
+
 \begin{frame}<1>[label=defnConseq]{definition consequences}
     \begin{itemize}
         \item If $f \in O(h)$ and $g \not\in O(h)$, which are true?
@@ -31,37 +38,44 @@
             \item $g\not\in O(h)$: $n^3\le c n^2$? use $n\approx cn_0$ as counterexample
         \end{itemize}
      \item $m=2$: $f(m) = 10 \not< g(m) = 8$
+    \vspace{.5cm}
+    \item<2-> intuition: big-oh ignores behavior for small $n$
     \end{itemize}
 \end{frame}
 
 \begin{frame}{$n^3\not\in O(n^2)$}
 big-Oh definition requires:
 \[n^3 \le c n^2 \text{ for all $n > n_0$}\]
-(without loss of generality) \\
 choose any $c > 1$ and $n_0 > 1$, then \\
 \[
     n=cn_0 \text{ is a counterexample}
 \]
 \[ n^3 = c^3n_0^3 = cn_0 (cn_0)^2 > c n^2 \]
 contradicting the definition
+\\
+{\small (and for $c < 1$, use $n = n_0+1$, etc.)}
 \end{frame}
 
-\begin{frame}{ \fontsize{16}{17}\selectfont$f\in O(h), g\not\in O(h) \notimplies \exists m. f(m)<g(m)$}
+\begin{frame}{ \fontsize{16}{17}\selectfont$f\in O(h), g\not\in O(h) \implies \exists m. f(m)<g(m)$}
     \begin{itemize}
         \item intuition: should be true for `big enough' $m$
         \item assume definition of big-Oh:
             \begin{itemize}
                 \item $f \in O(h)$: $\forall n>n_0:\;f(n) \le c h(n)$ (for a $n_0, c > 0$)
-                \item $g \not\in O(h)$: $\exists n > n_0:\;g(n) \le c h(n)$ (for \textit{any} $n_0, c > 0$)
+                \item $g \not\in O(h)$: $\exists n > n_0:\;g(n) > c h(n)$ (for \textit{any} $n_0, c > 0$)
             \end{itemize}
         \item assume $f$'s $n_0$, $c$
         \item use the $n$ that must exist for $g$ (from definition)
     \end{itemize}
 \end{frame}
 
-\begin{frame}{ \fontsize{15}{16}\selectfont$f\in O(h), g\not\in O(h) \notimplies \exists m_0\forall m>m_0. f(m) <g(m)$}
+\begin{frame}{ \fontsize{15}{16}\selectfont$f\in O(h), g\not\in O(h) \implies? \exists m_0\forall m>m_0. f(m) <g(m)$}
     \begin{itemize}
-    \item intuitively, seems so $g$ must grow faster than $f$
+    \item intuitively, seems so $g$ must grow faster than $f$ --- for big $m$:
+        \begin{itemize}
+        \item $f(m) < c_1\cdot h(m)$
+        \item $g(m) < c_2\cdot h(m)$ 
+        \end{itemize}
     \item but some corner case counterexamples:
         \begin{itemize}
             \item $f(n) = n$

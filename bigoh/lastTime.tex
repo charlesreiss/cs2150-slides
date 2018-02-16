@@ -1,0 +1,38 @@
+\begin{comment}
+    \begin{frame}{last time}
+    \begin{itemize}
+    \item arrays and multi-dimensional arrays in C++
+        \begin{itemize}
+        \item row-major order
+        \end{itemize}
+    \item command line parameters
+    \item asymptotic comparisions
+        \begin{itemize}
+        \item ignore constant factors, only big behavior
+        \item compute theoretically, not empirically
+        \item make algorithm decisions w/ implementation
+        \end{itemize}
+    \item classes: $O(f)$: $\le f$; $\Omega(f)$: $\ge f$; $\Theta(f)$: $= f$
+    \item formal definition: $\le cf(n)$ for all $n \ge n_0$
+    \end{itemize}
+\end{frame}
+\end{comment}
+
+\begin{frame}{last time}
+    \begin{itemize}
+    \item formal definition examples/proof strategy
+        \begin{itemize}
+        \item forward: choose big $c$, $n_0$
+        \item backward: game: given $c$, $n_0$, find bad $n$
+        \end{itemize}
+    \item other classes:
+        \begin{itemize}
+            \item ``<'': $g\in o(f)$: $\forall c: \exists n_0: \forall n > n_0: g(n) < c f(n)$
+            \item ``>'': $g\in \omega(f)$: $\forall c: \exists n_0: \forall n > n_0: g(n) > c f(n)$
+        \end{itemize}
+    \item limit definition: $\lim\sup \frac{f(n)}{g(n)} = X$
+        \begin{itemize}
+            \item $\infty$: $\omega(g)$; $> 0$: \Omega(g)$; $< \infty$: $O(g)$; $\lim\inf\ldots=0$: $o(g)$
+        \end{itemize}
+    \end{itemize}
+\end{frame}

@@ -35,7 +35,7 @@
     \item Is $10n \in O(n)$?
         \begin{itemize}
         \item<2-> choose $c = 11$\tikzmark{bigC}, $n_0 = 2$
-        \item<2-> for $n > 2=n_0$: $f(n) = n \le c\cdot g(n) = 11n$
+        \item<2-> for $n > 2=n_0$: $f(n) = 10n \le c\cdot g(n) = 11n$
         \item<2-> Yes!
         \end{itemize}
     \end{itemize}
@@ -47,21 +47,39 @@
         \end{visibleenv}
     \end{tikzpicture}
 \end{frame}
-\begin{frame}{formal definition example (2)}
+
+\begin{frame}{negating formal definitions}
+    \begin{itemize}
+    \item $f \in O(g)$: there exists $c, n_0 > 0$ so for all $n > n_0$: $f(n) \le cg(n)$
+    \item $f \not\in O(g)$:
+        \begin{itemize}
+            \item there does not exist $c, n_0 > 0$ so for all $n > n_0$: $f(n) \le cg(n)$
+            \item for all $c, n_0$, there exists $n > n_0$: $f(n) > cg(n)$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{formal definition example (3)}
     \begin{itemize}
     \item $f(n) \in O(g(n))$ if and only if \\
         \hspace{.5cm}there exists $c > 0$ and $n_0 > 0$ such that \\
         \hspace{.5cm}$f(n) \le c \cdot g(n)$ for all $n > n_0$
     \item Is $n^2 \in O(n)$?
         \begin{itemize}
-        \item<2-> no --- consider any $c, n_0 > 0$ and $c' > \max\{c,1\}$
+        \item<2-> no --- consider any $c, n_0 > 0$
         \item<2-> consider $n_{bad} = (c + 100)(n_0 + 100) > n_0$ \\
             $n_{bad}^2 = (c + 100)^2(n_0 + 100)^2 > c(c + 100)(n_0 + 100) = cn_{bad}$ \\
         \item<2-> so can't find $c, n_0$ that sastisfy definition
         \item<2-> (i.e. $f(n) = n_{bad}^2 \not\le c \cdot g(n_{bad}) = c n_{bad}$)
         \end{itemize}
+    \item<3-> alternative
+        \begin{itemize}
+        \item<3-> $n_{bad} = \max\{c + 100, n_0 + 1\} > n_0$
+        \end{itemize}
     \end{itemize}
 \end{frame}
+
 
 \begin{frame}{formal definition example (4)}
     \begin{itemize}
@@ -77,3 +95,21 @@
     \end{itemize}
 \end{frame}
 
+\begin{frame}{big-oh proofs generally}
+    \begin{itemize}
+    \item if proving yes case: 
+        \begin{itemize}
+        \item look at inequality
+        \item \textit{choose} a large enough $c$ and $n_0$ that it's definitely true
+        \item don't bother finding smallest $c$, $n_0$ that work
+        \end{itemize}
+    \item if proving no case:
+        \begin{itemize}
+        \item game: given $c, n_0$ find counter example
+        \item general idea: \textit{choose} $n > n_0$ using a formula based on $c$
+        \item show that this $n$ never satisfies the inequality
+        \item don't bother showing it's true for all $n' > n$
+        \item don't bother finding smallest $n$ that works
+        \end{itemize}
+    \end{itemize}
+\end{frame}
