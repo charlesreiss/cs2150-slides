@@ -1,0 +1,44 @@
+\usetikzlibrary{graphs,graphdrawing}
+\usegdlibrary{trees}
+
+\againframe<2>{avlInsCases}
+
+\begin{frame}[fragile,label=avlInsertCasesDiag]{AVL insert cases (revisited)}
+\def\m{-}
+\newcommand{\B}[1]{b: #1}
+\begin{tikzpicture}
+\newcommand{\mynode}{\tikzgraphnodename\\\B{\tikzgraphnodetext}}
+\tikzset{
+    >=Latex,
+    myt/.style={binary tree layout,level distance=9mm,sibling distance=15mm,nodes={draw,circle,very thick,inner sep=0.25mm,minimum width=1.4cm,align=center,font=\small,fill=white},
+        graphs/typeset=\mynode},
+}
+\begin{scope}[myt]
+\graph {
+    [name=ll] 3/\m{}2[desired at={(-3,0)}] -> 2/\m{}1 -> 1/0
+};
+\end{scope}
+\begin{scope}[myt]
+\graph {
+    [name=rr] 1/+2[desired at={(-1,0)}] -> 2/+1[second] -> 3/0[second]
+};
+\end{scope}
+\begin{scope}[myt]
+\graph {
+    [name=lr] 3/\m{}2[desired at={(2.5,0)}] -> 1/+1[second] -> 2/0[second]
+};
+\end{scope}
+\begin{scope}[myt]
+\graph {
+    [name=rl] 1/+2[desired at={(6,0)}] -> 3/\m{}1[second] -> 2/0
+};
+\end{scope}
+    \tikzset{box/.style={draw,thick}}
+    \node[box,fit=(ll 1) (ll 3),label={south:single left}] {};
+    \node[box,fit=(rr 1) (rr 3),label={south:single right}] {};
+    \node[box,fit=(lr 3) (lr 2) (lr 1),label={south:left-right}] {};
+    \node[box,fit=(rl 3) (rl 2) (rl 1),label={south:right-left}] {};
+\end{tikzpicture}
+
+% FIXME: mark important nodes (direction of insert, etc.)
+\end{frame}

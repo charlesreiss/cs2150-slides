@@ -35,16 +35,16 @@
 \draw[->,line width=1mm,black!50] (-1, -1) -- (1, -1);
 \begin{pgfonlayer}{bg}
 \begin{visibleenv}<4>
-\draw[very thick,dashed,blue!50!black,fill=blue!10] ([yshift=.1cm,xshift=-.7cm]before 8.north) -- ++(1.4cm, 0cm) -- ([xshift=.1cm]before 10.east) |-
+\draw[overlay,very thick,dashed,blue!50!black,fill=blue!10] ([yshift=.1cm,xshift=-.7cm]before 8.north) -- ++(1.4cm, 0cm) -- ([xshift=.1cm]before 10.east) |-
     ([yshift=-.1cm]before 5.south) -| ([xshift=-.1cm]before 3.west) -- cycle;
 \end{visibleenv}
 \begin{visibleenv}<2-4>
-\draw[very thick,dashed,green!50!black,fill=green!10] ([yshift=.1cm,xshift=-.7cm]before 4.north) -- ++(1.4cm, 0cm) -- ([xshift=.1cm]before 6.east) |-
+\draw[overlay,very thick,dashed,green!50!black,fill=green!10] ([yshift=.1cm,xshift=-.7cm]before 4.north) -- ++(1.4cm, 0cm) -- ([xshift=.1cm]before 6.east) |-
     ([yshift=-.1cm]before 5.south) -| ([xshift=-.1cm]before 3.west) -- cycle;
 \end{visibleenv}
 \end{pgfonlayer}
 \begin{visibleenv}<2->
-\node[align=left,draw,ultra thick,fill=white] at (-4, 0) { 
+\node[align=left,draw,ultra thick,fill=white,overlay] at (1, 1.2) { 
 \myemph<2-3>{step 1}: rotate {\color{green} subtree} left \\
 \myemph<4>{step 2}: rotate {\color{blue} imbalanced tree} right 
 };
@@ -67,4 +67,73 @@
 \end{visibleenv}
 \end{pgfonlayer}
 \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{general double rotation}
+\def\m{-}
+\newcommand{\mynode}{\tikzgraphnodename\\\tikzgraphnodetext}
+\tikzset{
+    >=Latex,
+    myt/.style={binary tree layout,level distance=5mm,sibling distance=5mm,nodes={draw,circle,very thick,inner sep=0.25mm,minimum width=1cm,align=center,font=\small,fill=white},
+        graphs/typeset=\mynode},
+    tri/.style={regular polygon, regular polygon sides=3,shape border rotate=0,inner sep=-.25cm},
+    switchPar/.style={alt=<2>{draw=red}},
+}
+\begin{tikzpicture}
+\begin{scope}[myt]
+    %a/[desired at={(-3.5,0)}] -> {b/ -> { X/(h+1)[anchor=north,tri,minimum height=2.5cm], Y/(h)[anchor=north,tri,minimum height=1cm] }, Z/(h)[tri,minimum height=1cm] }
+\graph {
+    a/[desired at={(-3.5,0)}] -> { 
+        b/ -> {
+            W/(h)[anchor=north,tri,minimum height=2cm],
+            c/ -> { X/(h)[anchor=north,tri,minimum height=2cm,switchPar], Y/(h\m{}1)[anchor=north,tri,minimum height=1.5cm,switchPar] },
+        },
+        Z/(h)[anchor=north,tri,minimum height=2cm],
+    }
+};
+\end{scope}
+\begin{scope}[myt]
+\graph {
+    c/[desired at={(3.5,0)}] -> {
+        b/ -> {
+            W/(h)[anchor=north,tri,minimum height=2cm],
+            X/(h)[anchor=north,tri,minimum height=2cm,switchPar]
+        },
+        a/ -> {
+            Y/(h\m{}1)[anchor=north,tri,minimum height=1.5cm,switchPar],
+            Z/(h)[anchor=north,tri,minimum height=2cm]
+        }
+    }
+};
+\end{scope}
+    \draw[->,line width=1mm,black!50] (-1, 0) -- (1, 0) node[midway,above,align=center] {rotate};
+\node at (0, -5) {
+    $W < b < X < c < Y < Z$
+};
+\begin{visibleenv}<2>
+    \node[draw=red,ultra thick,align=left] at (2, -6) {
+        $c$ becomes root, so its children \\
+        $X$ and $Y$ \textit{both} switch parents
+    };
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{double rotation names}
+    \begin{itemize}
+    \item sometimes ``double left''
+        \begin{itemize}
+        \item first rotation left, or second?
+        \end{itemize}
+    \item us: ``double left-right''
+        \begin{itemize}
+        \item rotate child tree left
+        \item rotate parent tree right
+        \end{itemize}
+    \item ``double right-left''
+        \begin{itemize}
+        \item rotate child tree right
+        \item rotate parent tree left
+        \end{itemize}
+    \end{itemize}
 \end{frame}
