@@ -1,0 +1,80 @@
+\usetikzlibrary{graphs,graphdrawing}
+\usegdlibrary{trees}
+
+\begin{frame}{other types of trees}
+    \begin{itemize}
+    \item many kinds of \textit{balanced trees}
+    \item not all binary trees
+    \item different ways of tracking balance factors, etc.
+    \item different ways of doing tree rotations or equivalent
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{red-black trees}
+    \begin{itemize}
+        \item each node is {\color{red!60!black}\textbf{red}} or \textbf{black}
+        \item null leafs considered nodes to aid analysis (still null pointers\ldots)
+        \item rules about when nodes can be red/black gaurentee maximum depth
+    \end{itemize}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    myt/.style={binary tree layout,level distance=2mm,sibling distance=5mm,nodes={draw,circle,very thick,inner sep=0.25mm,minimum width=1cm,align=center,font=\small,fill=white}},
+    R/.style={fill=red!20},
+    B/.style={fill=black!90,text=white},
+    null/.style={rectangle,draw=none,text=white,label={[font=\small]center:NULL}},
+}
+\begin{scope}[myt]
+\graph {
+    [fresh nodes] 13[B] -> {
+        8[R] -> {1[B] -> {n[null], 6[R] -> {n[null], n[null]}}, 11[B] -> {n[null], n[null]}},
+        17[R] -> {15[B] -> {n[null], n[null]}, 25[B] -> {22[R] -> {n[null], n[null]}, 27[B] -> {n[null], n[null]}}}
+    }
+};
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+
+\newcommand{\nred}[1]{{\color{red!60!black}\bfseries #1}}
+
+% FIXME: mini version of above figure?
+\begin{frame}{red-black tree rules}
+    \begin{itemize}
+    \item root is \textbf{black}
+    \item counting null pointers as nodes, leaves are \textbf{black}
+    \item a \nred{red} node's children are \textbf{black}
+        \begin{itemize}
+            \item $\rightarrow$ a \nred{red} node's parents are \textbf{black}
+        \end{itemize}
+    \item every simple path from node to leaf under it contains same number of black nodes
+            \begin{itemize}
+                \item (property holds regardless of whether null pointers are considered nodes)
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+% FIXME: why last property limits imbalance
+
+\begin{frame}{worst red-black tree imbalance}
+same number of black nodes on paths to leaves \\
+    $\rightarrow$ factor of 2 imbalance max \\
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    myt/.style={binary tree layout,level distance=2mm,sibling distance=5mm,nodes={draw,circle,very thick,inner sep=0.25mm,minimum width=1cm,align=center,font=\small,fill=white}},
+    R/.style={fill=red!20},
+    B/.style={fill=black!90,text=white},
+    null/.style={rectangle,draw=none,text=white,label={[font=\small]center:NULL}},
+}
+\begin{scope}[myt]
+\graph {
+    [fresh nodes] A[B] -> {
+        B[B] -> {D[B], E[B]},
+        C[R] -> {F[B] -> {H[R] -> {J[B], K[B]}, I[R] -> {L[B], M[B]}}, G[B] -> {N[B], O[B]}}
+    }
+};
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+
+

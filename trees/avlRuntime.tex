@@ -1,0 +1,23 @@
+\begin{frame}{AVL tree: runtime}
+    \begin{itemize}
+    \item worst depth of node: $\Theta(\log_2 n + 2) = \Theta(\log n)$
+    \item find: $\Theta(\log n)$ 
+        \begin{itemize}
+            \item worst case: traverse from root to worst depth leaf
+        \end{itemize}
+    \item insert: $\Theta(\log n)$
+        \begin{itemize}
+            \item worst case: traverse from root to worst depth leaf \\
+                then back up (update balance factors) \\
+                then perform constant time rotation
+        \end{itemize}
+    \item remove: $\Theta(\log n)$
+        \begin{itemize}
+            \item left as exercise (similar to insert)
+        \end{itemize}
+    \item print: $\Theta(n)$
+        \begin{itemize}
+            \item visit each of $n$ nodes
+        \end{itemize}
+    \end{itemize}
+\end{frame}
