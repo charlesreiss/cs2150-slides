@@ -1,0 +1,28 @@
+\begin{frame}{RB-tree: removal}
+\begin{itemize}
+\item start with normal BST remove of $x$, but\ldots
+\item instead find next highest/lowest node $y$
+    \begin{itemize}
+    \item can choose node \textit{with at most one child} \\
+            (``bottom'' of a left or right subtree)
+    \end{itemize}
+\item swap $x$ and $y$'s value, then replace $y$ with its child
+\vspace{.5cm}
+\item several cases for color maintainence/rotations
+\end{itemize}
+\end{frame}
+
+\begin{frame}{RB tree: removal cases}
+\begin{itemize}
+\item N: node just replaced with child; S: its sibling; P: its parent
+\vspace{.5cm}
+\item (1): N is new root
+\item (2): S is \nred{red}
+\item (3): P, S, and S's children are \nblack{black}
+\item (4): S and S's children are \nblack{black}
+\item (5): S is \nblack{black}, S's left child is \nred{red}, S's right child is \nblack{black}, N is left child of P
+\item (6): S is \nblack{black}, S's right child is \nblack{red}, N is left child
+\vspace{.5cm}
+\item details: see, e.g., Wikipedia article
+\end{itemize}
+\end{frame}

@@ -1,4 +1,7 @@
 \typeout{(body.tex)}
+\newcommand{\nred}[1]{{\color{red!60!black}\bfseries #1}}
+\newcommand{\nred}[1]{\textbf{#1}}
+
 
 \begin{frame}
     \titlepage
@@ -97,6 +100,13 @@
 \section{red-black trees}
 
 \input{rbIntro}
+
+% FIXME: redraw figures?
+\input{rbInsert}
+
+\input{rbRemove}
+
+\input{rbVAVL}
 
 % Splay Trees
 
