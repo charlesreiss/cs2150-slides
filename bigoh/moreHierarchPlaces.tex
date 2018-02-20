@@ -18,7 +18,10 @@
         \item treat ``sensible'' integer arithmetic as constant time
         \item (anything we'd keep in a {\tt long} or smaller variable in practice?)
         \end{itemize}
-    \item can do analysis where we don't assume this, usually not interesting
+    \item can do other analysis, but uncommon
+        \begin{itemize}
+        \item e.g. ``bit complexity'' --- number of single bit operations
+        \end{itemize}
     \end{itemize}
 \end{frame}
 
@@ -43,6 +46,7 @@
         \item search in unsorted array
         \item search in linked list
         \item doubling the size of a vector
+        \item \textit{unbalanced} binary search tree find/insert
     \end{itemize}
 \end{frame}
 

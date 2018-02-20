@@ -2,12 +2,23 @@
 
 \begin{frame}{selected asymptotic relationships}
 \begin{itemize}
-\item for $k>0$, $c>1$, $\epsilon>0$:
-\item $n^k \in o(c^n)$ (polynomial always smaller than exponential)
+\item for $k>0$, $l>0$, $c>1$, $\epsilon>0$:
+\item $n^k \in o(c^{n^l})$ (polynomial always smaller than exponential)
 \item $n^k \in o(n^k \log n)$ (adding $\log$ makes something bigger)
 \item $\log_k(n) \in \Theta(\log_l(n))$ (all log bases are the same)
 \item $n^k+cn^{k-1} \in \Theta(n^k)$ (only polynomial degree matters)
 \end{itemize}
+\end{frame}
+
+\begin{frame}{a note on logs}
+\[
+    \log_k(n) = \frac{\log_l(n)}{\log_l(k)} = c \cdot \log_l(n)
+\]
+therefore
+\[
+    \Theta(\log_k(n)) = \Theta(\log_l(n))
+\]
+\ldots so doesn't matter which base of log we mean
 \end{frame}
 
 % FIXME: move this later with rest of this discussion

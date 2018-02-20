@@ -22,17 +22,18 @@
     \begin{itemize}
     \item formal definition examples/proof strategy
         \begin{itemize}
+        \item $f \in O(g)$: $\exists c, n_0: \forall n > n_0: f(n) < cg(n)$
         \item forward: choose big $c$, $n_0$
         \item backward: game: given $c$, $n_0$, find bad $n$
         \end{itemize}
     \item other classes:
         \begin{itemize}
-            \item ``<'': $g\in o(f)$: $\forall c: \exists n_0: \forall n > n_0: g(n) < c f(n)$
-            \item ``>'': $g\in \omega(f)$: $\forall c: \exists n_0: \forall n > n_0: g(n) > c f(n)$
+            \item ``<'': $g\in o(f)$: $\myemph<2>{\forall c > 0}: \exists n_0: \forall n > n_0: g(n) < c f(n)$
+            \item ``>'': $g\in \omega(f)$: $\myemph<2>{\forall c > 0}: \exists n_0: \forall n > n_0: g(n) > c f(n)$
         \end{itemize}
-    \item limit definition: $\lim\sup \frac{f(n)}{g(n)} = X$
+    \item limit definition: $\lim_{n\to\infty}\sup \frac{f(n)}{g(n)} = X$
         \begin{itemize}
-            \item $\infty$: $\omega(g)$; $> 0$: \Omega(g)$; $< \infty$: $O(g)$; $\lim\inf\ldots=0$: $o(g)$
+            \item $X = 0$: $o(g)$ \\ $X > 0$: $\Omega(g)$ \\$X < \infty$: $O(g)$ \\$\lim\myemph<3>{\inf}\ldots=\infty$: $\omega(g)$
         \end{itemize}
     \end{itemize}
 \end{frame}

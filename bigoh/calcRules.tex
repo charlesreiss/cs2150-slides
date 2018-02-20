@@ -91,7 +91,10 @@ foo();
 bar();
 \end{lstlisting}
 };
-    \node[rt,anchor=north west,align=left,text=blue!40!black] at (consecutive.south west) {$\text{runtime} = \text{runtime of foo} + \text{runtime of bar}$ \\ (but --- constant factors don't matter for $\Theta$, $O$)};
+    \node[rt,anchor=north west,align=left,text=blue!40!black] at (consecutive.south west) {
+        $\text{runtime} = \text{runtime of foo} + \text{runtime of bar}$ \\
+        $\in \Theta(\max\{\text{\texttt{foo} runtime},\text{\texttt{bar} runtime}\})$
+    };
 
     \node[codeBox,draw=green!40!black,anchor=north west] (ifs) at ([yshift=-2cm]consecutive.south west) {
 \begin{lstlisting}
