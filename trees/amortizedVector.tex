@@ -1,0 +1,44 @@
+\begin{frame}{amortized analysis: vector growth}
+    \begin{itemize}
+    \item vector insert algorithm:
+        \begin{itemize}
+        \item \myemph<2>{if not big enough, double capacity}
+        \item write to end of vector
+        \end{itemize}
+    \item<2-> doubling size --- requires copying! --- $\Theta(n)$ time
+    \item<2-> $\Theta(n)$ worst case per insert
+    \item<2-> but average\ldots?
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{counting copies (1)}
+    \begin{itemize}
+    \item suppose initial capacity $100$ + insert $1600$ elements
+    \begin{itemize}
+        \item $100\rightarrow 200$: $100$ copies
+        \item $200\rightarrow 400$: $200$ copies
+        \item $400\rightarrow 800$: $400$ copies
+        \item $800\rightarrow 1600$: $800$ copies
+        \item total: $1500$ copies
+    \end{itemize}
+    \item total operations: $1500$ copies + $1600$ writes of new elements
+        \begin{itemize}
+        \item about $2$ operations per insert
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{counting copies (2)}
+    \begin{itemize}
+    \item more generally: for $N$ inserts
+    \item about $N$ copies + $N$ writes
+        \begin{itemize}
+        \item why? $K$ to $2K$ elements: $K$ copies
+        \item $N$ inserts: $1 + 2 + 4 + \ldots + N/4 + N/2$ copies
+        \item (and a bit better if initial capacity isn't $1$)
+        \end{itemize}
+    \item $\Theta(n)$ worst case
+    \item but $\Theta(n)$ time for $n$ inserts
+    \item $\rightarrow$ \myemph{$O(1)$ amortized time per insert}
+    \end{itemize}
+\end{frame}

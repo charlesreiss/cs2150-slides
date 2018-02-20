@@ -1,0 +1,43 @@
+\begin{frame}{splay trees}
+    \begin{itemize}
+    \item tree that's fast for \myemph{recently used nodes}
+    \item self-balancing binary search tree
+    \item keeps recent nodes \myemph{near the top}
+    \vspace{.5cm}
+    \item simpler to implement than AVL or RB trees
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{`splaying'}
+    \begin{itemize}
+    \item every time node is accessed (find, insert, delete)\ldots
+    \vspace{.5cm}
+    \item ``splay'' tree around that node
+    \item make the node the new tree root
+    \vspace{.5cm}
+    \item<2-> $\Theta(h)$ time --- where $h$ is tree height
+        \begin{itemize}
+            \item<3-> worst-case height: $\Theta(n)$ --- linked-list case
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{amortized complexity}
+    \begin{itemize}
+        \item splay tree insert/find/delete is \myemph{amortized $O(\log n)$ time}
+        \item informally: \myemph{average} insert/find/delete: $O(\log n)$
+        \item more formally: $m$ operations: $O(m \log n)$ time (where $n$: max size of tree)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{splay tree pro/con}
+    \begin{itemize}
+    \item can be \textit{faster} than AVL, RB-trees in practice
+        \begin{itemize}
+        \item take advantage of frequently accessed items
+        \end{itemize}
+    \item simpler to implement
+        \vspace{.5cm}
+    \item but worst case find/insert is $\Theta(n)$ time
+    \end{itemize}
+\end{frame}
