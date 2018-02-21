@@ -37,3 +37,25 @@ class TreeNode {
 \end{scope}
 \end{tikzpicture}
 \end{frame}
+
+\begin{frame}[fragile,label=altReps]{another tree representations}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{tikzpicture}
+\node (code) {
+\begin{lstlisting}
+class TreeNode {
+  private:
+    string element;
+    vector<TreeNode *> children;
+  public:
+    ...
+};
+
+// and more --- see when we talk about graphs
+\end{lstlisting}
+};
+\end{tikzpicture}
+\end{frame}

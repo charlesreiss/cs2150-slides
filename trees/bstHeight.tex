@@ -52,7 +52,7 @@
         \begin{itemize}
         \item path of length $k$ in old tree + either new edge
         \end{itemize}
-    \item the number of nodes is $2(2^{k+0}-1) + 1= 2^{k+1}-2 + 1 = 2^{k+1} - 1$
+    \item the number of nodes is $2(2^{k+1}-1) + 1= 2^{k+1+1}-2 + 1 = 2^{k+1+1} - 1$
 \end{itemize}
 \end{frame}
 
@@ -61,7 +61,7 @@
 \item (informally)
 \item property of trees in root:
     \begin{itemize}
-        \item except for the root, every node in tree has 2 children
+        \item except for the leaves, every node in tree has 2 children
     \end{itemize}
 \item no way to add nodes without increasing height
     \begin{itemize}
@@ -106,6 +106,6 @@
         \item all leaves have same depth
         \item all nodes have zero children (leaf) or two children
         \end{itemize}
-    \item \myemph{exactly} the trees that achieve $2{h+1}-1$ nodes
+    \item \myemph{exactly} the trees that achieve $2^{h+1}-1$ nodes
     \end{itemize}
 \end{frame}

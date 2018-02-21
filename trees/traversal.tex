@@ -43,7 +43,7 @@ TreeNode::printPreOrder() {
 
 TreeNode::printPostOrder() {
     for each child c of this:
-        c->printPreOrder()
+        c->printPostOrder()
     this->print();
 }
 \end{lstlisting}

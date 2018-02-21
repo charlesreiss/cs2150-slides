@@ -37,6 +37,41 @@
 \end{tikzpicture}
 \end{frame}
 
+\begin{frame}[fragile,label=paths]{paths and path lengths}
+\newcommand{\term}[1]{\textit{\textbf{#1}}}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    treeNode/.style={draw, thick},
+    treeConnect/.style={draw, very thick,->},
+    nameLabel/.style={ultra thick,<-},
+}
+\tikzset{
+    pathColor/.style={orange!70!black}
+}
+\node[treeNode] (a) {A};
+\node[pathColor,treeNode,below=1cm of a,xshift=-1cm] (b) {B};
+\node[treeNode,below=1cm of a,xshift=1cm] (c) {C};
+\node[treeNode,below=1cm of c,xshift=-.5cm] (e) {E};
+\node[treeNode,below=1cm of c,xshift=1cm] (f) {F};
+\node[treeNode,below=1cm of c,xshift=3cm] (g) {G};
+\node[pathColor,treeNode,below=1cm of b,xshift=-.5cm] (d) {D};
+\node[pathColor,treeNode,below=1cm of d] (h) {H};
+
+\foreach \x/\y in {a/b,a/c,c/e,c/f,c/g,b/d,d/h} {
+    \draw[treeConnect] (\x) -- (\y);
+}
+\draw[treeConnect,orange] (b) -- (d);
+\draw[treeConnect,orange] (d) -- (h);
+    \coordinate (childKey) at ([xshift=1cm]parentKey.east);
+\node[below right=.5cm and -3cm of childKey,pathColor,align=left] (pathDesc) { \term{path}: sequence of nodes $n_1, n_2, \ldots, n_k$ \\ \hspace{2cm} such that $n_i$ is parent of $n_{i+1}$  \\
+example: $\{B, D, H\}$};
+\node[align=left,anchor=north west] (lengthDesc) at ([yshift=-.5cm,xshift=-3cm]g.south west) { \term{length} (of path): number of \textit{edges} in path \\ example: 2 ($B\rightarrow D$ and $D\rightarrow H$) };
+
+\node[align=left,anchor=north west] (iLengthDesc) at ([yshift=-.5cm]lengthDesc.south west) { \term{internal path length}: sum of depth of nodes \\ example: $6 = 1 + 2 + 3$ };
+\end{tikzpicture}
+\end{frame}
+
 \begin{frame}[fragile,label=nodeHeight]{tree/node height}
 \newcommand{\term}[1]{\textit{\textbf{#1}}}
 \begin{tikzpicture}
@@ -117,38 +152,5 @@
 \end{frame}
 
 
-\begin{frame}[fragile,label=paths]{paths and path lengths}
-\newcommand{\term}[1]{\textit{\textbf{#1}}}
-\begin{tikzpicture}
-\tikzset{
-    >=Latex,
-    treeNode/.style={draw, thick},
-    treeConnect/.style={draw, very thick,->},
-    nameLabel/.style={ultra thick,<-},
-}
-\tikzset{
-    pathColor/.style={orange!70!black}
-}
-\node[treeNode] (a) {A};
-\node[pathColor,treeNode,below=1cm of a,xshift=-1cm] (b) {B};
-\node[treeNode,below=1cm of a,xshift=1cm] (c) {C};
-\node[treeNode,below=1cm of c,xshift=-.5cm] (e) {E};
-\node[treeNode,below=1cm of c,xshift=1cm] (f) {F};
-\node[treeNode,below=1cm of c,xshift=3cm] (g) {G};
-\node[pathColor,treeNode,below=1cm of b,xshift=-.5cm] (d) {D};
-\node[pathColor,treeNode,below=1cm of d] (h) {H};
-
-\foreach \x/\y in {a/b,a/c,c/e,c/f,c/g,b/d,d/h} {
-    \draw[treeConnect] (\x) -- (\y);
-}
-\draw[treeConnect,orange] (b) -- (d);
-\draw[treeConnect,orange] (d) -- (h);
-\node[below right=.5cm and -3cm of childKey,pathColor,align=left] (pathDesc) { \term{path}: sequence of nodes $n_1, n_2, \ldots, n_k$ \\ \hspace{2cm} such that $n_i$ is parent of $n_{i+1}$  \\
-example: $\{B, D, H\}$};
-\node[align=left,anchor=north west] (lengthDesc) at ([yshift=-.5cm,xshift=-3cm]g.south west) { \term{length} (of path): number of \textit{edges} in path \\ example: 2 ($B\rightarrow D$ and $D\rightarrow H$) };
-
-\node[align=left,anchor=north west] (iLengthDesc) at ([yshift=-.5cm]lengthDesc.south west) { \term{internal path length}: sum of depth of nodes \\ example: $6 = 1 + 2 + 3$ };
-\end{tikzpicture}
-\end{frame}
 
 % FIXME: CHECK internal path length
