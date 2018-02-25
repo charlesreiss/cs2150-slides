@@ -1,0 +1,40 @@
+\begin{frame}{example (1)}
+    \begin{itemize}
+    \item key: integers
+    \item table size: 10
+    \item hash function: $h(k) = k$; hash+mod: $k \text{~mod~} 10$
+    \item insert \myemph<2>{7}, \myemph<3>{18}, \myemph<4>{41}, \myemph<5>{34}
+        \begin{itemize}
+            \item<2-> \textit<2>{7, h(7) mod 10 = 7 --- use bucket 7}
+            \item<3-> \textit<3>{18, h(18) mod 10 = 8 --- use bucket 8}
+            \item<3-> \ldots
+        \end{itemize}
+    \item<6-> find \myemph<6>{34}, \myemph<7>{28}, \myemph<8>{90}
+        \begin{itemize}
+            \item<6-> \textit<6>{34, h(34) mod 10 = 4 --- use bucket 4 --- found}
+            \item<7-> \textit<7>{28, h(28) mod 10 = 8 --- use bucket 8 --- not a match}
+            \item<8-> \textit<8>{90, h(90) mod 10 = 0 --- use bucket 0 --- nothing there}
+        \end{itemize}
+    \end{itemize}
+\begin{tikzpicture}[overlay,remember picture]
+\matrix[tight matrix,
+    nodes={font=\small},
+    column 1/.style={nodes={draw=none,text width=1.5cm,font=\tt}},
+    row 1/.style={nodes={font=\bfseries,draw=none,text depth=1ex}},
+    anchor=north east
+    ] at ([xshift=-1cm,yshift=-1cm]current page.north east) {
+index \& keys \\
+    \myemph<8>{0} \& ~ \\
+    1 \& \only<1-3>{~}\only<4->{\myemph<4>{41}} \\
+    2 \& ~ \\
+    3 \& ~ \\
+    \myemph<6>{4} \& \only<1-4>{~}\only<5->{\myemph<5,6>{34}} \\
+    5 \& ~ \\
+    6 \& ~ \\
+    7 \& \only<1>{~}\only<2->{7} \\
+    \myemph<7>{8} \& \only<1-2>{~}\only<3->{\myemph<3>{\textbf<7>{18}}} \\
+    9 \& ~ \\
+};
+\end{tikzpicture}
+\end{frame}
+

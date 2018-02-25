@@ -1,0 +1,140 @@
+\begin{frame}{lists}
+\begin{tabular}{l|ll}
+operation & array/vector & linked list \\ \hline
+find (by value) & $\Theta(n)$ & $\Theta(n)$ \\
+insert (end) & amortized $O(1)$ & $\Theta(1)$ \\
+insert (beginning/middle) & $\Theta(n)$ & $\Theta(1)$ \\
+remove (by value) & $\Theta(n)$ & $\Theta(n)$ \\
+find (by index) & $\Theta(1)$ & $\Theta(1)$ \\
+\end{tabular}
+\end{frame}
+
+\begin{frame}{stacks}
+\begin{tabular}{l|ll}
+operation & array/vector & linked list \\ \hline
+push & amortized $O(1)$ & $\Theta(1)$ \\
+pop & $\Theta(1)$ & $\Theta(1)$ \\
+top & $\Theta(1)$ & $\Theta(1)$ \\
+isEmpty & $\Theta(1)$ & $\Theta(1)$ \\
+\end{tabular}
+\end{frame}
+
+\begin{frame}{queues}
+\begin{tabular}{l|ll}
+operation & array/vector & linked list \\ \hline
+enqueue & amortized $O(1)$ & $\Theta(1)$ \\
+dequeue & $\Theta(1)$ & $\Theta(1)$ \\
+\end{tabular}
+\end{frame}
+
+\begin{frame}{sets}
+    \begin{itemize}
+    \item abstract data type with subset of list operations:
+        \begin{itemize}
+        \item find (by value)
+        \item insert (unspecified location)
+        \item remove (by value)
+        \end{itemize}
+    \item omits:
+        \begin{itemize}
+        \item find (by index)
+        \item insert at particular location
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{sets}
+    \begin{tabular}{l|lp{2cm}ll}
+operation & BST & AVL or red-black & vector & \myemph{hash table}\\
+find (by value) & $\Theta(\text{height})$* & $\Theta(\log n)$ & $\Theta(n)$ & $O(1)$\textdagger \\
+insert & $\Theta(\text{height})$* & $\Theta(\log n)$ & amortized $O(1)$ & $O(1)$\textdagger \\
+remove & $\Theta(\text{height})$* & $\Theta(\log n)$ & $\Theta(1)$ & $O(1)$\textdagger \\
+\end{tabular}
+\hrule
+\begin{itemize}
+\item<2->  *BST: height is ``often'' $\Theta(\log n)$, but can be $\Theta(n)$ 
+    \begin{itemize}
+    \item<3-> how to get worst case: insert in sorted order
+    \end{itemize}
+\item<2-> \textdagger{}hash table --- $O(1)$ ``usually'', but $\Theta(n)$ worst case
+    \begin{itemize}
+    \item<4-> how to get worst case: insert specially chosen set of items
+    \item<4-> can design hash table to make this \myemph{really rare}
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+% FIXME: maps
+\begin{frame}{maps}
+    \begin{itemize}
+    \item abstract data type with key-value pairs
+    \item examples: 
+        \begin{itemize}
+            \item key=computing ID, value=grade
+            \item key=word, value=definition
+            \item key=user ID, value=object with many fields
+        \end{itemize}
+    \item operations:
+        \begin{itemize}
+        \item find value by key
+        \item insert(key, value)
+        \item remove by key
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=mapWVec]{map with vector}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+class KeyValuePair {
+public:
+    string key;
+    int value;
+};
+
+class VectorMap {
+public:
+    void insert(const string& key, int value);
+    int find(const string& key);  // XXX value if not found?
+    void remove(const string& key);
+private:
+    vector<KeyValuePair> data;
+};
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{maps}
+\begin{tabular}{l|lp{2cm}ll}
+operation & BST & \raggedright AVL or red-black & vector & \myemph{hash table}\\ \hline
+find (by key) & $\Theta(\text{height})$* & $\Theta(\log n)$ & $\Theta(n)$ & $O(1)$\textdagger \\
+insert & $\Theta(\text{height})$* & $\Theta(\log n)$ & amortized $O(1)$ & $O(1)$\textdagger \\
+remove (by key) & $\Theta(\text{height})$* & $\Theta(\log n)$ & $\Theta(1)$ & $O(1)$\textdagger \\
+\end{tabular}
+\hrule
+\begin{itemize}
+\item *BST: height is ``often'' $\Theta(\log n)$, but can be $\Theta(n)$ 
+\item \textdagger{}hash table --- $O(1)$ ``usually'', but $\Theta(n)$ worst case
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=stdLibMapSet]{aside: standard library}
+\lstset{language=C++,style=smaller}
+    \begin{itemize}
+    \item \texttt{std::map} --- balanced tree-based map
+    \item \texttt{std::unordered\_map} --- hashtable-based map
+\begin{lstlisting}
+unordered_map<string, double> grades;
+grades["cr4bd"] = 85.0;
+...
+if (grades.count("mst3k") > 0) {
+    cout << "mst3k has a grade assigned\n";
+}
+for (unordered_map<string, double>::iterator it = grades.begin();
+     it != grades.end(); ++it) {
+    cout << it->first << " " << it->second << "\n";
+ }
+\end{lstlisting}
+    \item \texttt{std::set} --- balanced tree-based set
+    \item \texttt{std::unordered\_set} --- hashtable-based set
+    \end{itemize}
+\end{frame}

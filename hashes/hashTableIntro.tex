@@ -1,0 +1,90 @@
+\begin{frame}{hashtable}
+\begin{itemize}
+\item array of some size
+    \begin{itemize}
+    \item larger than \# of total elements
+    \item usually prime size
+    \end{itemize}
+\item hash function: map keys to array indices
+\end{itemize}
+\begin{tikzpicture}
+\node[cloud,draw,cloud puffs=12,aspect=2] (cloud) {possible keys};
+\matrix[tight matrix,
+    column 1/.style={nodes={draw=none,minimum width=1.5cm,font=\small\tt}},
+    right=6cm of cloud,
+    label={north:hashtable},
+] (hashtable) {
+    0 \& ~ \\
+    1 \& ~ \\
+    2 \& ~ \\
+    3 \& ~ \\
+    \ldots \& |[draw=none]| ~ \\
+    |[font=\small]|size-1 \& ~ \\
+};
+\draw[-Latex,very thick] ([xshift=.5cm]cloud.east) -- ([xshift=-.5cm]hashtable.west)
+    node[above, midway] {\myemph{hash function}};
+
+    \draw[decorate,decoration={brace,mirror},draw,thick] (hashtable.north west) -- (hashtable.south west);
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{hash function properties (1)}
+\begin{tikzpicture}
+\node[cloud,draw,cloud puffs=12,aspect=2] (cloud) {possible keys};
+\matrix[tight matrix,
+    column 1/.style={nodes={draw=none,minimum width=1.5cm,font=\small\tt}},
+    right=6cm of cloud,
+    label={north:hashtable},
+] (hashtable) {
+    0 \& ~ \\
+    1 \& ~ \\
+    2 \& ~ \\
+    3 \& ~ \\
+    \ldots \& |[draw=none]| ~ \\
+    |[font=\small]|size-1 \& ~ \\
+};
+\draw[-Latex,very thick] ([xshift=.5cm]cloud.east) -- ([xshift=-.5cm]hashtable.west)
+    node[above, midway] {\myemph{hash function} + mod size};
+
+    \draw[decorate,decoration={brace,mirror},draw,thick] (hashtable.north west) -- (hashtable.south west);
+\end{tikzpicture}
+\begin{itemize}
+\item input: key type (e.g. string) $\rightarrow$ output: unsigned integer
+\item then take typically --- then take mod of the table size
+\item result is the ``bucket'' used to store info for that key
+\end{itemize}
+\end{frame}
+
+\begin{frame}{hash function properties (2)}
+\begin{tikzpicture}
+\node[cloud,draw,cloud puffs=12,aspect=2] (cloud) {possible keys};
+\matrix[tight matrix,
+    column 1/.style={nodes={draw=none,minimum width=1.5cm,font=\small\tt}},
+    right=6cm of cloud,
+    label={north:hashtable},
+] (hashtable) {
+    0 \& ~ \\
+    1 \& ~ \\
+    2 \& ~ \\
+    3 \& ~ \\
+    \ldots \& |[draw=none]| ~ \\
+    |[font=\small]|size-1 \& ~ \\
+};
+\draw[-Latex,very thick] ([xshift=.5cm]cloud.east) -- ([xshift=-.5cm]hashtable.west)
+    node[above, midway] {\myemph{hash function} + mod size};
+
+    \draw[decorate,decoration={brace,mirror},draw,thick] (hashtable.north west) -- (hashtable.south west);
+\end{tikzpicture}
+\begin{itemize}
+\item \textit{must be} \myemph{deterministic}
+    \begin{itemize}
+    \item<1-> each key assigned to exactly one ``bucket''
+    \end{itemize}
+\item<2-> \textit{should be} \myemph{evenly distributed}
+    \begin{itemize}
+    \item<2-> two keys \textit{unlikely} to share bucket
+    \item<2-> each bucket about as used as each other bucket
+    \end{itemize}
+\item<3-> \textit{should be} fast
+\end{itemize}
+\end{frame}
