@@ -1,0 +1,42 @@
+\begin{comment}
+\begin{frame}{last time}
+    \begin{itemize}
+    \item rules of thumb for determining/comparing big-oh
+        \begin{itemize}
+            \item logs are all the same
+            \item polynomial < exponential
+            \item loops outside in
+        \end{itemize}
+    \item common big-oh classes --- constant/linear/quadratic/\ldots
+        \begin{itemize}
+            \item log --- binary search
+            \item linear --- search every item
+            \item \ldots
+        \end{itemize}
+    \item started motivation for trees
+    \end{itemize}
+\end{frame}
+\end{comment}
+
+\begin{frame}{last time}
+    \begin{itemize}
+    \item AVL tree rotations
+        \begin{itemize}
+        \item single rotation: make left or right node new root of (sub)tree
+        \item double rotation: two single rotations
+        \item one idea for implementing:
+            \begin{itemize}
+            \item look at general diagram (tree $\rightarrow$ tree)
+            \item get pointers to every node involved
+            \item set the links
+            \end{itemize}
+        \end{itemize}
+    \item rotation choice on insertion
+        \begin{itemize}
+        \item lowest imbalanced node + direction of insertion
+        \begin{itemize}\item imbalanced = balance factor $\pm 2$\end{itemize}
+        \item four cases: left, right, left-right, right-left
+        \end{itemize}
+    \item started red-black trees
+    \end{itemize}
+\end{frame}

@@ -1,0 +1,187 @@
+\usetikzlibrary{graphs,graphdrawing}
+\usegdlibrary{layered}
+
+\begin{frame}[fragile,label=progAsTree]{programs as trees}
+\usemintedstyle{tango}
+\begin{onlyenv}<1>
+\begin{minted}[fontsize=\small]{C++}
+int z;
+
+int foo (int x) {
+  for (int y = 0;
+       y < x;
+       y++)
+    cout << y << endl;
+}
+
+int main() {
+  int z = 5;
+  cout << "enter x" << endl;
+  cin >> z;
+  foo(z);
+}
+\end{minted}
+\end{onlyenv}
+\begin{onlyenv}<2>
+\begin{minted}[fontsize=\small,highlightlines={3-8}]{C++}
+int z;
+
+int foo (int x) {
+  for (int y = 0;
+       y < x;
+       y++)
+    cout << y << endl;
+}
+
+int main() {
+  int z = 5;
+  cout << "enter x" << endl;
+  cin >> z;
+  foo(z);
+}
+\end{minted}
+\end{onlyenv}
+\begin{tikzpicture}[overlay,remember picture]
+\tikzset{
+    >=Latex,
+    myt/.style={layered layout,level distance=2mm,sibling distance=5mm,nodes={draw,ellipse,thin,inner sep=0.25mm,minimum width=1cm,align=center,font=\fontsize{9}{10}\selectfont,fill=white}},
+    isFoo/.style={alt=<2>{draw=blue,fill=blue!10}},
+}
+\begin{scope}[myt]
+\graph {
+    [fresh nodes,name=g] program[alias=graphTop,desired at={([xshift=-7cm,yshift=-2cm]current page.north east)}] -> {
+        vars -> "int z",
+        functions -> {
+            "foo()"[isFoo] -> {
+                "params"[isFoo] -> "int z"[isFoo],
+                "vars"[isFoo],
+                "body"[isFoo] -> "for"[isFoo] -> {
+                    "int y"[isFoo],
+                    "y < x"[isFoo],
+                    "y++"[isFoo],
+                    "body"[isFoo] -> { "cout"[isFoo] -> {"y"[isFoo], endlBottom[as=endl,isFoo]}}
+                },
+            },
+            main[as={main()}]  -> {
+                "params",
+                "vars" -> "int z" -> "=5",
+                "body" [> minimum layers=6,alias=myBody] -> {
+                    "cout" -> {
+                        enterZ[as={\textquotedbl enter z\textquotedbl}],
+                        "endl"
+                    },
+                    "cin" -> "z",
+                    "foo()" -> zBottom[as={z}]
+                }
+            }
+        }
+    }
+};
+\end{scope}
+\begin{pgfonlayer}{bg}
+    \node[fill=white,fit=(g program) (g params) (g endlBottom)] {};
+    \node[fill=white,fit=(g main) (g zBottom) (g enterZ)] {};
+\end{pgfonlayer}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=astExpl]{abstract syntax tree}
+\usemintedstyle{tango}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    myt/.style={layered layout,level distance=2mm,sibling distance=5mm,nodes={draw,ellipse,thin,inner sep=0.25mm,minimum width=1cm,align=center,font=\fontsize{10}{11}\selectfont,fill=white}},
+    isFoo/.style={},
+    box/.style={draw=blue,very thick,fill=white, align=left},
+    forExample/.style={
+        draw=blue,very thick,fill=blue!10,
+    },
+}
+\begin{pgfonlayer}{fg}
+\begin{visibleenv}<2-3>
+\node[box,anchor=west] at ([xshift=.1cm,yshift=1cm]g for.east) {
+    for loop: four children \\
+    init, condition, update, body
+};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[box,anchor=north west,align=left] at ([xshift=1.5cm]g for.east) {
+\begin{minipage}{8cm}
+\begin{minted}[fontsize=\fontsize{10}{11}\selectfont]{C++}
+class ASTNode {
+    ...
+};
+
+// public class ForNode extends ASTNode
+class ForNode : public ASTNode {
+    ...
+private:
+    ASTNode *init, *condition,
+            *update, *body;
+};
+\end{minted}
+\end{minipage}
+};
+\end{visibleenv}
+\end{pgfonlayer}
+\begin{scope}[myt]
+\graph {
+    [fresh nodes,name=g] program[alias=graphTop] -> {
+        vars -> "int z",
+        functions -> {
+            "foo()"[isFoo] -> {
+                "params"[isFoo] -> "int z"[isFoo],
+                "vars"[isFoo],
+                "body"[isFoo] -> "for"[isFoo,forExample] -> {
+                    "int y"[isFoo,forExample],
+                    "y < x"[isFoo,forExample],
+                    "y++"[isFoo,forExample],
+                    "body"[isFoo,forExample] -> { "cout"[isFoo] -> {"y"[isFoo], endlBottom[as=endl,isFoo]}}
+                },
+            },
+            main[as={main()}]  -> {
+                "params",
+                "vars" -> "int z" -> "=5",
+                "body" [alias=myBody] -> {
+                    "cout" -> {
+                        enterZ[as={\textquotedbl enter z\textquotedbl}],
+                        "endl"
+                    },
+                    "cin" -> "z",
+                    "foo()" -> zBottom[as={z}]
+                }
+            }
+        }
+    }
+};
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{AST applications}
+\begin{itemize}
+\item ``abstract syntax tree'' = ``parse tree''
+\item part of how compilers work
+\item do some tree traversal to do\ldots
+    \begin{itemize}
+        \item code generation --- e.g. \texttt{ASTNode::outputCode()} method
+        \item optimization
+        \item type checking\ldots
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{using AST to compare programs}
+    \begin{itemize}
+        \item comparing trees is a good way to compare programs\ldots
+        \item while ignoring:
+            \begin{itemize}
+            \item function/method order (e.g. sort function nodes by length)
+            \item variable names (e.g. ignore variable names when comparing)
+            \item comments
+            \item \ldots
+            \end{itemize}
+        \vspace{.5cm}
+        \item part of many software plagerism/copy+paste detection tools
+    \end{itemize}
+\end{frame}
