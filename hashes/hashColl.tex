@@ -1,0 +1,71 @@
+\begin{frame}[fragile,label=handlColl]{option 1: separate chaining}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+class HashTableBucket {
+    int key;
+    HashTableBucket *next;
+    // ... + value?
+};
+
+class HashTable {
+    ...;
+private:
+    vector<HashTableBucket*> data;
+};
+
+// insert {26 (bucket 4), 7 (bucket 7),
+//         16 (bucket 5), 59 (bucket 4)}
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+\matrix[tight matrix,
+    nodes={font=\small},
+    column 1/.style={nodes={draw=none,text width=1.5cm,font=\tt}},
+    row 1/.style={nodes={font=\bfseries,draw=none,text depth=1ex}},
+    anchor=north east
+    ] (arr) at ([xshift=-6cm,yshift=-1cm]current page.north east) {
+index \& ~\\
+    0 \& ~ \\
+    1 \& ~ \\
+    2 \& ~ \\
+    3 \& ~ \\
+    4 \& ~ \\
+    5 \& ~ \\
+    6 \& ~ \\
+    7 \& ~ \\
+    8 \& ~ \\
+    9 \& ~ \\
+    10 \& ~ \\
+};
+\tikzset{
+    link/.style={draw,rectangle split,rectangle split parts=2},
+    point/.style={-Latex,thick},
+}
+\node[link,anchor=west] (link-26) at ([xshift=.5cm]arr-5-2.east) {
+    key: {\tt 26} \nodepart{two}
+    next:
+};
+\node[link,anchor=west] (link-59) at ([xshift=.5cm]link-26.east) {
+    key: {\tt 59} \nodepart{two}
+    next:
+};
+\draw[point] (arr-5-2.center) -- (link-26.one west);
+\draw[point] ([xshift=-2ex]link-26.two east) -- (link-59.one west);
+\draw[point] ([xshift=-2ex]link-59.two east) -- ++(0cm,-.5cm) node[below,font=\small\tt] {NULL};
+
+\node[link,anchor=west] (link-7) at ([yshift=-3cm,xshift=.5cm]arr-8-2.east) {
+    key: {\tt 7} \nodepart{two}
+    next:
+};
+\draw[point] ([xshift=-2ex]link-7.two east) -- ++(0cm,-.5cm) node[below,font=\small\tt] {NULL};
+\draw[point] (arr-8-2.center) -- (link-7.one west);
+\node[link,anchor=west] (link-16) at ([yshift=-1.5cm,xshift=.5cm]arr-6-2.east) {
+    key: {\tt 16} \nodepart{two}
+    next:
+};
+\draw[point] (arr-6-2.center) -- (link-16.one west);
+\draw[point] ([xshift=-2ex]link-16.two east) -- ++(0cm,-.5cm) node[below,font=\small\tt] {NULL};
+
+\end{tikzpicture}
+\end{frame}
+
+% FIXME: option two/three

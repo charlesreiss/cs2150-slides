@@ -1,0 +1,45 @@
+\begin{frame}[fragile,label=hashStrIntro]{hashing strings}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+unsigned int hash(const string &s) {
+    ???
+}
+
+unsigned int hashTableIndex(const string &s, int tableSize) {
+    return hash(s) % tableSize;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=hashStrProposals1]{some proposals (1)}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+unsigned int hash(const string &s) {
+    return s[0];
+}
+
+unsigned int hash(const string &s) {
+    unsigned int sum = 0;
+    for (int i = 0; i < s.size(); ++i) {
+        sum += s[i];
+    }
+    return sum;
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile,label=hashStrProposals2]{some proposals (2)}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+unsigned int hash(const string &s) {
+    unsigned int sum = 0;
+    for (int i = 0; i < s.size(); ++i) {
+        // deliberate use of wraparound on overflow
+        sum *= 37;
+        sum += s[i];
+    }
+    return sum;
+}
+\end{lstlisting}
+\end{frame}

@@ -1,0 +1,13 @@
+\begin{frame}<1>[label=hashTableAlgos]{hashtable algorithms}
+\begin{itemize}
+\item find (by key $k$): compute $i = h(k) \mod \text{table size}$, check bucket at index $i$
+\begin{itemize}
+\item \textit{need to check key} --- other keys may use same bucket
+\end{itemize}
+\item insert/remove (by key $k$): compute $i = h(k) \mod \text{table size}$, use bucket at index $i$
+\begin{itemize}
+\item \myemph<2>{but what if bucket is used by another key?}
+\end{itemize}
+\item find max/min: check all buckets (linear time)
+\end{itemize}
+\end{frame}

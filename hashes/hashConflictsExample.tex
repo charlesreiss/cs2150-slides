@@ -1,0 +1,31 @@
+\begin{frame}{example (1b)}
+    \begin{itemize}
+    \item key: integers
+    \item table size: 10
+    \item hash function: $h(k) = k$; hash+mod: $k \text{~mod~} 10$
+    \item insert 7, 18, 41, 34, \myemph<2>{11}
+        \begin{itemize}
+            \item<2-> \textit<2>{12, h(12) mod 10 = 2}
+        \end{itemize}
+    \end{itemize}
+\begin{tikzpicture}[overlay,remember picture]
+\matrix[tight matrix,
+    nodes={font=\small},
+    column 1/.style={nodes={draw=none,text width=1.5cm,font=\tt}},
+    row 1/.style={nodes={font=\bfseries,draw=none,text depth=1ex}},
+    anchor=north east
+    ] at ([xshift=-1cm,yshift=-1cm]current page.north east) {
+index \& keys \\
+    0 \& ~ \\
+    1 \& 41\only<2->{\myemph{, 12}} \\
+    2 \& ~ \\
+    3 \& ~ \\
+    4 \& 34 \\
+    5 \& ~ \\
+    6 \& ~ \\
+    7 \& 7 \\
+    8 \& 18 \\
+    9 \& ~ \\
+};
+\end{tikzpicture}
+\end{frame}
