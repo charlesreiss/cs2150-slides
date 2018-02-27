@@ -151,7 +151,7 @@
 \begin{visibleenv}<4>
     \node[box] {case 3 (parent, uncle are red) continued: \\
         recusively examine grandparent \textbf{\color{blue!70!black}3} \\
-        \myemph{case 4: parent (of 3) is red} \\
+        \myemph{case 5: parent (of 3) is red} \\
         \hspace{1cm}\myemph{uncle is black, left child}
     };
 \end{visibleenv}
@@ -162,7 +162,7 @@
         200[B]}
 };
     \end{scope}
-    \node[draw,thick,align=left,below=1cm of alt5 15] {\myemph{case 4: parent is red} \\
+    \node[draw,thick,align=left,below=1cm of alt5 15] {\myemph{case 5: parent is red} \\
     \hspace{1cm}\myemph{uncle is black, left child}: \\
         perform right rotation \\ of parent + grandparent (of 3) \\
         (and swap parent/grandparent colors)
