@@ -18,6 +18,7 @@
 \end{frame}
 \end{comment}
 
+\begin{comment}
 \begin{frame}{last time}
     \begin{itemize}
     \item AVL tree rotations
@@ -38,5 +39,27 @@
         \item four cases: left, right, left-right, right-left
         \end{itemize}
     \item started red-black trees
+    \end{itemize}
+\end{frame}
+\end{comment}
+
+\begin{frame}{last time}
+    \begin{itemize}
+    \item red-black trees
+        \begin{itemize}
+        \item less well-balanced than AVL trees
+        \item track color instead of balance factor
+        \item rules about colors to limit possible imbalance
+        \item algorithm for insertion, etc. that makes tree always obey rules
+        \item usually faster in practice --- less rotations
+        \end{itemize}
+    \item splay trees
+        \begin{itemize}
+        \item optimized for repeated accesses
+        \item keep recently accessed items near top of tree
+        \item find rearranges tree!
+        \item \textit{amortized} logarithmic time
+        \item (but worst case is linear)
+        \end{itemize}
     \end{itemize}
 \end{frame}

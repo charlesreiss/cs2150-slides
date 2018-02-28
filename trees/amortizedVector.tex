@@ -34,11 +34,32 @@
     \item about $N$ copies + $N$ writes
         \begin{itemize}
         \item why? $K$ to $2K$ elements: $K$ copies
-        \item $N$ inserts: $1 + 2 + 4 + \ldots + N/4 + N/2$ copies
+        \item $N$ inserts: $1 + 2 + 4 + \ldots + N/4 + N/2 = N - 1$ copies
         \item (and a bit better if initial capacity isn't $1$)
         \end{itemize}
-    \item $\Theta(n)$ worst case
-    \item but $\Theta(n)$ time for $n$ inserts
-    \item $\rightarrow$ \myemph{$O(1)$ amortized time per insert}
+    \item<2-> $\Theta(n)$ worst case
+    \item<2-> but $\Theta(n)$ time for $n$ inserts
+    \item<2-> $\rightarrow$ \myemph{$O(1)$ amortized time per insert}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{other vector capacity increases? (1)}
+    \begin{itemize}
+    \item instead of doubling\ldots add 1000
+    \item $N$ inserts: $1000 + 2000 + 3000 + \ldots + N \sim N^2$
+    \item $\rightarrow \Theta(N^2)$ total --- $O(N)$ amortized time per insert
+        \vspace{.5cm}
+    \item<2-> \myemph{increase by constant: linear worst-case and amortized}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{other vector capacity increases? (2)}
+    \item instead of doubling\ldots multiply by $k > 1$
+        \begin{itemize}
+        \item e.g. $k = 1.1$ --- increase by 10\%
+        \end{itemize}
+    \item<2-> $N$ inserts: $1 + k + k^2 + k^3 + \ldots + k^{\log_k{N}} = \frac{1-k^{\log_k{N}}}{1-k} \sim N$
+    \item<3-> $\rightarrow \Theta(N)$ total --- $O(1)$ amortized time per insert
+    \item<3-> \myemph{amortized constant time for all $k > 1$}
     \end{itemize}
 \end{frame}

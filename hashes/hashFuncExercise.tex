@@ -5,10 +5,11 @@
     \item which option is best?
     \begin{itemize}
     \item A. birth year (\lstinline|year|)
-    \item B. last digit of birth month (\lstinline|month|)
-    \item C. last digit of birth day (\lstinline|day|)
-    \item D. days between now and birthdate (\lstinline|(date - today()).days()|)
-    \item E. sum of year, month, and day (\lstinline|year+month+day|)
+    \item B. birth day (\lstinline|day|)
+    \item C. days between now and birthdate (\lstinline|(date - today()).days()|)
+    \item D. \lstinline|year*128 + month*32 + day|
+    \item E. \lstinline|year+month+day|
+    \item F. \lstinline|year*(month-1)*(day-1)|
     \end{itemize}
     \item recall: deterministic, evenly distributed, fast
     \end{itemize}
