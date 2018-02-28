@@ -1,0 +1,31 @@
+
+\begin{frame}<1-8>{quadratic probing example}
+\begin{itemize}
+\item $h(k) = 3k + 7$
+\item index = $h(k) \mod 10$
+\item then check $h(k) + 1^2 \mod 10$, $h(k) + 2^2 \mod 10$, etc.
+\item insert \myemph<2>{4}, \myemph<3>{27}, \myemph<4>{14}, \myemph<5>{37}, \myemph<6>{22}, \myemph<7>{34}
+\begin{itemize}
+\item $h(k) =$ 1\myemph<2>{9}, 8\myemph<3>{8}, 4\myemph<4>{9}, 11\myemph<5>{8}, 7\myemph<6>{3}, 10\myemph<7>{9}
+\end{itemize}
+\end{itemize}
+\begin{tikzpicture}[overlay,remember picture]
+\matrix[tight matrix,
+    column 1/.style={nodes={draw=none,text width=1.5cm,font=\tt}},
+    row 1/.style={nodes={font=\bfseries,draw=none,text depth=1ex}},
+    anchor=north east
+    ] (arr) at ([xshift=-1cm,yshift=-2cm]current page.north east) {
+index \& ~\\
+    |[fill=yellow!15]| 0 \& |[alt=<4->{fill=blue!15},alt=<7>{draw=red,thick}]| \only<4->{\myemph<4>{14}} \\
+    1 \& ~ \\
+    2 \& |[alt=<5->{fill=green!15}]| \only<5->{37} \\
+    |[fill=violet!15]| 3 \& |[alt=<6->{fill=violet!15},alt=<7>{draw=red,thick}]| \only<6->{\myemph<6>{22}} \\
+    4 \& ~ \\
+    5 \& |[alt=<7->{fill=blue!15}]| \only<7->{34} \\
+    6 \& ~ \\
+    7 \& ~ \\
+    |[fill=green!15]| 8 \& |[alt=<3->{fill=green!15},alt=<7>{draw=red,thick}]| \only<3->{\myemph<3>{27}} \\
+    |[fill=blue!15]| 9 \& |[alt=<2->{fill=blue!15},alt=<5>{draw=red,thick}]| \only<2->{\myemph<2>{4}} \\
+};
+\end{tikzpicture}
+\end{frame}

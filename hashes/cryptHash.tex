@@ -1,0 +1,57 @@
+\begin{frame}<1-2>[label=cryptHash]{cryptographic hashes}
+\begin{itemize}
+\item example: SHA-256
+\item input: any string of bits
+\item output: 256 bits
+\vspace{.5cm}
+\item have \myemph{security properties} normal hashes don't:
+\begin{itemize}
+    \item \myemph<2>{\textbf<2>{collision resistence}}
+    \item \myemph<3>{\textbf<3>{preimage resistence}}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{collision resistence}
+\begin{itemize}
+\item security property of a cryptographic hash
+\item it's very  hard to find keys $k_1$ and $k_2$ so $h(k_1) = h(k_2)$
+\vspace{.5cm}
+\item note: why SHA-256's output is so big (256 bits)
+    \begin{itemize}
+    \item otherwise, just generate lots of hashes\ldots
+    \end{itemize}
+\item example application: verify download with hash of file contents
+\item it's very hard to find two files with the same hash
+\begin{itemize}
+\item even if you're trying
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=colNonRes]{exercise: collision non-resistence}
+\begin{lstlisting}
+unsigned int hash(const string &s) {
+    unsigned int sum = 0;
+    for (int i = 0; i < s.size(); ++i) {
+        // deliberate use of wraparound on overflow
+        sum *= 37;
+        sum += s[i];
+    }
+    return sum;
+}
+\end{lstlisting}
+\begin{itemize}
+\item exercise: how to construct two strings with same hash?
+\item<2-> one idea: \{60, $x$\} and \{59, $x+37$\} have the same hash
+\end{itemize}
+\end{frame}
+
+\againframe<3>{cryptHash}
+
+\begin{frame}{preimage resistence}
+\begin{itemize}
+\item security property of a cryptographic hash
+\item if given $V$, very hard to find $k$ so $h(k) = V$
+\end{itemize}
+\end{frame}

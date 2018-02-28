@@ -12,9 +12,7 @@
 \section{hashtables intro}
 
 \subsection{array + hash function}
-% FIXME: intro: key-value pair case
 \input{kvPairCase}
-% FIXME: intro: hashtables are arrays + hash functions
 \input{hashTableIntro}
 
 \input{hashFuncActivity}
@@ -30,23 +28,49 @@
 \section{hashing strings}
 \input{hashString}
 
+% FIXME: hashStringExample
+
+\input{hashExampleStr}
+
 \subsection{example (with conflicts)}
 \input{hashConflictsExample}
 
-\section{handling collisions}
+\section{handling collisions with chaining}
 
 \againframe<2>{hashTableAlgos}
 
-\input{hashColl}
+\input{hashChain}
 % FIXME: need linear/quadratic probing and double hasihing
 
-\subsection{with chaining}
+\section{load factors and performance}
 
-\subsection{open addressing}
+\input{hashLF}
+
+\section{handling collisions with open addressing}
+
+\input{openAddr}
+
+\againframe<2>{altProbe}
+
+\input{linearProbeEx}
+
+\againframe<3>{altProbe}
+
+\input{quadProbeEx}
+
+\againframe<4>{altProbe}
+
+\input{doubleHashEx}
 
 \section{rehashing}
 
+\input{rehashing}
+
 \section{removal}
 
+\input{removal}
+
 \section{cryptographic hash functions}
+
+\input{cryptHash}
 

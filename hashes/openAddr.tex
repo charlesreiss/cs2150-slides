@@ -1,0 +1,204 @@
+\begin{frame}[fragile,label=avoidLL]{avoiding linked lists}
+\begin{lstlisting}
+class HashTableBucket {
+    ...
+    int key;               // 4 bytes
+    int value;             // 4 bytes
+    HashTableBucket *next; // 8 bytes
+};
+\end{lstlisting}
+\begin{itemize}
+\item gosh, that's a lot of overhead
+\item \ldots even though ``usually'' one item/bucket
+\end{itemize}
+\end{frame}
+
+\begin{frame}{an alternative}
+\begin{tikzpicture}
+\matrix[tight matrix,
+    nodes={font=\small},
+    column 1/.style={nodes={draw=none,text width=1.5cm,font=\tt}},
+    row 1/.style={nodes={font=\bfseries,draw=none,text depth=1ex}},
+    anchor=north east
+    ] (arr) at (0, 0) {
+index \& ~\\
+    0 \& ~ \\
+    1 \& ~ \\
+    2 \& |[fill=green!15]| ~ \\
+    3 \& ~ \\
+    4 \& ~ \\
+    5 \& ~ \\
+    6 \& ~ \\
+    7 \& ~ \\
+    8 \& ~ \\
+    9 \& ~ \\
+    10 \& ~ \\
+};
+\tikzset{
+    link/.style={draw,rectangle split,rectangle split parts=2},
+    point/.style={-Latex,thick},
+    expand/.style={thick,dotted},
+}
+\node[link,anchor=west,fill=green!15] (link-10) at ([xshift=.75cm]arr-4-2.east) {
+    key: {\tt 13} \nodepart{two}
+    next:
+};
+\node[link,anchor=north west,fill=green!15] (link-20) at ([yshift=-.5cm]link-10.south west) {
+    key: {\tt 25} \nodepart{two}
+    next:
+};
+\node[link,anchor=north west,fill=green!15] (link-30) at ([yshift=-.5cm]link-20.south west) {
+    key: {\tt 37} \nodepart{two}
+    next:
+};
+\draw[expand] (arr-4-2.north east) -- (link-10.north west);
+\draw[expand] (arr-4-2.south east) -- (link-10.south west);
+\foreach \x/\y in {link-10/link-20,link-20/link-30} {
+\draw[point] ([xshift=-2ex]\x.two east) -- ++ (.25cm, 0cm) -- ++ (0cm, -.5cm) -| ([xshift=-.35cm]\y.one west) -- (\y.one west);
+};
+\draw[point] ([xshift=-2ex]link-30.two east) -- ++(0cm,-.5cm) node[below,font=\small\tt] {NULL};
+\matrix[tight matrix,
+    nodes={font=\small},
+    column 1/.style={nodes={draw=none,text width=1.5cm,font=\tt}},
+    column 2/.style={nodes={text width=2cm}},
+    row 1/.style={nodes={font=\bfseries,draw=none,text depth=1ex}},
+    anchor=north west
+    ] (alt-arr) at (5, 0) {
+index \& ~\\
+    0 \& ~ \\
+    1 \& ~ \\
+    |[fill=green!15]| 2 \& |[fill=green!15]| key=13 \\
+    3 \& |[fill=green!15]| key=25 \\
+    4 \& |[fill=green!15]| key=37 \\
+    5 \& |[text=black!50]|\only<1-3>{~}\only<4>{key=NONE} \\
+    6 \& ~ \\
+    7 \& ~ \\
+    8 \& ~ \\
+    9 \& ~ \\
+    10 \& ~ \\
+};
+
+\tikzset{hiBox/.style={draw=red,very thick,inner sep=0.1mm}}
+\begin{visibleenv}<2>
+\node[hiBox,fit=(arr-4-2)] {};
+\node[hiBox,fit=(alt-arr-4-2)] {};
+\node[align=left, fill=white,draw,thick] at ([yshift=2cm]$(arr-4-2)!0.5!(alt-arr-4-2)$) {
+    this example: all keys hash to bucket 2 \\ ($h(k) = k$, choose $h(k) \mod 11$) \\
+    $\rightarrow$ always start searching there
+};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[hiBox,fit=(link-10)] {};
+\node[hiBox,fit=(link-20)] {};
+\node[hiBox,fit=(link-30)] {};
+\node[hiBox,fit=(alt-arr-4-2)] {};
+\node[hiBox,fit=(alt-arr-5-2)] {};
+\node[hiBox,fit=(alt-arr-6-2)] {};
+\node[align=left, fill=white,draw,thick] at ([yshift=2cm]$(arr-4-2)!0.5!(alt-arr-4-2)$) {
+    both ways might search all keys with same hash mod size
+};
+\end{visibleenv}
+\begin{visibleenv}<4>
+\foreach \x/\y in {link-10/link-20,link-20/link-30} {
+\draw[point,red,ultra thick] ([xshift=-2ex]\x.two east) -- ++ (.25cm, 0cm) -- ++ (0cm, -.5cm) -| ([xshift=-.35cm]\y.one west) -- (\y.one west);
+};
+\foreach \x/\y in {4/5,5/6,6/7} {
+    \draw[point,red,ultra thick] ([yshift=-.5ex]alt-arr-\x-2.east) -- ++ (.5cm,0cm)  |- ([yshift=.5ex]alt-arr-\y-2.east);
+}
+\node[align=left, fill=white,draw,thick] at ([yshift=2cm]$(arr-4-2)!0.5!(alt-arr-4-2)$) {
+    difference: new way --- no next pointers \\
+    just go to next bucket
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{but what if\ldots}
+\begin{tikzpicture}
+\matrix[tight matrix,
+    nodes={font=\small},
+    column 1/.style={nodes={draw=none,text width=1.5cm,font=\tt}},
+    row 1/.style={nodes={font=\bfseries,draw=none,text depth=1ex}},
+    anchor=north east
+    ] (arr) at (0, 0) {
+index \& ~\\
+    0 \& ~ \\
+    1 \& ~ \\
+    2 \& |[fill=green!15]| ~ \\
+    3 \& |[fill=blue!15]| ~ \\
+    4 \& ~ \\
+    5 \& ~ \\
+    6 \& ~ \\
+    7 \& ~ \\
+    8 \& ~ \\
+    9 \& ~ \\
+    10 \& ~ \\
+};
+\tikzset{
+    link/.style={draw,rectangle split,rectangle split parts=2},
+    point/.style={-Latex,thick},
+    expand/.style={thick,dotted},
+}
+\node[link,anchor=west,fill=green!15] (link-10) at ([xshift=.5cm,yshift=1cm]arr-4-2.east) {
+    key: {\tt 13} \nodepart{two}
+    next:
+};
+\node[link,anchor=north west,fill=green!15] (link-20) at ([yshift=-.5cm]link-10.south west) {
+    key: {\tt 25} \nodepart{two}
+    next:
+};
+\node[link,anchor=north west,fill=blue!15] (link-30) at ([yshift=-.8cm]link-20.south west) {
+    key: {\tt 38} \nodepart{two}
+    next:
+};
+\draw[expand] (arr-4-2.north east) -- (link-10.north west);
+\draw[expand] (arr-4-2.south east) -- (link-10.south west);
+\foreach \x/\y in {link-10/link-20} {
+\draw[point] ([xshift=-2ex]\x.two east) -- ++ (.25cm, 0cm) -- ++ (0cm, -.5cm) -| ([xshift=-.35cm]\y.one west) -- (\y.one west);
+};
+\draw[point] ([xshift=-2ex]link-20.two east) -- ++(0cm,-.5cm) node[below,font=\small\tt] {NULL};
+\draw[point] ([xshift=-2ex]link-30.two east) -- ++(0cm,-.5cm) node[below,font=\small\tt] {NULL};
+\draw[expand] (arr-5-2.north east) -- (link-30.north west);
+\draw[expand] (arr-5-2.south east) -- (link-30.south west);
+\matrix[tight matrix,
+    nodes={font=\small},
+    column 1/.style={nodes={draw=none,text width=1.5cm,font=\tt}},
+    column 2/.style={nodes={text width=2cm}},
+    row 1/.style={nodes={font=\bfseries,draw=none,text depth=1ex}},
+    anchor=north west
+    ] (alt-arr) at (3.5, 0) {
+index \& ~\\
+    0 \& ~ \\
+    1 \& ~ \\
+    |[fill=green!15]| 2 \& |[fill=green!15]| key=13 \\
+    |[fill=blue!15]| 3 \& |[fill=green!15]| key=25 \\
+    4 \& |[fill=blue!15]| key=38 \\
+    5 \& |[text=black!50]|key=NONE \\
+    6 \& ~ \\
+    7 \& ~ \\
+    8 \& ~ \\
+    9 \& ~ \\
+    10 \& ~ \\
+};
+\matrix[tight matrix,
+    nodes={font=\small},
+    column 1/.style={nodes={draw=none,text width=1.5cm,font=\tt}},
+    column 2/.style={nodes={text width=2cm}},
+    row 1/.style={nodes={font=\bfseries,draw=none,text depth=1ex}},
+    anchor=north west
+    ] (alt-arr) at (8, 0) {
+index \& ~\\
+    0 \& ~ \\
+    1 \& ~ \\
+    |[fill=green!15]| 2 \& |[fill=green!15]| key=13 \\
+    |[fill=blue!15]| 3 \& |[fill=blue!15]| key=38\\
+    4 \& |[fill=green!15]| key=25 \\
+    5 \& |[text=black!50]|key=NONE \\
+    6 \& ~ \\
+    7 \& ~ \\
+    8 \& ~ \\
+    9 \& ~ \\
+    10 \& ~ \\
+};
+\end{tikzpicture}
+\end{frame}

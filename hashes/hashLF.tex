@@ -1,0 +1,140 @@
+
+\begin{frame}{load factors and chaining}
+\begin{itemize}
+\item \textit{load factor}: $\lambda = \frac{\text{\# elements}}{\text{table size}}$
+\item average number of elements per bucket: $\lambda$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{find performance}
+\begin{itemize}
+\item average* time for find: 
+    \begin{itemize}
+    \item unsuccessful: check $\lambda$ items
+    \item successful: check $1+\lambda/2$ items (half of list)
+    \end{itemize}
+    \vspace{.5cm}
+\item *assuming we choose \myemph<2>{random keys?}
+\end{itemize}
+\end{frame}
+
+% FIXME: choosing load factors
+
+\begin{frame}[fragile,label=badBalance]{maybe our keys aren't average}
+\begin{itemize}
+\item $h(k) = k$
+\item size = $10$
+\item index = $h(k) \mod 10$
+\vspace{.5cm}
+\item $\lambda = 0.3$
+\item but if we usually lookup existing keys\ldots
+\end{itemize}
+\begin{tikzpicture}[overlay,remember picture]
+\matrix[tight matrix,
+    nodes={font=\small},
+    column 1/.style={nodes={draw=none,text width=1.5cm,font=\tt}},
+    row 1/.style={nodes={font=\bfseries,draw=none,text depth=1ex}},
+    anchor=north east
+    ] (arr) at ([xshift=-5cm,yshift=-2cm]current page.north east) {
+index \& ~\\
+    0 \& |[fill=green!15]| ~ \\
+    1 \& ~ \\
+    2 \& ~ \\
+    3 \& ~ \\
+    4 \& ~ \\
+    5 \& ~ \\
+    6 \& ~ \\
+    7 \& ~ \\
+    8 \& ~ \\
+    9 \& ~ \\
+};
+\tikzset{
+    link/.style={draw,rectangle split,rectangle split parts=2},
+    point/.style={-Latex,thick},
+    expand/.style={thick,dotted},
+}
+\node[link,anchor=west,fill=green!15] (link-10) at ([xshift=.75cm]arr-2-2.east) {
+    key: {\tt 10} \nodepart{two}
+    next:
+};
+\node[link,anchor=north west,fill=green!15] (link-20) at ([yshift=-.5cm]link-10.south west) {
+    key: {\tt 20} \nodepart{two}
+    next:
+};
+\node[link,anchor=north west,fill=green!15] (link-30) at ([yshift=-.5cm]link-20.south west) {
+    key: {\tt 30} \nodepart{two}
+    next:
+};
+\draw[expand] (arr-2-2.north east) -- (link-10.north west);
+\draw[expand] (arr-2-2.south east) -- (link-10.south west);
+\foreach \x/\y in {link-10/link-20,link-20/link-30} {
+\draw[point] ([xshift=-2ex]\x.two east) -- ++ (.25cm, 0cm) -- ++ (0cm, -.5cm) -| ([xshift=-.35cm]\y.one west) -- (\y.one west);
+};
+\draw[point] ([xshift=-2ex]link-30.two east) -- ++(0cm,-.5cm) node[below,font=\small\tt] {NULL};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{why use a linked list?}
+\begin{itemize}
+\item \myemph{one item/bucket usually}
+\begin{itemize}
+    \item if not --- we should use a balanced tree
+    \item (or change hash functions?)
+\end{itemize}
+\item when not one, probably two or three
+\item linked list --- probably most efficient
+\begin{itemize}
+    \item typical space overhead: one NULL pointer
+    \item typical time overhead: check the one pointer
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{linked list alternatives}
+\begin{itemize}
+\item vector --- way too much extra space
+    \begin{itemize}
+    \item size, capacity
+    \item extra space reserved in array
+    \item remember: typically just one element
+    \end{itemize}
+\item balanced trees
+    \begin{itemize}
+    \item two pointers
+    \item about same comparisons as linked list for size 2, 3
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{find performance revisited}
+\begin{itemize}
+\item with \myemph{ideal hash function}: $Theta(\lambda)$ (load factor)
+    \begin{itemize}
+    \item typically: adjust hashtable size so $\lambda$ remains approximately constant
+    \end{itemize}
+\item actual worst case: $\Theta(n)$ (I choose all the wrong keys)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{insert performance}
+\lstset{language=C++,style=small}
+\begin{itemize}
+\item $\Theta(1)$
+    \begin{itemize}
+    \item assuming we don't care about checking for a duplicate
+    \end{itemize}
+\item don't care about sorting the linked list
+\item insert at head
+\end{itemize}
+\end{frame}
+
+\begin{frame}{delete performance}
+\begin{itemize}
+\item need to do a find to get the bucket
+\item then linked list removal $\Theta(1)$
+\begin{itemize}
+    \item (if singly linked list --- track previous while finding)
+\end{itemize}
+\end{itemize}
+% FIXME: picture
+\end{frame}

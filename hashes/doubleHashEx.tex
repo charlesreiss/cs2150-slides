@@ -1,0 +1,73 @@
+
+\begin{frame}{double hashing example}
+\begin{itemize}
+\item $h(k) = k$
+\item index = $h(k) \mod 10$
+\item then check $h(k) + h_2(k) \mod 10$, $h(k) + 2h_2(k) \mod 10$, etc.
+\item \ldots where $h_2(k) = 7 - (k \mod 7)$
+\item insert \myemph<2>{89}, \myemph<3>{18}, \myemph<4>{58}, \myemph<5>{49}, \myemph<6>{69}, \myemph<7>{60}
+\end{itemize}
+\begin{tikzpicture}[overlay,remember picture]
+\matrix[tight matrix,
+    column 1/.style={nodes={draw=none,text width=1.5cm,font=\tt}},
+    row 1/.style={nodes={font=\bfseries,draw=none,text depth=1ex}},
+    anchor=north east
+    ] (arr) at ([xshift=-1cm,yshift=-2cm]current page.north east) {
+index \& ~\\
+    |[fill=yellow!15]| 0 \& |[alt=<6->{fill=blue!15}]| \only<6->{\myemph<6>{69}} \\
+    1 \& ~ \\
+    2 \& |[alt=<7->{fill=yellow!15}]| \only<7->{\myemph<7>{60}} \\
+    3 \& |[alt=<4->{fill=green!15}]| \only<4->{\myemph<4>{58}} \\
+    4 \& ~ \\
+    5 \& ~ \\
+    6 \& |[alt=<5->{fill=blue!15}]| \only<5->{\myemph<5>{49}} \\
+    7 \& ~ \\
+    |[fill=green!15]| 8 \& |[alt=<3->{fill=green!15}]| \only<3->{\myemph<3>{18}} \\
+    |[fill=blue!15]| 9 \& |[alt=<2->{fill=blue!15}]| \only<2->{\myemph<2>{89}} \\
+};
+\end{tikzpicture}
+\end{frame}
+
+
+\begin{frame}{double hashing thrashing}
+\begin{itemize}
+\item $h(k) = k$; $h_2(k) = (k \mod 5) + 1$
+\item index = $h(k) \mod 10$
+\item then check $h(k) + h_2(k) \mod 10$, \\ $h(k) + 2h_2(k) \mod 10$, etc.
+\item insert \myemph<2>{10, 12, 14, 16, 18}, \myemph<3>{36}
+\item<3-> $h(36) \mod 10 = \myemph<3>{6}$
+\item<3-> $h(36) + h_2(36) \mod 10 = 36 + 2 \mod 10 = \myemph<3>{8}$
+\item<3-> $h(36) + 2h_2(36) \mod 10 = \myemph<3>{0}$; $h(36) + 3h_2(36) \mod 10 = \myemph<3>{2}$
+\item<3-> $h(36) + 4h_2(36) \mod 10 = \myemph<3>{4}$; $h(36) + 5h_2(36) \mod 10 = \myemph<3>{6}$
+\item<3-> \ldots
+\end{itemize}
+\begin{tikzpicture}[overlay,remember picture]
+\matrix[tight matrix,
+    column 1/.style={nodes={draw=none,text width=1.5cm,font=\tt}},
+    row 1/.style={nodes={font=\bfseries,draw=none,text depth=1ex}},
+    anchor=north east
+    ] (arr) at ([xshift=-1cm,yshift=-2cm]current page.north east) {
+index \& ~\\
+    0 \& \only<2->{10}~ \\
+    1 \& ~ \\
+    2 \& \only<2->{12}~ \\
+    3 \& ~ \\
+    4 \& \only<2->{14}~ \\
+    5 \& ~ \\
+    6 \& \only<2->{16}~ \\
+    7 \& ~ \\
+    8 \& \only<2->{18}~ \\
+    9 \& ~\\
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{why prime sizes}
+\begin{itemize}
+\item prime sizes prevent this problem
+\item $h_2(k)$ ($2$) was not relatively prime to table size ($10$) 
+\item result: didn't use all elements of table
+\vspace{.5cm}
+\item similar issues with $i^2$, etc.
+\end{itemize}
+\end{frame}
