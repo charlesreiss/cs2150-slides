@@ -1,0 +1,36 @@
+\begin{frame}{example (2)}
+    \begin{itemize}
+    \item key: strings
+    \item table size: 11
+    \item hash function: $h(k) = \sum_i k_i$ (ASCII codes); hash+mod: $h(k) \text{~mod~} 11$
+    \item insert \myemph<2>{``foo''}, \myemph<3>{``bar''}, \myemph<4>{``baz''}
+        \begin{itemize}
+            \item<2-> \myemph<2>{h(``foo'') = 324 --- bucket $324 \mod 11 = 5$ }
+            \item<3-> \myemph<3>{h(``bar'') = 309 --- bucket $309 \mod 11 = 1$ }
+            \item<4-> \myemph<4>{h(``baz'') = 317 --- bucket $317 \mod 11 = 9$ }
+        \end{itemize}
+    \item find \myemph<5>{``baz''}, \myemph<6>{``quux''}
+            \item<6-> \myemph<6>{h(``quux'') = 317 --- bucket $467 \mod 11 = 5$ }
+    \end{itemize}
+\begin{tikzpicture}[overlay,remember picture]
+\matrix[tight matrix,
+    nodes={font=\small},
+    column 1/.style={nodes={draw=none,text width=1.5cm,font=\tt}},
+    row 1/.style={nodes={font=\bfseries,draw=none,text depth=1ex}},
+    anchor=north east
+    ] at ([xshift=-1cm,yshift=-1cm]current page.north east) {
+index \& keys \\
+    0 \& ~ \\
+    1 \& \only<3->{\myemph<3>{``bar''}} \\
+    2 \& ~ \\
+    3 \& ~ \\
+    4 \&  ~ \\
+    \myemph<6>{5} \& \only<2->{\myemph<2>{``foo''}} \\
+    6 \& ~ \\
+    7 \& ~ \\
+    8 \& ~\
+    \myemph<5>{9} \& \only<4->{\myemph<4>{``baz''}} \\
+    10 \& ~ \\
+};
+\end{tikzpicture}
+\end{frame}

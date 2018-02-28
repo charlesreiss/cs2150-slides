@@ -1,0 +1,39 @@
+\begin{frame}{rehashing}
+\begin{itemize}
+\item how big should the table be?
+\vspace{.5cm}
+\item want to resize it!
+\item called ``rehashing''
+\item \ldots because we recompute every key's hash
+\end{itemize}
+\end{frame}
+
+\begin{frame}{when to rehash?}
+\begin{itemize}
+\item load factor $\lambda = \text{elements} / \text{table size}$
+\item typical policy: resize table when $\lambda > \text{threshold}$
+\item java.util policy: when $\lambda > 0.75$
+\vspace{.5cm}
+\item alternatives:
+\begin{itemize}
+    \item only when insert fails?
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{rehashing big-oh}
+\begin{itemize}
+\item worst case:
+    \begin{itemize}
+    \item everything hashes to same bucket
+    \item $\Theta(n)$ time per insert
+    \item $\Theta(n)$ inserts
+    \item $\Theta(n^2)$ total time
+    \end{itemize}
+\item if keys are well spread out between buckets
+    \begin{itemize}
+    \item ``about'' linear time
+    \end{itemize}
+\end{itemize}
+\end{frame}
+

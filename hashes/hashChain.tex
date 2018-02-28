@@ -1,0 +1,169 @@
+\begin{frame}[fragile,label=handlColl]{option 1: separate chaining}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+class HashTableBucket {
+    int key;
+    HashTableBucket *next;
+    // ... + value?
+};
+
+class HashTable {
+    ...;
+private:
+    vector<HashTableBucket> data;
+        // could also use
+        // vector<HashTableBucket*>
+};
+
+// insert {26 (bucket 4), 7 (bucket 7),
+//         22 (bucket 0), 59 (bucket 4)}
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+\matrix[tight matrix,
+    nodes={font=\small},
+    column 1/.style={nodes={draw=none,text width=1.5cm,font=\tt}},
+    row 1/.style={nodes={font=\bfseries,draw=none,text depth=1ex}},
+    anchor=north east
+    ] (arr) at ([xshift=-5cm,yshift=-2cm]current page.north east) {
+index \& ~\\
+    0 \& |[fill=green!15]| ~ \\
+    1 \& ~ \\
+    2 \& ~ \\
+    3 \& ~ \\
+    4 \& |[fill=blue!15]|~ \\
+    5 \& ~ \\
+    6 \& ~ \\
+    7 \& |[fill=violet!15]| ~ \\
+    8 \& ~ \\
+    9 \& ~ \\
+    10 \& ~ \\
+};
+\tikzset{
+    link/.style={draw,rectangle split,rectangle split parts=2},
+    point/.style={-Latex,thick},
+    expand/.style={thick,dotted},
+}
+\node[link,anchor=west,fill=blue!15] (link-26) at ([xshift=.5cm]arr-5-2.east) {
+    key: {\tt 26} \nodepart{two}
+    next:
+};
+\node[link,anchor=west,fill=blue!15] (link-59) at ([xshift=.5cm]link-26.east) {
+    key: {\tt 59} \nodepart{two}
+    next:
+};
+\draw[expand] (arr-6-2.north east) -- (link-26.north west);
+\draw[expand] (arr-6-2.south east) -- (link-26.south west);
+\draw[point] ([xshift=-2ex]link-26.two east) -- (link-59.one west);
+\draw[point] ([xshift=-2ex]link-59.two east) -- ++(0cm,-.5cm) node[below,font=\small\tt] {NULL};
+
+\node[link,anchor=west,fill=violet!15] (link-7) at ([yshift=-1.5cm,xshift=.5cm]arr-8-2.east) {
+    key: {\tt 7} \nodepart{two}
+    next:
+};
+\draw[point] ([xshift=-2ex]link-7.two east) -- ++(0cm,-.5cm) node[below,font=\small\tt] {NULL};
+\draw[expand] (arr-9-2.north east) -- (link-7.north west);
+\draw[expand] (arr-9-2.south east) -- (link-7.south west);
+\node[link,anchor=west,fill=green!15] (link-22) at ([yshift=1.5cm,xshift=.5cm]arr-2-2.east) {
+    key: {\tt 22} \nodepart{two}
+    next:
+};
+\draw[expand] (arr-2-2.north east) -- (link-22.north west);
+\draw[expand] (arr-2-2.south east) -- (link-22.south west);
+\draw[point] ([xshift=-2ex]link-22.two east) -- ++(0cm,-.5cm) node[below,font=\small\tt] {NULL};
+
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=handlCollB]{option 1: separate chaining (alternative)}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+class HashTableBucket {
+    int key;
+    HashTableBucket *next;
+    // ... + value?
+};
+
+class HashTable {
+    ...;
+private:
+    vector<HashTableBucket*> data;
+        // could also use
+        // vector<HashTableBucket>
+};
+
+// insert {26 (bucket 4), 7 (bucket 7),
+//         22 (bucket 0), 59 (bucket 4)}
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+\matrix[tight matrix,
+    nodes={font=\small},
+    column 1/.style={nodes={draw=none,text width=1.5cm,font=\tt}},
+    row 1/.style={nodes={font=\bfseries,draw=none,text depth=1ex}},
+    anchor=north east
+    ] (arr) at ([xshift=-5cm,yshift=-2cm]current page.north east) {
+index \& ~\\
+    0 \& |[fill=green!15]| ~ \\
+    1 \& ~ \\
+    2 \& ~ \\
+    3 \& ~ \\
+    4 \& |[fill=blue!15]|~ \\
+    5 \& ~ \\
+    6 \& ~ \\
+    7 \& |[fill=violet!15]| ~ \\
+    8 \& ~ \\
+    9 \& ~ \\
+    10 \& ~ \\
+};
+\tikzset{
+    link/.style={draw,rectangle split,rectangle split parts=2},
+    point/.style={-Latex,thick},
+    expand/.style={thick,dotted},
+}
+\node[link,anchor=west,fill=blue!15] (link-26) at ([xshift=.5cm]arr-5-2.east) {
+    key: {\tt 26} \nodepart{two}
+    next:
+};
+\node[link,anchor=west,fill=blue!15] (link-59) at ([xshift=.5cm]link-26.east) {
+    key: {\tt 59} \nodepart{two}
+    next:
+};
+\draw[point] ([xshift=-2ex]arr-6-2.east) -- (link-26.one west);
+\draw[point] ([xshift=-2ex]link-26.two east) -- (link-59.one west);
+\draw[point] ([xshift=-2ex]link-59.two east) -- ++(0cm,-.5cm) node[below,font=\small\tt] {NULL};
+
+\node[link,anchor=west,fill=violet!15] (link-7) at ([yshift=-1.5cm,xshift=.5cm]arr-8-2.east) {
+    key: {\tt 7} \nodepart{two}
+    next:
+};
+\draw[point] ([xshift=-2ex]link-7.two east) -- ++(0cm,-.5cm) node[below,font=\small\tt] {NULL};
+\draw[point] ([xshift=-2ex]arr-9-2.east) -- (link-7.north west);
+\node[link,anchor=west,fill=green!15] (link-22) at ([yshift=1.5cm,xshift=.5cm]arr-2-2.east) {
+    key: {\tt 22} \nodepart{two}
+    next:
+};
+\draw[point] ([xshift=-2ex]arr-2-2.east) -- (link-22.one west);
+\draw[point] ([xshift=-2ex]link-22.two east) -- ++(0cm,-.5cm) node[below,font=\small\tt] {NULL};
+
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{open addressing generally}
+\begin{itemize}
+\item search $h(k) + f(0) \mod size$
+\item then $h(k) + f(1) \mod size$
+\item then $h(k) + f(2) \mod size$
+\item \ldots
+\vspace{.5cm}
+\item \myemph{linear probing}: $f(i) = i$
+\end{itemize}
+\end{frame}
+
+\begin{frame}<1>[fragile,label=altProbe]{probing possibilities}
+\begin{itemize}
+\item $h(k) + f(i) \mod size$
+\vspace{.5cm}
+\item \myemph<2>{linear}: $f(i) = i$ --- previous diagram
+\item quadratic: $f(i) = i^2$
+\item double hashing $f(i) = i\times h_2(k)$ (second hash function)
+\end{itemize}
+\end{frame}

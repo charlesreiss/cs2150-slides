@@ -1,0 +1,37 @@
+\begin{frame}{quadratic probing example}
+\begin{itemize}
+\item $h(k) = 3k + 7$
+\item index = $h(k) \mod 10$
+\item then check $h(k) + 1 \mod 10$, $h(k) + 2 \mod 10$, etc.
+\item insert \myemph<2>{4}, \myemph<3>{27}, \myemph<4>{37}, \myemph<5>{14}, \myemph<6>{21}
+\begin{itemize}
+\item $h(k) =$ 1\myemph<2>{9}, 8\myemph<3>{8}, 11\myemph<4>{8}, 4\myemph<5>{9}, 7\myemph<6>{0}
+\end{itemize}
+\end{itemize}
+\begin{tikzpicture}[overlay,remember picture]
+\matrix[tight matrix,
+    column 1/.style={nodes={draw=none,text width=1.5cm,font=\tt}},
+    row 1/.style={nodes={font=\bfseries,draw=none,text depth=1ex}},
+    anchor=north east
+    ] (arr) at ([xshift=-1cm,yshift=-2cm]current page.north east) {
+index \& ~\\
+    |[fill=yellow!15]| 0 \& |[alt=<4->{fill=green!15}]| \only<4->{\myemph<4>{37}} \\
+    1 \& |[alt=<5->{fill=blue!15}]| \only<5->{\myemph<5>{14}} \\
+    2 \& |[alt=<6->{fill=yellow!15}]| \only<6->{\myemph<6>{21}} \\
+    3 \& ~ \\
+    4 \& ~ \\
+    5 \& ~ \\
+    6 \& ~ \\
+    7 \& ~ \\
+    |[fill=green!15]| 8 \& |[alt=<3->{fill=green!15}]| \only<3->{\myemph<3>{27}} \\
+    |[fill=blue!15]| 9 \& |[alt=<2->{fill=blue!15}]| \only<2->{\myemph<2>{4}} \\
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{the clumping}
+\begin{itemize}
+\item we tend to get ``clumps'' of used buckets
+\item reason why linear probing isn't the only way
+\end{itemize}
+\end{frame}
