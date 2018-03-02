@@ -1,12 +1,12 @@
 \begin{frame}[fragile,label=hashStrIntro]{hashing strings}
 \lstset{language=C++,style=small}
 \begin{lstlisting}
-unsigned int hash(const string &s) {
-    ???
+unsigned long hashTableIndex(const string &s, unsigned long tableSize) {
+    return hash(s) % tableSize;
 }
 
-unsigned int hashTableIndex(const string &s, int tableSize) {
-    return hash(s) % tableSize;
+unsigned long hash(const string &s) {
+    ???
 }
 \end{lstlisting}
 \end{frame}
@@ -14,12 +14,12 @@ unsigned int hashTableIndex(const string &s, int tableSize) {
 \begin{frame}[fragile,label=hashStrProposals1]{some proposals (1)}
 \lstset{language=C++,style=small}
 \begin{lstlisting}
-unsigned int hash(const string &s) {
+unsigned long hash(const string &s) {
     return s[0];
 }
 
-unsigned int hash(const string &s) {
-    unsigned int sum = 0;
+unsigned long hash(const string &s) {
+    unsigned long sum = 0;
     for (int i = 0; i < s.size(); ++i) {
         sum += s[i];
     }
@@ -32,8 +32,8 @@ unsigned int hash(const string &s) {
 \begin{frame}[fragile,label=hashStrProposals2]{some proposals (2)}
 \lstset{language=C++,style=small}
 \begin{lstlisting}
-unsigned int hash(const string &s) {
-    unsigned int sum = 0;
+unsigned long hash(const string &s) {
+    unsigned long sum = 0;
     for (int i = 0; i < s.size(); ++i) {
         // deliberate use of wraparound on overflow
         sum *= 37;
@@ -43,3 +43,4 @@ unsigned int hash(const string &s) {
 }
 \end{lstlisting}
 \end{frame}
+

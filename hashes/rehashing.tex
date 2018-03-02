@@ -1,10 +1,14 @@
 \begin{frame}{rehashing}
 \begin{itemize}
 \item how big should the table be?
+    \begin{itemize}
+    \item $C \times \text{~number of items}$
+    \item typical $C$ --- $\frac{1}{2}$ to $1$
+    \end{itemize}
 \vspace{.5cm}
-\item want to resize it!
-\item called ``rehashing''
-\item \ldots because we recompute every key's hash
+\item<2-> as number of change: want to resize it!
+\item<2-> called \myemph{rehashing}
+\item<2-> \ldots because we \myemph{recompute every key's hash}
 \end{itemize}
 \end{frame}
 

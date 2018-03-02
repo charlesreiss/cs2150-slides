@@ -53,5 +53,24 @@ unsigned int hash(const string &s) {
 \begin{itemize}
 \item security property of a cryptographic hash
 \item if given $V$, very hard to find $k$ so $h(k) = V$
+\item collision resistence usually implies preimage resistence
 \end{itemize}
 \end{frame}
+
+\begin{frame}{some cryptographic hash applications}
+    \begin{itemize}
+    \item verifying downloads
+        \begin{itemize}
+        \item get short hash from trusted source
+        \item get big file from less trusted source
+        \item use hash to make sure it's the right big file
+        \end{itemize}
+    \item message authentication
+        \begin{itemize}
+        \item did message `X' really come from where I thought?
+        \item usually: ``magic'' math operation that works on small amount of data
+        \item hash turns big message into small amount of data
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+

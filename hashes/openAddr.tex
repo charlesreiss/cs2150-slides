@@ -202,3 +202,24 @@ index \& ~\\
 };
 \end{tikzpicture}
 \end{frame}
+
+\begin{frame}{open addressing generally}
+\begin{itemize}
+\item search $h(k) + f(0) \mod size$
+\item then $h(k) + f(1) \mod size$
+\item then $h(k) + f(2) \mod size$
+\item \ldots
+\vspace{.5cm}
+\item \myemph{linear probing}: $f(i) = i$
+\end{itemize}
+\end{frame}
+
+\begin{frame}<1>[fragile,label=altProbe]{probing possibilities}
+\begin{itemize}
+\item $h(k) + f(i) \mod size$
+\vspace{.5cm}
+\item \myemph<2>{linear}: $f(i) = i$ --- previous diagram
+\item quadratic: $f(i) = i^2$
+\item double hashing $f(i) = i\times h_2(k)$ (second hash function)
+\end{itemize}
+\end{frame}

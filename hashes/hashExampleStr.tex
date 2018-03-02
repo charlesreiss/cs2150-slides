@@ -2,8 +2,9 @@
     \begin{itemize}
     \item key: strings
     \item table size: 11
-    \item hash function: $h(k) = \sum_i k_i$ (ASCII codes); hash+mod: $h(k) \text{~mod~} 11$
-    \item insert \myemph<2>{``foo''}, \myemph<3>{``bar''}, \myemph<4>{``baz''}
+    \item hash function: $h(k) = \sum_i k_i$ (ASCII codes)
+    \item hash+mod: $h(k) \mod 11 = \sum_i k_i \mod 11$
+    \item insert \myemph<2>{``foo''}, \myemph<3>{``bar''},\myemph<4>{``baz''}
         \begin{itemize}
             \item<2-> \myemph<2>{h(``foo'') = 324 --- bucket $324 \mod 11 = 5$ }
             \item<3-> \myemph<3>{h(``bar'') = 309 --- bucket $309 \mod 11 = 1$ }
@@ -28,7 +29,7 @@ index \& keys \\
     \myemph<6>{5} \& \only<2->{\myemph<2>{``foo''}} \\
     6 \& ~ \\
     7 \& ~ \\
-    8 \& ~\
+    8 \& ~ \\
     \myemph<5>{9} \& \only<4->{\myemph<4>{``baz''}} \\
     10 \& ~ \\
 };
