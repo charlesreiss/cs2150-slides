@@ -1,0 +1,94 @@
+\begin{frame}[label=compPipe,fragile]{C++ to assembly to machine code}
+    \lstset{
+        language=[x8664gas]Assembler,
+        %moredelim=**[is][\color{green!60!black}]{@1*}{*@},
+        moredelim=**[is][\cbA<5->]{@1*}{*@},
+        moredelim=**[is][\cbB<5->]{@2*}{*@},
+        moredelim=**[is][\cbC<5->]{@3*}{*@},
+        moredelim=**[is][\cbD<5->]{@4*}{*@},
+        escapechar=`,
+    }
+    \vspace{-.5cm}
+    \begin{tikzpicture}
+    \tikzset{
+        mybox part/.style={minimum width=2cm,font=\scriptsize,align=left},
+        mybox/.style={draw,rectangle,mybox part},
+        mylabel/.style 2 args={label={[label distance=-1mm,inner sep=1mm,fill=white,draw,rectangle,font=\footnotesize,visible on=#2]90:#1}},
+        myline/.style={line width=1pt,-latex},
+    }
+    \makeatletter
+    \newenvironment{mycolorbox}[1]
+    {\def\savedcolor{#1}\begin{lrbox}{\@tempboxa}\strut}
+    {\end{lrbox}\setlength{\fboxsep}{0pt}\colorbox{\savedcolor}{\usebox{\@tempboxa}}}
+    \makeatother
+    \def\doEndEnv{\end{mycolorbox}\egroup}
+    \newcommand<>{\cbA}{\only#1{\begin{mycolorbox}{blue!40!white}\bgroup\aftergroup\doEndEnv}}
+    \newcommand<>{\cbB}{\only#1{\begin{mycolorbox}{green!30!white}\bgroup\aftergroup\doEndEnv}}
+    \newcommand<>{\cbC}{\only#1{\begin{mycolorbox}{red!20!white}\bgroup\aftergroup\doEndEnv}}
+    \newcommand<>{\cbD}{\only#1{\begin{mycolorbox}{orange!30!white}\bgroup\aftergroup\doEndEnv}}
+
+    \node[mybox,mylabel={hello.cpp}{<1->}] (helloC){
+\begin{lstlisting}[language=C++]
+#include <iostream>
+int main() {
+  std::cout << "Hello!\n";
+  return 0;
+}
+\end{lstlisting}
+    };
+
+    \node[mybox,mylabel={hello.s}{<2->},anchor=north west,visible on=<2->] (helloS) at ($(helloC.north east) + (.5cm, 0)$) {
+\begin{lstlisting}
+.LC0:
+  .string "Hello!\n"
+main:
+  sub rsp, 8
+  mov esi, .LC0       # arg1 <- "Hello!\n"
+  mov edi, _ZSt4cout  # arg2 <- cout
+  call _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+                      # call operator<<
+  xor eax, eax        # return value <- 0
+  pop rdx             
+  ret                 # return
+\end{lstlisting} 
+    };
+
+    \draw[myline,visible on=<2->] (helloC) -- (helloS);
+    \node[mybox,mylabel={hello.exe}{<4->},anchor=north west,visible on=<4->] (helloExe) at ($(helloS.south west) + (-3cm, -.5cm)$) {
+        \textit{(actually binary bytes without comments,} \\ \textit{but shown as hexadecimal bytes with comments)} \\
+        \ldots \\
+\begin{lstlisting}[language={}]
+48 83 ec 08      # sub rsp, 8 
+be 64 07 40 00   # mov esi, .LC0 == 0x400764 
+bf 60 10 60 00   # mov edi, _ZSt4cout == 0x601060
+e8 bd ff ff ff   # call operator<<
+31 c0            # xor eax, eax
+5a               # pop rdx
+c3               # ret
+\end{lstlisting}
+\\
+        \ldots
+    };
+    
+    \node[mybox] (helloO) at ($(helloExe.north west) + (-1cm, 2cm)$) {hello.o (not shown)};
+    \draw[myline,visible on=<3->] (helloS) -- (helloO);
+    \draw[myline,visible on=<4->] (helloO) -- ($(helloExe.north west) + (2cm, 0cm)$) 
+        node[midway,font=\footnotesize,rectangle,fill=white,draw,thin] {+ standard library};
+
+
+
+    \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{assembly language and machine language}
+\begin{itemize}
+\item \myemph{machine language} --- what the physical hardware expects
+    \begin{itemize}
+    \item how it reads bytes of memories
+    \end{itemize}
+\item \myemph{assembly language} --- text representation of that
+    \begin{itemize}
+    \item \textit{direct} translation to machine code
+    \end{itemize}
+\end{itemize}
+\end{frame}
