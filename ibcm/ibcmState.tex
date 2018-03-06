@@ -1,0 +1,53 @@
+\begin{frame}{IBCM machine state}
+\begin{tikzpicture}
+    \tikzset{
+        regBox/.style={draw,thick,minimum width=3cm,minimum height=.5cm,font=\tt\small,inner sep=0.25mm},
+    };
+    \node[regBox,label={west:\strut accumulator}] (accumulator) {};
+    \node[regBox,below=.1cm of accumulator,label={[alias=irLabel]west:\strut instruction register}] (ir) {};
+    \node[regBox,below=.1cm of ir ,label={west:\strut program register}] (pc) {};
+    \node[draw,very thick,fit=(accumulator) (irLabel) (pc),label={south: 3 registers (16 bits each)}] {};
+
+    \begin{visibleenv}<2->
+        \matrix[right=1cm of accumulator,tight matrix,
+        nodes={minimum height=.45cm},
+        column 1/.style={nodes={draw=none,text width=2cm,font=\tt}},
+        column 2/.style={nodes={draw,thick,text width=3cm,font=\tt}},
+        row sep=-.25mm,
+        row 1/.style={nodes={draw=none,font=\bfseries}},
+        inner sep=3mm,
+        ] (memory) {
+            address \& |[text width=3.5cm]| value (16 bits) \\
+            0x000 \& ~ \\
+            0x001 \& ~ \\
+            0x002 \& ~ \\
+            0x003 \& ~ \\
+            |[draw=none]| \& |[draw=none]| \\
+            |[draw=none]| \& |[draw=none]| \\
+            |[draw=none]| \ldots \& |[draw=none]| \ldots \\
+            |[draw=none]| \& |[draw=none]| \\
+            |[draw=none]| \& |[draw=none]| \\
+            0xFFD \& ~ \\
+            0xFFE \& ~ \\
+            0xFFF \& ~ \\
+        };
+        \node[fit=(memory),draw,very thick,
+            label={[align=center]south:memory \\ 4096 ($2^{12}$) 16-bit words}]
+            {};
+    \end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{on words}
+    \begin{itemize}
+    \item we deal with a lot of 16-bit values
+    \item ``natural'' size of this machine
+            \begin{itemize}
+            \item size of registers
+            \item size of memory accesses
+            \item \ldots
+            \end{itemize}
+    \vspace{.5cm}
+    \item convention: natural size called \myemph{word}
+    \end{itemize}
+\end{frame}

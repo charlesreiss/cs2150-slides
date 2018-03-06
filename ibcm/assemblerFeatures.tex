@@ -1,0 +1,115 @@
+\begin{frame}{ICBM assembly language}
+    \begin{itemize}
+    \item don't have an assembler implemented
+    \item \ldots but let's see what an assembly language would look like
+    \end{itemize}
+\end{frame}
+
+\begin{frame}<1-2>[label=assemblyFeatures]{ICBM assembler}
+    \begin{itemize}
+    \item assembly: {\tt load \myemph<2->{0x100}} \\ $\rightarrow$ opcode={\tt 3}, addr={\tt0x100} \\
+        machine code: {\tt 0011 000100000000} \\
+    \item assembly: {\tt add \myemph<2->{0x200}} \\ $\rightarrow$ opcode={\tt 5}, addr={\tt 200} \\
+        machine code: {\tt 0101 001000000000} \\
+    \item assembly: {\tt jmpe \myemph<2->{0x442}} \\ $\rightarrow$ opcode={\tt D}, addr={\tt 442} \\
+        machine code: {\tt 1101 010001000010}\\
+    \vspace{.5cm}
+    \item<2-> \myemph<2>{work with hard-coded addresses?}
+    \item<2-> \myemph<3>{how to set initial values?}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=addrAsName]{labels: addresses as names}
+\begin{lstlisting}[language=myasm]
+add     100     // addr 0: a += mem[100]
+jmpl    3       // addr 1: if a < 0: goto 3
+jmp     0       // addr 2: [otherwise] goto 0
+nop             // addr 3: do nothing
+\end{lstlisting}
+\hrule
+\begin{visibleenv}<2->
+\begin{lstlisting}[language=myasm]
+start  add     100     // addr 0: a += mem[100]
+       jmpl    end     // addr 1: if a < 0: goto 3
+       jmp     start   // addr 2: [otherwise] goto 0
+end    nop             // addr 3: do nothing
+\end{lstlisting}
+\end{visibleenv}
+\end{frame}
+
+\begin{frame}[fragile,label=addrAsName2]{labels: addresses as name}
+\begin{lstlisting}[language=myasm]
+start  add     100     // addr 0: a += mem[100]
+       jmpl    end     // addr 1: if a < 0: goto 3
+       jmp     start   // addr 2: [otherwise] goto 0
+end    nop             // addr 3: do nothing
+\end{lstlisting}
+    \begin{itemize}
+    \item name for a \myemph{memory address}
+    \item address of instruction or of data
+    \item replaced by address when executable is produced
+    \end{itemize}
+\end{frame}
+
+\againframe<3>{assemblyFeatures}
+
+\begin{frame}{assembly directives}
+    \begin{itemize}
+    \item not everything in assembly is instructions
+    \item program data, strings, etc.
+    \item assemblers have \myemph{directives}
+    \item processed by assembler to produce special output
+    \vspace{.5cm}
+    \item<2-> \textbf{dw} directive (``define word'')
+    \item<3-> \texttt{i dw 75}
+        \begin{itemize}
+            \item place the value \texttt{75} in memory
+            \item name the address where it is placed \texttt{i}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=dwExample]{example with dw}
+\begin{lstlisting}[language=myasm,style=small]
+loop    load hundred   // a <- 100
+        jmpl end       // if a < 0: goto end
+        printH         // print a
+        sub one        // a <- a - 1
+        jmp loop
+end     halt
+
+hundred dw 100
+one     dw 1
+\end{lstlisting}
+\hrule
+\begin{lstlisting}[language=C++,style=small]
+int a = 100;
+while (a >= 0) {
+    print a;
+    a -= 1;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=dwVarExample]{variables with dw}
+\begin{lstlisting}[language=myasm,style=small]
+        load i
+        add j
+        store i
+
+        load j
+        sub i
+        sub i
+        store j
+
+i       dw 10
+j       dw 20
+\end{lstlisting}
+\hrule
+\begin{lstlisting}[language=C++,style=small]
+int i = 10, j = 20;
+i += j;
+j -= i;
+j -= i;
+\end{lstlisting}
+\end{frame}

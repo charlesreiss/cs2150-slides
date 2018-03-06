@@ -1,0 +1,120 @@
+\begin{frame}[fragile,label=machineModel]{our machine model}
+\begin{tikzpicture}
+    \tikzset{
+        inCpuBox/.style={draw,very thick},
+        regBox/.style={draw,thick,minimum width=2.3cm,minimum height=.5cm,font=\tt\small,inner sep=0.25mm},
+        box/.style={draw,ultra thick},
+        >=Latex,
+        dataLine/.style={line width=1mm,black!50},
+        mylabel/.style 2 args={label={[label distance=-1mm,inner sep=1mm,fill=white,draw,rectangle,font=\large,alias=#2]90:#1}},
+        mylabelB/.style 2 args={label={[label distance=-1mm,inner sep=1mm,fill=white,draw,rectangle,alias=#2]90:#1}},
+        regStuff/.style={alt=<2>{every node/.style={fill=green!20}}},
+        memStuff/.style={alt=<3>{every node/.style={fill=green!20}}},
+        infoBox/.style={draw=red,ultra thick,fill=white,align=left},
+        highPc/.style={alt=<5-6>{fill=green!20}},
+    };
+    \node[inCpuBox,dashed] (calc) {circuits that calculate};
+    \begin{scope}[regStuff]
+    \coordinate (regsBase) at ([yshift=3.5cm,xshift=-1cm] calc.north west);
+        \node[regBox,draw,minimum width=2cm,label={[font=\tt]west:PC},anchor=north west,alt=<5>{fill=green!20}] (r1) at ([xshift=1cm,yshift=-0cm]regsBase) {00000002};
+        \node[regBox,draw,minimum width=2cm,label={[font=\tt]west:IR},anchor=north west,alt=<6>{fill=green!20}] at ([xshift=4cm,yshift=-0cm]regsBase) {A335};
+        \node[regBox,draw,minimum width=2cm,label={[font=\tt]west:RA},anchor=north west] at ([xshift=1cm,yshift=-.6cm]regsBase) {21342343};
+        \node[regBox,draw,minimum width=2cm,label={[font=\tt]west:RB},anchor=north west] (r4) at ([xshift=4cm,yshift=-.6cm]regsBase) {\ldots};
+        \node[regBox,draw,minimum width=2cm,label={[font=\tt]west:RC},anchor=north west] at ([xshift=1cm,yshift=-1.1cm]regsBase) {1DE33173};
+        \node[regBox,draw,minimum width=2cm,label={[font=\tt]west:RD},anchor=north west] (r6) at ([xshift=4cm,yshift=-1.1cm]regsBase) {\ldots};
+    \node[anchor=north west,minimum height=0.4cm,font=\huge,fill=none] (r7) at ([xshift=2.5cm,yshift=-1.6cm]regsBase) {\ldots};
+        \begin{pgfonlayer}{bg}
+    \node[inCpuBox,fit={([xshift=-1cm]r1.north west) (r6) (r7)},
+          mylabelB={registers (fast storage)}{regsLabel}] (regs) {};
+            \node also [alt=<2>{fill=red}] (regsLabel);
+        \end{pgfonlayer}
+    \end{scope}
+    \node[box,inner sep=1mm,fit=(calc) (regs) (regsLabel),mylabel={processor}{cpuLabel}] (cpu) {};
+
+
+    \draw[dataLine,<->] ([xshift=1cm]regs.south) -- ([xshift=1cm]regs.south |- calc.north);
+    \matrix[right=2cm of cpu,yshift=-1cm,tight matrix,box,mylabel={memory (slower storage)}{memoryLabel},
+        nodes={minimum height=.45cm},
+        column 1/.style={nodes={draw=none,text width=3cm,font=\tt}},
+        column 2/.style={nodes={draw,thick,text width=1.5cm,font=\tt}},
+        row sep=-.25mm,
+        row 1/.style={nodes={draw=none,font=\bfseries}},
+        inner sep=3mm,
+        alt=<3>{fill=green!20},
+        ] (memory) {
+            address \& value \\
+            000000000 \& F2 \\
+            000000001 \& 00 \\
+            |[highPc]| 000000002 \& |[highPc]| 35 \\
+            |[highPc]| 000000003 \& |[highPc]| A3 \\
+            000000004 \& 40 \\
+            000000005 \& 37 \\
+            |[draw=none,font=\normalfont]| \ldots \& |[draw=none,font=\normalfont]| \ldots \\
+            00FFFFFF3 \& ~ \\
+            00FFFFFF4 \& ~ \\
+            00FFFFFF5 \& ~ \\
+            00FFFFFF6 \& ~ \\
+            00FFFFFF7 \& ~ \\
+            00FFFFFF8 \& ~ \\
+            |[draw=none,font=\normalfont]| \ldots \& |[draw=none,font=\normalfont]| \ldots \\
+        };
+    \draw[dataLine,<->] (calc) -- (calc -| memory.west);
+
+    \node[below=1.5cm of calc,font=\large,alt=<4>{fill=green!20}] (otherDev) {other devices};
+    \draw[dataLine,<->] (calc) -- (otherDev);
+
+    \begin{pgfonlayer}{fg}
+        \begin{visibleenv}<2>
+            \node[fill=white,fit=(memory) (memoryLabel),fill opacity=0.5] {};
+        \node[infoBox, right=0.5cm of regs] {
+            registers --- small, fast storage \\
+            typically less than 1KB \\
+            \myemph{not part of memory} \\
+            \textit{names} (e.g. {\tt RA}, {\tt RB}, \ldots) \\
+            typically 4--32 accessible to assembly \\
+            some more used internally by machine
+        };
+        \end{visibleenv}
+    \end{pgfonlayer}
+
+    \begin{pgfonlayer}{fg}
+        \begin{visibleenv}<3>
+            \node[fill=white,fit=(cpu) (cpuLabel) (otherDev),fill opacity=0.5] {};
+        \node[infoBox, left=0.5cm of memory] {
+            memory --- not as fast, big storage \\
+            array of (typically) bytes \\
+            contains \myemph{programs} and \myemph{data}
+        };
+        \end{visibleenv}
+    \end{pgfonlayer}
+
+    \begin{pgfonlayer}{fg}
+        \begin{visibleenv}<4>
+            \node[fill=white,fit=(memory) (memoryLabel),fill opacity=0.5] {};
+        \node[infoBox, right=0.5cm of regs] {
+            other devices \\
+            e.g. storage (hard drives, etc.) \\
+            e.g. keyboards, mice, \ldots
+            \ldots
+        };
+        \end{visibleenv}
+    \end{pgfonlayer}
+    \begin{pgfonlayer}{fg}
+        \begin{visibleenv}<5>
+        \node[xshift=3cm,infoBox,below=0.5cm of regs] {
+            {\tt PC} (program counter) \\
+            contains \myemph{current code address}
+        };
+        \end{visibleenv}
+    \end{pgfonlayer}
+    \begin{pgfonlayer}{fg}
+        \begin{visibleenv}<6>
+        \node[xshift=3cm,infoBox,below=0.5cm of regs] {
+            {\tt IR} (instruction register) \\
+            contains \myemph{current instruction} \\
+            loaded from memory using {\tt PC}
+        };
+        \end{visibleenv}
+    \end{pgfonlayer}
+\end{tikzpicture}
+\end{frame}

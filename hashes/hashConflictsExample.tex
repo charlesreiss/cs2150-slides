@@ -5,7 +5,7 @@
     \item hash function: $h(k) = k$; hash+mod: $k \text{~mod~} 10$
     \item insert 7, 18, 41, 34, \myemph<2>{11}
         \begin{itemize}
-            \item<2-> \textit<2>{12, h(12) mod 10 = 2}
+            \item<2-> \textit<2>{11, h(11) mod 10 = 1}
         \end{itemize}
     \end{itemize}
 \begin{tikzpicture}[overlay,remember picture]
@@ -18,7 +18,7 @@
     ] at ([xshift=-1cm,yshift=-1cm]current page.north east) {
 index \& keys \\
     0 \& ~ \\
-    1 \& 41\only<2->{\myemph{, 12}} \\
+    1 \& 41\only<2->{\myemph{, 11}} \\
     2 \& ~ \\
     3 \& ~ \\
     4 \& 34 \\

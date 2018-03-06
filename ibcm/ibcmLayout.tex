@@ -1,0 +1,167 @@
+\begin{frame}{IBCM instruction format}
+\begin{tikzpicture}
+    \tikzset{
+        instrBar/.style={thick},
+        instrCode/.style={font=\tt},
+        instrPlace/.style={font=\it,align=center,draw=none},
+        instrUnused/.style={instrBar,fill=black!10,font=\it},
+        instrOp/.style={instrBar,alt=<2>{fill=red!10}},
+        num/.style={font=\small\it},
+        instrLabel/.style={},
+    }
+
+\foreach \x in {15,14,13,...,0} {
+    \node[anchor=south,num] at ($(3/8, 0) - 3/4*(\x, 0)$) (\x-Label){\strut\x} ;
+    \coordinate (b-\x) at ($(0, 0) - 3/4*(\x, 0)$);
+    \coordinate (d-\x) at ($(3/4, 0) - 3/4*(\x, 0)$);
+    \coordinate (c-\x) at ($(3/8, 0) - 3/4*(\x, 0)$);
+}
+\foreach \y in {0, 1, 2, 3, 4, 5} {
+    \coordinate (i-\y) at ($(0,0) - 4/3*(0,\y)$);
+    \coordinate (t-\y) at ($(0,-4/6) - 4/3*(0,\y)$);
+}
+\foreach \a/\b in {0/1,1/2,2/3,3/4} {
+\draw[instrOp](b-15 |- i-\a) rectangle (b-11 |- i-\b);
+\draw[instrBar](b-11 |- i-\a) rectangle (d-0 |- i-\b);
+}
+    \foreach \x/\a/\b/\c in {15/0/0/0,14/0/0/0,13/0/0/1,12/0/1/0} {
+        \node[instrCode] at (c-\x |- t-0) {\a};
+        \node[instrCode] at (c-\x |- t-1) {\b};
+        \node[instrCode] at (c-\x |- t-2) {\c};
+    }
+    \node[instrPlace] at (b-13 |- t-3) {opcode};
+    \draw[instrUnused] (b-11 |- i-0) rectangle (d-0 |- i-1)
+        node[midway] {(unused)};
+    \draw[instrUnused] (b-9 |- i-1) rectangle (d-0 |- i-2)
+        node[midway] {(unused)};
+    \draw[instrUnused] (b-9 |- i-2) rectangle (b-4 |- i-3)
+        node[midway] {(unused)};
+    \node[anchor=west] at (d-0 |- t-0) {\strut halt};
+    \node[anchor=west] at (d-0 |- t-1) {\strut I/O};
+    \node[anchor=west] at (d-0 |- t-2) {\strut shifts};
+    \node[anchor=west] at (d-0 |- t-3) {\strut others};
+
+    \draw[instrBar] (b-11 |- i-1) rectangle (b-9 |- i-2) node[instrPlace,midway] {I/O \\ op};
+    \draw[instrBar] (b-11 |- i-2) rectangle (b-9 |- i-3) node[instrPlace,midway] {shift \\ op};
+    \draw[instrBar] (b-4 |- i-2) rectangle (d-0 |- i-3) node[instrPlace,midway] {count};
+    \draw[instrBar] (b-11 |- i-3) rectangle (d-0 |- i-4) node[instrPlace,midway] {address};
+
+    \coordinate (boxPlace) at (b-7 |- i-4);
+    \tikzset{
+        explainBox/.style={anchor=north,at=(boxPlace),text=red!70!black,align=center}
+    }
+    \begin{visibleenv}<2>
+        \node[anchor=north,red!70!black,align=center] at (b-13 |- i-4) {
+            \textbf{opcode} \\
+            which instruction?
+        };
+    \end{visibleenv}
+    \begin{visibleenv}<3>
+        \draw[red,ultra thick] (b-15 |- i-0) rectangle (d-0 |- i-1);
+        \node[explainBox] {
+            \texttt{halt} --- opcode {\tt 0}  \\
+            stops the machine
+        };
+    \end{visibleenv}
+
+    \begin{visibleenv}<4>
+        \draw[red,ultra thick] (b-15 |- i-1) rectangle (d-0 |- i-2);
+    \end{visibleenv}
+    \begin{visibleenv}<5>
+        \node[explainBox] {
+            I/O operation -- opcode {\tt 1} \\
+            4 types (``I/O op'' bits) \\
+            into or out of \textit{accumulator}
+        };
+    \end{visibleenv}
+    \begin{visibleenv}<6>
+        \draw[red,ultra thick] (b-11 |- i-1) rectangle (d-10 |- i-2);
+        \node[anchor=west,fill=white,draw=red,ultra thick,align=left] (ioOps) at ([xshift=.5cm]b-9 |- t-1) {
+            \begin{tabular}{l|l}
+                I/O op & effect \\ \hline \hline
+                {\tt 00} & read hex word\\ \hline
+                {\tt 01} & read ASCII character \\
+                ~  & \small (into accumulator bits {\tt 0-7}) \\ \hline
+                {\tt 10} & write hex word \\ \hline
+                {\tt 11} & write ASCII charcater \\
+                ~ & \small (from accumulator bits {\tt 0-7})\\
+            \end{tabular}
+        }; 
+        \draw[red,dashed,ultra thick] (d-10 |- i-1) -- (ioOps.north west);
+        \draw[red,dashed,ultra thick] (d-10 |- i-2) -- (ioOps.south west);
+    \end{visibleenv}
+    \begin{visibleenv}<7>
+        \draw[red,ultra thick] (b-15 |- i-2) rectangle (d-0 |- i-3);
+        \node[explainBox] {
+            \texttt{shift} --- opcode {\tt 2}  \\
+            4 types (``shift op'')
+            move bits of accumulator around \\
+            count is number of places to move
+        };
+    \end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\definecolor{s0}{RGB}{222,73,73}
+\definecolor{s1}{RGB}{51,82,225}
+\definecolor{s2}{RGB}{83,51,100}
+\definecolor{s3}{RGB}{47,176,110}
+\definecolor{s4}{RGB}{220,145,55}
+
+\begin{frame}{shifts}
+    \begin{itemize}
+        \item has \textit{shift op} (2 bits) and \textit{count} (3 bits)
+        \item example: accumulator={\tt \textcolor{s1}{0000} \textcolor{s2}{1111} \textcolor{s3}{0000} \textcolor{s4}{1111}}; \textit{count}={\tt 3}
+    \end{itemize}
+\begin{tabular}{l|l|l}
+shift op & name & example result \\ \hline
+\tt 00 & shift left & {\tt \textcolor{s1}{0}\textcolor{s2}{111 1}\textcolor{s3}{000 0}\textcolor{s4}{111 1}\textcolor{s0}{000}} \\
+\tt 01 & shift right& {\tt \textcolor{s0}{000}\textcolor{s1}{0 000}\textcolor{s2}{1 111}\textcolor{s3}{0 000}\textcolor{s4}{1}} \\
+\tt 10 & rotate left & {\tt \textcolor{s1}{0}\textcolor{s2}{111 1}\textcolor{s3}{000 0}\textcolor{s4}{111 1}\textcolor{s1}{000}} \\
+\tt 11 & rotate right& {\tt \textcolor{s4}{111}\textcolor{s1}{0 000}\textcolor{s2}{1 111}\textcolor{s3}{0 000}\textcolor{s4}{1}} \\
+\end{tabular}
+    \begin{itemize}
+    \item shift: move bits, fill with {\tt 0}s
+    \item rotate: move bits, wrap around
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{other instructions}
+    \vspace{-.5cm}
+    \begin{itemize}
+        \item use accumulator ({\tt a} or ``acc'') and/or address \textit{in instruction}
+    \end{itemize}
+    \small
+    \begin{tabular}{l|l|l|p{6cm}}
+        \textit{op} & \textit{name} &  \textit{pseudocode} & \textit{description} \\ \hline
+        {\tt 3} & {\tt load} & {\tt a $\leftarrow$ mem[addr]} & load acc from memory\\ \hline
+        {\tt 4} & {\tt store} & {\tt a $\leftarrow$ mem[addr]} & store acc to memory \\ \hline
+        {\tt 5} & {\tt add} & {\tt a $\leftarrow$ a + mem[addr]} & add memory to acc \\ \hline
+        {\tt 6} & {\tt sub} & {\tt a $\leftarrow$ a + mem[addr]} & subtract mememory from acc \\ \hline
+        {\tt 7} & {\tt and} & {\tt a $\leftarrow$ a $\wedge$ mem[addr]} & logical `and' memory into acc \\ \hline
+        {\tt 8} & {\tt or} & {\tt a $\leftarrow$ a $\vee$ mem[addr]} & logical `or' memory into acc \\ \hline
+        {\tt 9} & {\tt xor} & {\tt a $\leftarrow$ a $\oplus$ mem[addr]} & logical `xor' memory into acc \\ \hline
+        {\tt A} & {\tt not} & {\tt a $\leftarrow$ \textasciitilde a} & logical complement acc \\ \hline
+        {\tt B} & {\tt nop} & --- & do nothing (`no operation') \\ \hline
+        {\tt C} & {\tt jmp} & {\tt PC $\leftarrow$ addr} & jump to \texttt{addr} \\ \hline
+        {\tt D} & {\tt jmpe} & {\tt if a == 0: PC $\leftarrow$ addr} & jump to \texttt{addr} if acc is 0 \\ \hline
+        {\tt E} & {\tt jmpl} & {\tt if a < 0: PC $\leftarrow$ addr} & jump to \texttt{addr} if acc is negative \\ \hline
+        {\tt F} & {\tt brl} & {\tt a $\leftarrow$ PC + 1; PC $\leftarrow$ addr} & jump to \texttt{addr} and set acc to
+                                                             the address following the {\tt brl} \\ \hline
+    \end{tabular}
+\end{frame}
+
+\begin{frame}{brl}
+    \begin{itemize}
+    \item ``\textbf{br}anch and \textbf{l}ink''
+    \item {\tt a $\leftarrow$ PC + 1; PC $\leftarrow$ addr} 
+        \vspace{.5cm}
+    \item used to implement method calls:
+    \item example: {\tt addr} is the address of a method
+    \item {\tt a} becomes the \texttt{return address}
+        \begin{itemize}
+            \item instruction to execute \textit{after the method returns}
+            \item issue in IBCM: jumping to {\tt a}???
+        \end{itemize}
+    \end{itemize}
+\end{frame}

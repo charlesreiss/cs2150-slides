@@ -1,0 +1,20 @@
+\begin{frame}[fragile,label=fetchExecute]{fetch execute cycle}
+\lstset{language=C++}
+\begin{lstlisting}
+while (true) {
+    IR <- memory[PC]
+    execute instruction IR
+    if (instruction didn't change PC)
+        PC <- PC + length of instruction in IR
+}
+\end{lstlisting}
+    \begin{itemize}
+    \item PC = program counter
+    \item IR = instruction register
+    \item instructions --- one operation
+        \begin{itemize}
+        \item in machine code: represented by bits
+        \item in assembly language: reprsented by text
+        \end{itemize}
+    \end{itemize}
+\end{frame}

@@ -176,8 +176,9 @@
                   MOVZBL,MOVZB,SHRB,SRAL,SHRL,ANDL,%
                   CMOVNS,SRAL,SRAQ,MOVZBW,MOVZBQ,%
                   PADDW,PADDQ,MODUPS,MOVAPD,%
+                  LOAD,STORE,DW,JMPL,JMPE,HALT,PRINTH%
                   },
-    deletekeywords={eax,ebx,sp,si,cx,di,ds,cs,es,fs,dx,ax,bx,al,esi,ebp,ecx,rip,eip,edx,edi,rdi,esp},
+    deletekeywords={eax,ebx,sp,si,cx,di,ds,cs,es,fs,dx,ax,bx,al,esi,ebp,ecx,rip,eip,edx,edi,rdi,esp,loop,end},
     morecomment=[l]{\#},
     morecomment=[l]{\/\/},
     morecomment=[s]{/*}{*/},

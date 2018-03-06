@@ -1,0 +1,19 @@
+\begin{frame}[fragile,label=exampleInstrs]{example instructions}
+\begin{itemize}
+    \item {\small (in assembly language)}
+\item x86 example: \\
+\begin{lstlisting}[language=myasm]
+add ecx, ebx
+add ecx, 1
+\end{lstlisting}
+        {\small ({\tt ecx} and {\tt ebx} are registers)}
+\hrule
+\item IBCM example: \\
+\begin{lstlisting}[language=myasm]
+load 100
+add 200
+store 300
+\end{lstlisting}
+        {\small (implicitly uses special ``accumulator'' register)}
+\end{itemize}
+\end{frame}
