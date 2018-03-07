@@ -1,0 +1,107 @@
+\begin{frame}[fragile,label=ifElseEx]{example: if/else}
+\newcommand\myemphX[2]{\alt<#1>{\kern-\fboxsep\colorbox{green!20}{#2}\kern-\fboxsep}{#2}}
+\lstset{
+    style=small,
+    language={},
+}
+\begin{tikzpicture}
+\tikzset{
+    outBox/.style={draw,thick,align=left},
+    inBox/.style={draw,thick,align=left},
+    inBoxX/.style={inner sep=0mm,align=left},
+    explain/.style={align=left},
+}
+\node[inBoxX] (originalA) {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\]]
+if (B == 0)
+\end{Verbatim}
+\end{minipage}
+};
+\node[inBoxX,below=0cm of originalA] (originalB) {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\]]
+    S1;
+\end{Verbatim}
+\end{minipage}
+};
+\node[inBoxX,below=0cm of originalB] (originalC) {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\]]
+else
+    S2;
+\end{Verbatim}
+\end{minipage}
+};
+\node[inBoxX,below=0cm of originalC] (originalD) {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\]]
+S3;
+\end{Verbatim}
+\end{minipage}
+};
+\node[inBox,fit=(originalA) (originalB) (originalC) (originalD)] (original) {};
+\begin{visibleenv}<2->
+\node[outBox,right=0.75cm of original,draw=blue!70!black,yshift=2cm,overlay] (theIf) {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\small]
+      load B
+      jmpe S1
+      jmp S2
+\end{Verbatim}
+\end{minipage}
+};
+\node[right=0cm of theIf] {
+    jmpe --- jump if acc. zero \\
+};
+\node[thick,inner sep=0mm,fit=(originalA),draw=blue!70!black] {};
+\draw[very thick,blue!70!black] (originalA.north east) -- (theIf.north west);
+\draw[very thick,blue!70!black] (originalA.south east) -- (theIf.south west);
+\end{visibleenv}
+\begin{visibleenv}<3->
+\node[outBox,below=0cm of theIf,draw=green!70!black,overlay] (theS1) {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\small]
+S1    (S1's code)
+      jmp S3
+\end{Verbatim}
+\end{minipage}
+};
+\node[right=0cm of theS1] {
+    skip over S2 after S1
+};
+\node[thick,inner sep=0mm,fit=(originalB),draw=green!70!black] {};
+\draw[very thick,green!70!black] (originalB.north east) -- (theS1.north west);
+\draw[very thick,green!70!black] (originalB.south east) -- (theS1.south west);
+\end{visibleenv}
+\begin{visibleenv}<4->
+\node[outBox,below=0cm of theS1,draw=violet!70!black,overlay] (theS2) {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\small]
+S2    (S2's code)
+\end{Verbatim}
+\end{minipage}
+};
+\node[explain,right=0cm of theS2] {
+    can omit jump to S3, \\
+    since it's right after
+};
+\node[thick,inner sep=0mm,fit=(originalC),draw=violet!70!black] {};
+\draw[very thick,violet!70!black] (originalC.north east) -- (theS2.north west);
+\draw[very thick,violet!70!black] (originalC.south east) -- (theS2.south west);
+\end{visibleenv}
+\begin{visibleenv}<4->
+\node[outBox,below=0cm of theS2,draw=orange!70!black,overlay] (theS3) {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\small]
+S3    (S3's code)
+\end{Verbatim}
+\end{minipage}
+};
+\node[thick,inner sep=0mm,fit=(originalD),draw=orange!70!black] {};
+\draw[very thick,orange!70!black] (originalD.north east) -- (theS3.north west);
+\draw[very thick,orange!70!black] (originalD.south east) -- (theS3.south west);
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
