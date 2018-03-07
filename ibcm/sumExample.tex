@@ -1,0 +1,64 @@
+\begin{frame}{example: sum}
+\begin{itemize}
+\item the task:
+\vspace{1cm}
+\item read in integer $n$ from keyboard
+\item compute sum of integers $1$ to $n$ (inclusive)
+\item print sum
+\item halt
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=sumPsuedo]{sum psuedocode}
+\begin{lstlisting}
+read n;
+i = 1;       // index in the array
+s = 0;       // ongoing sum
+while (i <= n) {
+  s += i;
+  i += 1;
+}
+print s;
+\end{lstlisting}
+\end{frame}
+
+% FIXME: incomplete
+\begin{frame}[fragile,label=sumTranslate]{translating sum}
+\lstset{
+    style=small,
+    language={},
+}
+\begin{tikzpicture}
+\tikzset{
+    outBox/.style={draw,thick},
+    inBox/.style={draw,thick},
+}
+\node[inBox] (original) {
+\begin{Verbatim}[commandchars=\\\{\}]
+read \myemph<2>{n};
+\myemph<2>{i} = 1;
+\myemph<2>{s} = 0;
+while (i <= n) {
+  s += i;
+  i += 1;
+}
+print s;
+\end{Verbatim}
+}
+\begin{visibleenv}<2->
+\node[outBox,right=1cm of original] (prologue) {
+\begin{lstlisting}
+    jmp     start
+i   dw      0     
+s   dw      0     
+n   dw      0
+\end{lstlisting}
+};
+\node[explain,right=1cm of prologue] {
+allocate memory for each variable \\
+set initial values to all 0s \\
+\texttt{jmp} to not try to execute variables
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}

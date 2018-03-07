@@ -1,0 +1,45 @@
+\begin{frame}[fragile,label=writeIBCM]{writing IBCM}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    box/.style={draw,very thick,align=left},
+    boxB/.style={draw,thick,align=left},
+    arr/.style={line width=.75mm,black!50},
+    arrB/.style={line width=.75mm,dashed,black!50},
+}
+\node[box] (high) {high level pseudocode};
+\node[boxB,right=1cm of high] {
+\begin{lstlisting}[style=small,language=C++]
+i = 1;
+while (i < max) ...
+\end{lstlisting}
+};
+\node[box,below=1cm of high] (asm) {IBCM assembly code};
+\node[boxB,right=1cm of asm] {
+\begin{lstlisting}[style=small,language={}]
+load  one
+store i
+...
+\end{lstlisting}
+};
+\draw[arr,->] (high) -- (asm);
+\node[below=1cm of asm] (trace) {test by hand (trace code)};
+\draw[arr] (asm) -- (trace);
+\begin{comment}
+\node[left=1cm of trace] (debug) {fix bugs};
+\draw[arrB] (trace) -- (debug);
+\draw[arrB,->] (debug.west) -- ++(-.5cm, 0cm) |- (asm);
+\end{comment}
+\node[box,below=1cm of trace] (machineCode) {IBCM machine code};
+\node[boxB,right=1cm of machineCode] {
+\begin{lstlisting}[style=small,language={}]
+3016
+4005
+...
+\end{lstlisting}
+};
+\node[below=1cm of machineCode] (sim) {run in IBCM simulator};
+\draw[arr,->] (trace) -- (machineCode);
+\draw[arr,->] (machineCode) -- (sim);
+\end{tikzpicture}
+\end{frame}
