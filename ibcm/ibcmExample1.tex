@@ -1,0 +1,53 @@
+\begin{frame}{IBCM decoding}
+\begin{tikzpicture}
+        \matrix[tight matrix,
+        nodes={minimum height=.55cm},
+        column 1/.style={nodes={draw,thick,text width=3cm,font=\tt}},
+        column 2/.style={nodes={draw,thick,text width=4cm,font=\tt,visible on=<3->}},
+        row sep=-.25mm,
+        row 1/.style={nodes={draw=none,font=\bfseries}},
+        inner sep=3mm,
+        ] (memory) {
+            value \& as instruction \\
+            0000 \& \myemph<4>{halt} \\
+            000f \& \myemph<4>{halt} \\
+            0005 \& \myemph<4>{halt} \\
+            3\myemph<5>{041} \& load \only<1-4>{?}\only<5->{\myemph<5>{0x41}} \\
+            5\myemph<5>{002} \& add \only<1-4>{?}\only<5->{\myemph<5>{0x2}} \\
+            1800 \& \only<1-5>{?? I/O}\only<6->{\myemph<6>{printH}} \\ 
+            240\myemph<7>{3} \& \only<1-5>{?? shift}\only<6->{\myemph<6>{shiftR} \only<6>{?}\only<7->{\myemph<7>{3}}} \\
+            0000 \& \myemph<4>{halt} \\
+        };
+        \tikzset{explainBox/.style={right=.1cm of memory,align=left}}
+        \begin{visibleenv}<2-3>
+        \node[explainBox] {
+            most significant 4 bits = opcode \\
+            {\tt 0} --- halt \\
+            {\tt 1} --- some kind of I/O \\
+            {\tt 3} --- load \\
+            {\tt 5} --- add \\
+        };
+        \end{visibleenv}
+        \begin{visibleenv}<4>
+        \node[explainBox] {
+            halt --- rest of instruction ignored \\
+        };
+        \end{visibleenv}
+        \begin{visibleenv}<5>
+        \node[explainBox] {
+            load/add --- rest is address
+        };
+        \end{visibleenv}
+        \begin{visibleenv}<6>
+        \node[explainBox] {
+            I/O: bits 10--11 = {\tt 10} $\rightarrow$ \texttt{printH} \\
+            shift: bits 10--11 = {\tt 01} $\rightarrow$ \texttt{shiftR} 
+        };
+        \end{visibleenv}
+        \begin{visibleenv}<7>
+        \node[explainBox] {
+            shift amount in bottom 4 bits 
+        };
+        \end{visibleenv}
+\end{tikzpicture}
+\end{frame}

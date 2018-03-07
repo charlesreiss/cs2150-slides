@@ -51,7 +51,7 @@
         explainBox/.style={anchor=north,at=(boxPlace),text=red!70!black,align=center}
     }
     \begin{visibleenv}<2>
-        \node[anchor=north,red!70!black,align=center] at (b-13 |- i-4) {
+        \node[anchor=north,red!70!black,align=center,xshift=.5cm] at (b-13 |- i-4) {
             \textbf{opcode} \\
             which instruction?
         };
@@ -78,13 +78,13 @@
         \draw[red,ultra thick] (b-11 |- i-1) rectangle (d-10 |- i-2);
         \node[anchor=west,fill=white,draw=red,ultra thick,align=left] (ioOps) at ([xshift=.5cm]b-9 |- t-1) {
             \begin{tabular}{l|l}
-                I/O op & effect \\ \hline \hline
-                {\tt 00} & read hex word\\ \hline
-                {\tt 01} & read ASCII character \\
-                ~  & \small (into accumulator bits {\tt 0-7}) \\ \hline
-                {\tt 10} & write hex word \\ \hline
-                {\tt 11} & write ASCII charcater \\
-                ~ & \small (from accumulator bits {\tt 0-7})\\
+                I/O op & name & effect \\ \hline \hline
+                {\tt 00} & \tt readH & read hex word\\ \hline
+                {\tt 01} & \tt readC & read ASCII character \\
+                ~  & ~ & \small (into accumulator bits {\tt 0-7}) \\ \hline
+                {\tt 10} & \tt printH & write hex word \\ \hline
+                {\tt 11} & \tt printC & write ASCII charcater \\
+                ~ & ~ &\small (from accumulator bits {\tt 0-7})\\
             \end{tabular}
         }; 
         \draw[red,dashed,ultra thick] (d-10 |- i-1) -- (ioOps.north west);
@@ -115,10 +115,10 @@
     \end{itemize}
 \begin{tabular}{l|l|l}
 shift op & name & example result \\ \hline
-\tt 00 & shift left & {\tt \textcolor{s1}{0}\textcolor{s2}{111 1}\textcolor{s3}{000 0}\textcolor{s4}{111 1}\textcolor{s0}{000}} \\
-\tt 01 & shift right& {\tt \textcolor{s0}{000}\textcolor{s1}{0 000}\textcolor{s2}{1 111}\textcolor{s3}{0 000}\textcolor{s4}{1}} \\
-\tt 10 & rotate left & {\tt \textcolor{s1}{0}\textcolor{s2}{111 1}\textcolor{s3}{000 0}\textcolor{s4}{111 1}\textcolor{s1}{000}} \\
-\tt 11 & rotate right& {\tt \textcolor{s4}{111}\textcolor{s1}{0 000}\textcolor{s2}{1 111}\textcolor{s3}{0 000}\textcolor{s4}{1}} \\
+\tt 00 & shift left & shiftL &  {\tt \textcolor{s1}{0}\textcolor{s2}{111 1}\textcolor{s3}{000 0}\textcolor{s4}{111 1}\textcolor{s0}{000}} \\
+\tt 01 & shift right& shiftR & {\tt \textcolor{s0}{000}\textcolor{s1}{0 000}\textcolor{s2}{1 111}\textcolor{s3}{0 000}\textcolor{s4}{1}} \\
+\tt 10 & rotate left & rotL & {\tt \textcolor{s1}{0}\textcolor{s2}{111 1}\textcolor{s3}{000 0}\textcolor{s4}{111 1}\textcolor{s1}{000}} \\
+\tt 11 & rotate right& rotR & {\tt \textcolor{s4}{111}\textcolor{s1}{0 000}\textcolor{s2}{1 111}\textcolor{s3}{0 000}\textcolor{s4}{1}} \\
 \end{tabular}
     \begin{itemize}
     \item shift: move bits, fill with {\tt 0}s
