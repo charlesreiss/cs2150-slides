@@ -23,42 +23,249 @@ print s;
 \end{frame}
 
 % FIXME: incomplete
-\begin{frame}[fragile,label=sumTranslate]{translating sum}
+\begin{frame}[fragile,label=sumTranslate]{translating sum (1)}
+\newcommand\myemphX[2]{\alt<#1>{\kern-\fboxsep\colorbox{green!20}{#2}\kern-\fboxsep}{#2}}
 \lstset{
     style=small,
     language={},
 }
 \begin{tikzpicture}
 \tikzset{
-    outBox/.style={draw,thick},
-    inBox/.style={draw,thick},
+    outBox/.style={draw,thick,align=left},
+    inBox/.style={draw,thick,align=left},
+    inBoxX/.style={inner sep=0mm,align=left},
+    explain/.style={align=left},
 }
-\node[inBox] (original) {
-\begin{Verbatim}[commandchars=\\\{\}]
-read \myemph<2>{n};
-\myemph<2>{i} = 1;
-\myemph<2>{s} = 0;
+\node[inBoxX,alt=<3->{draw=blue!70!black,very thick}] (originalA) {
+\begin{minipage}{4.75cm}
+\begin{Verbatim}[commandchars=\\\[\]]
+read \myemphX[2][n];
+\myemphX[4][\myemphX[2][i] = 1;]
+\myemphX[2][s] = 0;
+\end{Verbatim}
+\end{minipage}
+};
+\node[inBoxX,below=0cm of originalA] (originalB) {
+\begin{minipage}{4.75cm}
+\begin{Verbatim}[commandchars=\\\[\]]
 while (i <= n) {
   s += i;
   i += 1;
 }
 print s;
 \end{Verbatim}
-}
+\end{minipage}
+};
+\node[inBox,fit=(originalA) (originalB)] (original) {};
 \begin{visibleenv}<2->
-\node[outBox,right=1cm of original] (prologue) {
-\begin{lstlisting}
-    jmp     start
-i   dw      0     
-s   dw      0     
-n   dw      0
-\end{lstlisting}
+\node[outBox,right=0.75cm of original,yshift=2cm] (prologue) {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\small]
+\myemphX[2][i]     dw 0     
+\myemphX[2][s]     dw 0     
+\myemphX[2][n]     dw 0
+\myemphX[2][one]   dw 1
+\myemphX[2][zero]  dw 0
+\end{Verbatim}
+\end{minipage}
 };
-\node[explain,right=1cm of prologue] {
-allocate memory for each variable \\
-set initial values to all 0s \\
-\texttt{jmp} to not try to execute variables
+
+\node[explain,right=0cm of prologue] {
+allocate variables \\
+and needed constants
 };
+\end{visibleenv}
+\begin{visibleenv}<2>
+\node[above=0cm of prologue] {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\small]
+label instr
+\end{Verbatim}
+\end{minipage}
+};
+\end{visibleenv}
+\begin{visibleenv}<3->
+\node[outBox,above=0cm of prologue] (prePrologue) {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\small]
+      jmp start
+\end{Verbatim}
+\end{minipage}
+};
+\node[above=0cm of prePrologue] {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\small]
+label instr
+\end{Verbatim}
+\end{minipage}
+};
+\node[outBox,below=0cm of prologue,draw=blue!70!black] (preLoop) {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\small]
+start readH
+      store n
+      \myemphX[4][load one]
+      \myemphX[4][store i]
+      load zero
+      store s
+\end{Verbatim}
+\end{minipage}
+};
+\node[explain,right=0cm of preLoop] {
+load into accum. \\
+then store in variable
+};
+\node[explain,right=0cm of prePrologue] {
+don't execute vars, etc.
+};
+\draw[very thick, blue!70!black] (originalA.north east) -- (preLoop.north west);
+\draw[very thick,blue!70!black] (originalA.south east) -- (preLoop.south west);
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=sumTranslate2]{translating sum (2)}
+\newcommand\myemphX[2]{\alt<#1>{\kern-\fboxsep\colorbox{green!20}{#2}\kern-\fboxsep}{#2}}
+\lstset{
+    style=small,
+    language={},
+}
+\begin{tikzpicture}
+\tikzset{
+    outBox/.style={draw,thick,align=left},
+    inBox/.style={draw,thick,align=left},
+    inBoxX/.style={inner sep=0mm,align=left},
+    explain/.style={align=left},
+}
+\node[inBoxX,alt=<1->{draw=blue!70!black,very thick}] (originalA) {
+\begin{minipage}{4.75cm}
+\begin{Verbatim}[commandchars=\\\[\]]
+read n;
+i = 1;
+s = 0;
+\end{Verbatim}
+\end{minipage}
+};
+    \node[inBoxX,below=0cm of originalA,alt=<2->{draw=green!70!black,very thick}] (originalB) {
+\begin{minipage}{4.75cm}
+\begin{Verbatim}[commandchars=\\\[\]]
+while (i <= n) {
+\end{Verbatim}
+\end{minipage}
+};
+    \node[inBoxX,below=0cm of originalB,alt=<3->{draw=violet!70!black,very thick}] (originalC) {
+\begin{minipage}{4.75cm}
+\begin{Verbatim}[commandchars=\\\[\]]
+  s += i;
+  i += 1;
+\end{Verbatim}
+\end{minipage}
+};
+\node[inBoxX,below=0cm of originalC] (originalD) {
+\begin{minipage}{4.75cm}
+\begin{Verbatim}[commandchars=\\\[\]]
+}
+\end{Verbatim}
+\end{minipage}
+};
+\node[inBoxX,below=0cm of originalD] (originalE) {
+\begin{minipage}{4.75cm}
+\begin{Verbatim}[commandchars=\\\[\]]
+print s;
+\end{Verbatim}
+\end{minipage}
+};
+\node[inBox,fit=(originalA) (originalB) (originalC) (originalD) (originalE)] (original) {};
+\begin{visibleenv}<1->
+\node[outBox,right=0.75cm of original,draw=blue!70!black,yshift=2cm,overlay] (preLoop) {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\small]
+      ...
+      load zero
+      store s
+\end{Verbatim}
+\end{minipage}
+};
+\node[overlay,above=0cm of preLoop] {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\small]
+label instr
+\end{Verbatim}
+\end{minipage}
+};
+\node[explain,right=0cm of preLoop] {
+allocate vars/constants \\
+initial reads/assignments
+};
+\draw[very thick, blue!70!black] (originalA.north east) -- (preLoop.north west);
+\draw[very thick,blue!70!black] (originalA.south east) -- (preLoop.south west);
+\end{visibleenv}
+\begin{visibleenv}<2->
+\node[outBox,below=0cm of preLoop,draw=green!70!black] (loopTop) {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\small]
+loop  load n
+      sub i
+      jmpl done
+\end{Verbatim}
+\end{minipage}
+};
+\node[explain,right=0cm of loopTop] {
+`done' = end of loop \\
+if n - i < 0: goto done
+};
+
+\draw[very thick, green!70!black] (originalB.north east) -- (loopTop.north west);
+\draw[very thick,green!70!black] (originalB.south east) -- (loopTop.south west);
+\end{visibleenv}
+\begin{visibleenv}<3->
+\node[outBox,below=0cm of loopTop,draw=violet!70!black] (loopBody) {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\small]
+      load s
+      add i
+      store s
+      load i
+      add one
+      store i
+\end{Verbatim}
+\end{minipage}
+};
+\draw[very thick,violet!70!black] (originalC.north east) -- (loopBody.north west);
+\draw[very thick,violet!70!black] (originalC.south east) -- (loopBody.south west);
+\end{visibleenv}
+\begin{visibleenv}<2-3>
+\node[outBox,below=0cm of loopBody,draw=orange!70!black] (loopAfterPartial) {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\small]
+     jmp loop
+done   
+\end{Verbatim}
+\end{minipage}
+};
+\draw[very thick,orange!70!black] (originalD.north east) -- (loopAfterPartial.north west);
+\draw[very thick,orange!70!black] (originalD.south east) -- (loopAfterPartial.south west);
+    \node[inner sep=0mm,fit=(originalD),draw,thick,orange!70!black] {};
+\end{visibleenv}
+\begin{visibleenv}<2->
+\node[explain,right=0cm of loopAfterPartial] {
+    return to start of loop \\
+    label \textit{after} end of loop
+};
+\end{visibleenv}
+\begin{visibleenv}<4->
+\node[outBox,below=0cm of loopBody,draw=orange!70!black] (loopAfter) {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\small]
+      jmp loop
+done  load s
+      printH
+\end{Verbatim}
+\end{minipage}
+};
+\draw[very thick,orange!70!black] (originalD.north east) -- (loopAfter.north west);
+\draw[very thick,orange!70!black] (originalE.south east) -- (loopAfter.south west);
+    \node[inner sep=0mm,fit=(originalD) (originalE),draw,thick,orange!70!black] {};
 \end{visibleenv}
 \end{tikzpicture}
 \end{frame}
