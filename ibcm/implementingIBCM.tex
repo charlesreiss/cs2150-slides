@@ -1,0 +1,108 @@
+\begin{frame}[fragile,label=implOutline]{implementing IBCM}
+\lstset{
+    language=C++,
+    moredelim=**[is][\btHL<2>]{@2}{2@},
+}
+\begin{lstlisting}
+unsigned short memory[4096];
+unsigned short pc, ir, accum;
+bool done = false;
+while (!done) {
+    ir = memory[pc];
+    switch (@2extractOpcode(ir)2@) {
+    case 0:
+        // halt
+        done = true;
+        break;
+    case 1:
+        // I/O
+        ...
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=extractOp]{extracting parts of instructions}
+\lstset{
+    language=C++,
+    moredelim=**[is][\btHL<2>]{@2}{2@},
+}
+assuming instruction in \texttt{instr}:
+\begin{lstlisting}
+unsigned int opcode = (instr >> 12) & 0x000f;
+unsigned int ioOrShiftOp = (instr >> 10) & 0x0003;
+unsigned int address = instr & 0x0fff;
+unsigned int shiftCount = instr & 0x000f;
+\end{lstlisting}
+\hrule
+\begin{itemize}
+\item \lstinline|>>| --- shift right
+\item \lstinline|&| --- bitwise (bit-by-bit) and
+\end{itemize}
+\begin{visibleenv}<2->
+\hrule
+but, isn't this very cumbersome???
+\end{visibleenv}
+\end{frame}
+
+\begin{frame}[fragile,label=encodeOp]{encoding instructions}
+\lstset{
+    language=C++,
+    moredelim=**[is][\btHL<2>]{@2}{2@},
+}
+assuming instruction in \texttt{instr}:
+\begin{lstlisting}
+unsigned int instr = (opcode << 12) | address;
+unsigned int instr = (opcode << 12) | (ioOrShiftOp << 10) | shiftCount;
+\end{lstlisting}
+\hrule
+\begin{itemize}
+\item \lstinline|<<| --- shift right
+\item \lstinline^|^ --- bitwise (bit-by-bit) or
+\end{itemize}
+\begin{visibleenv}<2->
+\hrule
+but, isn't this very cumbersome???
+\end{visibleenv}
+\end{frame}
+
+\begin{frame}[fragile,label=cSupport1]{C++ support for bit-extraction (1)}
+\lstset{
+    language=C++,
+    moredelim=**[is][\btHL<2>]{@2}{2@},
+}
+\begin{lstlisting}
+// assumes unsigned short is 16 bits
+// and most common compiler convention for ordering bits
+union ibcm_instruction {
+    unsigned short value;
+    struct { unsinged op: 4, ioOp: 2,   
+                      unused: 10; } io;
+    struct { unsinged op: 4, shiftOp: 2,
+                      shiftCount: 5; } shifts;
+    struct { unsigned op: 4,
+                      address: 12; } others;
+};
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=cSupport2]{C++ support for bit-extraction (2)}
+\lstset{
+    language=C++,
+    moredelim=**[is][\btHL<2>]{@2}{2@},
+}
+\begin{lstlisting}
+    union ibcm_instruction i;
+    i.value = memory[pc];
+    switch (i.others.op) {
+        ...
+    }
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{on bit fields}
+\begin{itemize}
+\item \texttt{value : 4} --- called `a bit field'
+\item technically, order of bits can vary between compilers
+\end{itemize}
+\end{frame}

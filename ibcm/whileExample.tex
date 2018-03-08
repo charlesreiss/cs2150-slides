@@ -1,0 +1,84 @@
+\begin{frame}[fragile,label=whileEx]{example: while}
+\newcommand\myemphX[2]{\alt<#1>{\kern-\fboxsep\colorbox{green!20}{#2}\kern-\fboxsep}{#2}}
+\lstset{
+    style=small,
+    language={},
+}
+\begin{tikzpicture}
+\tikzset{
+    outBox/.style={draw,thick,align=left},
+    inBox/.style={draw,thick,align=left},
+    inBoxX/.style={inner sep=0mm,align=left},
+    explain/.style={align=left},
+}
+\node[inBoxX] (originalA) {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\]]
+while (B >= 5)
+\end{Verbatim}
+\end{minipage}
+};
+\node[inBoxX,below=0cm of originalA] (originalB) {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\]]
+    S1;
+\end{Verbatim}
+\end{minipage}
+};
+\node[inBoxX,below=0cm of originalB] (originalC) {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\]]
+S2;
+\end{Verbatim}
+\end{minipage}
+};
+\node[inBox,fit=(originalA) (originalB) (originalC)] (original) {};
+\begin{visibleenv}<2->
+\node[outBox,right=0.75cm of original,draw=blue!70!black,yshift=2cm,overlay] (theWhile) {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\small]
+      jmp loop
+five  dw 5
+loop  load B
+      sub five
+      jmpl S2
+\end{Verbatim}
+\end{minipage}
+};
+\node[explain,right=0cm of theWhile] {
+    need constant `5' \\
+    B - 5 < 0  $\rightarrow$ \\
+    \hspace{1cm} done with loop \\
+};
+\node[thick,inner sep=0mm,fit=(originalA),draw=blue!70!black] {};
+\draw[very thick,blue!70!black] (originalA.north east) -- (theWhile.north west);
+\draw[very thick,blue!70!black] (originalA.south east) -- (theWhile.south west);
+\end{visibleenv}
+\begin{visibleenv}<3->
+\node[outBox,below=0cm of theWhile,draw=green!70!black,overlay] (theS1) {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\small]
+S1    (S1's code)
+      jmp loop
+\end{Verbatim}
+\end{minipage}
+};
+\node[thick,inner sep=0mm,fit=(originalB),draw=green!70!black] {};
+\draw[very thick,green!70!black] (originalB.north east) -- (theS1.north west);
+\draw[very thick,green!70!black] (originalB.south east) -- (theS1.south west);
+\end{visibleenv}
+\begin{visibleenv}<4->
+\node[outBox,below=0cm of theS1,draw=violet!70!black,overlay] (theS2) {
+\begin{minipage}{4cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\small]
+S2    (S2's code)
+\end{Verbatim}
+\end{minipage}
+};
+\node[thick,inner sep=0mm,fit=(originalC),draw=violet!70!black] {};
+\draw[very thick,violet!70!black] (originalC.north east) -- (theS2.north west);
+\draw[very thick,violet!70!black] (originalC.south east) -- (theS2.south west);
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
