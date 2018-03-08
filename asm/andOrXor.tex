@@ -1,0 +1,16 @@
+\begin{frame}[fragile,label=andOrXor]{and/or/xor}
+\begin{lstlisting}
+and <first>, <second>
+xor <first>, <second>
+or <first>, <second>
+\end{lstlisting}
+\begin{itemize}
+\item bit-by-bit and, or, xor
+\item e.g. if {\tt RAX} = $1110_\text{TWO}$ and {\tt RBX} = $0101_\text{TWO}$)
+\begin{itemize}
+\item \lstinline|and RAX, RBX| $\rightarrow$ {\tt RAX} becomes $0100_\text{TWO}$
+\item \lstinline|xor RAX, RBX| $\rightarrow$ {\tt RAX} becomes $1011_\text{TWO}$
+\item \lstinline|or RAX, RBX| $\rightarrow$ {\tt RAX} becomes $1111_\text{TWO}$
+\end{itemize}
+\end{itemize}
+\end{frame}

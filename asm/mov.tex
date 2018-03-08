@@ -1,0 +1,25 @@
+\begin{frame}[fragile,label=mov]{mov}
+\lstset{language=myasm}
+\begin{itemize}
+\item \lstinline|mov DEST, SRC|
+\item possible DEST and SRC:
+\begin{itemize}
+\item register: \texttt{RAX}, \texttt{EAX}, \ldots
+\item constant: \texttt{0x1234}, \texttt{42}, \ldots
+\item label name: \texttt{someLabel}, \ldots
+\item memory address: \texttt{[0x1234]}, \texttt{[RAX]}, \texttt{someLabel}\ldots
+\end{itemize}
+\item special rule: no moving from memory to memory
+\end{itemize}
+\end{frame}
+
+\begin{frame}{instruction operands generally}
+\begin{itemize}
+\item if we don't specify otherwise\ldots
+\item same as mov:
+    \begin{itemize}
+    \item destination: register or memory location
+    \item source: register or constant or memory location
+    \end{itemize}
+\end{itemize}
+\end{frame}

@@ -1,0 +1,58 @@
+\begin{frame}[fragile,label=movExample]{mov example}
+\lstset{
+    language=myasm,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+    moredelim={**[is][\btHL<all:6>]{@6}{6@}},
+}
+\begin{tikzpicture}
+\tikzset{
+    h/.style={alt=<#1>{fill=green!10}},
+    hB/.style={alt=<#1>{fill=blue!10}},
+}
+\node (code) {
+\begin{lstlisting}
+@2mov rcx, rax2@
+@3mov rdx, [rbx]3@
+@4mov rsi, [rdx+rax+16]4@
+@5mov [rsi], 455@
+@6mov [a], 156@
+\end{lstlisting}
+};
+\matrix[tight matrix,right=1cm of code,
+    nodes={minimum height=.6cm},
+    column 1/.style={nodes={draw=none,align=right,inner xsep=5mm}},
+    row sep=-0.1mm,
+    label={north:registers}
+] (regs) {
+    rax \& 100 \\
+    rbx \& 108 \\
+    rcx \& |[hB=2]| \only<1>{~}\only<2->{100} \\
+    rdx \& |[hB=3]| \only<1-2>{~}\only<3->{8} \\
+    rsi \& |[hB=4]| \only<1-3>{~}\only<4->{200} \\
+    rdi \& ~ \\
+    \ldots \& ~ \\
+};
+\matrix[tight matrix,right=0.5cm of regs,
+    nodes={minimum height=.6cm},
+    column 1/.style={nodes={draw=none,text width=1.5cm,align=right,inner xsep=5mm}},
+    row sep=-.1mm,
+    label={north:memory}
+] (memory) {
+    \ldots \& ~ \\
+    100 \& ~ \\
+    108 \& |[h=2]| 8 \\
+    116 \& ~ \\
+    124 \& |[h=3]| 200 \\
+    132 \& ~ \\
+    \ldots \& ~ \\
+    200 \& |[hB=5]| \only<1-4>{~}\only<5->{45} \\
+    208 \& ~ \\
+    a: 300 \& |[hB=6]| \only<1-5>{~}\only<6->{15} \\
+    308 \& ~ \\
+    \ldots \& ~ \\
+};
+\end{tikzpicture}
+\end{frame}

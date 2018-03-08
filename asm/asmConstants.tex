@@ -1,0 +1,107 @@
+\begin{frame}[fragile,label=decVar]{declaring variables/constants}
+\begin{itemize}
+\item (\textit{NASM}-only syntax)
+\end{itemize}
+\begin{tikzpicture}
+\tikzset{
+    code/.style={inner sep=0mm,align=left},
+    annot/.style={font=\small,align=left,anchor=west},
+}
+\node[code] (sectData) {
+\begin{lstlisting}[language=myasm,style=small]
+section .data
+\end{lstlisting}
+};
+\coordinate (after) at ([xshift=4cm]sectData.east);
+\node[code,anchor=north west] (decls) at (sectData.south west) {
+\begin{lstlisting}[language=myasm,style=small]
+a       DB         23
+b       DW         ?
+c       DD         3000
+d       DQ         -800
+x       DD         1, 2, 3
+
+\end{lstlisting}
+};
+\node[code,anchor=north west] (declArray)at (decls.south west) {
+\begin{lstlisting}[language=myasm,style=small]
+y       TIMES 8 DB 0
+\end{lstlisting}
+};
+\node[annot] at (after |- sectData.east) {
+    ``.data'' --- data (not code) part of memory
+};
+\node[annot] at (after |- decls.east) {
+    DB: declare byte \\
+    DW: word (2 byte) \\ DD: doubleword (4 bytes) \\
+    DQ: quadword (8 byte) \\
+    ? --- don't care about value
+};
+\node[annot] at (after |- declArray.east) {
+    eight 0 bytes (e.g. 8-byte array)
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=onLabels]{a note on labels}
+\begin{itemize}
+\item \textit{NASM} allows labels like:
+\begin{lstlisting}
+LABEL add RAX, RBX
+\end{lstlisting}
+\item or like:
+\begin{lstlisting}
+LABEL: add RAX, RBX
+\end{lstlisting}
+\item other assemblers: require \texttt{:} always
+\item I recommend \texttt{:} 
+    \begin{itemize}
+    \item what if label name = instruction name?
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=decVarAlt]{declaring variables/constants (GAS)}
+\begin{itemize}
+\item (\textit{GAS}-only syntax)
+\end{itemize}
+\begin{tikzpicture}
+\tikzset{
+    code/.style={inner sep=0mm,align=left},
+    annot/.style={font=\small,align=left,anchor=west},
+}
+\node[code] (sectData) {
+\begin{lstlisting}[language=myasm,style=small]
+.data
+\end{lstlisting}
+};
+\coordinate (after) at ([xshift=5cm]sectData.east);
+\node[code,anchor=north west] (decls) at (sectData.south west) {
+\begin{lstlisting}[language=myasm,style=small]
+a:      .byte      23
+b:      .short     0
+c:      .long      3000
+d:      .quad     -800
+x:      .long     1, 2, 3
+
+\end{lstlisting}
+};
+\node[code,anchor=north west] (declArray)at (decls.south west) {
+\begin{lstlisting}[language=myasm,style=small]
+y       .fill 8, 1, 0
+\end{lstlisting}
+};
+\node[annot] at (after |- sectData.east) {
+    ``.data'' --- data (not code) part of memory
+};
+\node[annot] at (after |- decls.east) {
+    short --- 2 bytes \\
+    long --- 4 bytes \\
+    quad --- 8 bytes
+};
+\node[annot] at (after |- declArray.east) {
+    eight 0 bytes (e.g. 8-byte array) \\
+    (1 is length of value to repeat)
+};
+\end{tikzpicture}
+\end{frame}

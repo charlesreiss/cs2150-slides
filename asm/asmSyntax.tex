@@ -1,0 +1,22 @@
+\begin{frame}{two syntaxes}
+\begin{itemize}
+\item there are two ways of writing x86 assembly
+\begin{itemize}
+\item AT\&T syntax (default on Linux, OS X)
+\item Intel syntax (default on Windows)
+\end{itemize}
+\item different operand order, way of writing addresses, punctuation, etc.
+\item we mostly show Intel syntax
+\end{itemize}
+\end{frame}
+
+\begin{frame}{different directives}
+\begin{itemize}
+\item non-instruction parts of assembly are called \textit{directives}
+\item IBCM example: \texttt{one   dw  1}
+\begin{itemize}\item there is no IBCM instruction called ``dw''\end{itemize}
+\item these differ \textit{a lot} between assemblers
+\item our main assember: \texttt{NASM} 
+\item our compiler's assembler: \texttt{GAS}
+\end{itemize}
+\end{frame}

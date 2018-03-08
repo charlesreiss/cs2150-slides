@@ -1,0 +1,29 @@
+\begin{frame}[fragile,label=LEA]{on LEA}
+    \begin{itemize}
+        \item LEA = \textbf{L}oad \textbf{E}ffective \textbf{A}ddress
+        \begin{itemize}
+            \item effective address = computed address for memory access
+        \end{itemize}
+    \item syntax looks like a \textbf{mov} from memory, but\ldots
+    \item \myemph{skips the memory access} --- just uses the address
+        \begin{itemize}
+            \item (sort of like {\tt \&} operator in C?)
+        \end{itemize}
+    \item {}\lstinline|lea RAX, [RAX + 4]| $\approx$ \lstinline|add RAX, 4|
+    \item<2-> ``address of memory[rax + 4]'' = rax + 4
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=LEATricks]{LEA tricks}
+    \begin{itemize}
+    \item {}\lstinline|lea RAX, [RAX + RAX * 4]|
+    \item rax $\leftarrow$ rax $\times$ 5
+    \item rax $\leftarrow$ {\tt address-of(memory[rax + rax * 4])}
+    \vspace{.5cm}
+            \hrule
+    \vspace{.5cm}
+    \item {}\lstinline|lead RDX, [RBX + RCX]|
+    \item rdx $\leftarrow$ rbx $+$ rcx
+    \item rdx $\leftarrow${\tt address-of(memory[rbx + rcx])}
+    \end{itemize}
+\end{frame}

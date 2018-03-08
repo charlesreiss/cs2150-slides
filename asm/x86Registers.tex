@@ -1,0 +1,82 @@
+\begin{frame}{x86 registers}
+\begin{tikzpicture}
+\tikzset{
+    is386plus/.style={visible on=<2->},
+    is64plus/.style={visible on=<3->},
+    box/.style={draw,very thick,font=\small\tt,inner sep=0.1mm},
+    box8/.style={box,minimum width=1cm,minimum height=.4cm,blue!70!black},
+    box16LabelA/.style={green!70!black,label distance=-1mm,font=\tt\small},
+    box16LabelB/.style={green!70!black,xshift=-0.5cm,font=\tt\small},
+    box16/.style={box,minimum width=2.15cm,minimum height=.5cm,green!70!black},
+    box32/.style={box,minimum width=4cm,minimum height=.6cm,orange!70!black},
+    box32Label/.style={xshift=-1cm,orange!70!black,font=\tt\small},
+    box64/.style={box,minimum width=7cm,minimum height=.7cm,violet},
+    box64Label/.style={xshift=-2cm,violet,font=\tt\small},
+    annot/.style={align=left,at=(annotation),anchor=south west},
+}
+\foreach \letter/\x in {A/0,B/1.1,C/2.2,D/3.3} {
+\node[box8,anchor=east] (\letter low) at (0,-\x) {\letter{}L};
+\node[left=0cm of \letter low,box8] (\letter high) {AH};
+\node[box16,anchor=east,label={[box16LabelA]above:\letter{}X}] (\letter x) at ([xshift=.5mm]\letter low.east) {};
+\node[is386plus,box32,anchor=east,label={[is386plus,box32Label]center:E\letter{}X}] (\letter ex) at ([xshift=1mm]\letter low.east) {};
+\node[is64plus,box64,anchor=east,label={[is64plus,box64Label]center:R\letter{}X}] (\letter rx) at ([xshift=1.5mm]\letter low.east) {};
+}
+\foreach \twoLetter/\x in {BP/4.2,SI/5,DI/5.8,SP/6.6}{
+\node[is64plus,box8,anchor=east] (\twoLetter low) at (0,-\x) {\twoLetter{}L};
+\node[box16,anchor=east,label={[box16LabelB]center:\twoLetter{}}] (\twoLetter x) at ([xshift=.5mm]\twoLetter low.east) {};
+\node[is386plus,box32,anchor=east,label={[is386plus,box32Label]center:E\twoLetter{}}] (\twoLetter ex) at ([xshift=1mm]\twoLetter low.east) {};
+\node[is64plus,box64,anchor=east,label={[is64plus,box64Label]center:R\twoLetter{}}] (\twoLetter rx) at ([xshift=1.5mm]\twoLetter low.east) {};
+}
+\begin{scope}[yshift=-1cm]
+\foreach \twoLetter/\x in {R8/0,R9/0.8,R10/1.6,R11/2.4,R12/3.2,R13/4.0,R14/4.8,R15/5.6}{
+\node[is64plus,box8,anchor=east] (\twoLetter low) at (8,-\x) {\twoLetter{}B};
+\node[is64plus,box16,anchor=east,label={[is64plus,box16LabelB]center:\twoLetter{}W}] (\twoLetter x) at ([xshift=.5mm]\twoLetter low.east) {};
+\node[is64plus,box32,anchor=east,label={[is64plus,box32Label]center:\twoLetter{}D}] (\twoLetter ex) at ([xshift=1mm]\twoLetter low.east) {};
+\node[is64plus,box64,anchor=east,label={[is64plus,box64Label]center:\twoLetter{}}] (\twoLetter rx) at ([xshift=1.5mm]\twoLetter low.east) {};
+}
+\end{scope}
+\coordinate (annotation) at (0, .75);
+\begin{visibleenv}<1>
+\node[overlay,annot] {
+    \textbf{1978} -- \textbf{Intel 8086} --- 8 16-bit registers
+};
+\node[right=0cm of Alow] (AlowL){ $\leftarrow$ AX, etc. --- ``general purpose''};
+\node[font=\small,anchor=north west] at (AlowL.south west) { (but some instructions use AX or BX only) };
+\node[right=0cm of BPlow] (bpLabel) { $\leftarrow$ ``base pointer'' };
+\node[right=0cm of SIlow] { $\leftarrow$ ``source index'' };
+\node[right=0cm of DIlow] (diLabel) { $\leftarrow$ ``destination index'' };
+\node[right=0cm of SPlow] { $\leftarrow$ ``stack pointer'' --- \texttt{push}/\texttt{pop} instrs.};
+\draw[thick,decorate,decoration={brace},align=left] (diLabel.east |- bpLabel.north east) -- (diLabel.south east) node[midway,right] {
+    special for \\
+    \textit{some} instrs.
+};
+\end{visibleenv}
+\begin{visibleenv}<2>
+\node[overlay,annot] (annot386) {
+    \textbf{1988} -- \textbf{Intel 386} --- 8 32-bit registers
+};
+\node[anchor=north west] at (annot386.south west) {
+    ``\textbf{E}xtended'' versions of each register
+};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[overlay,annot] (annot64) {
+    \textbf{2003} -- \textbf{AMD64} --- 16 64-bit registers
+};
+\node[anchor=north west,align=left] at (annot64.south west) {
+    new registers just numbered \\
+    name for bottom byte of each register
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{some registers not shown}
+\begin{itemize}
+\item floating point/``vector'' registers ({\tt ST(0)}, {\tt XMM0}, {\tt YMM0}, {\tt ZMM0}, \ldots)
+\item the program counter (\texttt{RIP/EIP/IP} --- ``instruction pointer'')
+\item ``flags'' (used by conditional jumps)
+\item registers for the operating system
+\item \ldots
+\end{itemize}
+\end{frame}

@@ -1,0 +1,62 @@
+\begin{frame}[fragile,label=specPtrs]{specifying pointers}
+\begin{itemize}
+\item \lstinline|[RAX + 2 * RBX + 0x1234]| 
+\item \textit{optional} 64-bit base register \textit{plus}
+    \begin{itemize}
+    \item example: RAX
+    \end{itemize}
+\item \textit{optional} 64-bit index register times 1 (default), 2, 4, or 8 \textit{plus}
+    \begin{itemize}
+    \item example: RBX times 2
+    \end{itemize}
+\item \textit{optional} 32-bit signed constant
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=validMovs]{example valid movs}
+\lstset{language=myasm}
+\begin{lstlisting}
+mov rax, rbx
+mov rax, [rbx]
+mov [var], rbx
+mov rax, [r13 - 4]
+mov [rsi + rax], cl
+mov rdx, [rsi + 4*rbx]
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=invalidMovs]{INVALID movs}
+\lstset{language=myasm}
+\begin{itemize}
+\item{} \lstinline|mov rax, [r11 - rcx]|
+    \begin{itemize}
+    \item can't subtract register
+    \end{itemize}
+\item{} \lstinline|mov [rax + r5 + rdi], rbx|
+\item{} \lstinline|mov [4*rax + 2*rbx], rcx| 
+    \begin{itemize}
+    \item only multiply one register
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=valueLengths]{memory access lengths}
+\lstset{language=myasm,style=small}
+\begin{itemize}
+\item move one byte:
+\begin{lstlisting}
+mov bl, [rax]
+mov [rax], bl
+mov BYTE PTR [rax], bl
+mov BYTE PTR [bl], 42
+\end{lstlisting}
+\item move four bytes:
+\begin{lstlisting}
+mov ebx, [rax]
+mov [rax], ebx
+mov DWORD PTR [rax], ebx
+mov DWORD PTR [bl], 10
+\end{lstlisting}
+\item (BYTE, WORD, DWORD, QWORD)
+\end{itemize}
+\end{frame}

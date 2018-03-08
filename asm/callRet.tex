@@ -1,0 +1,30 @@
+\begin{frame}[fragile,label=callExpand]{call}
+\begin{lstlisting}
+        call LABEL
+        ...
+\end{lstlisting}
+{\large is about the same as:}
+\begin{lstlisting}
+        push after_this_call
+        jmp LABEL
+after_this_call:
+        ...
+\end{lstlisting}
+\hrule
+\large pushed address called the ``return address''
+\end{frame}
+
+\begin{frame}[fragile,label=retExpand]{call/ret}
+\begin{itemize}
+\item \texttt{call LABEL} 
+    \begin{itemize}
+    \item push next instruction address (``return address'') to stack
+    \item jump to LABEL
+    \end{itemize}
+\item \texttt{ret} --- opposite of call
+    \begin{itemize}
+    \item pop address from the stack
+    \item jump to that address
+    \end{itemize}
+\end{itemize}
+\end{frame}

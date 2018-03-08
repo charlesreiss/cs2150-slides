@@ -1,0 +1,154 @@
+\typeout{(body.tex)}
+
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\section{history}
+
+\input{x86History}
+
+% FIXME: 4, 8, 16, 32, 64-bit words
+    % AMD64
+    % asm compatiblity
+
+    % AMD/Intel/others
+
+\section{preliminary note: asm syntax}
+
+\input{asmSyntax}
+
+\section{x86 registers}
+
+\input{x86Registers}
+
+% FIXME: possible mov EAX, 1 versus mov AX, 1 note
+
+\section{x86 fetch/execute cycle}
+
+\input{x86FetchExecute}
+
+\section{assembly syntax}
+
+\subsection{directives for constants}
+% FIXME: + section .data / section .text
+% FIXME: + labels
+
+\input{asmConstants}
+
+\subsection{mov}
+
+\input{mov}
+
+\subsection{addressing modes}
+
+\input{specifyPointer}
+
+\subsection{mov example}
+
+\input{movExample}
+
+% FIXME: missing "is mov valid quiz?"
+
+\section{selected instructions}
+
+\subsection{(more) data movement}
+
+\subsubsection{push/pop}
+
+\input{pushPop}
+
+\subsection{arithmetic instructions}
+
+\subsubsection{add/sub}
+
+\input{addSub}
+
+\subsubsection{inc/dec}
+
+\input{incDec}
+
+\subsubsection{imul/idiv/mul/div}
+
+\input{mulDiv}
+
+\subsubsection{lea}
+
+\input{lea}
+
+% FIXME: lea examples
+
+\subsection{logical instructions}
+
+\subsubsection{and/or/xor}
+
+\input{andOrXor}
+
+\subsection{control flow}
+
+\subsubsection{jmp}
+
+\input{jmp}
+
+\subsubsection{cmp+jxx}
+
+\input{condJmp}
+
+\subsubsection{call/ret}
+
+\input{callRet}
+
+\section{C to assembly example}
+
+\section{calling convention}
+
+\subsection{example call in C}
+
+\subsection{calls and the stack}
+    % FIXME: stack grows down
+
+\subsection{calling convention questions}
+
+\subsection{caller v callee}
+
+\subsection{register usage}
+
+\subsection{caller rules}
+    
+    % prologue
+
+    % epilog
+
+    % summary
+
+    % FIXME: example
+
+\subsection{callee rules}
+
+    % FIXME: example
+
+\section{activation records}
+
+\section{memory layout}
+
+\section{buffer overflows}
+
+\section{on frame pointers}
+
+\section{x86 examples}
+
+\subsection{note: godbolt.org}
+
+\subsection{nasm for clang output}
+
+\subsection{absolute value}
+
+\subsection{diversion: AT\&T syntax and clang}
+
+\subsection{max}
+
+\subsection{compare string}
+
+\subsection{fib}
+
+\section{varargs}

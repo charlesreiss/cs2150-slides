@@ -1,0 +1,73 @@
+\begin{frame}[fragile,label=mult]{multiply}
+\begin{lstlisting}
+imul <first>, <second>
+imul RAX, RBX
+imul RAX, [RCX + RDX]
+\end{lstlisting}
+\begin{itemize}
+\item first $\leftarrow$ first $\times$ second
+\item first operand \myemph{must} be register
+\end{itemize}
+\begin{lstlisting}
+imul first, second, third
+imul RAX, RBX, 42
+imul RAX, [RCX + RDX], 42
+\end{lstlisting}
+\begin{itemize}
+\item first $\leftarrow$ second $\times$ third
+\item first operand \myemph{must} be register
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=bigMult]{multiply (with big result)}
+\begin{lstlisting}
+imul <first>
+imul RBX
+imul QWORD PTR [RCX + RDX]
+\end{lstlisting}
+\begin{itemize}
+\item \{RDX, RAX\} $\leftarrow$ RAX $\times$ first
+\begin{itemize}
+\item RDX gets most significant 64 bits
+\item RAX gets least signiciant 64 bits
+\end{itemize}
+\end{itemize}
+\begin{lstlisting}
+imul EBX
+imul DWORD PTR [RCX + RDX]
+\end{lstlisting}
+\begin{itemize}
+\item \{EDX, EAX\} $\leftarrow$ EAX $\times$ first
+\begin{itemize}
+\item EDX gets most significant 32 bits
+\item EAX gets least signiciant 32 bits
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{multiply --- signed/unsigned}
+\begin{itemize}
+\item with result size = source size: \\
+signed and unsigned multiply is the same
+\item with bigger results: \\
+\texttt{imul} --- signed multiply \\
+\texttt{mul} --- unsigned multiply
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=div]{divide}
+\begin{lstlisting}
+idiv <first>
+idiv RBX
+idiv QWORD PTR [RCX + RDX]
+\end{lstlisting}
+\begin{itemize}
+\item RAX $\leftarrow$ \{RDX,RAX\} $\div$ first
+\item RDX $\leftarrow$ \{RDX,RAX\} $\mod$ first
+\item 128-bit divided by 64-bit
+    \begin{itemize}
+    \item or 64-bit by 32-bit with 32-bit first operand, etc.
+    \end{itemize}
+\item also \lstinline|div <first>| --- same, but unsigned division
+\end{itemize}
+\end{frame}

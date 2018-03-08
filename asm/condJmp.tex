@@ -1,0 +1,76 @@
+\begin{frame}[fragile,label=condTest]{conditon testing}
+\begin{lstlisting}
+cmp <first>, <second>
+\end{lstlisting}
+\begin{itemize}
+\item compare first and second
+    \begin{itemize}
+    \item (compute first - second, compare to \texttt{0})
+    \end{itemize}
+\item set \textit{flags} AKA \textit{machine status word} based on result
+\end{itemize}
+\begin{lstlisting}
+je label
+\end{lstlisting}
+\begin{itemize}
+\item if (compare result was equal) go to label
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=condJmpEx]{conditional jmp example}
+\begin{lstlisting}[language=C++]
+if (RAX > 4)
+    stuff();
+\end{lstlisting}
+\hrule
+\begin{lstlisting}[language=myasm]
+            cmp RAX, 4
+            jle skip_call
+            call stuff
+skip_call:  ...
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=jumpConditions]{jump conditions and cmp}
+\begin{lstlisting}
+cmp A, B
+jXX label
+\end{lstlisting}
+\begin{itemize}\item $R$ = $A - B$\end{itemize}
+\small
+\begin{tabular}{llll}
+\tt je & equal & $R = 0$ or $A = B$\\
+\tt jz & zero & $R = 0$ or $A = B$\\
+\tt jne & not equal & $R \not= 0$ or $A \not= B$\\
+\tt jl & less than & $A < B$ (signed) \\
+\tt jle & less than or equal & $A \le B$ (signed)\\
+\tt jg & greater than & $A > B$ (signed) \\
+\tt jb & less than (unsigned) & $A < B$ (unsigned)\\
+\tt ja & greater than (unsigned) & $A > B$ (unsigned) \\
+\tt js & sign bit set & $R < 0$ \\
+\tt jns & sign bit unset & $R \ge 0$ \\
+\ldots & \ldots & \ldots
+\end{tabular}
+\end{frame}
+
+\begin{frame}[fragile,label=otherFlags]{other flag setting instructions}
+\begin{itemize}
+\item but\ldots most arithmetic instructions set flags used by conditional jump
+    \begin{itemize}
+    \item basically based on comparing result to 0
+    \end{itemize}
+\item e.g.:
+\end{itemize}
+\begin{lstlisting}
+loop:   add RBX, RBX
+        sub RAX, 1
+        jne loop
+\end{lstlisting}
+is the same as
+\begin{lstlisting}
+loop:   add RBX, RBX
+        sub RAX, 1
+        cmp RAX, 0
+        jne loop
+\end{lstlisting}
+\end{frame}

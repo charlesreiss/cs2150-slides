@@ -1,0 +1,55 @@
+\begin{frame}[fragile,label=pushpop]{push/pop}
+\begin{itemize}
+    \item \lstinline|RSP| --- ``top'' of stack which \myemph{grows down}
+    \item \lstinline|push RBX|
+    \begin{itemize}
+        \item \lstinline|RSP| $\leftarrow$ \lstinline|RSP| $-\;8$
+        \item memory[\lstinline|RSP|] $\leftarrow$ \lstinline|RBX|
+    \end{itemize}
+    \item \lstinline|pop RBX|
+    \begin{itemize}
+        \item \lstinline|RBX| $\leftarrow$ memory[\lstinline|RSP|]
+        \item \lstinline|RSP| $\leftarrow$ \lstinline|RSP| $+\;8$
+    \end{itemize}
+    \item also okay: \\ \lstinline|push [RAX + RBX]|, etc. \\ \lstinline|push 42|, etc.
+\end{itemize}
+\begin{tikzpicture}[overlay,remember picture]
+    \tikzset{offstack/.style={fill=black!25}}
+    \matrix[matrix of nodes,row sep=-\pgflinewidth,
+            nodes={font=\scriptsize,draw,rectangle,minimum width=4cm},
+            above left=.5cm of current page.south east] (stack) {
+            \vdots{} \\
+        memory[\lstinline|RSP| + 16] \\
+        memory[\lstinline|RSP| + 8] \\
+        memory[\lstinline|RSP|] \\
+        |[offstack]| memory[\lstinline|RSP| - 8] \\
+        |[offstack]| memory[\lstinline|RSP| - 16] \\
+    };
+    \node[left=1cm of stack-4-1,font=\small] (popMarker) {value to pop};
+    \node[left=1cm of stack-5-1,font=\small] (pushMarker) {where to push};
+    \draw[very thick] ([xshift=-1cm]stack-4-1.south west) -- ([xshift=1cm]stack-4-1.south east);
+    %\draw[very thick,black!50,dotted] ([xshift=-1cm]stack-3-1.south west) -- ([xshift=1cm]stack-3-1.south east);
+    %\draw[very thick,black!50,dotted] ([xshift=-1cm]stack-5-1.south west) -- ([xshift=1cm]stack-5-1.south east);
+    \draw[-Latex,thick,double,black!60] ([xshift=-.2cm]stack-1-1.north west) -- ([xshift=-.2cm]stack-3-1.west)
+        node[midway,left,align=right,font=\scriptsize]{stack\\growth};
+    \draw[-Latex] (popMarker) -- (stack-4-1.west);
+    \draw[-Latex] (pushMarker) -- (stack-5-1.west);
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=pushPopRepl]{push/pop replacement}
+\lstset{language=myasm}
+\begin{itemize}
+\item instead of:
+\begin{lstlisting}
+push RAX
+\end{lstlisting}
+\item could write:
+\begin{lstlisting}
+sub RSP, 8
+mov [RSP], RAX
+\end{lstlisting}
+\vspace{.5cm}
+\item push/pop instructions are for convenience
+\end{itemize}
+\end{frame}
