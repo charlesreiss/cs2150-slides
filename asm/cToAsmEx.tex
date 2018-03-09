@@ -1,0 +1,88 @@
+\begin{frame}[fragile,label=cToAsmEx]{C to assembly example}
+\begin{tikzpicture}
+\tikzset{
+    codeInner/.style={inner sep=0mm},
+    codeOuter/.style={draw,thick},
+}
+\node[codeInner] (cCodeA) {
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+int n = 5;
+int i = 1;
+int sum = 0;
+\end{lstlisting}
+};
+\node[codeInner,anchor=north west] (cCodeB)  at (cCodeA.south west) {
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+while (i <= n) {
+\end{lstlisting}
+};
+
+\node[codeInner,anchor=north west] (cCodeC)  at (cCodeB.south west) {
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+    sum += i;
+    i++;
+\end{lstlisting}
+};
+
+\node[codeInner,anchor=north west] (cCodeD)  at (cCodeC.south west) {
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+}
+\end{lstlisting}
+};
+\node[codeOuter,fit=(cCodeA) (cCodeB) (cCodeC) (cCodeD)] (cCode) {};
+
+\node[codeInner,anchor=north west] (asmCodeA) at ([xshift=3cm]cCodeA.north east) {
+\lstset{language=myasm,style=small}
+\begin{lstlisting}
+section .data
+n       DQ  5
+i       DQ  1
+sum     DQ  0
+\end{lstlisting}
+};
+\node[codeInner,anchor=north west] (asmCodeB) at (asmCodeA.south west) {
+\lstset{language=myasm,style=small}
+\begin{lstlisting}
+loop:   mov RCX, [i]
+        cmp RCX, [n]
+        jg endOfLoop
+\end{lstlisting}
+};
+
+\node[codeInner,anchor=north west] (asmCodeC) at (asmCodeB.south west) {
+\lstset{language=myasm,style=small}
+\begin{lstlisting}
+        add [sum], RCX
+        inc QWORD [i]
+\end{lstlisting}
+};
+\node[codeInner,anchor=north west] (asmCodeD) at (asmCodeC.south west) {
+\lstset{language=myasm,style=small}
+\begin{lstlisting}
+        jmp loop
+endOfLoop:
+\end{lstlisting}
+};
+
+\node[codeOuter,fit=(asmCodeA) (asmCodeB) (asmCodeC) (asmCodeD)] (asmCode) {};
+
+\foreach \letter/\hiColor/\hiOn in {A/green!70!black/2,B/blue!70!black/4,C/violet/5,D/orange!70!black/6} {
+    \begin{visibleenv}<\hiOn->
+    \node[inner sep=-.1mm,fit={(asmCode\letter) ([xshift=-1mm]asmCode\letter.east -| asmCode.east)},draw,very thick,\hiColor] (boxAsmCode\letter) {};
+    \node[inner sep=-.1mm,fit={(cCode\letter) ([xshift=-1mm]cCode\letter.east -| cCode.east)},draw,very thick,\hiColor] (boxCCode\letter) {};
+    \draw[\hiColor,thick] (boxCCode\letter.north east) -- (boxAsmCode\letter.north west);
+    \draw[\hiColor,thick] (boxCCode\letter.south east) -- (boxAsmCode\letter.south west);
+    \end{visibleenv}
+}
+\begin{visibleenv}<3>
+\node[draw=red,align=left,ultra thick,below=.25cm of asmCodeB] {
+\lstinline|cmp [i], [n]| is not allowed \\
+only one memory operand per (most) instructions
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
