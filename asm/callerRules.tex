@@ -1,0 +1,111 @@
+\begin{frame}[fragile,label=callerRulesStart]{a function call}
+\begin{tikzpicture}
+\tikzset{
+    cCode/.style={align=left},
+    asmCodePart/.style={align=left,inner sep=0mm},
+    explain/.style={align=left,text=green!60!black},
+    explainBrace/.style={decorate,decoration={brace},very thick,green!30!black},
+}
+
+\node[cCode] (asC) {
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+...
+globalVar =
+    foo(1, 2, 3, 4,
+        5, 6, 7, 8);
+...
+\end{lstlisting}
+};
+\node[asmCodePart,anchor=north west] (asmSave)at ([xshift=.25cm]asC.north east) {
+\lstset{language=myasm,style=smaller}
+\begin{lstlisting}
+// assuming R11
+// used for
+// local var
+// in caller
+push R11
+\end{lstlisting}
+};
+\begin{visibleenv}<2->
+\node[explain,right=0cm of asmSave] {
+    save important registers \\
+    \texttt{foo} \textit{might} change
+};
+\draw[explainBrace] ([xshift=0cm]asmSave.north east) -- ([xshift=0cm]asmSave.south east);
+\end{visibleenv}
+\node[asmCodePart,anchor=north west] (asmArgs) at (asmSave.south west) {
+\lstset{language=myasm,style=smaller}
+\begin{lstlisting}
+mov RDI, 1
+mov RSI, 2
+mov RDX, 3
+mov RCX, 4
+mov R8, 5
+mov R9, 6
+push 8
+push 7
+\end{lstlisting}
+};
+\begin{visibleenv}<3->
+\node[explain,right=.5cm of asmArgs] {
+    place arguments in registers \\
+    and (if necessary) on stack
+};
+\draw[explainBrace] ([xshift=.5cm]asmArgs.north east) -- ([xshift=.5cm]asmArgs.south east);
+\end{visibleenv}
+\node[asmCodePart,anchor=north west] (asmCall) at (asmArgs.south west) {
+\lstset{language=myasm,style=smaller}
+\begin{lstlisting}
+call foo
+\end{lstlisting}
+};
+\begin{visibleenv}<4->
+\node[explain,right=0cm of asmCall] {$\leftarrow$ and actually call function};
+\end{visibleenv}
+\node[asmCodePart,anchor=north west] (asmRestoreArg) at (asmCall.south west) {
+\lstset{language=myasm,style=smaller}
+\begin{lstlisting}
+add RSP, 16
+\end{lstlisting}
+};
+\begin{visibleenv}<5->
+\node[explain,right=0cm of asmRestoreArg] {$\leftarrow$ and pop args from stack (if any)};
+\end{visibleenv}
+\node[asmCodePart,anchor=north west] (asmRestore) at (asmRestoreArg.south west) {
+\lstset{language=myasm,style=smaller}
+\begin{lstlisting}
+pop R11
+\end{lstlisting}
+};
+\begin{visibleenv}<2->
+\node[explain,right=1cm of asmRestore] {
+    \ldots and restore saved regs
+};
+\draw[explainBrace] ([xshift=1cm]asmRestore.north east) -- ([xshift=1cm]asmRestore.south east);
+\end{visibleenv}
+\node[asmCodePart,anchor=north west] (asmCopy) at (asmRestore.south west) {
+\lstset{language=myasm,style=smaller}
+\begin{lstlisting}
+mov [globalVar], RAX
+\end{lstlisting}
+};
+\begin{visibleenv}<6->
+\node[inner sep=0.1mm,below right=0cm of asmCopy,xshift=-.5cm,explain] {
+    \ldots and use return value
+};
+\end{visibleenv}
+\end{tikzpicture}
+% FIXME: need annotations for each
+\end{frame}
+
+\begin{frame}{caller task summarized}
+\begin{itemize}
+\item save registers that the function might change (consult list)
+\item place parameters in registers, stack
+\item call 
+\item remove any parameters from stack
+\item restore registers that the function might change
+\item use return value in RAX
+\end{itemize}
+\end{frame}

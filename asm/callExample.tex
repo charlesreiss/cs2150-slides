@@ -1,0 +1,30 @@
+\begin{frame}[fragile,label=callExample]{call example}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+int max(int x, int y) {
+    int theMax;
+    if (x > y) 
+        theMax = x;
+    else
+        theMax = y;
+    return theMax;
+}
+
+int main() {
+    int maxVal, a = 5, b = 6;
+    maxVal = max(a, b);
+    cout << "max value: " << maxVal << endl;
+    return 0;
+}
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+\begin{visibleenv}<2->
+\node[align=left,draw=red,ultra thick,anchor=north east] at ([xshift=-1cm,yshift=-1cm]current page.north east) {
+    where do arguments go? \\ ~ \\
+    where do local variables go?  \\ ~ \\
+    where does the return value go? \\ ~ \\
+    how does return know where to go? 
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}

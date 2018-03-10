@@ -1,0 +1,71 @@
+\begin{frame}{calling conventions}
+\begin{itemize}
+\item calling convention: \myemph{rules} about how function calls work
+\item \myemph{choice of compiler and OS} NOT the processor itself
+\item \ldots but processor might make instructions to help
+    \begin{itemize}
+    \item x86-64: \texttt{call}, \texttt{ret}, \texttt{push}, \texttt{pop}
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{basic calling convention questions (1)}
+\begin{itemize}
+\item how does return know where to go?
+    \begin{itemize}
+    \item<2-> x86-64: on the stack (otherwise can't use \texttt{call}/\texttt{ret})
+    \end{itemize}
+\item where do arguments go?
+    \begin{itemize}
+    \item<3-> Linux+x86-64: arguments 1-6: \texttt{RDI}, \texttt{RSI}, \texttt{RDX}, \texttt{RCX}, \texttt{R8}, \texttt{R9}
+    \item<3-> Linux+x86-64: arguments 7-: push on the stack (\textit{last} argument first)
+    \item<3-> (exceptions: objects that don't fit in a register, floating point, \ldots)
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{basic calling convention questions (2)}
+\begin{itemize}
+\item where do local variables go?
+    \begin{itemize}
+    \item<2-> Linux+x86-64: in registers (if room) or on the stack
+    \item<2-> caveat: \myemph<4>{what registers can function calls change?}
+    \end{itemize}
+\item where does the return value go?
+    \begin{itemize}
+    \item<3-> Linux+x86-64: \texttt{RAX}
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{saved registers}
+\begin{itemize}
+\item what registers can function calls change?
+    \begin{itemize}
+    \item Linux+x86-64: \texttt{RAX}, \texttt{RCX}, \texttt{RDX}, \texttt{RSI}, \texttt{RDI}, \texttt{R8}, \texttt{R9}, \texttt{R10}, \texttt{R11}, floating point registers
+    \item if using for local variables --- be careful about function calls
+    \end{itemize}
+\item other registers: must have \myemph{same value when function returns}
+    \begin{itemize}
+    \item if using for local variables --- save old value and restore before returning
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=callerVCallee]{caller versus callee}
+\lstset{language=C++}
+\begin{lstlisting}
+void foo() {
+    ...
+}
+
+int main() {
+    foo();
+    return 0;
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{main} is \textit{caller}
+\item \texttt{foo} is \textit{callee}
+\end{itemize}
+\end{frame}

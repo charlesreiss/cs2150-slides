@@ -1,0 +1,90 @@
+\begin{frame}[fragile,label=usingTheStack]{return addresses using a stack}
+\begin{tikzpicture}
+\node[draw] (maxAsm) {
+\lstset{
+    language=myasm,
+    style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+    moredelim={**[is][\btHL<all:6>]{@6}{6@}},
+    moredelim={**[is][\btHL<all:7>]{@7}{7@}},
+    moredelim={**[is][\btHL<all:8>]{@8}{8@}},
+    moredelim={**[is][\btHL<all:9>]{@9}{9@}},
+}
+\begin{lstlisting}
+max:    @5...5@
+        @6...6@
+        @7ret7@
+
+main:   @2...2@
+        @3...3@
+        @4call max4@
+after:  @8...8@
+        @9ret9@
+\end{lstlisting}
+};
+\matrix[tight matrix,nodes={text width=6cm,font=\small},right=1.75cm of maxAsm] (stack) {
+    |[alias=retMain,visible on=<2->]| return address for \texttt{main} (OS) \\
+    |[alias=tempMain,visible on=<3-8>]| temporary storage for main \\
+    |[alias=callOther,visible on=<4-8>]|  other things related to call??? \\
+    |[alias=retMax,visible on=<5-7>]| return address for \texttt{max} (\texttt{after:}) \\
+    |[alias=maxStorage,visible on=<6>]| temporary storage for max \\
+};
+\begin{scope}[every node/.style={align=left}]
+\begin{visibleenv}<2>
+\node[above=0cm of stack] {stack when \texttt{main} starts:};
+\node[right=0cm of retMain] {$\leftarrow$ RSP};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[above=0cm of stack] {stack in the middle of \texttt{main}:};
+\node[right=0cm of tempMain] {$\leftarrow$ RSP};
+\end{visibleenv}
+\begin{visibleenv}<4>
+\node[above=0cm of stack] {stack just before \lstinline|call max|:};
+\node[right=0cm of callOther] {$\leftarrow$ RSP};
+\end{visibleenv}
+\begin{visibleenv}<5>
+\node[above=0cm of stack] {stack just after \lstinline|call max|:};
+\node[right=0cm of retMax] {$\leftarrow$ RSP};
+\end{visibleenv}
+\begin{visibleenv}<6>
+\node[above=0cm of stack] {stack in the middle of \texttt{max}:};
+\node[right=0cm of maxStorage] {$\leftarrow$ RSP};
+\end{visibleenv}
+\begin{visibleenv}<7>
+\node[above=0cm of stack] {stack just before \texttt{max}'s \lstinline|ret|:};
+\node[right=0cm of retMax] {$\leftarrow$ RSP};
+\end{visibleenv}
+\begin{visibleenv}<8>
+\node[above=0cm of stack] {stack just after \texttt{max}'s \lstinline|ret|:};
+\node[right=0cm of callOther] {$\leftarrow$ RSP};
+\end{visibleenv}
+\begin{visibleenv}<9>
+\node[above=0cm of stack] {stack just before \texttt{main}'s \lstinline|ret|:};
+\node[right=0cm of retMain] {$\leftarrow$ RSP};
+\end{visibleenv}
+\end{scope}
+\draw[very thick,-Latex] ([xshift=-.25cm,yshift=-.5cm]stack.north west) -- ([xshift=-.25cm,yshift=-.5cm]stack.south west)
+    node[below,xshift=1cm]{smaller addresses};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{function calls use the stack}
+\begin{itemize}
+\item ``the'' stack
+    \begin{itemize}
+    \item convention: RSP points to top
+    \item grows `down' (towards address $0$)
+    \item used by \texttt{pop}, \texttt{push}, \texttt{call}, \texttt{ret}
+    \end{itemize}
+\item used to implement function calls
+\item main reason: support \myemph{recursive calls}
+\item where do (place to return/arguments/local variables/etc.) go?
+    \begin{itemize}
+    \item when in doubt --- use the stack
+    \item optimization: sometimes use registers
+    \end{itemize}
+\end{itemize}
+\end{frame}

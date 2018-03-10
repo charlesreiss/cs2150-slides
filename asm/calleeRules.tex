@@ -1,0 +1,328 @@
+\begin{frame}[fragile,label=calleeSample]{callee code example (naive version)}
+\begin{tikzpicture}
+\tikzset{
+    cCode/.style={align=left},
+    asmCodePart/.style={align=left,inner sep=0mm},
+    explain/.style={align=left,text=green!60!black},
+    explainBrace/.style={decorate,decoration={brace},very thick,green!30!black},
+}
+\node (exampleCode) {
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{lstlisting}
+long myFunc(long a, long b, long c) {
+    long result = 0;
+    result += a;
+    result += b;
+    result += c;
+    return result;
+}
+\end{lstlisting}
+};
+\node[anchor=north west] (versionNaive) at (exampleCode.south west){
+\lstset{language=myasm,style=smaller}
+\begin{lstlisting}
+myFunc:
+    // allocate space for result
+    sub RSP, 8
+    mov QWORD PTR [RSP], 0   // reuslt = 0
+    add QWORD PTR [RSP], RDI // result += a
+    add QWORD PTR [RSP], RSI // result += b
+    add QWORD PTR [RSP], RDX // result += c
+    mov RAX, QWORD PTR [RSP] // ret val = result
+    // deallocate space
+    sub RSP, 8
+    ret
+\end{lstlisting}
+};
+\matrix[tight matrix,inner sep=0.1mm,draw, very thick,fill=white,
+    column 1/.style={nodes={draw=none, text width=3cm,font=\tt\small}},
+    column 2/.style={nodes={text width=6cm,minimum height=.45cm}},
+    row 1/.style={nodes={draw=none,font=\bfseries}}, anchor=south east] at ([xshift=4cm,yshift=-.75cm]versionNaive.north east) {
+    address \& value \\
+    |[draw=none]| \ldots \\
+    0xF0000000 \& |[draw=none]| (caller's stuff) \\
+    0xEFFFFFF8 \& return address for myFunc \\
+    0xEFFFFFF0 \& value of result \\
+    0xEFFFFFE8 \& |[draw=none]| (next stack allocation) \\
+    \ldots \\
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=calleeSampleSuperNaive]{callee code example (no optimizations)}
+\vspace{-.5cm}
+\begin{tikzpicture}
+\tikzset{
+    cCode/.style={align=left},
+    asmCodePart/.style={align=left,inner sep=0mm},
+    explain/.style={align=left,text=green!60!black},
+    explainBrace/.style={decorate,decoration={brace},very thick,green!30!black},
+}
+\node[anchor=north west] (versionNaive) {
+\lstset{language=myasm,style=smaller}
+\begin{lstlisting}
+myFunc:
+  // allocate memory for a, b, c, result
+  sub     rsp, 32
+  mov     qword ptr [rsp + 24], rdi // copy a from arg
+  mov     qword ptr [rsp + 16], rsi // copy b from arg
+  mov     qword ptr [rsp + 8], rdx  // copy c from arg
+  mov     qword ptr [rsp], 0        // result = 0
+  mov     rdx, qword ptr [rsp + 24] // rdx = a
+  add     rdx, qword ptr [rsp]      // rdx += result
+  mov     qword ptr [rsp], rdx      // result = rdx
+  mov     rdx, qword ptr [rsp + 16] // rdx = b
+  add     rdx, qword ptr [rsp]      // rdx += result
+  mov     qword ptr [rsp], rdx      // result = rdx
+  mov     rdx, qword ptr [rsp + 8]  // ///
+  add     rdx, qword ptr [rsp]
+  mov     qword ptr [rsp], rdx
+  mov     rax, qword ptr [rsp]
+  // dealocate memory for a, b, c, result
+  add     rsp, 32
+  ret
+\end{lstlisting}
+};
+\begin{visibleenv}<2->
+\matrix[tight matrix,inner sep=0.1mm,draw, very thick,fill=white,
+    column 1/.style={nodes={draw=none, text width=3cm,font=\tt\small}},
+    column 2/.style={nodes={text width=6cm,minimum height=.45cm}},
+    row 1/.style={nodes={draw=none,font=\bfseries}}, anchor=north east] at ([xshift=4cm,yshift=-4cm]versionNaive.north east) {
+    address \& value \\
+    |[draw=none]| \ldots \\
+    0xF000 \& |[draw=none]| (caller's stuff) \\
+    0xEFF8 \& return address for myFunc \\
+    0xEFF0 \& value of a\\
+    0xEFE8 \& value of b \\
+    0xEFE0 \& value of c \\
+    0xEFD8 \& value of result \\
+    \ldots \\
+};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[below=-2cm of versionNaive,draw=red,ultra thick,align=left,fill=white] {
+    pretty inefficient --- but obeys calling convention \\
+    one thing \texttt{clang} can generate without optimizations
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=calleeSampleNormalSave]{callee code example (allocate registers)}
+\begin{tikzpicture}
+\tikzset{
+    cCode/.style={align=left},
+    asmCodePart/.style={align=left,inner sep=0mm},
+    explain/.style={align=left,text=green!60!black},
+    explainBrace/.style={decorate,decoration={brace},very thick,green!30!black},
+}
+\node (exampleCode) {
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{lstlisting}
+long myFunc(long a, long b, long c) {
+    long result = 0;
+    result += a;
+    result += b;
+    result += c;
+    return result;
+}
+\end{lstlisting}
+};
+\node[anchor=north west] (versionNaive) at (exampleCode.south west){
+\lstset{language=myasm,style=smaller}
+\begin{lstlisting}
+myFunc:
+    push RBX  // save old RBX, which we've decided to use for c
+    push RBP  // save old RBP, which we've decided to use for b
+    push R12  // save old R12, which we've decided to use for result
+    mov R8, RDI              // store a in R8
+    mov RBP, RSI             // store b in RBP
+    mov RBX, RDX             // store c in RBX
+    mov R12, 0               // result = 0
+    add R12, R8     // result += a
+    add R12, RBP    // result += b
+    add R12, RBX    // result += c
+    mov RAX, R12    // ret val = result
+    pop R12   // restore old R12
+    pop RBP
+    pop RBX
+    ret
+\end{lstlisting}
+};
+\matrix[tight matrix,inner sep=0.1mm,draw, very thick,fill=white,
+    column 1/.style={nodes={draw=none, text width=3cm,font=\tt\small}},
+    column 2/.style={nodes={text width=6cm,minimum height=.45cm}},
+    row 1/.style={nodes={draw=none,font=\bfseries}}, anchor=south east] at ([xshift=4cm,yshift=-.75cm]versionNaive.north east) {
+    address \& value \\
+    |[draw=none]| \ldots \\
+    0xF0000000 \& |[draw=none]| (caller's stuff) \\
+    0xEFFFFFF8 \& return address for myFunc \\
+    0xEFFFFFF0 \& saved RBX \\
+    0xEFFFFFF0 \& saved RBP \\
+    0xEFFFFFF0 \& saved R12 \\
+    \ldots \\
+};
+\begin{visibleenv}<3>
+\node[below=-2cm of versionNaive,draw=red,ultra thick,align=left,fill=white] {
+    didn't need to use callee-saved registers \\
+    but if we do: need to save/restore them --- just in case \\
+    note: \texttt{R8} not callee-saved, so not saved
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=calleeSampleGood]{callee code example (good version)}
+\begin{tikzpicture}
+\tikzset{
+    cCode/.style={align=left},
+    asmCodePart/.style={align=left,inner sep=0mm},
+    explain/.style={align=left,text=green!60!black},
+    explainBrace/.style={decorate,decoration={brace},very thick,green!30!black},
+}
+\node (exampleCode) {
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{lstlisting}
+long myFunc(long a, long b, long c) {
+    long result = 0;
+    result += a;
+    result += b;
+    result += c;
+    return result;
+}
+\end{lstlisting}
+};
+\node[anchor=north west] (versionNaive) at (exampleCode.south west){
+\lstset{language=myasm,style=smaller}
+\begin{lstlisting}
+myFunc:
+  lea rax, [rdi + rsi]  // return value = a + b
+  add rax, rdx          // return value += c 
+  ret
+\end{lstlisting}
+};
+\matrix[tight matrix,inner sep=0.1mm,draw, very thick,fill=white,
+    column 1/.style={nodes={draw=none, text width=3cm,font=\tt\small}},
+    column 2/.style={nodes={text width=6cm,minimum height=.45cm}},
+    row 1/.style={nodes={draw=none,font=\bfseries}}, anchor=south east] at ([xshift=4cm,yshift=0cm]versionNaive.north east) {
+    address \& value \\
+    |[draw=none]| \ldots \\
+    0xF0000000 \& |[draw=none]| (caller's stuff) \\
+    0xEFFFFFF8 \& return address for myFunc \\
+    0xEFFFFFE8 \& |[draw=none]| (next stack allocation) \\
+    \ldots \\
+};
+\begin{visibleenv}<3>
+\node[below=0cm of versionNaive,draw=red,ultra thick,align=left,fill=white] {
+    what \texttt{clang} generates with optimizations
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{writing called functions}
+\begin{itemize}
+\item save any callee-saved registers function uses
+    \begin{itemize}
+    \item \texttt{RBP}, \texttt{RBX}, \texttt{R12}-\texttt{R15}, 
+    \end{itemize}
+\item allocate stack space for local variables or temporary storage
+\item (actual function body)
+\item place return address in RAX
+\item deallocate stack space
+\item restore any saved registers
+\end{itemize}
+\end{frame}
+
+\begin{frame}{calling convention versus procedure}
+\begin{itemize}
+\item calling convention is about:
+    \begin{itemize}
+    \item what registers change
+    \item what parts of the stack change
+    \item where arguments/return values are
+    \end{itemize}
+\item it says what you \textit{can} do and \textit{can} rely on functions doing for you
+    \begin{itemize}
+    \item but there are many ways to comply with it
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=calleeSampleWeirdSave]{callee code example (save registers weirdly)}
+\begin{tikzpicture}
+\tikzset{
+    cCode/.style={align=left},
+    asmCodePart/.style={align=left,inner sep=0mm},
+    explain/.style={align=left,text=green!60!black},
+    explainBrace/.style={decorate,decoration={brace},very thick,green!30!black},
+}
+\node (exampleCode) {
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{lstlisting}
+long myFunc(long a, long b, long c) {
+    long result = 0;
+    result += a;
+    result += b;
+    result += c;
+    return result;
+}
+\end{lstlisting}
+};
+\node[anchor=north west] (versionNaive) at (exampleCode.south west){
+\lstset{language=myasm,style=smaller}
+\begin{lstlisting}
+myFunc:
+    mov R8, RBX // save old RBX, but to R8
+    mov R9, RBP // save old RBP, but to R9
+    push R12  // save old R12, which we've decided to use for result
+    mov RAX, RDI             // store a in RAX
+    mov RBP, RSI             // store b in RBP
+    mov RBX, RDX             // store c in RBX
+    mov R12, 0               // result = 0
+    add R12, RAX    // result += a
+    add R12, RBP    // result += b
+    add R12, RBX    // result += c
+    mov RAX, R12    // ret val = result
+    mov RBX, R8 // restore old RBX
+    pop R12   // restore old R12
+    mov RBP, R9 // restore old RBP
+    ret
+\end{lstlisting}
+};
+\matrix[tight matrix,inner sep=0.1mm,draw, very thick,fill=white,
+    column 1/.style={nodes={draw=none, text width=3cm,font=\tt\small}},
+    column 2/.style={nodes={text width=6cm,minimum height=.45cm}},
+    row 1/.style={nodes={draw=none,font=\bfseries}}, anchor=south east] at ([xshift=4cm,yshift=-.75cm]versionNaive.north east) {
+    address \& value \\
+    |[draw=none]| \ldots \\
+    0xF0000000 \& |[draw=none]| (caller's stuff) \\
+    0xEFFFFFF8 \& return address for myFunc \\
+    0xEFFFFFF0 \& |[draw=none]| (next stack allocation) \\
+    \ldots \\
+};
+
+\begin{visibleenv}<3>
+\node[below=-2cm of versionNaive,draw=red,ultra thick,align=left,fill=white] {
+    calling convention doesn't specify \textit{how} you save/restore registers \\
+    anything is fine as long as values are restored
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+
