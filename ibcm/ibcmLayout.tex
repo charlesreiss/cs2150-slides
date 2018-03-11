@@ -77,7 +77,7 @@
     \begin{visibleenv}<6>
         \draw[red,ultra thick] (b-11 |- i-1) rectangle (d-10 |- i-2);
         \node[anchor=west,fill=white,draw=red,ultra thick,align=left] (ioOps) at ([xshift=.5cm]b-9 |- t-1) {
-            \begin{tabular}{l|l}
+            \begin{tabular}{l|l|l}
                 I/O op & name & effect \\ \hline \hline
                 {\tt 00} & \tt readH & read hex word\\ \hline
                 {\tt 01} & \tt readC & read ASCII character \\
@@ -113,7 +113,7 @@
         \item has \textit{shift op} (2 bits) and \textit{count} (3 bits)
         \item example: accumulator={\tt \textcolor{s1}{0000} \textcolor{s2}{1111} \textcolor{s3}{0000} \textcolor{s4}{1111}}; \textit{count}={\tt 3}
     \end{itemize}
-\begin{tabular}{l|l|l}
+\begin{tabular}{l|l|l|l}
 shift op & name & example result \\ \hline
 \tt 00 & shift left & shiftL &  {\tt \textcolor{s1}{0}\textcolor{s2}{111 1}\textcolor{s3}{000 0}\textcolor{s4}{111 1}\textcolor{s0}{000}} \\
 \tt 01 & shift right& shiftR & {\tt \textcolor{s0}{000}\textcolor{s1}{0 000}\textcolor{s2}{1 111}\textcolor{s3}{0 000}\textcolor{s4}{1}} \\
