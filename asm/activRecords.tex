@@ -1,0 +1,29 @@
+\begin{frame}{activation records}
+    \begin{itemize}
+        \item calling subroutine puts some things on stack:
+            \begin{itemize}
+                \item saved register values
+                \item parameters (if not in registers)
+                \item local variables
+                \item return address
+            \end{itemize}
+        \item together called the \\
+            \myemph{activation record} \\ for the subroutine
+    \end{itemize}
+    \begin{tikzpicture}[overlay,remember picture]
+        \matrix[tight matrix,anchor=north east,nodes={text width=5cm,minimum height=.5cm,text depth=0.5mm,font=\small}] (stack) at ([xshift=-1cm,yshift=-4cm]current page.north east) {
+            |[draw=none]| \ldots \\
+            caller saved registers \\
+            return address of \texttt{foo} \\
+            local variables of \texttt{foo} \\
+            callee saved registers \\
+            caller saved registers \\
+            return address of \texttt{bar} \\
+            local variables of \texttt{bar} \\
+            callee saved registers \\
+            |[draw=none]| \ldots \\
+        };
+        \node[draw,ultra thick,inner sep=0mm,fit=(stack-2-1) (stack-5-1),label={[align=right,font=\small]west:foo's \\ activation \\record}] {};
+        \node[draw,ultra thick,inner sep=0mm,fit=(stack-6-1) (stack-9-1),label={[align=right,font=\small]west:bar's \\activation \\record}] {};
+    \end{tikzpicture}
+\end{frame}

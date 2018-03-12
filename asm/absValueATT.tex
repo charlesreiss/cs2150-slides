@@ -1,0 +1,23 @@
+\begin{frame}[fragile,label=absValue]{absolute\_value}
+\lstset{
+    language=myasm
+}
+\begin{itemize}
+    \item \texttt{clang++ -S}: (AT\&T syntax)
+\end{itemize}
+\ldots
+\begin{lstlisting}
+absolute_value:
+    movq    %rdi, -8(%rsp)
+    cmpq    $0, -8(%rsp)
+    jge    .LBB1_2
+    xorl    %eax, %eax
+    movl    %eax, %ecx
+    subq    -8(%rsp), %rcx
+    movq    %rcx, -8(%rsp)
+.LBB1_2:
+    movq    -8(%rsp), %rax
+    retq
+\end{lstlisting}
+\ldots
+\end{frame}

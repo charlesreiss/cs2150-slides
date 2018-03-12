@@ -176,6 +176,7 @@
                   MOVZBL,MOVZB,SHRB,SRAL,SHRL,ANDL,%
                   CMOVNS,SRAL,SRAQ,MOVZBW,MOVZBQ,%
                   PADDW,PADDQ,MODUPS,MOVAPD,%
+                  MOVABS,.GLOBL,.GLOBAL%
                   },
     deletekeywords={eax,ebx,sp,si,cx,di,ds,cs,es,fs,dx,ax,bx,al,esi,ebp,ecx,rip,eip,edx,edi,rdi,esp},
     morecomment=[l]{\#},

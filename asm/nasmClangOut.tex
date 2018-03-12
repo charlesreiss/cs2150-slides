@@ -1,0 +1,14 @@
+\begin{frame}{getting assembly output from clang}
+    \begin{itemize}
+        \item \texttt{clang++ -S ... file.cpp} --- write assembly to \texttt{file.s}
+            \begin{itemize}
+            \item in machine's AT\&T assembly syntax
+            \item \myemph{not the syntax you will be coding}
+            \end{itemize}
+        \item \texttt{clang++ -mllvm --x86-asm-syntax=intel -S ... file.cpp} --- \ldots in Intel-like syntax
+            \begin{itemize}
+            \item much closer to syntax you will be coding
+            \item but won't work with \texttt{nasm}
+            \end{itemize}
+    \end{itemize}
+\end{frame}

@@ -1,0 +1,49 @@
+\begin{frame}{frame pointers}
+    \begin{itemize}
+    \item stack pointer: points to ``top'' of stack
+        \begin{itemize}
+        \item x86 register \texttt{RSP} used for this
+        \item i.e. lowest address on stack
+        \item i.e. location of next stack allocation
+        \end{itemize}
+    \item frame pointer: pointer to allocation record AKA ``stack frame''
+        \begin{itemize}
+        \item x86 register \texttt{RBP} intended for this
+        \end{itemize}
+    \item \myemph{not required by the calling convention}
+        \begin{itemize}
+        \item function can use RSP instead
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{frame pointer defaults}
+    \begin{itemize}
+    \item some systems default to using frame pointers
+        \begin{itemize}
+            \item easier to deallocate stack space ({\tt mov RSP, RBP})
+        \item easier to write debuggers
+        \end{itemize}
+    \item our lab machines don't
+    \item clang/GCC flags:
+        \begin{itemize}
+            \item {\tt-fomit-frame-pointer}/{\tt-fno-omit-frame-pointer}
+            \item (clang only) {\tt-mno-omit-leaf-frame-pointer} \\
+                (``leaf'' = function that doesn't call anything)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=framePointerCode]{frame pointer code}
+    \lstset{language=myasm}
+\begin{lstlisting}
+someFunction:
+    push RBP  // save old frame pointer
+    mov RSP, RSP // top of stack is frame pointer
+    sub RSP, 32  // allocate 32 bytes for registers
+    ...
+    mov RSP, RBP // restore old stack pointer
+        // instead of: add RSP, 32
+    ret
+\end{lstlisting}
+\end{frame}

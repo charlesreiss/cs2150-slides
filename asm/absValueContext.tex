@@ -1,0 +1,160 @@
+
+\begin{frame}{rest of the .s file}
+    \begin{itemize}
+    \item I've shown you a little bit of the .s file
+    \item there's alot of extra stuff in there\ldots
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=absValueContext1]{in context (1)}
+\lstset{language=myasm,style=small}
+``text segment'' (code)  \\
+file information:
+\begin{lstlisting}
+	.text
+	.intel_syntax noprefix
+	.file	"test_abs.cpp"
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=absValueContext2]{in context (2)}
+\lstset{
+    language=myasm,
+    style=small,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+	.section	.text.startup,"ax",@progbits
+	.align	16, 0x90
+	.type	__cxx_global_var_init,@function
+@2__cxx_global_var_init2@:                  # @__cxx_global_var_init
+	@4.cfi_startproc4@
+# BB#0:
+	push	rax
+.Ltmp0:
+	@4.cfi_def_cfa_offset 164@
+	movabs	rdi, @3_ZStL8__ioinit3@
+	call	@3_ZNSt8ios_base4InitC1Ev3@
+	movabs	rdi, _ZNSt8ios_base4InitD1Ev
+	movabs	rsi, @3_ZStL8__ioinit3@
+	movabs	rdx, __dso_handle
+	call	__cxa_atexit
+	mov	dword ptr [rsp + 4], eax # 4-byte Spill
+	pop	rax
+	ret
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+    \tikzset{
+        box/.style={at={([yshift=0cm]current page.center)},draw=red,very thick,align=left,fill=white},
+        boxB/.style={at={([yshift=3cm]current page.center)},draw=red,very thick,align=left,fill=white},
+    }
+    \begin{visibleenv}<2>
+        \node[boxB] {
+            \texttt{\_\_cxx\_global\_var\_init} --- \\
+            function to call global variable constructors/etc.
+        };
+    \end{visibleenv}
+    \begin{visibleenv}<3>
+        \node[boxB] {
+            \texttt{\_ZStL8\_\_ioinit} = \texttt{std::\_\_ioinit} (global var.) \\
+            \texttt{\_ZNSt8ios\_base4InitC1Ev} = \texttt{ios\_base::Init::Init()} \\ (constructor)
+        };
+    \end{visibleenv}
+    \begin{visibleenv}<4>
+        \node[boxB] {
+            \texttt{.cfi\_}\ldots --- for debugger/exceptions
+        };
+    \end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=absValueContext3]{in context (3)}
+\lstset{
+    language=myasm,
+    style=small,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+	.text
+	@2.globl2@	absolute_value
+	.align	16, 0x90
+	@2.type2@	absolute_value,@function
+absolute_value:                         # @absolute_value
+	.cfi_startproc
+# BB#0:
+	mov	qword ptr [rsp - 8], rdi
+	cmp	qword ptr [rsp - 8], 0
+	jge	.LBB1_2
+# BB#1:
+	xor	eax, eax
+	mov	ecx, eax
+	sub	rcx, qword ptr [rsp - 8]
+	mov	qword ptr [rsp - 8], rcx
+.LBB1_2:
+	mov	rax, qword ptr [rsp - 8]
+	ret
+.Lfunc_end1:
+	@2.size2@	absolute_value, .Lfunc_end1-absolute_value
+	.cfi_endproc
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+    \tikzset{
+        box/.style={at={([yshift=0cm]current page.center)},draw=red,very thick,align=left,fill=white},
+        boxB/.style={at={([yshift=3cm]current page.center)},draw=red,very thick,align=left,fill=white},
+    }
+    \begin{visibleenv}<2>
+        \node[box] {
+            \texttt{.globl} --- make this label accessible in other files \\
+            \texttt{.type} --- help linker/debugger/etc.
+        };
+    \end{visibleenv}
+\end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}[fragile,label=absValueContext4]{in context (4)}
+\lstset{
+    language=myasm,
+    style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+    .globl	main
+    .align	16, 0x90
+    .type	main,@function
+main:                                   # @main
+    .cfi_startproc
+# BB#0:
+    sub	rsp, 56
+.Ltmp1:
+    .cfi_def_cfa_offset 64
+    movabs  rdi, _ZSt4cout
+    movabs  rsi, .L.str
+    mov	dword ptr [rsp + 52], 0
+    mov	qword ptr [rsp + 40], 0
+    call    @2_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc2@
+    movabs  rsi, _ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+    mov	rdi, ra_end1-absolute_value
+    ...
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+    \tikzset{
+        box/.style={at={([yshift=0cm]current page.center)},draw=red,very thick,align=left,fill=white,font=\small},
+        boxB/.style={at={([yshift=3cm]current page.center)},draw=red,very thick,align=left,fill=white},
+    }
+    \begin{visibleenv}<2>
+        \node[box] {
+            \verb|_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc| = \\
+            \verb|ostream& operator<<(ostream&, char const*)|
+        };
+    \end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+

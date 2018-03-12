@@ -1,0 +1,19 @@
+\begin{frame}{AT\&T syntax}
+    \begin{itemize}
+    \item destination \myemph{last}
+    \item {\tt \%} = register
+    \item {\tt disp(base)} same as \\ {\tt memory[disp + base]}
+    \item {\tt disp(base, index, scale)} same as \\ {\tt memory[disp + base + index * scale]}
+        \begin{itemize}
+        \item omit disp (defaults to {\tt 0})
+        \item and/or omit base (defaults to {\tt 0})
+        \item and/or scale (defualts to {\tt 1})
+        \end{itemize}
+    \item {\tt \$} means constant/number
+    \item plain number/label means value \myemph{in memory}
+    \item {\tt movq/addq/\ldots} --- 8 bytes (quad) mov/add
+        \begin{itemize}
+            \item {\tt movl} --- 4 bytes (long); {\tt movw} --- 2 bytes (word); {\tt movb} 1 byte
+        \end{itemize}
+    \end{itemize}
+\end{frame}

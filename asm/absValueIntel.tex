@@ -1,0 +1,62 @@
+\begin{frame}[fragile,label=absValueIntelUnopt]{absolute\_value (unoptimized)}
+\lstset{
+    language=myasm
+}
+\begin{itemize}
+    \item \texttt{clang++ -S --mllvm --x86-asm-syntax=intel -S -fomit-frame-pointer}:
+\end{itemize}
+\begin{lstlisting}
+absolute_value:
+    mov    qword ptr [rsp - 8], rdi
+    cmp    qword ptr [rsp - 8], 0
+    jge    .LBB1_2
+    xor    eax, eax
+    mov    ecx, eax
+    sub    rcx, qword ptr [rsp - 8]
+    mov    qword ptr [rsp - 8], rcx
+.LBB1_2:
+    mov    rax, qword ptr [rsp - 8]
+    ret
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile,label=absValueInt]{absolute\_value\_int (unoptimized)}
+\lstset{
+    language=myasm
+}
+\begin{itemize}
+    \item longs replaced with ints
+    \item \texttt{clang++ -S --mllvm --x86-asm-syntax=intel -S -fomit-frame-pointer}:
+\end{itemize}
+\begin{lstlisting}
+absolute_value_int:
+  mov dword ptr [rsp - 4], edi
+  cmp dword ptr [rsp - 4], 0
+  jge .LBB0_2
+  xor eax, eax
+  sub eax, dword ptr [rsp - 4]
+  mov dword ptr [rsp - 4], eax
+.LBB0_2:
+  mov eax, dword ptr [rsp - 4]
+  ret
+\end{lstlisting}
+\end{frame}
+
+
+
+\begin{frame}[fragile,label=absValueO2]{absolute\_value (optimized)}
+\lstset{
+    language=myasm
+}
+\begin{itemize}
+    \item \texttt{clang++ -S \myemph{-O2} --mllvm --x86-asm-syntax=intel -S -fomit-frame-pointer}:
+\end{itemize}
+\begin{lstlisting}
+absolute_value:
+  mov rax, rdi
+  neg rax
+  cmovl rax, rdi
+  ret
+\end{lstlisting}
+\hrule
+my recommendation: use some optimization option when generating assembly to look at
+\end{frame}

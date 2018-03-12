@@ -1,0 +1,42 @@
+\tikzset{
+    program memory label/.style={font=\ttfamily\small,text=black!70},
+    program memory box/.style={draw,rectangle,minimum width=5cm,fill=white},
+    program memory highlight/.style={draw,rectangle,line width=1mm, draw=blue!80!black,opacity=.3,
+        inner sep=0.5mm},
+}
+
+\newcommand{\programMemoryImage}{
+\node[program memory box,minimum height=1cm,pattern=north west lines,pattern color=black!5!white] (kernel) {Used by OS};
+\node[right=0mm of kernel.north east,program memory label] {0xFFFF FFFF FFFF FFFF};
+\node[right=0mm of kernel.south east,program memory label] {0xFFFF 8000 0000 0000};
+\node[program memory box, minimum height=.5cm, below=1cm of kernel] (stack) {Stack};
+\node[right=0mm of stack.north east,program memory label] {0x7F\ldots{}};
+\node[program memory box, minimum height=.5cm, below=2.5cm of stack] (heap) {Heap / other dynamic};
+\node[program memory box, minimum height=.5cm, below=0mm of heap] (data) {Writable data};
+\node[program memory box, minimum height=.5cm, below=0mm of data] (sdata) {Code + Constants};
+\node[right=0mm of sdata.south east,program memory label] {0x0000 0000 0040 0000};
+\coordinate (memBottom) at ($(sdata.south east) + (0mm, -2mm)$);
+\begin{pgfonlayer}{bg}
+\draw[pattern=north west lines, pattern color=black!40!white] (kernel.north west) rectangle (memBottom);
+\end{pgfonlayer}
+}
+\newcommand{\programMemoryHighlight}[1]{
+    \node[#1,program memory highlight] {};
+}
+
+\begin{frame}{program memory (x86-64 Linux)}
+\begin{tikzpicture}
+\programMemoryImage
+    \node[right=0cm of stack] {\large $\leftarrow$ activation records go here};
+    \node[right=0cm of heap] {\large $\leftarrow$ \texttt{new} uses space here};
+    \begin{visibleenv}<2>
+        \draw[blue!70!black,-Latex,ultra thick] (stack.south) -- ++(0cm,-.8cm);
+        \draw[blue!70!black,-Latex,ultra thick] (heap.north) -- ++(0cm,.8cm);
+        \node[blue!70!black,anchor=west,align=left] at ($(stack.south east)!0.5!(heap.north east)$) {
+            stack grows towards heap (activation records)\\
+            heap grows towards stack (allocations with \texttt{new}) \\
+            hopefully never meet
+        };
+    \end{visibleenv}
+\end{tikzpicture}
+\end{frame}
