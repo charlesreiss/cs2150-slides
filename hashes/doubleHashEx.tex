@@ -3,7 +3,7 @@
 \begin{itemize}
 \item $h(k) = k$
 \item index = $h(k) \mod 10$
-\item then check $h(k) + h_2(k) \mod 10$, $h(k) + 2h_2(k) \mod 10$, etc.
+\item then check $h(k) + h_2(k) \mod 10$, \\ $h(k) + 2h_2(k) \mod 10$, etc.
 \item \ldots where $h_2(k) = 7 - (k \mod 7)$
 \item insert \myemph<2>{89}, \myemph<3>{18}, \myemph<4>{58}, \myemph<5>{49}, \myemph<6>{69}, \myemph<7>{60}
 \end{itemize}
@@ -68,6 +68,6 @@ index \& ~\\
 \item $h_2(k)$ ($2$) was not relatively prime to table size ($10$) 
 \item result: didn't use all elements of table
 \vspace{.5cm}
-\item similar issues with $i^2$, etc.
+\item similar issues with $i^2$, etc. (but not as bad)
 \end{itemize}
 \end{frame}
