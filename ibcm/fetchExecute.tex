@@ -1,13 +1,13 @@
 \begin{frame}[fragile,label=fetchExecute]{fetch execute cycle}
 \lstset{language=C++}
-\begin{lstlisting}
+\begin{Verbatim}
 while (true) {
     IR <- memory[PC]
     execute instruction IR
     if (instruction didn't change PC)
         PC <- PC + length of instruction in IR
 }
-\end{lstlisting}
+\end{Verbatim}
     \begin{itemize}
     \item PC = program counter
     \item IR = instruction register

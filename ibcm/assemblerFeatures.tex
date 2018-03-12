@@ -13,10 +13,15 @@
         machine code: {\tt 0101 001000000000} \\
     \item assembly: {\tt jmpe \myemph<2->{0x442}} \\ $\rightarrow$ opcode={\tt D}, addr={\tt 442} \\
         machine code: {\tt 1101 010001000010}\\
-    \vspace{.5cm}
-    \item<2-> \myemph<2>{work with hard-coded addresses?}
-    \item<2-> \myemph<3>{how to set initial values?}
     \end{itemize}
+    \begin{tikzpicture}[overlay,remember picture]
+    \begin{visibleenv}<2->
+    \node [anchor=south,align=left,draw=red,ultra thick] at ([yshift=.1cm]current page.south) {
+    \myemph<2>{work with hard-coded addresses?} \\
+    \myemph<3>{how to set initial values?}
+    };
+    \end{visibleenv}
+    \end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile,label=addrAsName]{labels: addresses as names}

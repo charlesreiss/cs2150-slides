@@ -114,11 +114,11 @@
         \item example: accumulator={\tt \textcolor{s1}{0000} \textcolor{s2}{1111} \textcolor{s3}{0000} \textcolor{s4}{1111}}; \textit{count}={\tt 3}
     \end{itemize}
 \begin{tabular}{l|l|l|l}
-shift op & name & example result \\ \hline
-\tt 00 & shift left & shiftL &  {\tt \textcolor{s1}{0}\textcolor{s2}{111 1}\textcolor{s3}{000 0}\textcolor{s4}{111 1}\textcolor{s0}{000}} \\
-\tt 01 & shift right& shiftR & {\tt \textcolor{s0}{000}\textcolor{s1}{0 000}\textcolor{s2}{1 111}\textcolor{s3}{0 000}\textcolor{s4}{1}} \\
-\tt 10 & rotate left & rotL & {\tt \textcolor{s1}{0}\textcolor{s2}{111 1}\textcolor{s3}{000 0}\textcolor{s4}{111 1}\textcolor{s1}{000}} \\
-\tt 11 & rotate right& rotR & {\tt \textcolor{s4}{111}\textcolor{s1}{0 000}\textcolor{s2}{1 111}\textcolor{s3}{0 000}\textcolor{s4}{1}} \\
+shift op & desc. & name & example result \\ \hline
+\tt 00 & shift left & \tt shiftL &  {\tt \textcolor{s1}{0}\textcolor{s2}{111 1}\textcolor{s3}{000 0}\textcolor{s4}{111 1}\textcolor{s0}{000}} \\
+\tt 01 & shift right& \tt shiftR & {\tt \textcolor{s0}{000}\textcolor{s1}{0 000}\textcolor{s2}{1 111}\textcolor{s3}{0 000}\textcolor{s4}{1}} \\
+\tt 10 & rotate left & \tt rotL & {\tt \textcolor{s1}{0}\textcolor{s2}{111 1}\textcolor{s3}{000 0}\textcolor{s4}{111 1}\textcolor{s1}{000}} \\
+\tt 11 & rotate right& \tt rotR & {\tt \textcolor{s4}{111}\textcolor{s1}{0 000}\textcolor{s2}{1 111}\textcolor{s3}{0 000}\textcolor{s4}{1}} \\
 \end{tabular}
     \begin{itemize}
     \item shift: move bits, fill with {\tt 0}s
