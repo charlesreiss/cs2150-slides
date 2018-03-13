@@ -1,0 +1,104 @@
+\begin{frame}[fragile,label=fibAsm1]{fib (optimized; part 1)}
+\lstset{
+    language=myasm,
+    style=small,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+}
+\begin{lstlisting}
+fib:
+    @2push    r142@
+    @2push    rbx2@
+    @3push    rax3@
+    @5mov     ebx, edi5@
+    mov     eax, ebx
+    @4or      eax, 14@
+    @4mov     r14d, 14@
+    @4cmp     eax, 14@
+    @4je      .LBB0_34@
+    ...
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+    \tikzset{
+        box/.style={draw=red,ultra thick,fill=white,at={([yshift=-1cm]current page.south)},anchor=south},
+    }
+    \begin{visibleenv}<2>
+    \node[box] {
+        save two callee-saved registers
+    };
+    \end{visibleenv}
+    \begin{visibleenv}<3>
+    \node[box] {
+        x86-64 rule: RSP must be multiple of 16 \\
+        when \texttt{call} happens \\
+        (rax not actually restored)
+    };
+    \end{visibleenv}
+    \begin{visibleenv}<4>
+    \node[box] {
+        if $n$ is 0 or 1\ldots \\
+        jumps to code that returns R14
+    };
+    \end{visibleenv}
+    \begin{visibleenv}<4>
+    \node[box] {
+        edi, ebx both copies of n
+    };
+    \end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=fibAsm1]{fib (optimized; part 2)}
+\lstset{
+    language=myasm,
+    style=small,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+}
+\begin{lstlisting}
+    @3add     ebx, -23@
+    mov     r14d, 1
+.LBB0_2:
+    @3lea     edi, [rbx + 1]3@
+    @3call    fib3@
+    add     r14, rax
+    mov     eax, ebx
+    @4or      eax, 14@
+    add     ebx, -2
+    @4cmp     eax, 14@
+    @4jne     .LBB0_24@
+.LBB0_3:
+    @2mov     rax, r142@
+    @2add     rsp, 82@
+    @2pop     rbx2@
+    @2pop     r142@
+    ret
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+    \tikzset{
+        box/.style={draw=red,ultra thick,fill=white,at={([yshift=-1cm]current page.south)},anchor=south},
+    }
+    \begin{visibleenv}<2>
+    \node[box] {
+        return r14 \\
+        undo stack adjustment; restore rbx, r14 \\
+    };
+    \end{visibleenv}
+    \begin{visibleenv}<3>
+    \node[box] {
+        ebx previously set to n=edi \\
+        \texttt{fib(n-1)}
+    };
+    \end{visibleenv}
+    \begin{visibleenv}<4>
+    \node[box] {
+        trick: replace \texttt{fib(n-2)} call with loop
+    };
+    \end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+

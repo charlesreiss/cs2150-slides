@@ -1,18 +1,18 @@
-\begin{frame}[fragile,label=absValueCForExternC]{extern "C"}
+\begin{frame}[fragile,label=absValueCForExternC]{extern \textquotedbl{}C\textquotedbl{}}
 \lstset{
     language=C++,
-    style=small,
+    style=smaller,
     moredelim={**[is][\btHL<all:1>]{@1}{1@}},
 }
 \begin{lstlisting}
 #include <iostream>
 using namespace std;
-@2extern "C" long absolute_value(long x);2@
+@1extern "C" long absolute_value(long x);1@
 
 long absolute_value(long x) {
-    if (x<0)    // if x is negative
+    if (x<0)       // if x is negative
         x = -x;    // negate x
-    return x;    // return x
+    return x;      // return x
 }
 
 int main() {
@@ -26,7 +26,7 @@ int main() {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile,label=externCMangle]{extern C --- name mangling}
+\begin{frame}[fragile,label=externCMangle]{extern \textquotedbl{}C\textquotedbl{} --- name mangling}
 \lstset{
     language=myasm,
     style=small,
@@ -57,11 +57,16 @@ extern "C" long absolute_value(long x);
 extern "C" int absolute_value(int x);
 \end{lstlisting}
 because C doesn't allow it, and \texttt{extern "C"} means `C-compatible'.
+    \vspace{.5cm}
 \hrule
+    \vspace{.5cm}
 This is fine:
 \begin{lstlisting}
 long absolute_value(long x);
 int absolute_value(int x);
 \end{lstlisting}
-because C++ allows functions with different args, but same name.
+because C++ allows functions with different args, but same name \\
+assembly on Linux: \\
+    \hspace{2cm}\texttt{\_Z14absolute\_value\myemph{l}}, and \\
+    \hspace{2cm}\texttt{\_Z14absolute\_value\myemph{i}}
 \end{frame}

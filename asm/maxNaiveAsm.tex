@@ -1,0 +1,48 @@
+\begin{frame}[fragile,label=maxAsmUnopt]{max assembly (unoptimized)}
+\lstset{
+    language=myasm,
+    style=small,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+}
+\begin{lstlisting}
+max:
+    mov    @2dword2@ ptr [rsp @3- 43@], @2edi2@
+    mov    @2dword2@ ptr [rsp @3- 83@], @2esi2@
+    mov    @2esi2@, @2dword2@ ptr [rsp - 4]
+    cmp    @2esi2@, @2dword2@ ptr [rsp - 8]
+    jle    .LBB1_2
+    mov    eax, dword ptr [rsp - 4]
+    mov    dword ptr [rsp - 12], eax
+    jmp    .LBB1_3
+.LBB1_2:
+    mov    eax, dword ptr [rsp - 8]
+    mov    dword ptr [rsp - 12], eax
+.LBB1_3:
+    mov    eax, dword ptr [rsp @3- 123@]
+    ret
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+    \tikzset{
+        box/.style={draw=red,ultra thick,fill=white,at={([yshift=-1cm]current page.south)},anchor=south},
+    }
+    \begin{visibleenv}<2>
+    \node[box] {
+        32-bit \texttt{int}, not 64-bit \texttt{long}s in C code
+    };
+    \end{visibleenv}
+    \begin{visibleenv}<3>
+    \node[box] {
+        32-bit \texttt{int}s: stack allocations 4 bytes, not 8
+    };
+    \end{visibleenv}
+    \begin{visibleenv}<4>
+    \node[box] {
+        `dumb' variable allocation: every variable on the stack \\
+        doesn't make intelligent use of registers\ldots
+    };
+    \end{visibleenv}
+\end{tikzpicture}
+\end{frame}

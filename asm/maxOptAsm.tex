@@ -1,0 +1,27 @@
+\begin{frame}[fragile,label=maxAsmOpt]{max assembly (optimized)}
+\lstset{
+    language=myasm,
+    style=small,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+}
+\begin{lstlisting}
+max:
+    cmp     edi, esi
+    cmovge  esi, edi
+    mov     eax, esi
+    ret
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+    \tikzset{
+        box/.style={draw=red,ultra thick,fill=white,at={([yshift=-1cm]current page.south)},anchor=south},
+    }
+    \begin{visibleenv}<2>
+    \node[box] {
+        cmovge: mov if greater than or equal
+    };
+    \end{visibleenv}
+\end{tikzpicture}
+\end{frame}

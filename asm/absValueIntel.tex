@@ -54,9 +54,12 @@ absolute_value_int:
 absolute_value:
   mov rax, rdi
   neg rax
-  cmovl rax, rdi
+  cmovl rax, rdi    
   ret
 \end{lstlisting}
+(\texttt{cmovl} --- mov if flags say less than; \\
+and \texttt{neg}ate sets those flags)
 \hrule
 my recommendation: use some optimization option when generating assembly to look at
 \end{frame}
+

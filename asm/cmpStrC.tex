@@ -1,0 +1,20 @@
+\begin{frame}[fragile,label=cmpStrC]{\texttt{compare\_string}}
+\lstset{
+    language=C++,
+    style=small,
+}
+\begin{lstlisting}
+bool compare_string (const char *theStr1, 
+                     const char *theStr2) {
+    // while *theStr1 is not nul terminator
+    // and the current corresponding bytes are equal
+    while( (*theStr1 != '\0') 
+            && (*theStr1 == *theStr2) ) {
+        theStr1++;        // increment the pointers to 
+        theStr2++;        // the next char / byte
+    }
+    return (*theStr1==*theStr2);
+}
+\end{lstlisting}
+\end{frame}
+

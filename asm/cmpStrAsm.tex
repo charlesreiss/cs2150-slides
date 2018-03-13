@@ -1,0 +1,80 @@
+\begin{frame}[fragile,label=cmpStrAsm1]{compare\_string (optimized; part 1)}
+\lstset{
+    language=myasm,
+    style=small,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+}
+\begin{lstlisting}
+compare_string:
+    mov      al, byte ptr [rdi]
+    @2test     al, al2@
+    @2je2@       .LBB0_4
+    inc      rdi
+.LBB0_2:
+    @3movzx3@    ecx, byte ptr [rsi]
+    @3movzx3@    edx, al
+    cmp      edx, ecx
+    jne      .LBB0_5
+    inc      rsi
+    mov      al, byte ptr [rdi]
+    inc      rdi
+    test     al, al
+    jne      .LBB0_2
+    ...
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+    \tikzset{
+        box/.style={draw=red,ultra thick,fill=white,at={([yshift=-1cm]current page.south)},anchor=south},
+    }
+    \begin{visibleenv}<2>
+    \node[box] {
+        jump if al == 0 \\
+        al is \verb|*theStr1|
+    };
+    \end{visibleenv}
+    \begin{visibleenv}<3>
+    \node[box] {
+        movzx = mov zero-extend
+    };
+    \end{visibleenv}
+    \begin{visibleenv}<4>
+    \node[box] {
+        rdi = theStr1, rsi = theStr2
+    };
+    \end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=cmpStrAsm2]{compare\_string (optimized; part 2)}
+\lstset{
+    language=myasm,
+    style=small,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+}
+\begin{lstlisting}
+.LBB0_4:
+    xor      eax, eax
+.LBB0_5:
+    movzx    ecx, byte ptr [rsi]
+    movzx    eax, al
+    cmp      eax, ecx
+    @2sete2@     al
+    ret
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+    \tikzset{
+        box/.style={draw=red,ultra thick,fill=white,at={([yshift=-1cm]current page.south)},anchor=south},
+    }
+    \begin{visibleenv}<2>
+    \node[box] {
+        sete = set al to 1 if equal, 0 otherwise
+    };
+    \end{visibleenv}
+\end{tikzpicture}
+\end{frame}
