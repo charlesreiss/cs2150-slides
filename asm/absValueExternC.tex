@@ -1,0 +1,67 @@
+\begin{frame}[fragile,label=absValueCForExternC]{extern "C"}
+\lstset{
+    language=C++,
+    style=small,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+}
+\begin{lstlisting}
+#include <iostream>
+using namespace std;
+@2extern "C" long absolute_value(long x);2@
+
+long absolute_value(long x) {
+    if (x<0)    // if x is negative
+        x = -x;    // negate x
+    return x;    // return x
+}
+
+int main() {
+    long theValue=0;
+    cout << "Enter a value: " << endl;
+    cin >> theValue;
+    long theResult = absolute_value(theValue);
+    cout << "The result is: " << theResult << endl;
+    return 0;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=externCMangle]{extern C --- name mangling}
+\lstset{
+    language=myasm,
+    style=small,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+}
+with \texttt{extern "C"}:
+\begin{lstlisting}
+absolute_value:
+    ...
+\end{lstlisting}
+\hrule
+without \texttt{extern "C"}:
+\begin{lstlisting}
+_Z14absolute_valuel:
+    ...
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=externCArgs]{extern C --- different args}
+\lstset{
+    language=C++,
+    style=small,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+}
+This \myemph{not allowed}:
+\begin{lstlisting}
+extern "C" long absolute_value(long x);
+extern "C" int absolute_value(int x);
+\end{lstlisting}
+because C doesn't allow it, and \texttt{extern "C"} means `C-compatible'.
+\hrule
+This is fine:
+\begin{lstlisting}
+long absolute_value(long x);
+int absolute_value(int x);
+\end{lstlisting}
+because C++ allows functions with different args, but same name.
+\end{frame}

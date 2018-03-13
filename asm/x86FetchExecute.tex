@@ -1,12 +1,12 @@
-\begin{frame}{x86 fetch/execute cycle}
-\begin{lstlisting}
+\begin{frame}[fragile,label=x86FetchExec]{x86 fetch/execute cycle}
+\begin{Verbatim}
 while (true) {
     IR <- memory[PC]
     execute(IR)
     if (instruction didn't change PC)
         PC <- PC + length-of-instruction(IR)
 }
-\end{lstlisting}
+\end{Verbatim}
 \begin{itemize}
 \item same as IBCM 
 \item (execpt instructions are variable-length)

@@ -1,11 +1,12 @@
-\begin{frame}[fragile,label=absValue]{test\_abs.cpp}
+\begin{frame}[fragile,label=absValueC]{test\_abs.cpp}
 \lstset{
-    language=C++
+    language=C++,
+    style=small,
 }
 \begin{lstlisting}
 #include <iostream>
 using namespace std;
-extern "C" int absolute_value(int x);
+extern "C" long absolute_value(long x);
 
 long absolute_value(long x) {
     if (x<0)    // if x is negative
