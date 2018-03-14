@@ -1,0 +1,30 @@
+\begin{frame}[fragile,label=ibcmFormat]{IBCM format}
+    \begin{itemize}
+    \item our simulators: first four characters of each line only
+    \item example of suggested format:
+    \end{itemize}
+\begin{Verbatim}[fontsize=\small]
+mem  locn label op       addr   comments
+C00A 000         jmp      start  skip around the vars
+0000 001   i     dw       0      int i
+0000 002   s     dw       0      int s
+0000 003   a     dw       0      int a[]
+0000 004   n     dw       0
+0000 005   zero  dw       0
+0001 006   one   dw       1
+5000 007   adit  dw       5000
+...                             leave space for changes
+1000 00A   start readH           read array addres
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}{leaving room for changes}
+    \begin{itemize}
+    \item insert blank space for:
+        \begin{itemize}
+        \item extra variable/constant declaratoins
+        \item maybe extra instructions in loops?
+        \end{itemize}
+    \item to make changes easier
+    \end{itemize}
+\end{frame}

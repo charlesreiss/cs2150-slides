@@ -135,7 +135,7 @@ shift op & desc. & name & example result \\ \hline
     \begin{tabular}{l|l|l|p{6cm}}
         \textit{op} & \textit{name} &  \textit{pseudocode} & \textit{description} \\ \hline
         {\tt 3} & {\tt load} & {\tt a $\leftarrow$ mem[addr]} & load acc from memory\\ \hline
-        {\tt 4} & {\tt store} & {\tt a $\leftarrow$ mem[addr]} & store acc to memory \\ \hline
+        {\tt 4} & {\tt store} & {\tt mem[addr] $\leftarrow$ a} & store acc to memory \\ \hline
         {\tt 5} & {\tt add} & {\tt a $\leftarrow$ a + mem[addr]} & add memory to acc \\ \hline
         {\tt 6} & {\tt sub} & {\tt a $\leftarrow$ a + mem[addr]} & subtract mememory from acc \\ \hline
         {\tt 7} & {\tt and} & {\tt a $\leftarrow$ a $\wedge$ mem[addr]} & logical `and' memory into acc \\ \hline

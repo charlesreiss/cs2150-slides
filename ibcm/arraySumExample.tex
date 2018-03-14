@@ -1,0 +1,205 @@
+\begin{frame}{example: array sum}
+\begin{itemize}
+\item the task:
+\vspace{1cm}
+\item read address $a$ from keyboard
+\item read size $n$ from keyboard
+\item compute sum of $n$-element array at that addres
+\item print sum
+\item halt
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=arraySumPsuedo]{array sum psuedocode}
+\begin{lstlisting}
+read a;      // array base address
+read n;      // array size
+i = 0;       // index in the array
+s = 0;       // ongoing sum
+while (i < n) {
+  s += a[i];
+  i += 1;
+}
+print s;
+\end{lstlisting}
+\end{frame}
+
+
+
+\begin{frame}[fragile,label=asumTranslate1]{translating array sum (1)}
+\lstset{
+    style=small,
+    language={},
+}
+\begin{tikzpicture}
+\tikzset{
+    outBox/.style={thick,align=left,inner sep=.5mm},
+    inBox/.style={draw,thick,align=left},
+    inBoxX/.style={inner sep=0mm,align=left},
+    explain/.style={align=left},
+}
+\node[inBoxX] (originalA) {
+\begin{minipage}{4.75cm}
+\begin{Verbatim}[commandchars=\\\[\]]
+read a;
+read n;
+i = 0;
+s = 0;
+\end{Verbatim}
+\end{minipage}
+};
+\node[inBoxX,below=0cm of originalA] (originalB) {
+\begin{minipage}{4.75cm}
+\begin{Verbatim}[commandchars=\\QQ]
+while (i < n) {
+  s += a[i];
+  i += 1;
+}
+\end{Verbatim}
+\end{minipage}
+};
+\node[inBoxX,below=0cm of originalB] (originalC) {
+\begin{minipage}{4.75cm}
+\begin{Verbatim}[commandchars=\\\[\]]
+print s;
+\end{Verbatim}
+\end{minipage}
+};
+    \node[inBox,fit=(originalA) (originalB) (originalC)] (original) {};
+\node[outBox,right=0.75cm of original,yshift=2cm] (prologue) {
+\begin{minipage}{9cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\fontsize{10}{11}\selectfont]
+      jmp start
+i     dw 0     
+s     dw 0     
+n     dw 0
+one   dw 1
+zero  dw 0
+addI  dw 5000   add inst to fill in
+\end{Verbatim}
+\end{minipage}
+};
+\node[above=0cm of prologue] {
+\begin{minipage}{9cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\fontsize{10}{11}\selectfont]
+label instr comment
+\end{Verbatim}
+\end{minipage}
+};
+\node[outBox,below=0cm of prologue] (preLoop) {
+\begin{minipage}{9cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\fontsize{10}{11}\selectfont]
+start readH           read array address
+      store    a
+      readH           read array size
+      store    n
+      load     zero  
+      store    i      i = 0
+      store    s      s = 0
+\end{Verbatim}
+\end{minipage}
+};
+\node[outBox,below=0cm of preLoop] (loop) {
+\begin{minipage}{9cm}
+    \begin{Verbatim}[commandchars=\\\{\},fontsize=\fontsize{10}{11}\selectfont]
+loop  load     n      if (i >= N) goto xit
+      ...
+\end{Verbatim}
+\end{minipage}
+};
+\node[outBox,below=0cm of loop] (postLoop) {
+\begin{minipage}{9cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\fontsize{10}{11}\selectfont]
+xit   load s
+      printH
+      halt
+\end{Verbatim}
+\end{minipage}
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=asumTranslate]{translating array sum (2)}
+\lstset{
+    style=small,
+    language={},
+}
+\begin{tikzpicture}
+\tikzset{
+    outBox/.style={thick,align=left,inner sep=.5mm},
+    inBox/.style={draw,thick,align=left},
+    inBoxX/.style={inner sep=0mm,align=left},
+    explain/.style={align=left},
+}
+\node[inBoxX] (originalA) {
+\begin{minipage}{4.75cm}
+\begin{Verbatim}[commandchars=\\\[\]]
+read a;
+read n;
+i = 0;
+s = 0;
+\end{Verbatim}
+\end{minipage}
+};
+\node[inBoxX,below=0cm of originalA] (originalB) {
+\begin{minipage}{4.75cm}
+\begin{Verbatim}[commandchars=\\QR]
+while (i < n) {
+\myemphQ  s += a[i];R
+  i += 1;
+}
+\end{Verbatim}
+\end{minipage}
+};
+\node[inBoxX,below=0cm of originalB] (originalC) {
+\begin{minipage}{4.75cm}
+\begin{Verbatim}[commandchars=\\\[\]]
+print s;
+\end{Verbatim}
+\end{minipage}
+};
+    \node[inBox,fit=(originalA) (originalB) (originalC)] (original) {};
+%\node[right=0cm of preLoop,explain]{read array address \\ read array size \\ i = 0; s = 0};
+\node[outBox,right=0.25cm of original, yshift=0cm] (loop) {
+\begin{minipage}{9cm}
+\begin{Verbatim}[commandchars=\\\{\},fontsize=\fontsize{10}{11}\selectfont]
+loop  load     n      if (i >= N) goto xit
+      sub      i
+      jmpl     xit
+      jmpe     xit
+\myemph{      load     adit}   form the inst to add a[i]
+\myemph{      add      a}
+\myemph{      add      i}
+\myemph{      store    doit}   plant inst into the code
+\myemph{      load     s}      s = s + ...
+\myemph{doit  dw       0} replaced with 'add (a+i)'
+\myemph{      store s}
+      load i
+      add  one
+      store i
+      jmp loop
+\end{Verbatim}
+\end{minipage}
+};
+\node[above=0cm of loop] {
+\begin{minipage}{9cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\fontsize{10}{11}\selectfont]
+label instr     comment
+...
+\myemph[addI  dw 5000]   add inst to fill in
+...
+\end{Verbatim}
+\end{minipage}
+};
+\node[outBox,below=0cm of loop] (postLoop) {
+\begin{minipage}{9cm}
+\begin{Verbatim}[commandchars=\\\[\],fontsize=\fontsize{10}{11}\selectfont]
+xit   load s
+      printH
+      halt
+\end{Verbatim}
+\end{minipage}
+};
+\end{tikzpicture}
+\end{frame}
+

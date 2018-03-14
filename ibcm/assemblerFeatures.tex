@@ -76,8 +76,8 @@ end    nop             // addr 3: do nothing
 
 \begin{frame}[fragile,label=dwExample]{example with dw}
 \begin{lstlisting}[language=myasm,style=small]
-loop    load hundred   // a <- 100
-        jmpl end       // if a < 0: goto end
+        load hundred   // a <- 100
+loop    jmpl end       // if a < 0: goto end
         printH         // print a
         sub one        // a <- a - 1
         jmp loop
