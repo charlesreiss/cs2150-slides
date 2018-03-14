@@ -1,0 +1,16 @@
+\begin{frame}{optimizations versus no}
+    \begin{itemize}
+    \item things that always work:
+        \begin{itemize}
+        \item allocate stack space for local variables
+        \item always put values in their variable right away
+        \item don't reuse argument/return value registers
+        \end{itemize}
+    \item things clever compilers can do
+        \begin{itemize}
+        \item place some local variables in registers
+        \item skip storing values that aren't used
+        \item reuse argument/return value registers when not calling/returning
+        \end{itemize}
+    \end{itemize}
+\end{frame}

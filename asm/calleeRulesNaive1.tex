@@ -1,0 +1,69 @@
+\begin{frame}[fragile,label=calleeSample]{callee code example (naive version)}
+\vspace{-.5cm}
+\begin{tikzpicture}
+\tikzset{
+    cCode/.style={align=left},
+    asmCodePart/.style={align=left,inner sep=0mm},
+    explain/.style={align=left,text=green!60!black},
+    explainBrace/.style={decorate,decoration={brace},very thick,green!30!black},
+}
+\node (exampleCode) {
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{lstlisting}
+long myFunc(long a, long b, long c) {
+    long result = 0;
+    result += a;
+    result += b;
+    result += c;
+    return result;
+}
+\end{lstlisting}
+};
+\node[anchor=north west] (versionNaive) at (exampleCode.south west){
+\lstset{
+    language=myasm,
+    style=smaller,
+}
+\begin{lstlisting}
+myFunc:
+    // allocate space for result
+    sub RSP, 8
+    mov QWORD PTR [RSP], 0   // result = 0
+    add QWORD PTR [RSP], RDI // result += a
+    add QWORD PTR [RSP], RSI // result += b
+    add QWORD PTR [RSP], RDX // result += c
+    mov RAX, QWORD PTR [RSP] // ret val = result
+    // deallocate space
+    sub RSP, 8
+    ret
+\end{lstlisting}
+};
+\matrix[tight matrix,inner sep=0.1mm,draw, very thick,fill=white,
+    column 1/.style={nodes={draw=none, text width=3cm,font=\tt\small}},
+    column 2/.style={nodes={text width=6cm,minimum height=.45cm}},
+    row 1/.style={nodes={draw=none,font=\bfseries}}, anchor=south east] at ([xshift=4cm,yshift=-.5cm]versionNaive.north east) {
+    address \& value \\
+    |[draw=none]| \ldots \\
+    0xF0000000 \& |[draw=none]| (caller's stuff) \\
+    0xEFFFFFF8 \& return address for myFunc \\
+    0xEFFFFFF0 \& value of result \\
+    0xEFFFFFE8 \& |[draw=none]| (next stack allocation) \\
+    \ldots \\
+};
+
+    \tikzset{
+        box/.style={draw=red,ultra thick,fill=white,at={([yshift=0.25cm]versionNaive.east)},anchor=north,align=left},
+    }
+    \begin{visibleenv}<2>
+    \node[box] {
+       one policy: \\
+       local vars (\texttt{result}) lives on stack \\
+       accesses arguments directly 
+    };
+    \end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+

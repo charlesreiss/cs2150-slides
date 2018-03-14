@@ -1,0 +1,93 @@
+\begin{frame}[fragile,label=calleeSampleNaiveAnimated]{callee code example (animated)}
+\vspace{-.5cm}
+\lstset{
+    language=myasm,
+    style=smaller,
+}
+\begin{tikzpicture}
+\tikzset{
+    codeMatrix/.style={tight matrix,nodes={draw=none,text width=11cm}},
+    regValue/.style={draw,font=\tt\fontsize{11}{12}\selectfont,text width=2cm},
+    regMatrix/.style={tight matrix,
+        column 1/.style={nodes={draw=none,font=\tt,text width=1cm}},
+        column 2/.style={nodes={regValue}},
+    },
+    stackMatrix/.style={tight matrix,
+        column 1/.style={nodes={draw=none,font=\tt,text width=2.5cm}},
+        column 2/.style={nodes={regValue}},
+    },
+}
+\matrix[codeMatrix] (code) {
+\lstinline|myFunc:| \\
+\lstinline|    // allocate space for result| \\
+\lstinline|    sub RSP, 8|\\
+\lstinline|    mov QWORD PTR [RSP], 0   // result = 0|\\
+\lstinline|    add QWORD PTR [RSP], RDI // result += a|\\
+\lstinline|    add QWORD PTR [RSP], RSI // result += b|\\
+\lstinline|    add QWORD PTR [RSP], RDX // result += c|\\
+\lstinline|    mov RAX, QWORD PTR [RSP] // ret val = result|\\
+\lstinline|    // deallocate space|\\
+\lstinline|    sub RSP, 8|\\
+\lstinline|    ret|\\
+};
+\matrix[right=1cm of code,regMatrix] (regs) {
+    RSP \& |[alias=rsp]| 0x7FFF8 \\
+    RDI \& |[alias=rdi]| 2 \\
+    RSI \& |[alias=rsi]| 3 \\
+    RDX \& |[alias=rdx]| 4 \\
+    RAX \& |[alias=rax]| ~ \\
+    \ldots \& ~ \\
+};
+\matrix[below=1cm of regs,stackMatrix,xshift=-1cm] (stack) {
+    \ldots \& ~ \\
+    0x7FFF8 \& |[font=\scriptsize]| (ret address) \\
+    0x7FFF0 \& ~ \\
+    0x7FFE8 \& ~ \\
+    0x7FFE0 \& ~ \\
+    0x7FFD8 \& ~ \\
+    0x7FFD0 \& ~ \\
+    \ldots \& ~ \\
+};
+\newcommand{\lineHi}[2]{
+    \begin{pgfonlayer}{bg}\begin{visibleenv}<#2>\node[fit=(code-#1-1),inner sep=0mm,fill=red!20] {};\end{visibleenv}\end{pgfonlayer}}
+\newcommand{\setReg}[3]{\node[fill=white,inner sep=0mm,draw,fit=(#1),alt=<#3>{fill=red!10}{fill=white},visible on=<#3->,label={[visible on=<#3->,regValue,draw=none]center:#2}] {};}
+\newcommand{\getReg}[3]{\node[fill=white,inner sep=0mm,draw,fit=(#1),alt=<#3>{fill=green!10}{fill=white},visible on=<#3->,label={[visible on=<#3->,regValue,draw=none]center:#2}] {};}
+\newcommand{\rspMark}[2]{
+    \node[visible on=<#2>,left=0cm of stack-#1-1,font=\small] {RSP$\rightarrow$};
+}
+\lineHi{1}{1}
+\rspMark{2}{1}
+
+\lineHi{3}{2}
+\setReg{rsp}{0x7FFF0}{2}
+\rspMark{2}{2-7}
+
+\lineHi{4}{3}
+\setReg{stack-3-2}{0}{3}
+
+\lineHi{5}{4}
+\getReg{rdi}{2}{4}
+\setReg{stack-3-2}{2}{4}
+
+\lineHi{6}{5}
+\getReg{rsi}{3}{5}
+\setReg{stack-4-2}{5}{5}
+
+\lineHi{7}{6}
+\getReg{rdx}{4}{6}
+\setReg{stack-3-2}{9}{6}
+
+\lineHi{8}{7}
+\getReg{stack-3-2}{9}{7}
+\setReg{rax}{9}{7}
+
+\lineHi{10}{8}
+\setReg{rsp}{0x7FFF8}{8}
+\rspMark{2}{8}
+
+\lineHi{11}{9}
+\setReg{rsp}{0x80000}{9}
+\rspMark{1}{9}
+
+\end{tikzpicture}
+\end{frame}

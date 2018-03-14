@@ -1,0 +1,59 @@
+
+\begin{frame}[fragile,label=calleeSampleSuperNaive]{callee code example (no optimizations)}
+\vspace{-.5cm}
+\begin{tikzpicture}
+\tikzset{
+    cCode/.style={align=left},
+    asmCodePart/.style={align=left,inner sep=0mm},
+    explain/.style={align=left,text=green!60!black},
+    explainBrace/.style={decorate,decoration={brace},very thick,green!30!black},
+}
+\node[anchor=north west] (versionNaive) {
+\lstset{language=myasm,style=smaller}
+\begin{lstlisting}
+myFunc:
+  // allocate memory for a, b, c, result
+  sub     rsp, 32
+  mov     qword ptr [rsp + 24], rdi // copy a from arg
+  mov     qword ptr [rsp + 16], rsi // copy b from arg
+  mov     qword ptr [rsp + 8], rdx  // copy c from arg
+  mov     qword ptr [rsp], 0        // result = 0
+  mov     rdx, qword ptr [rsp + 24] // rdx = a
+  add     rdx, qword ptr [rsp]      // rdx += result
+  mov     qword ptr [rsp], rdx      // result = rdx
+  mov     rdx, qword ptr [rsp + 16] // rdx = b
+  add     rdx, qword ptr [rsp]      // rdx += result
+  mov     qword ptr [rsp], rdx      // result = rdx
+  mov     rdx, qword ptr [rsp + 8]  // rdx = c
+  add     rdx, qword ptr [rsp]      // ...
+  mov     qword ptr [rsp], rdx
+  mov     rax, qword ptr [rsp]      // ret val = result
+  // dealocate memory for a, b, c, result
+  add     rsp, 32
+  ret
+\end{lstlisting}
+};
+\begin{visibleenv}<2->
+\matrix[tight matrix,inner sep=0.1mm,draw, very thick,fill=white,
+    column 1/.style={nodes={draw=none, text width=3cm,font=\tt\small}},
+    column 2/.style={nodes={text width=6cm,minimum height=.45cm}},
+    row 1/.style={nodes={draw=none,font=\bfseries}}, anchor=north east] at ([xshift=4cm,yshift=-4cm]versionNaive.north east) {
+    address \& value \\
+    |[draw=none]| \ldots \\
+    0xF000 \& |[draw=none]| (caller's stuff) \\
+    0xEFF8 \& return address \ldots \\
+    0xEFF0 \& value of a\\
+    0xEFE8 \& value of b \\
+    0xEFE0 \& value of c \\
+    0xEFD8 \& value of result \\
+    \ldots \\
+};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[below=-2cm of versionNaive,draw=red,ultra thick,align=left,fill=white] {
+    pretty inefficient --- but obeys calling convention \\
+    one thing \texttt{clang} can generate without optimizations
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}

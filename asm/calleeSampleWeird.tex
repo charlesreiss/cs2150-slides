@@ -1,0 +1,68 @@
+
+
+\begin{frame}[fragile,label=calleeSampleWeirdSave]{callee code example (save registers weirdly)}
+\begin{tikzpicture}
+\tikzset{
+    cCode/.style={align=left},
+    asmCodePart/.style={align=left,inner sep=0mm},
+    explain/.style={align=left,text=green!60!black},
+    explainBrace/.style={decorate,decoration={brace},very thick,green!30!black},
+}
+\node (exampleCode) {
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{lstlisting}
+long myFunc(long a, long b, long c) {
+    long result = 0;
+    result += a;
+    result += b;
+    result += c;
+    return result;
+}
+\end{lstlisting}
+};
+\node[anchor=north west] (versionNaive) at (exampleCode.south west){
+\lstset{language=myasm,style=smaller}
+\begin{lstlisting}
+myFunc:
+    mov R8, RBX // save old RBX, but to R8
+    mov R9, RBP // save old RBP, but to R9
+    push R12  // save old R12, which we've decided to use for result
+    mov RAX, RDI             // store a in RAX
+    mov RBP, RSI             // store b in RBP
+    mov RBX, RDX             // store c in RBX
+    mov R12, 0               // result = 0
+    add R12, RAX    // result += a
+    add R12, RBP    // result += b
+    add R12, RBX    // result += c
+    mov RAX, R12    // ret val = result
+    mov RBX, R8 // restore old RBX
+    pop R12   // restore old R12
+    mov RBP, R9 // restore old RBP
+    ret
+\end{lstlisting}
+};
+\matrix[tight matrix,inner sep=0.1mm,draw, very thick,fill=white,
+    column 1/.style={nodes={draw=none, text width=3cm,font=\tt\small}},
+    column 2/.style={nodes={text width=6cm,minimum height=.45cm}},
+    row 1/.style={nodes={draw=none,font=\bfseries}}, anchor=south east] at ([xshift=4cm,yshift=-.75cm]versionNaive.north east) {
+    address \& value \\
+    |[draw=none]| \ldots \\
+    0xF0000000 \& |[draw=none]| (caller's stuff) \\
+    0xEFFFFFF8 \& return address for myFunc \\
+    0xEFFFFFF0 \& |[draw=none]| (next stack allocation) \\
+    \ldots \\
+};
+
+\begin{visibleenv}<3>
+\node[below=-2cm of versionNaive,draw=red,ultra thick,align=left,fill=white] {
+    calling convention doesn't specify \textit{how} you save/restore registers \\
+    anything is fine as long as values are restored
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+

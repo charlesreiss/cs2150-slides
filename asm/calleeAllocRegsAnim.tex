@@ -1,0 +1,123 @@
+\begin{frame}[fragile,label=calleeSampleNaiveAnimated]{callee code example (animated)}
+\vspace{-.5cm}
+\lstset{
+    language=myasm,
+    style=smaller,
+}
+\begin{tikzpicture}
+\tikzset{
+    codeMatrix/.style={tight matrix,nodes={draw=none,text width=11cm}},
+    regValue/.style={draw,font=\tt\fontsize{11}{12}\selectfont,text width=2cm},
+    regMatrix/.style={tight matrix,
+        column 1/.style={nodes={draw=none,font=\tt,text width=1cm}},
+        column 2/.style={nodes={regValue}},
+    },
+    stackMatrix/.style={tight matrix,
+        column 1/.style={nodes={draw=none,font=\tt,text width=2.5cm}},
+        column 2/.style={nodes={regValue}},
+    },
+}
+\matrix[codeMatrix] (code) {
+\lstinline|myFunc:| \\
+\lstinline|    push RBX  // save old RBX, which we've decided to use for c| \\
+\lstinline|    push R12  // save old R12, to be used for result| \\
+\lstinline|    mov R8, RDI   // store a in R8 (not callee-saved)| \\
+\lstinline|    mov R9, RSI   // store b in RBP| \\
+\lstinline|    mov RBX, RDX  // store c in RBX| \\
+\lstinline|    mov R12, 0    // result = 0| \\
+\lstinline|    add R12, R8   // result += a| \\
+\lstinline|    add R12, R9   // result += b| \\
+\lstinline|    add R12, RBX  // result += c| \\
+\lstinline|    mov RAX, R12  // ret val = result| \\
+\lstinline|    pop R12   // restore old R12| \\
+\lstinline|    pop RBX | \\
+\lstinline|    ret| \\
+};
+\matrix[right=1cm of code,regMatrix] (regs) {
+    RSP \& |[alias=rsp]| 0x7FFF8 \\
+    RDI \& |[alias=rdi]| 2 \\
+    RSI \& |[alias=rsi]| 3 \\
+    RDX \& |[alias=rdx]| 4 \\
+    R8 \& |[alias=r8]| 4 \\
+    R9 \& |[alias=r9]| 4 \\
+    R12 \& |[alias=r12]| 0x5678 \\
+    RAX \& |[alias=rax]| ~ \\
+    RBX \& |[alias=rbx]| 0x1234 \\
+    \ldots \& ~ \\
+};
+\matrix[below=1cm of regs,stackMatrix,xshift=-1cm] (stack) {
+    \ldots \& ~ \\
+    0x7FFF8 \& |[font=\scriptsize]| (ret address) \\
+    0x7FFF0 \& ~ \\
+    0x7FFE8 \& ~ \\
+    0x7FFE0 \& ~ \\
+    0x7FFD8 \& ~ \\
+    0x7FFD0 \& ~ \\
+    \ldots \& ~ \\
+};
+\newcommand{\lineHi}[2]{
+    \begin{pgfonlayer}{bg}\begin{visibleenv}<#2>\node[fit=(code-#1-1),inner sep=0mm,fill=red!20] {};\end{visibleenv}\end{pgfonlayer}}
+\newcommand{\setReg}[3]{\node[fill=white,inner sep=0mm,draw,fit=(#1),alt=<#3>{fill=red!10}{fill=white},visible on=<#3->,label={[visible on=<#3->,regValue,draw=none]center:#2}] {};}
+\newcommand{\getReg}[3]{\node[fill=white,inner sep=0mm,draw,fit=(#1),alt=<#3>{fill=green!10}{fill=white},visible on=<#3->,label={[visible on=<#3->,regValue,draw=none]center:#2}] {};}
+\newcommand{\rspMark}[2]{
+    \node[visible on=<#2>,left=0cm of stack-#1-1,font=\small] {RSP$\rightarrow$};
+}
+\lineHi{1}{1}
+\rspMark{2}{1}
+
+\lineHi{2}{2}
+\setReg{rsp}{0x7FFF0}{2}
+\setReg{stack-3-2}{0x1234}{2}
+\rspMark{3}{2}
+
+\lineHi{3}{3}
+\setReg{rsp}{0x7FFE8}{3}
+\setReg{stack-4-2}{0x5678}{3}
+\rspMark{4}{3-11}
+
+\lineHi{4}{4}
+\setReg{r8}{2}{4}
+\getReg{rdi}{2}{4}
+
+\lineHi{5}{5}
+\setReg{r9}{3}{5}
+\getReg{rsi}{3}{5}
+
+\lineHi{6}{6}
+\setReg{rbx}{4}{6}
+\getReg{rdx}{4}{6}
+
+\lineHi{7}{7}
+\setReg{r12}{0}{7}
+
+\lineHi{8}{8}
+\getReg{r8}{4}{8}
+\setReg{r12}{4}{8}
+
+\lineHi{9}{9}
+\getReg{r9}{3}{9}
+\setReg{r12}{7}{9}
+
+\lineHi{10}{10}
+\getReg{rbx}{2}{10}
+\setReg{r12}{9}{10}
+
+\lineHi{11}{11}
+\setReg{rax}{9}{11}
+\getReg{r12}{9}{11}
+
+\lineHi{12}{12}
+\setReg{rsp}{0x7FFF0}{12}
+\setReg{r12}{0x5678}{12}
+\rspMark{3}{12}
+
+\lineHi{13}{13}
+\setReg{rsp}{0x7FFE8}{13}
+\setReg{rbx}{0x1234}{13}
+\rspMark{2}{13}
+
+\lineHi{14}{14}
+\rspMark{1}{14}
+
+\end{tikzpicture}
+\end{frame}

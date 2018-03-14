@@ -1,0 +1,31 @@
+\begin{frame}{calling convention is\ldots}
+\begin{itemize}
+\item calling convention is about:
+    \begin{itemize}
+    \item what registers change
+    \item what parts of the stack change
+    \item where arguments/return values are
+    \end{itemize}
+\item it says what you \textit{can} do and \textit{can} rely on functions doing for you
+    \begin{itemize}
+    \item but there are many ways to comply with it
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{calling convention doesn't say\ldots}
+\begin{itemize}
+\item you have to store local variables on the stack
+    \begin{itemize}
+    \item though that's an easy, correct thing to do
+    \end{itemize}
+\item which register you need to use for a variable/temporary
+    \begin{itemize}
+    \item as long as you save it, if needed
+    \end{itemize}
+\item when you allocate space on the stack
+    \begin{itemize}
+    \item as long as you free it before returning\ldots
+    \end{itemize}
+\end{itemize}
+\end{frame}
