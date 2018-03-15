@@ -24,7 +24,47 @@ print s;
 \end{lstlisting}
 \end{frame}
 
+\begin{frame}[fragile,label=accessArrElem]{accessing array elements?}
+\begin{itemize}
+\item want to add \verb|a[i]| to something\ldots
+\item can compute \textit{address of} a[i] in the accumulator:
+    \begin{itemize}
+    \item \texttt{load a}
+    \item \texttt{add i}
+    \end{itemize}
+\item \ldots but no instruction to load address into accumulator
+    \begin{itemize}
+    \item \ldots or add address into accumulator \ldots
+    \end{itemize}
+\item solution: write \texttt{add a[i]} instruction
+\item encoding: opcode=5 rest=address of a[i]
+\end{itemize}
+\end{frame}
 
+\begin{frame}[fragile,label=theTrick]{the trick: writing instructions}
+\providecommand{\myemphX}[2]{\myemph<#1>{#2}}
+\begin{Verbatim}[commandchars=\\\{\}]
+addInst     dw \myemphX{2}{0x5000}
+a           dw \myemphX{2}{0x100}
+i           dw \myemphX{2}{0x45}
+...
+\myemphX{2}{      load     addInst}   load inst. template
+\myemphX{3}{      add      a}         address += a
+\myemphX{4}{      add      i}      address += i
+\myemphX{5}{      store    doit}   plant inst into the code
+{      load     s}      accum = s
+{doit  dw       0}      s +=  a[i]
+\end{Verbatim}
+\hrule
+\vspace{1cm}
+\large
+\myemph<2>{\texttt{0x5000} (add 0)} $\rightarrow$ \myemph<3>{\texttt{0x5100} (add 0x100)} $\rightarrow$ \myemph<4>{\texttt{0x5145} (add 0x145)}
+\end{frame}
+
+\providecommand{\connectBoxes}[3]{
+\path[#1] (#2.south east) -- (#3.south west);
+\path[#1] (#2.north east) -- (#3.north west);
+}
 
 \begin{frame}[fragile,label=asumTranslate1]{translating array sum (1)}
 \lstset{
@@ -37,8 +77,11 @@ print s;
     inBox/.style={draw,thick,align=left},
     inBoxX/.style={inner sep=0mm,align=left},
     explain/.style={align=left},
+    colorA/.style={alt=<2->{very thick,draw=blue!70!black}},
+    colorB/.style={alt=<3->{very thick,draw=green!70!black}},
+    colorC/.style={alt=<4->{very thick,draw=violet}},
 }
-\node[inBoxX] (originalA) {
+\node[inBoxX,colorA] (originalA) {
 \begin{minipage}{4.75cm}
 \begin{Verbatim}[commandchars=\\\[\]]
 read a;
@@ -48,7 +91,7 @@ s = 0;
 \end{Verbatim}
 \end{minipage}
 };
-\node[inBoxX,below=0cm of originalA] (originalB) {
+\node[inBoxX,below=0cm of originalA,colorB] (originalB) {
 \begin{minipage}{4.75cm}
 \begin{Verbatim}[commandchars=\\QQ]
 while (i < n) {
@@ -58,14 +101,14 @@ while (i < n) {
 \end{Verbatim}
 \end{minipage}
 };
-\node[inBoxX,below=0cm of originalB] (originalC) {
+\node[inBoxX,below=0cm of originalB,colorC] (originalC) {
 \begin{minipage}{4.75cm}
 \begin{Verbatim}[commandchars=\\\[\]]
 print s;
 \end{Verbatim}
 \end{minipage}
 };
-    \node[inBox,fit=(originalA) (originalB) (originalC)] (original) {};
+\node[inBox,fit=(originalA) (originalB) (originalC)] (original) {};
 \node[outBox,right=0.75cm of original,yshift=2cm] (prologue) {
 \begin{minipage}{9cm}
 \begin{Verbatim}[commandchars=\\\[\],fontsize=\fontsize{10}{11}\selectfont]
@@ -75,7 +118,7 @@ s     dw 0
 n     dw 0
 one   dw 1
 zero  dw 0
-addI  dw 5000   add inst to fill in
+addInst  dw 5000   add inst to fill in
 \end{Verbatim}
 \end{minipage}
 };
@@ -86,7 +129,7 @@ label instr comment
 \end{Verbatim}
 \end{minipage}
 };
-\node[outBox,below=0cm of prologue] (preLoop) {
+\node[outBox,below=0cm of prologue,colorA] (preLoop) {
 \begin{minipage}{9cm}
 \begin{Verbatim}[commandchars=\\\[\],fontsize=\fontsize{10}{11}\selectfont]
 start readH           read array address
@@ -99,7 +142,7 @@ start readH           read array address
 \end{Verbatim}
 \end{minipage}
 };
-\node[outBox,below=0cm of preLoop] (loop) {
+\node[outBox,below=0cm of preLoop,colorB] (loop) {
 \begin{minipage}{9cm}
     \begin{Verbatim}[commandchars=\\\{\},fontsize=\fontsize{10}{11}\selectfont]
 loop  load     n      if (i >= N) goto xit
@@ -107,7 +150,7 @@ loop  load     n      if (i >= N) goto xit
 \end{Verbatim}
 \end{minipage}
 };
-\node[outBox,below=0cm of loop] (postLoop) {
+\node[outBox,below=0cm of loop,colorC] (postLoop) {
 \begin{minipage}{9cm}
 \begin{Verbatim}[commandchars=\\\[\],fontsize=\fontsize{10}{11}\selectfont]
 xit   load s
@@ -116,6 +159,9 @@ xit   load s
 \end{Verbatim}
 \end{minipage}
 };
+\connectBoxes{colorA}{originalA}{preLoop}
+\connectBoxes{colorB}{originalB}{loop}
+\connectBoxes{colorC}{originalC}{postLoop}
 \end{tikzpicture}
 \end{frame}
 
@@ -130,8 +176,14 @@ xit   load s
     inBox/.style={draw,thick,align=left},
     inBoxX/.style={inner sep=0mm,align=left},
     explain/.style={align=left},
+    colorA/.style={alt=<2->{very thick,draw=blue!70!black}},
+    colorB/.style={alt=<3->{very thick,draw=green!70!black}},
+    colorC/.style={alt=<4->{very thick,draw=orange!80!black}},
+    colorD/.style={alt=<6->{very thick,draw=magenta!70!black}},
+    colorE/.style={alt=<7->{very thick,draw=violet}},
 }
-\node[inBoxX] (originalA) {
+\providecommand{\myemphX}[1]{\myemph<5->{#1}}
+\node[inBoxX,colorA] (originalA) {
 \begin{minipage}{4.75cm}
 \begin{Verbatim}[commandchars=\\\[\]]
 read a;
@@ -141,39 +193,65 @@ s = 0;
 \end{Verbatim}
 \end{minipage}
 };
-\node[inBoxX,below=0cm of originalA] (originalB) {
+\node[inBoxX,below=0cm of originalA,colorB] (originalB) {
 \begin{minipage}{4.75cm}
 \begin{Verbatim}[commandchars=\\QR]
 while (i < n) {
-\myemphQ  s += a[i];R
+\end{Verbatim}
+\end{minipage}
+};
+\node[inBoxX,below=0cm of originalB,colorC] (originalC) {
+\begin{minipage}{4.75cm}
+\begin{Verbatim}[commandchars=\\QR]
+\myemphXQ  s += a[i];R
+\end{Verbatim}
+\end{minipage}
+};
+\node[inBoxX,below=0cm of originalC,colorD] (originalD) {
+\begin{minipage}{4.75cm}
+\begin{Verbatim}[commandchars=\\QR]
   i += 1;
 }
 \end{Verbatim}
 \end{minipage}
 };
-\node[inBoxX,below=0cm of originalB] (originalC) {
+\node[inBoxX,below=0cm of originalD,colorE] (originalE) {
 \begin{minipage}{4.75cm}
 \begin{Verbatim}[commandchars=\\\[\]]
 print s;
 \end{Verbatim}
 \end{minipage}
 };
-    \node[inBox,fit=(originalA) (originalB) (originalC)] (original) {};
+    \node[inBox,fit=(originalA) (originalB) (originalC) (originalD) (originalE)] (original) {};
 %\node[right=0cm of preLoop,explain]{read array address \\ read array size \\ i = 0; s = 0};
-\node[outBox,right=0.25cm of original, yshift=0cm] (loop) {
+\node[outBox,right=0.25cm of original, yshift=0cm,colorB] (loopA) {
 \begin{minipage}{9cm}
 \begin{Verbatim}[commandchars=\\\{\},fontsize=\fontsize{10}{11}\selectfont]
 loop  load     n      if (i >= N) goto xit
       sub      i
       jmpl     xit
       jmpe     xit
-\myemph{      load     adit}   form the inst to add a[i]
-\myemph{      add      a}
-\myemph{      add      i}
-\myemph{      store    doit}   plant inst into the code
-\myemph{      load     s}      s = s + ...
-\myemph{doit  dw       0} replaced with 'add (a+i)'
-\myemph{      store s}
+\end{Verbatim}
+\end{minipage}
+};
+
+\node[below=0cm of loopA,colorC] (loopB) {
+\begin{minipage}{9cm}
+\begin{Verbatim}[commandchars=\\\{\},fontsize=\fontsize{10}{11}\selectfont]
+\myemphX{      load     addInst}
+\myemphX{      add      a}
+\myemphX{      add      i}
+\myemphX{      store    doit}   plant inst into the code
+\myemphX{      load     s}      s = s + ...
+\myemphX{doit  dw       0} <-- replaced with 'add (a+i)'
+\myemphX{      store s}
+\end{Verbatim}
+\end{minipage}
+};
+
+\node[below=0cm of loopB,colorE] (loopC) {
+\begin{minipage}{9cm}
+\begin{Verbatim}[commandchars=\\\{\},fontsize=\fontsize{10}{11}\selectfont]
       load i
       add  one
       store i
@@ -181,17 +259,17 @@ loop  load     n      if (i >= N) goto xit
 \end{Verbatim}
 \end{minipage}
 };
-\node[above=0cm of loop] {
+\node[above=0cm of loopA] {
 \begin{minipage}{9cm}
 \begin{Verbatim}[commandchars=\\\[\],fontsize=\fontsize{10}{11}\selectfont]
 label instr     comment
 ...
-\myemph[addI  dw 5000]   add inst to fill in
+\myemph[addInst  dw 5000]   add inst to fill in
 ...
 \end{Verbatim}
 \end{minipage}
 };
-\node[outBox,below=0cm of loop] (postLoop) {
+\node[outBox,below=0cm of loopC,colorE] (postLoop) {
 \begin{minipage}{9cm}
 \begin{Verbatim}[commandchars=\\\[\],fontsize=\fontsize{10}{11}\selectfont]
 xit   load s
@@ -200,6 +278,11 @@ xit   load s
 \end{Verbatim}
 \end{minipage}
 };
+\connectBoxes{colorB}{originalB}{loopA}
+\connectBoxes{colorC}{originalC}{loopB}
+\connectBoxes{colorD}{originalD}{loopC}
+\connectBoxes{colorE}{originalE}{postLoop}
 \end{tikzpicture}
 \end{frame}
+
 
