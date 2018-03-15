@@ -1,18 +1,19 @@
 \begin{frame}{last time}
     \begin{itemize}
-    \item open addressing
+    \item machine code and assembly
+    \item IBCM machine
         \begin{itemize}
-            \item instead of chaining (linked list) search index + $f(1)$, + $f(2)$, \ldots
-            \item $f(i) = i$ --- linear probing --- has clumping
-            \item $f(i) = i^2$ --- quadratic probing
-            \item $f(i) = i h_2(k)$ --- double hashing
-        \end{itemize} 
-    \item prime sizes --- avoid thrashing (double-hashing), better for not-great hash functions
-    \item cryptographic hash functions (e.g. SHA-256, MD5)
-        \begin{itemize}
-        \item had goals of security properties
+        \item everything (except no-op) uses single accumulator register
+        \item 12-bit addresses
+        \item memory of 16-bit words and 16-bit accumulator
+        \item most instructions: use accumulator + value in memory
         \end{itemize}
-    \hrule
-    \item started machine code and assembly
+    \item IBCM instruction format
+        \begin{itemize}
+        \item 4-bit opcode (most significant bits)
+        \item most instructions: 12-bit addresses
+        \end{itemize}
+    \item assembly concepts
+    \begin{itemize}\item  labels (names for addr.), directives (e.g. insert \#, not instruction)\end{itemize}
     \end{itemize}
 \end{frame}
