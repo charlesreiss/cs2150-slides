@@ -1,0 +1,122 @@
+\begin{frame}[fragile,label=usefulPat]{useful patterns (1)}
+\begin{tikzpicture}
+\tikzset{code/.style={font=\small,align=left}}
+    \matrix[row sep=5mm] (ex){
+\node[code] (ifElsePseudo){
+\begin{minipage}{5cm}
+\begin{Verbatim}
+if (X < 0) {
+    S1
+} else {
+    S2
+}
+S3
+\end{Verbatim}
+\end{minipage}
+};
+\&
+\node[code] (ifElseAsm){
+\begin{minipage}{5cm}
+\begin{Verbatim}
+    load X
+    jmpl S1
+    jmp S2
+S1  something
+    jmp S3
+\end{Verbatim}
+\end{minipage}
+};
+\\
+\node[code] (whilePseudo) {
+\begin{minipage}{5cm}
+\begin{Verbatim}
+while (X >= 0) {
+    S1
+}
+S2
+\end{Verbatim}
+\end{minipage}
+};
+\&
+\node[code] (whileAsm){
+\begin{minipage}{5cm}
+\begin{Verbatim}
+top load X
+    jmpl S2
+S1  something
+    jmp top
+S2  something
+\end{Verbatim}
+\end{minipage}
+};
+\\
+};
+    \coordinate (rowAend) at ($(ifElseAsm.south east)!0.5!(whileAsm.north east)$);
+    \draw[very thick] ($(ifElsePseudo.south west)!0.5!(whilePseudo.north west)$) coordinate (rowA) --
+        (rowA -| rowAend);
+    \coordinate (colAbeg) at (ifElseAsm.north west);
+    \coordinate (colAend) at (whileAsm.south west);
+    \draw[dotted,thick] (colAbeg) -- (colAend);
+
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=usefulPat2]{useful patterns (2)}
+\begin{tikzpicture}
+\tikzset{code/.style={font=\small,align=left}}
+    \matrix[row sep=2.5mm] (ex){
+\node[code] (ptrAssignPseudo){
+\begin{minipage}{2cm}
+\begin{Verbatim}
+*p = x
+\end{Verbatim}
+\end{minipage}
+};
+\&
+\node[code] (ptrAssignAsm){
+\begin{minipage}{12cm}
+\begin{Verbatim}
+storeOpcode dw 0x4000     (store opcode)
+...
+       load storeOpcode   accum = 0x4000
+       add p              accum = 0x4<p's address>
+       store doIt
+       load x             accum = x
+doIt   dw 0xFFFF          becomes store *p
+\end{Verbatim}
+\end{minipage}
+};
+\\
+\node[code] (ptrAddPseudo){
+\begin{minipage}{2cm}
+\begin{Verbatim}
+x += *p
+\end{Verbatim}
+\end{minipage}
+};
+\&
+\node[code] (ptrAddAsm){
+\begin{minipage}{12cm}
+\begin{Verbatim}
+addOpcode dw 0x5000       (add opcode)
+...
+       load addOpcode     accum = 0x5000
+       add p              accum = 0x5<p's address>
+       store doIt
+       load x             accum = x
+doIt   dw 0xFFFF          becomes add *p
+       store x            x = accum
+\end{Verbatim}
+\end{minipage}
+};
+\\
+};
+    \coordinate (rowAend) at ($(ptrAssignAsm.south east)!0.5!(ptrAddAsm.north east)$);
+    \coordinate (rowAbeg) at ($(ptrAssignPseudo.south west)!0.5!(ptrAddPseudo.north west)$);
+    \draw[very thick] (rowAend -| rowAbeg) -- (rowAend);
+    \coordinate (colAbeg) at (ptrAssignAsm.north west);
+    \coordinate (colAend) at (ptrAddAsm.south west);
+    \draw[dotted,thick] (colAbeg) -- (colAend);
+
+\end{tikzpicture}
+\end{frame}

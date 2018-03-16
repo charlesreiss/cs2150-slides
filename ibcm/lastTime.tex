@@ -1,4 +1,4 @@
-\begin{frame}{last time}
+\begin{commment}\begin{frame}{last time}
     \begin{itemize}
     \item machine code and assembly
     \item IBCM machine
@@ -15,5 +15,24 @@
         \end{itemize}
     \item assembly concepts
     \begin{itemize}\item  labels (names for addr.), directives (e.g. insert \#, not instruction)\end{itemize}
+    \end{itemize}
+\end{frame}
+\end{comment}
+
+\begin{frame}{last time}
+    \begin{itemize}
+    \item IBCM format advice
+    \item useful assembly patterns:
+        \begin{itemize}
+            \item variables/constants: block at top + jmp to skip
+            \item if/then/else: compare+cond. jmp to if+jmp to else/if+cond jmp to end/else
+            \item while: compare+jmp to end + body + jmp to beginning
+        \end{itemize}
+    \item `pointer' accesses trick
+        \begin{itemize}
+        \item placeholder for instruction using pointer address
+        \item write instruction: load template, add pointer, store into placeholder
+        \item execute placeholder
+        \end{itemize}
     \end{itemize}
 \end{frame}
