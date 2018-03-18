@@ -1,0 +1,47 @@
+\begin{frame}[fragile,label=calleeSampleNaiveAnimated]{callee code example (animated)}
+\vspace{-.5cm}
+\lstset{
+    language=myasm,
+    style=smaller
+}
+\begin{tikzpicture}
+\tikzset{
+    codeMatrix/.style={tight matrix,nodes={text width=7cm}},
+    regMatrix/.style={tight matrix,
+        column 1/.style={draw=none,font=\tt,text width=1.5cm},
+        column 2/.style={draw,font=\tt},
+    },
+    stackMatrix/.style={tight matrix,
+        column 1/.style={draw=none,font=\tt,text width=3cm},
+        column 2/.style={draw,font=\tt},
+    },
+}
+\matrix[codeMatrix] {
+\lstinline|myFunc:| \\
+\lstinline|    // allocate space for result| \\
+\lstinline|    sub RSP, 8|\\
+\lstinline|    mov QWORD PTR [RSP], 0   // result = 0|\\
+\lstinline|    add QWORD PTR [RSP], RDI // result += a|\\
+\lstinline|    add QWORD PTR [RSP], RSI // result += b|\\
+\lstinline|    add QWORD PTR [RSP], RDX // result += c|\\
+\lstinline|    mov RAX, QWORD PTR [RSP] // ret val = result|\\
+\lstinline|    // deallocate space|\\
+\lstinline|    sub RSP, 8|\\
+\lstinline|    ret|\\
+\end{lstlisting}
+};
+\matrix[right=1cm of codeMatrix,regMatrix] {
+    RSP & ~ \\
+    RDI & ~ \\
+    RSI & ~ \\
+    RDX & ~ \\
+    RAX & ~ \\
+    \ldots & ~ \\
+};
+\matrix[south=1cm of codeMatrix,regMatrix] {
+    \ldots & ~ \\
+    0x7FFF8 & ~ \\
+    0x7FFF0 & ~ \\
+};
+
+\end{frame}
