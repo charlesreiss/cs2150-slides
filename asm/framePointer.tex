@@ -21,7 +21,8 @@
     \begin{itemize}
     \item some systems default to using frame pointers
         \begin{itemize}
-            \item easier to deallocate stack space ({\tt mov RSP, RBP})
+        \item easier to deallocate stack space ({\tt mov RSP, RBP})
+        \item can support ``dynamic'' stack allocations (\texttt{alloca()})
         \item easier to write debuggers
         \end{itemize}
     \item our lab machines don't
@@ -39,8 +40,10 @@
 \begin{lstlisting}
 someFunction:
     push RBP  // save old frame pointer
-    mov RSP, RSP // top of stack is frame pointer
-    sub RSP, 32  // allocate 32 bytes for registers
+    mov RBP, RSP // top of stack is frame pointer
+    sub RSP, 32  // allocate 32 bytes for local variables
+    ...
+    add [RBP - 8], 1 // someLocalVar += 1
     ...
     mov RSP, RBP // restore old stack pointer
         // instead of: add RSP, 32

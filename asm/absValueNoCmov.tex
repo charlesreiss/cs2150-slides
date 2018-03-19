@@ -1,0 +1,40 @@
+\begin{frame}[fragile,label=absNoCMov1]{absolute value without cmov (1)}
+\lstset{
+    language=myasm
+}
+what if we didn't know about \texttt{cmovXX}\ldots?
+\begin{lstlisting}
+// NASM syntax:
+global absolute_value
+// GNU assembler syntax: .global absolute_value
+
+absolute_value:
+    mov rax, rdi    // x = return value <- arg 1
+    cmp rax, 0      // x == 0?
+    jge end_of_procedure
+    neg rax         // NEGate
+end_of_procedure:
+    ret
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=absNoCMov2]{absolute value without cmov (2)}
+\lstset{
+    language=myasm,
+}
+what if we didn't know about \texttt{cmov\textit{XX}} and \texttt{neg}\ldots?
+\begin{lstlisting}
+// NASM syntax:
+global absolute_value
+// GNU assembler syntax: .global absolute_value
+
+absolute_value:
+    mov rax, rdi    // x = return value <- arg 1
+    cmp rax, 0      // x == 0?
+    jge end_of_procedure
+    mov rax, 0
+    sub rax, rdi 
+end_of_procedure:
+    ret
+\end{lstlisting}
+\end{frame}

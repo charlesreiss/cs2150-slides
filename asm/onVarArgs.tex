@@ -1,0 +1,26 @@
+\begin{frame}[fragile,label=varArgFunc]{variable argument functions}
+\begin{itemize}
+\item C++ --- multiple versions of functions --- different assembly names:
+\begin{itemize}
+\item \lstinline[language=C++]|long foo(long a)| becomes \texttt{\_Z3fool}
+\item \lstinline[language=C++]|long foo(long a, long b)| becomes \texttt{\_Z3fooll}
+\end{itemize}
+\item can also have variable argument functions --- more common in C
+\begin{itemize}
+\item example: \lstinline|void printf(const char *format, ...)| (C equiv. of cout)
+\end{itemize}
+\end{itemize}
+\begin{lstlisting}[language=C++]
+printf("The number is %d.\n", 42);
+\end{lstlisting}
+\hrule
+\begin{lstlisting}[language=myasm]
+  mov edi, .L.str
+  mov esi, 42
+  xor eax, eax  // # of floating point args
+  call printf
+  ...
+.L.str:
+  .asciz "This number is %d."
+\end{lstlisting}
+\end{frame}
