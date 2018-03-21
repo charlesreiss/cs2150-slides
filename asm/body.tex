@@ -58,7 +58,7 @@
 
 \input{pushPop}
 
-\subsection{arithmetic instructions}
+\subsection{simple arithmetic instructions}
 
 \subsubsection{add/sub}
 
@@ -67,22 +67,6 @@
 \subsubsection{inc/dec}
 
 \input{incDec}
-
-\subsubsection{imul/idiv/mul/div}
-
-\input{mulDiv}
-
-\subsubsection{lea}
-
-\input{lea}
-
-% FIXME: lea examples
-
-\subsection{logical instructions}
-
-\subsubsection{and/or/xor}
-
-\input{andOrXor}
 
 \subsection{control flow}
 
@@ -102,11 +86,13 @@
 
 \input{cToAsmEx}
 
+
 \section{calling convention}
 
 \subsection{example call in C}
 
 \input{callExample}
+
 
 \subsection{calls and the stack}
 
@@ -116,6 +102,8 @@
 \subsection{calling convention questions}
 
 \input{callQuestions} % and caller versus callee
+
+
 \subsection{caller rules}
 
 \input{callerRules} % FIXME: stack diagram
@@ -139,10 +127,35 @@
 \input{calleeSampleWeird}
 
      %FIXME animation
+\section{diversion: AT&T syntax}
+
+\input{attVIntel}
 
 \section{activation records}
-
 \input{activRecords}
+
+\section{calling convention reference}
+
+\input{callingConvMisc}
+
+\subsection{less simple arithmetic instructions}
+
+\subsubsection{imul/idiv/mul/div}
+
+\input{mulDiv}
+
+\subsubsection{lea}
+
+\input{lea}
+
+% FIXME: lea examples
+
+\subsection{logical instructions}
+
+\subsubsection{and/or/xor}
+
+\input{andOrXor}
+
 
 \section{memory layout}
 
@@ -156,6 +169,7 @@
 
 \input{framePointer}
     % FIXME: example?
+
 
 \section{x86 examples}
 
@@ -178,6 +192,8 @@
 \input{attVIntel}
 
 \input{absValueIntel}
+
+\subsubsection{without cmov}
 
 \input{absValueNoCmov}
 

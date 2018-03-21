@@ -2,6 +2,7 @@
 \lstset{
     language=C++,
     moredelim=**[is][\btHL<2>]{@2}{2@},
+    style=small,
 }
 \begin{lstlisting}
 unsigned short memory[4096];
@@ -49,11 +50,13 @@ but, isn't this very cumbersome???
 \lstset{
     language=C++,
     moredelim=**[is][\btHL<2>]{@2}{2@},
+    style=small,
 }
 assuming instruction in \texttt{instr}:
 \begin{lstlisting}
 unsigned int instr = (opcode << 12) | address;
-unsigned int instr = (opcode << 12) | (ioOrShiftOp << 10) | shiftCount;
+unsigned int instr = (opcode << 12) |
+                (ioOrShiftOp << 10) | shiftCount;
 \end{lstlisting}
 \hrule
 \begin{itemize}

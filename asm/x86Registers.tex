@@ -16,7 +16,7 @@
 }
 \foreach \letter/\x in {A/0,B/1.1,C/2.2,D/3.3} {
 \node[box8,anchor=east] (\letter low) at (0,-\x) {\letter{}L};
-\node[left=0cm of \letter low,box8] (\letter high) {AH};
+    \node[left=0cm of \letter low,box8] (\letter high) {\letter{}H};
 \node[box16,anchor=east,label={[box16LabelA]above:\letter{}X}] (\letter x) at ([xshift=.5mm]\letter low.east) {};
 \node[is386plus,box32,anchor=east,label={[is386plus,box32Label]center:E\letter{}X}] (\letter ex) at ([xshift=1mm]\letter low.east) {};
 \node[is64plus,box64,anchor=east,label={[is64plus,box64Label]center:R\letter{}X}] (\letter rx) at ([xshift=1.5mm]\letter low.east) {};
