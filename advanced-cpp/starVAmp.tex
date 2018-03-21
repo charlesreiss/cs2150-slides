@@ -1,4 +1,4 @@
-\begin{frame}[fragile,label=starAndAmp]{\texttt{*} and \texttt{\&}}
+\begin{frame}[fragile,label=star]{\texttt{*}}
 \lstset{
     language=C++,
     style=small,
@@ -14,8 +14,12 @@
     \begin{itemize}
     \item all modify pointed-to object (\lstinline|aRect|)
     \end{itemize}
-\hrule
-\item declare: \lstinline|Rectangle &refToRect = &aRect;|, \lstinline|void print(const Rectangle &theRect);|
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=amp]{\texttt{\&}}
+\begin{itemize}
+\item declare: \lstinline|Rectangle &refToRect = aRect;|, \lstinline|void print(const Rectangle &theRect);|
     \begin{itemize}
     \item \texttt{refToRect}, \texttt{theRect} are \textit{references to Rectangle}
     \end{itemize}

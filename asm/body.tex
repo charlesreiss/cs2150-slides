@@ -86,23 +86,43 @@
 
 \input{cToAsmEx}
 
+\section{calling convention preview}
 
-\section{calling convention}
+\subsection{calls and the stack}
+
+\input{callsWithTheStack}
+
+\subsection{argument/ret val/etc. preview}
+
+\input{callConvPreview}
+
+\section{less simple arithmetic/logical instructions}
+
+\subsection{imul/idiv/mul/div}
+
+\input{mulDiv}
+
+\subsection{lea}
+
+\input{lea}
+
+% FIXME: lea examples
+
+\subsection{logical instructions}
+
+\subsubsection{and/or/xor}
+
+\input{andOrXor}
 
 \subsection{example call in C}
 
 \input{callExample}
 
-
-\subsection{calls and the stack}
-
-\input{callsWithTheStack}
     % FIXME: stack grows down
 
 \subsection{calling convention questions}
 
 \input{callQuestions} % and caller versus callee
-
 
 \subsection{caller rules}
 
@@ -137,24 +157,6 @@
 \section{calling convention reference}
 
 \input{callingConvMisc}
-
-\subsection{less simple arithmetic instructions}
-
-\subsubsection{imul/idiv/mul/div}
-
-\input{mulDiv}
-
-\subsubsection{lea}
-
-\input{lea}
-
-% FIXME: lea examples
-
-\subsection{logical instructions}
-
-\subsubsection{and/or/xor}
-
-\input{andOrXor}
 
 
 \section{memory layout}
