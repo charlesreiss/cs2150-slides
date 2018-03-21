@@ -1,0 +1,80 @@
+\begin{frame}[fragile,label=derefEx1]{dereference example (1)}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+int n = 26;
+int *somePointer = &n;
+
+cout << somePointer << endl;
+cout << *somePointer << endl;
+\end{lstlisting}
+\begin{visibleenv}<2->
+\hrule
+example output: (address will vary\ldots)
+\begin{Verbatim}
+0x7fff35fc3fe4
+26
+\end{Verbatim}
+\end{visibleenv}
+\end{frame}
+
+\begin{frame}[fragile,label=derefEx2]{dereference example (2)}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+int n = 26;
+int *somePointer = &n;
+*somePointer = 45;
+
+cout << somePointer << endl;
+cout << *somePointer << endl;
+\end{lstlisting}
+\begin{visibleenv}<2->
+\hrule
+example output: (address will vary\ldots)
+\begin{Verbatim}
+0x7fff35fc3fe4
+45
+\end{Verbatim}
+\end{visibleenv}
+\end{frame}
+
+\begin{frame}[fragile,label=derefEx3]{dereference example (3)}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+ListNode *ptr1, *ptr2;
+ptr1 = new ListNode;
+ptr2 = new ListNode
+
+bool result1 = (ptr1 == ptr2);
+bool result2 = (*ptr1 == *ptr2);
+
+\end{lstlisting}
+\begin{visibleenv}<2->
+\hrule
+\texttt{result1} definitely false (different addresses) \\
+\texttt{result2} probably true (depends on \lstinline|ListNode::operator==|) 
+\end{visibleenv}
+\end{frame}
+
+\begin{frame}[fragile,label=refEx]{reference example}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+int y = 5;
+int &x = y;
+cout << x << endl;
+cout << &x << endl;
+cout << &y << endl;
+x = 15;
+cout << y << endl;
+\end{lstlisting}
+\begin{visibleenv}<2->
+\hrule
+example output (address will vary\ldots)
+\begin{Verbatim}
+5
+0x7ffeeda220d4
+0x7ffeeda220d4
+15
+\end{Verbatim}
+can't change adderss stored in \texttt{x}
+\end{visibleenv}
+\end{frame}

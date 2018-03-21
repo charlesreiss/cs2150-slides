@@ -1,0 +1,14 @@
+\begin{frame}[fragile,label=typedPointer]{typed pointers}
+\lstset{
+    language=C++,
+    style=small
+}
+\begin{lstlisting}
+double Z = 26.0;
+int *pointerToInt = &Z;   // ERROR
+\end{lstlisting}
+\begin{itemize}
+\item ``\texttt{cannot convert 'double*' to 'int*' in initialization}''
+\item C++ cares about type (but just addresses in assembly)
+\end{itemize}
+\end{frame}

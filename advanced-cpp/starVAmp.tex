@@ -1,0 +1,36 @@
+\begin{frame}[fragile,label=starAndAmp]{\texttt{*} and \texttt{\&}}
+\lstset{
+    language=C++,
+    style=small,
+    morekeywords=Rectangle
+}
+\begin{itemize}
+\item declare: \lstinline|Rectangle *pointerToRect = &aRect;|
+    \begin{itemize}
+    \item \texttt{pointerToRect} is a \textit{pointer to Rectangle}
+    \item initially points to \lstinline|aRect|
+    \end{itemize}
+\item dereference: \lstinline|(*pointerToRect).size|, \lstinline|pointerToRect->size|, \lstinline|*pointerToRect = anotherRect|
+    \begin{itemize}
+    \item all modify pointed-to object (\lstinline|aRect|)
+    \end{itemize}
+\hrule
+\item declare: \lstinline|Rectangle &refToRect = &aRect;|, \lstinline|void print(const Rectangle &theRect);|
+    \begin{itemize}
+    \item \texttt{refToRect}, \texttt{theRect} are \textit{references to Rectangle}
+    \end{itemize}
+\item address-of: \lstinline|pointerToRect = &refToRect;|
+    \begin{itemize}
+    \item \lstinline|&value| is the address of \lstinline|value|
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{recall: reference v pointer}
+\begin{itemize}
+\item pointer --- explicitly derference, can reassign
+\item reference --- ``bound'' to object on creation, always refers to it
+\vspace{.5cm}
+\item typical implementation of both in asm: pointer
+\end{itemize}
+\end{frame}

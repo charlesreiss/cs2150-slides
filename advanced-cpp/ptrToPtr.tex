@@ -1,0 +1,59 @@
+\begin{frame}[fragile,label=ptrToPtr]{pointers to pointers}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+int main() {
+    Animal cow;
+    Animal* cowPtr1 = &cow;
+    Animal** cowPtr2(&cowPtr1);
+    Animal*** cowPtr3 = &cowPtr2;
+    ...
+}
+\end{lstlisting}
+\hrule
+\begin{visibleenv}<2->
+\begin{itemize}
+\item cow = Animal
+\item cowPtr1 = pointer to Animal
+\item cowPtr2 = pointer to (pointer to Animal)
+\item cowPtr3 = pointer to pointer to (pointer to Animal)
+\end{itemize}
+\end{visibleenv}
+\end{frame}
+
+\begin{frame}{example memory layout}
+\begin{tikzpicture}
+\tikzset{
+    codeBox/.style={draw,thick},
+    pointerBox/.style={draw},
+    >=Latex,
+    pointing/.style={->,ultra thick},
+    value/.style={green!50!black},
+    pointer/.style={blue},
+},
+\matrix[tight matrix,
+    nodes={minimum height=.7cm},
+    column 1/.style={nodes={draw=none,text width=1.75cm}},
+    column 2/.style={nodes={text width=2cm,font=\tt}},
+    row 1/.style={nodes={font=\normalfont,draw=none}},
+    label={[font=\bfseries,xshift=2cm]north:memory},
+    anchor=north west,
+] (mem) {
+    address \& value \\
+    \ldots \& \ldots \\
+    |[value]| 0x10000 \& |[value,alias=cow]| 0x500 \\
+    0x10008 \& |[pointer,alias=cowPtr1]| 0x10000 \\
+    0x10010 \& |[pointer,alias=cowPtr2]| 0x10008 \\
+    0x10018 \& |[pointer,alias=cowPtr3]| 0x10010 \\
+    \ldots \& \ldots \\
+};
+
+\draw[pointing] ([xshift=-.5cm,yshift=.5mm]cowPtr1.east) -- ++ (1cm,0cm) |- (cow.east);
+\draw[pointing] ([xshift=-.5cm,yshift=.5mm]cowPtr2.east) -- ++ (1cm,0cm) |- (cowPtr1.east);
+\draw[pointing] ([xshift=-.5cm,yshift=.5mm]cowPtr3.east) -- ++ (1cm,0cm) |- (cowPtr2.east);
+
+\node[right=1.2cm of cow,font=\tt] {cow};
+\node[right=1.2cm of cowPtr1,font=\tt] {cowPtr1};
+\node[right=1.2cm of cowPtr2,font=\tt] {cowPtr2};
+\node[right=1.2cm of cowPtr3,font=\tt] {cowPtr3};
+\end{tikzpicture}
+\end{frame}
