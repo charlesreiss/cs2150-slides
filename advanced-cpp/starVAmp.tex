@@ -5,12 +5,13 @@
     morekeywords=Rectangle
 }
 \begin{itemize}
-\item declare: \lstinline|Rectangle *pointerToRect = &aRect;|
+\item declare pointers: \\
+ \lstinline|Rectangle *pointerToRect = &aRect;|
     \begin{itemize}
     \item \texttt{pointerToRect} is a \textit{pointer to Rectangle}
     \item initially points to \lstinline|aRect|
     \end{itemize}
-\item dereference: \lstinline|(*pointerToRect).size|, \lstinline|pointerToRect->size|, \lstinline|*pointerToRect = anotherRect|
+\item dereference pointers: \\ \lstinline|(*pointerToRect).size|, \lstinline|pointerToRect->size|, \lstinline|*pointerToRect = anotherRect|
     \begin{itemize}
     \item all modify pointed-to object (\lstinline|aRect|)
     \end{itemize}
@@ -19,11 +20,11 @@
 
 \begin{frame}[fragile,label=amp]{\texttt{\&}}
 \begin{itemize}
-\item declare: \lstinline|Rectangle &refToRect = aRect;|, \lstinline|void print(const Rectangle &theRect);|
+\item declare references: \\ \lstinline|Rectangle &refToRect = aRect;|, \lstinline|void print(const Rectangle &theRect);|
     \begin{itemize}
     \item \texttt{refToRect}, \texttt{theRect} are \textit{references to Rectangle}
     \end{itemize}
-\item address-of: \lstinline|pointerToRect = &refToRect;|
+\item address-of: \\ \lstinline|pointerToRect = &refToRect;|
     \begin{itemize}
     \item \lstinline|&value| is the address of \lstinline|value|
     \end{itemize}

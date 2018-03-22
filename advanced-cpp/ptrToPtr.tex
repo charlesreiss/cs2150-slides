@@ -33,7 +33,7 @@ int main() {
 \matrix[tight matrix,
     nodes={minimum height=.7cm},
     column 1/.style={nodes={draw=none,text width=1.75cm}},
-    column 2/.style={nodes={text width=2cm,font=\tt}},
+    column 2/.style={nodes={text width=3cm,font=\tt}},
     row 1/.style={nodes={font=\normalfont,draw=none}},
     label={[font=\bfseries,xshift=2cm]north:memory},
     anchor=north west,
@@ -47,9 +47,9 @@ int main() {
     \ldots \& \ldots \\
 };
 
-\draw[pointing] ([xshift=-.5cm,yshift=.5mm]cowPtr1.east) -- ++ (1cm,0cm) |- (cow.east);
-\draw[pointing] ([xshift=-.5cm,yshift=.5mm]cowPtr2.east) -- ++ (1cm,0cm) |- (cowPtr1.east);
-\draw[pointing] ([xshift=-.5cm,yshift=.5mm]cowPtr3.east) -- ++ (1cm,0cm) |- (cowPtr2.east);
+\draw[pointing] ([xshift=-.5cm,yshift=2mm]cowPtr1.east) -- ++ (1cm,0cm) |- ([yshift=-2mm]cow.east);
+\draw[pointing] ([xshift=-.5cm,yshift=2mm]cowPtr2.east) -- ++ (1cm,0cm) |- ([yshift=-2mm]cowPtr1.east);
+\draw[pointing] ([xshift=-.5cm,yshift=2mm]cowPtr3.east) -- ++ (1cm,0cm) |- ([yshift=-2mm]cowPtr2.east);
 
 \node[right=1.2cm of cow,font=\tt] {cow};
 \node[right=1.2cm of cowPtr1,font=\tt] {cowPtr1};

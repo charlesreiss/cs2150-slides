@@ -1,0 +1,117 @@
+\begin{frame}[fragile,label=cppInheritEx1]{C++ inheritence example (1)}
+\lstset{
+    language=C++,
+    style=small,
+}
+\begin{lstlisting}
+class Name {
+public:
+    Name();
+    ~Name();
+    void setName(const string &name);
+    void print() {
+        cout << myName << endl;
+    }
+private:
+    string myName;
+};
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=cppInheritEx2]{C++ inheritence example (2)}
+\lstset{
+    language=C++,
+    basicstyle=\sourcecodepro\fontsize{10.5}{11}\selectfont,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{tikzpicture}
+\node (cpp) {
+\begin{lstlisting}
+class Contact @2: public Name2@ {
+public:
+  Contact() {
+      myAddress = ""
+  }
+
+  ~Contact() {
+  }
+
+  void setAddress(const string &address) {
+    myAddress = address;
+  }
+
+  void print() {
+    @3Name::print();3@
+    cout << myAddress << endl;
+  }
+private:
+  string myAddress;
+}
+\end{lstlisting}
+};
+\node[draw=black!50,ultra thick,visible on=<2->,right=-3cm of cpp,fill=white] {
+\lstset{
+    language=Java,
+    style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:4>]{@4}{4@}},
+}
+\begin{lstlisting}
+public class Contact
+    @2extends Name2@ {
+  ...
+  void print() {
+    @3super.print();3@
+    ...
+  }
+}
+\end{lstlisting}
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=contactExUsage1]{contact usage (1)}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+int main(void) { 
+    Contact c; 
+    c.SetName("John Doe");
+    c.SetAddress("009 Olsson Hall"); 
+    c.print(); 
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=contactExUsage2]{contact usage (2)}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+int main(void) { 
+    Contact c;
+    Name &r = c;
+    r.SetName("John Doe");
+    c.SetAddress("009 Olsson Hall"); 
+    c.print(); 
+}
+\end{lstlisting}
+\end{frame}
+
+
+
+\begin{frame}{inheritence in C++}
+    \begin{itemize}
+    \item \texttt{Contact} is child of parent \texttt{Name}
+    \item has member variables, functions of parent
+    \item \ldots with same layout in memory
+        \begin{itemize}
+        \item parent's methods work without changing assembly
+        \item can get reference/pointer to \texttt{Name} from \texttt{Contact}
+        \end{itemize}
+    \item add new member functions/variables
+    \end{itemize}
+\end{frame}
+
+% FIXME: memory layout picture
+

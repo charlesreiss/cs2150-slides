@@ -1,0 +1,193 @@
+\begin{frame}[fragile,label=someMemAllocProbs]{several memory allocation problems}
+\lstset{
+    language=C++,
+    style=small,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+}
+BROKEN:
+\begin{lstlisting}
+void someFunc(int *somePointer) {
+    int someval(3);
+    @2somePointer = &someVal;2@
+}
+
+int main() {
+    int *firstPointer;
+    someFunc(@3firstPointer3@);
+    cout << *firstPointer << endl;
+    return 0;
+}
+\end{lstlisting}
+\hrule
+\begin{itemize}
+\item<2-> pointer to deallocated memory --- need \texttt{new}
+\item<3-> pass by value, not by reference
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=someMemAllocProbsFixed]{several memory allocation problems (fixed?)}
+\lstset{
+    language=C++,
+    style=small,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+}
+\begin{lstlisting}
+void someFunc(int *@1&1@somePointer) {
+    somePointer = @1new int1@(3);
+}
+
+int main() {
+    int *firstPointer;
+    someFunc(firstPointer);
+    cout << *firstPointer << endl;
+    return 0;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=someMemAllocProbsB]{several memory allocation problems}
+\lstset{
+    language=C++,
+    style=small,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+}
+BROKEN:
+\begin{lstlisting}
+void someFunc() {
+    double *aliasPointer;
+    aliasPointer = @2new double(6.27)2@;
+    cout << *aliasPointer << endl;
+}
+\end{lstlisting}
+\hrule
+\begin{itemize}
+\item<2-> memory leak --- never \texttt{delete}d
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=someMemAllocProbsC]{several memory allocation problems}
+\lstset{
+    language=C++,
+    style=small,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+}
+BROKEN:
+\begin{lstlisting}
+void someFunc() {
+    double duration = 3.14;
+    {
+        double * somePtr;
+        {
+            somePtr = &duration;
+        }
+    }
+    cout << *@2somePtr2@ << endl;
+    return 0;
+}
+\end{lstlisting}
+\hrule
+\begin{itemize}
+\item<2-> syntax error: \texttt{somePtr} no longer exists
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=someMemAllocProbsD]{several memory allocation problems}
+\lstset{
+    language=C++,
+    style=small,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+}
+BROKEN:
+\begin{lstlisting}
+int main() {
+    int * anotherPtr;
+    {
+        int someVal(8);
+        @2cout << *anotherPtr << endl;2@
+        anotherPtr = &someVal;
+    }
+
+    return 0;
+}
+\end{lstlisting}
+\hrule
+\begin{itemize}
+\item<2-> undefined behavior: accessing uninitialized pointer
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=someMemAllocProbsE]{several memory allocation problems}
+\lstset{
+    language=C++,
+    style=small,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+}
+BROKEN:
+\begin{lstlisting}
+void someFunc(int *somePointer) {
+    int someVal(12);
+    {
+        int anotherVal(16);
+        somePointer = &anotherVal;
+    }
+}
+
+int main() {
+    int * yetAnotherPtr;
+    someFunc(yetAnotherPtr);
+    cout << *yetAnotherPtr << endl;
+    return 0;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=someMemAllocProbsF]{a correct example}
+\lstset{
+    language=C++,
+    style=small,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+}
+\begin{lstlisting}
+int main() {
+    float * somePtr;
+    somePtr = new float(3.14);
+    cout << *somePtr << endl;
+    delete somePtr;
+    return 0;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=someMemAllocProbsG]{a correct example}
+\lstset{
+    language=C++,
+    style=small,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+}
+\begin{lstlisting}
+void someFunc() {
+    int *aliasPtr;
+    @2aliasPtr = new int(25);2@
+    cout << *aliasPtr << endl;
+}
+
+int main() {
+    int * somePtr;
+    @2somePtr = new int(3);2@
+    someFunc();
+    cout << *somePtr << endl;
+    return 0;
+}
+\end{lstlisting}
+\begin{itemize}
+\item<2> memory leaks
+\end{itemize}
+\end{frame}

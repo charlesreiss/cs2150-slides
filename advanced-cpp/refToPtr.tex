@@ -1,0 +1,60 @@
+\begin{frame}[fragile,label=refToPtrVPtrToPtr]{ref to pointer v pointer to pointer}
+\lstset{language=C++,
+    basicstyle=\sourcecodepro\EmptyMapping\fontsize{10.5}{11}\selectfont,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+}
+\begin{lstlisting}
+void insert(TreeNode*& n, int value) {
+    if (n == NULL)
+        @2n =2@ new TreeNode(value);
+    else if (value < n->value)
+        insert(@3n->left3@, value);
+    else if (value > n->value)
+        insert(@3n->right3@, value);
+}
+\end{lstlisting}
+\hrule
+\begin{lstlisting}
+void insert(TreeNode** n, int value) {
+    if (*n == NULL)
+        @2*n2@ = new TreeNode(value);
+    else if (value < n->value)
+        insert(@3&(n->left)3@, value);
+    else if (value > n->value)
+        insert(@3&(n->right)3@, value);
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=refToPtrVValue]{by ref versus by value}
+\lstset{language=C++,style=smaller,
+    basicstyle=\sourcecodepro\EmptyMapping\fontsize{10.5}{11}\selectfont,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+}
+\begin{lstlisting}
+void insert(TreeNode*& n, int value) {
+    if (n == NULL)
+        @2n =2@ new TreeNode(value);
+    else if (value < n->value)
+        insert(@3n->left3@, value);
+    else if (value > n->value)
+        insert(@3n->right3@, value);
+}
+\end{lstlisting}
+\hrule
+\begin{lstlisting}
+TreeNode *insert(TreeNode* n, int value) {
+    if (n == NULL)
+        @2return new2@ TreeNode(value);
+    else if (value < n->value) {
+        @3n->left =3@ insert(n->left, value);
+        return n;
+    } else if (value > n->value) {
+        @3n->right =3@ insert(n->right, value);
+        return n;
+    }
+}
+\end{lstlisting}
+\end{frame}
