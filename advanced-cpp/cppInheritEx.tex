@@ -92,10 +92,52 @@ int main(void) {
     Contact c;
     Name &r = c;
     r.SetName("John Doe");
+    // or:
+    Name *p = &c;
+    p->SetName("John Doe");
     c.SetAddress("009 Olsson Hall"); 
     c.print(); 
 }
 \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=contactExUsage2Mem]{memory layout}
+\begin{tikzpicture}
+\tikzset{
+    codeBox/.style={draw,thick},
+    pointerBox/.style={draw},
+    >=Latex,
+    pointing/.style={->,ultra thick},
+    value/.style={green!50!black},
+    pointer/.style={blue},
+    high/.style={minimum height=1cm},
+    vLabel/.style={font=\tt\small},
+},
+\matrix[tight matrix,
+    nodes={minimum height=.7cm},
+    column 1/.style={nodes={draw=none,text width=1.75cm,font=\tt\small}},
+    column 2/.style={nodes={text width=3cm,font=\tt\small}},
+    row 1/.style={nodes={font=\normalfont,draw=none}},
+    anchor=north east,
+] (mem) {
+    address \& value \\
+    \ldots \& \ldots \\
+    |[value,high]| 0x10000 \& |[value,high,alias=name]| \texttt{"John Doe"} \\
+    |[value,high]| 0x10020 \& |[value,high,alias=addr]| \texttt{"009 Olsson Hall"}\\
+    |[pointer]| 0x10040 \& |[pointer,alias=ref]| 0x10000 \\
+       \ldots \& \ldots \\
+};
+    \node[vLabel,right=0cm of ref,pointer] (r) {r {\normalfont(ref. to \texttt{c} as \texttt{Name})}};
+    \node[vLabel,right=0cm of name,value](cN) {c.myName};
+    \node[vLabel,right=0cm of addr,value] (cA) {c.myAddress};
+
+    \draw[very thick,decorate,decoration={brace,mirror}] (cA.south east) -- (cA.south east |- cN.north east) node[midway,right] {\texttt{Contact c}};
+    \begin{visibleenv}<2->
+    \draw[very thick,decorate,decoration={brace,mirror}] ([xshift=2cm]cN.south east) -- ([xshift=2cm]cN.north east) node[midway,right] {
+        as \texttt{Name}};
+    \end{visibleenv}
+
+\end{tikzpicture}
 \end{frame}
 
 
@@ -112,6 +154,3 @@ int main(void) {
     \item add new member functions/variables
     \end{itemize}
 \end{frame}
-
-% FIXME: memory layout picture
-
