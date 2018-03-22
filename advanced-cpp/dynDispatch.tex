@@ -1,0 +1,169 @@
+\begin{frame}[fragile,label=staticDispatchPrint]{C++ defaults to static dispatch (1)}
+\lstset{language=C++,basicstyle=\sourcecodepro\fontsize{10.5}{11}\selectfont,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    }
+\begin{lstlisting}
+class Parent {
+public:
+    void print() { cout << "Parent::print()\n"; }
+};
+class Child : public Parent {
+public:
+    @2void print() { cout << "Child::print()\n"; }2@
+};
+Parent* getParent() { return new Child; }
+int main() {
+    Parent *p = getParent();
+    p->print();
+    delete p;
+}
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+    \node[draw=red, very thick, fill=white,anchor=east] at ([yshift=-3cm]current page.east) {
+\begin{minipage}{6cm}
+output:
+\begin{Verbatim}
+Parent::print()
+\end{Verbatim}
+\end{minipage}
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{static versus dynamic dispatch}
+    \begin{itemize}
+        \item static dispatch --- call method based on compile-time type
+        \item dynamic dispatch --- call method based on run-time type
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=staticDispatchDestroy]{C++ defaults to static dispatch (2)}
+\lstset{
+    language=C++,basicstyle=\sourcecodepro\fontsize{10.5}{11}\selectfont,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+}
+\begin{lstlisting}
+class Parent {
+public:
+    Parent() {cout << "Parent()\n"; }
+    ~Parent() { cout << "~Parent()\n"; }
+};
+class Child : public Parent {
+public:
+    Child() { cout << "Child()\n"; }
+    @2~Child() { cout << "~Child()\n"; }2@
+};
+Parent* getParent() { return new Child; }
+int main() {
+    Parent *p = getParent();
+    delete p;
+}
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+    \node[draw=red, very thick, fill=white,anchor=east] at ([yshift=-3cm]current page.east) {
+\begin{minipage}{4cm}
+    output (\textit{probably}):
+\begin{Verbatim}
+Parent()
+Child()
+~Parent()
+\end{Verbatim}
+\end{minipage}
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{virtual: ask for dynamic dispatch}
+    \begin{itemize}
+    \item \texttt{virtual} keyword --- ask for dynamic dispatch
+    \item not default --- because slower:
+        \begin{itemize}
+        \item static dispatch: just a function call
+        \item dynamic dispatch: lookup correct function first!
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=staticDispatchPrint]{virtual methods (1)}
+\lstset{language=C++,basicstyle=\sourcecodepro\fontsize{10.5}{11}\selectfont,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    }
+\begin{lstlisting}
+class Parent {
+public:
+    @1virtual1@ void print() { cout << "Parent::print()\n"; }
+};
+class Child : public Parent {
+public:
+    void print() { cout << "Child::print()\n"; }
+};
+Parent* getParent() { return new Child; }
+int main() {
+    Parent *p = getParent();
+    p->print();
+    delete p;
+}
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+    \node[draw=red, very thick, fill=white,anchor=east] at ([yshift=-3cm]current page.east) {
+\begin{minipage}{6cm}
+output:
+\begin{Verbatim}
+Child::print()
+\end{Verbatim}
+\end{minipage}
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=staticDispatchPrint]{virtual methods (1)}
+\lstset{language=C++,basicstyle=\sourcecodepro\fontsize{10.5}{11}\selectfont,
+    moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    }
+\begin{lstlisting}
+class Parent {
+public:
+    Parent() {cout << "Parent()\n"; }
+    @1virtual1@ ~Parent() { cout << "~Parent()\n"; }
+};
+class Child : public Parent {
+public:
+    Child() { cout << "Child()\n"; }
+    ~Child() { cout << "~Child()\n"; }
+};
+Parent* getParent() { return new Child; }
+int main() {
+    Parent *p = getParent();
+    delete p;
+}
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+    \node[draw=red, very thick, fill=white,anchor=east] at ([yshift=-3cm]current page.east) {
+\begin{minipage}{6cm}
+output:
+\begin{Verbatim}
+Parent()
+Child()
+~Child()
+~Parent()
+\end{Verbatim}
+\end{minipage}
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{virtual destructors}
+    \begin{itemize}
+    \item \myemph{required} if you call \texttt{delete} on a base-class pointer
+        \begin{itemize}
+        \item (but it's actually an instance of the subclass)
+        \end{itemize}
+    \item (even if destructor doesn't do anything)
+        \begin{itemize}
+            \item compiler might use destructor to know how much to free up
+            \item C++ standard quote: ``If the static type of the object to be deleted is different from its
+dynamic type, the static type shall be a base class of the dynamic type of the object to be deleted and the
+static type shall have a virtual destructor or the behavior is undefined.''
+        \end{itemize}
+    \end{itemize}
+\end{frame}

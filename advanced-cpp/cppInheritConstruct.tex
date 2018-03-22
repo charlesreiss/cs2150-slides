@@ -1,0 +1,68 @@
+\begin{frame}[fragile,label=inheritConstructDestruct]{inheritence and constructors, etc.}
+\lstset{language=C++,style=script}
+\vspace{-.5cm}
+\begin{lstlisting}
+class Parent {
+public:
+    Parent() { cout << "Parent()\n"; }
+    ~Parent() { cout << "~Parent()\n"; }
+};
+class Child : public Parent {
+public:
+    Child() { cout << "Child()\n"; }
+    ~Child() { cout << "~Child()\n"; }
+};
+int main() {
+    Child var;
+    cout << "in main()\n";
+}
+\end{lstlisting}
+\hrule
+    \begin{Verbatim}[fontsize=\small]
+Parent()
+Child()
+in main()
+~Child()
+~Parent()
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}{construction/destruction order}
+\begin{itemize}
+\item parent part constructed first
+\item then child
+\vspace{.5cm}
+\item child part destroyed first
+\item then parent
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=constructArgs]{arguments to parent constructors?}
+\lstset{language=C++,style=script}
+\vspace{-.5cm}
+\begin{lstlisting}
+class Parent {
+public:
+    Parent(int x) { cout << "Parent(" << x << ")\n"; }
+    ~Parent() { cout << "~Parent()\n"; }
+};
+class Child : public Parent {
+public:
+    Child(int x) : Parent(x + 1) { cout << "Child(" << x << ")\n"; }
+    ~Child() { cout << "~Child()\n"; }
+};
+int main() {
+    Child var(100);
+    cout << "in main()\n";
+}
+\end{lstlisting}
+\hrule
+\begin{Verbatim}[fontsize=\small]
+Parent(101)
+Child(100)
+in main()
+~Child()
+~Parent()
+\end{Verbatim}
+\end{frame}}
+\end{frame}

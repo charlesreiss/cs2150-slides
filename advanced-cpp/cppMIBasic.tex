@@ -1,0 +1,21 @@
+\begin{frame}[fragile,label=MIBasic]{multiple inheritence}
+\lstset{
+    language=C++,style=small
+}
+\begin{lstlisting}
+class Sphere : public Shape, public Comparable, 
+               public Serializable {
+    // ...
+};
+\end{lstlisting}
+\begin{visibleenv}<2->
+\textit{sort of} like this Java code:
+\begin{lstlisting}[language=Java,style=small]
+public class Sphere extends Shape
+        implements Comparable, Serializable {
+    // ..
+}
+\end{lstlisting}
+but --- \texttt{Comparable}, \texttt{Serializable} might have thier own member variables and implemented methods
+\end{visibleenv}
+\end{frame}
