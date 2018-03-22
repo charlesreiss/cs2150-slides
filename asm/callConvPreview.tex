@@ -1,0 +1,22 @@
+\begin{frame}{calling convention preview}
+    \begin{itemize}
+    \item \texttt{call FUNC} and \texttt{RET} instructions
+    \item \ldots but where do arguments, local variables, etc. go?
+    \item what registers can a function call change?
+    \item compiler/OS choice! --- much more detail later
+    \end{itemize}
+\end{frame}
+\begin{frame}{Linux calling convention preview}
+        \begin{itemize}
+        \item return value: RAX
+        \item argument 1: RDI; argument 2: RSI
+            \begin{itemize}
+            \item argument 3: RDX; argument 4: RCX; argument 5: R8; argument 6: R9
+            \end{itemize}
+        \item local variables: stack or ``free'' registers
+        \item value of RBP, RBX, R12, R13, R14, R15 can't be changed by function call
+            \begin{itemize}
+            \item can use register, but must save/restore
+            \end{itemize}
+        \end{itemize}
+\end{frame}

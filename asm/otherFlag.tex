@@ -1,0 +1,43 @@
+\begin{frame}{cmp+jmp}
+    \begin{itemize}
+    \item earlier idea: pair of compare + conditional jump
+    \item actually \texttt{CMP} one of many instruction that sets \textit{flags}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=otherFlags]{other flag setting instructions}
+\begin{itemize}
+\item compilers omit \texttt{CMP} by using subtraction, etc.
+\item implicit compare result to 0 (almost)
+\item e.g.:
+\end{itemize}
+\begin{lstlisting}
+loop:   add RBX, RBX
+        sub RAX, 1
+        jne loop
+\end{lstlisting}
+is the same as
+\begin{lstlisting}
+loop:   add RBX, RBX
+        sub RAX, 1
+        cmp RAX, 0
+        jne loop
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=testCmp]{TEST/CMP}
+\begin{itemize}
+\item \texttt{TEST} instruction:
+    \begin{itemize}
+    \item performs bitwise and, set flags, discard result
+    \end{itemize}
+\item \texttt{TEST RAX, RAX} $\approx$ \texttt{CMP RAX, 0}
+\item \texttt{TEST RAX, RAX} $\approx$ \texttt{AND RAX, RAX}
+\hrule
+\item \texttt{CMP} instruction:
+    \begin{itemize}
+    \item perform subtraction, set flags, discard result
+    \end{itemize}
+\item \texttt{CMP RAX, RBX} $\approx$ \texttt{PUSH RBX; SUB RAX, RBX; POP RBX}
+\end{itemize}
+\end{frame}

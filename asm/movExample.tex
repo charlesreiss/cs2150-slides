@@ -16,7 +16,7 @@
 \begin{lstlisting}
 @2mov rcx, rax2@
 @3mov rdx, [rbx]3@
-@4mov rsi, [rdx+rax+16]4@
+@4mov rsi, [rdx+24]4@
 @5mov [rsi], 455@
 @6mov [a], 156@
 \end{lstlisting}
@@ -43,7 +43,7 @@
 ] (memory) {
     \ldots \& ~ \\
     100 \& ~ \\
-    108 \& |[h=2]| 8 \\
+    108 \& |[h=2]| 100 \\
     116 \& ~ \\
     124 \& |[h=3]| 200 \\
     132 \& ~ \\
@@ -55,4 +55,16 @@
     \ldots \& ~ \\
 };
 \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{later: what types of addresses?}
+    \begin{itemize}
+    \item \texttt{[rdx]} allowed
+    \item \texttt{[someLabel]} allowed
+    \item \texttt{[rdx+24]} allowed
+    \item what else?
+    \item not everything --- has to be encoded in machine code
+        \vspace{.5cm}
+    \item explain rules: later
+    \end{itemize}
 \end{frame}

@@ -1,0 +1,33 @@
+\begin{frame}{missing calling conv. parts}
+    \begin{itemize}
+    \item floating point arguments/return values?
+        \begin{itemize}
+        \item floating point registers\ldots
+        \end{itemize}
+    \item arguments/return values too big for register
+        \begin{itemize}
+            \item arguments: passed on stack
+            \item return value: caller allocates space, passes pointer
+        \end{itemize}
+    \item class methods
+        \begin{itemize}
+        \item implicit \texttt{this} argument, usually
+        \item extra stuff for inheritence
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{calling convention complete version (C)}
+    \includegraphics[height=0.5\textheight]{abi-manual-cover}
+    \begin{itemize}
+    \item \url{https://github.com/hjl-tools/x86-psABI/wiki/X86-psABI}
+    \item section 3.2 covers calling convention
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{C++ calling convention}
+    \includegraphics[height=0.5\textheight]{itanium-cxx-abi}
+    \begin{itemize}
+        \item \url{https://itanium-cxx-abi.github.io/cxx-abi/}
+    \end{itemize}
+\end{frame}

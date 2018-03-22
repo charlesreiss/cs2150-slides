@@ -53,24 +53,3 @@ jXX label
 \end{tabular}
 \end{frame}
 
-\begin{frame}[fragile,label=otherFlags]{other flag setting instructions}
-\begin{itemize}
-\item but\ldots most arithmetic instructions set flags used by conditional jump
-    \begin{itemize}
-    \item basically based on comparing result to 0
-    \end{itemize}
-\item e.g.:
-\end{itemize}
-\begin{lstlisting}
-loop:   add RBX, RBX
-        sub RAX, 1
-        jne loop
-\end{lstlisting}
-is the same as
-\begin{lstlisting}
-loop:   add RBX, RBX
-        sub RAX, 1
-        cmp RAX, 0
-        jne loop
-\end{lstlisting}
-\end{frame}

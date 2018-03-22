@@ -1,0 +1,171 @@
+\begin{frame}[fragile,label=SimpleRecurseCpp]{simple recursion (C++)}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+long sum(long count) {
+    if (count > 0) {
+        long partial_sum = sum(count - 1);
+        return partial_sum + count;
+    } else {
+        return 0;
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=SimpleRecurseAsm]{simple recursion (assembly)}
+\lstset{
+    language=myasm,style=small,
+    moredelim={**[is][\btHL<all:2,4>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+    moredelim={**[is][\btHL<all:5>]{@5}{5@}},
+    moredelim={**[is][\btHL<all:6,8,10>]{@6}{6@}},
+    moredelim={**[is][\btHL<all:7,9,11>]{@7}{7@}},
+}
+\begin{lstlisting}
+# RDI (arg 1) is count
+sum:
+    @3cmp RDI, 03@  
+    jle base_case // if count <= 0 --> do base case
+    @2push RDI2@ // save a copy of original RDI
+    sub RDI, 1
+    @3call sum3@ // sum(count-1)
+    @6pop RDI6@  // restore copy of original RDI
+    add RAX, RDI // ret val = sum(count-1) + count
+    @7ret7@
+base_case:
+    mov RAX, 0
+    @5ret5@
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+    \coordinate (mark) at([yshift=-2cm]current page.north east);
+    \begin{visibleenv}<2->
+        \node [anchor=south] at ([xshift=-3cm]mark) {the stack};
+        \fill[white,fill opacity=0.9] ([xshift=-7cm]mark) rectangle ([yshift=-5cm]mark);
+    \end{visibleenv}
+    \tikzset{
+        stack/.style={
+            tight matrix,nodes={fill=white,text width=6cm,font=\small},anchor=north east,
+        },
+    }
+\begin{visibleenv}<2>
+    \matrix[stack] (stackA) 
+    at (mark) {
+    return address for \texttt{sum(100)} \\
+    |[fill=green!10]| saved RDI: \texttt{100} \\
+};
+\end{visibleenv}
+\begin{visibleenv}<3>
+    \matrix[stack] (stackB) 
+    at (mark) {
+    return address for \texttt{sum(100)} \\
+    saved RDI: \texttt{100} \\
+    |[fill=green!10]| return address for \texttt{sum(99)} \\
+};
+\end{visibleenv}
+\begin{visibleenv}<4>
+\matrix[stack] (stackC) 
+    at (mark) {
+    return address for \texttt{sum(100)} \\
+    saved RDI: \texttt{100} \\
+    return address for \texttt{sum(99)} \\
+    |[fill=green!10]| saved RDI: \texttt{99} \\
+};
+\end{visibleenv}
+\begin{visibleenv}<5>
+\matrix[stack] (stackD) 
+    at (mark) {
+    return address for \texttt{sum(100)} \\
+    saved RDI: \texttt{100} \\
+    return address for \texttt{sum(99)} \\
+    saved RDI: \texttt{99} \\
+    return address for \texttt{sum(98)} \\
+    saved RDI: \texttt{98} \\
+    |[draw=none]| \ldots \\
+    return address for \texttt{sum(1)} \\
+    saved RDI: \texttt{1} \\
+    |[fill=green!10]| return address for \texttt{sum(0)} \\
+};
+\end{visibleenv}
+\begin{visibleenv}<6>
+\matrix[stack] (stackE) 
+    at (mark) {
+    return address for \texttt{sum(100)} \\
+    saved RDI: \texttt{100} \\
+    return address for \texttt{sum(99)} \\
+    saved RDI: \texttt{99} \\
+    return address for \texttt{sum(98)} \\
+    saved RDI: \texttt{98} \\
+    |[draw=none]| \ldots \\
+    return address for \texttt{sum(2)} \\
+    saved RDI: \texttt{2} \\
+    return address for \texttt{sum(1)} \\
+    |[fill=green!10]| saved RDI: \texttt{1} \\
+};
+\end{visibleenv}
+\begin{visibleenv}<7>
+\matrix[stack] (stackF) 
+    at (mark) {
+    return address for \texttt{sum(100)} \\
+    saved RDI: \texttt{100} \\
+    return address for \texttt{sum(99)} \\
+    saved RDI: \texttt{99} \\
+    return address for \texttt{sum(98)} \\
+    saved RDI: \texttt{98} \\
+    |[draw=none]| \ldots \\
+    return address for \texttt{sum(2)} \\
+    saved RDI: \texttt{2} \\
+    |[fill=green!10]| return address for \texttt{sum(1)} \\
+};
+\end{visibleenv}
+\begin{visibleenv}<8>
+\matrix[stack] (stackG) 
+    at (mark) {
+    return address for \texttt{sum(100)} \\
+    saved RDI: \texttt{100} \\
+    return address for \texttt{sum(99)} \\
+    saved RDI: \texttt{99} \\
+    return address for \texttt{sum(98)} \\
+    saved RDI: \texttt{98} \\
+    |[draw=none]| \ldots \\
+    return address for \texttt{sum(2)} \\
+    |[fill=green!10]| saved RDI: \texttt{2} \\
+};
+\end{visibleenv}
+\begin{visibleenv}<9>
+\matrix[stack] (stackH) 
+    at (mark) {
+    return address for \texttt{sum(100)} \\
+    saved RDI: \texttt{100} \\
+    return address for \texttt{sum(99)} \\
+    saved RDI: \texttt{99} \\
+    return address for \texttt{sum(98)} \\
+    saved RDI: \texttt{98} \\
+    |[draw=none]| \ldots \\
+    |[fill=green!10]| return address for \texttt{sum(2)} \\
+};
+\end{visibleenv}
+
+\begin{visibleenv}<9>
+\matrix[stack] (stackI) 
+    at (mark) {
+    return address for \texttt{sum(100)} \\
+    saved RDI: \texttt{100} \\
+    |[fill=green!10]| return address for \texttt{sum(99)} \\
+};
+\end{visibleenv}
+
+\begin{visibleenv}<10>
+\matrix[stack] (stackJ) 
+    at (mark) {
+    return address for \texttt{sum(100)} \\
+    |[fill=green!10]| saved RDI: \texttt{100} \\
+};
+\end{visibleenv}
+\begin{visibleenv}<11>
+\matrix[stack] (stackK) 
+    at (mark) {
+        |[fill=green!10]| return address for \texttt{sum(100)} \\
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}

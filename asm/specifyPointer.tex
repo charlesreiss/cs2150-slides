@@ -10,6 +10,9 @@
     \item example: RBX times 2
     \end{itemize}
 \item \textit{optional} 32-bit signed constant
+    \begin{itemize}
+    \item labels count as constants
+    \end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -18,7 +21,7 @@
 \begin{lstlisting}
 mov rax, rbx
 mov rax, [rbx]
-mov [var], rbx
+mov [someLabel], rbx
 mov rax, [r13 - 4]
 mov [rsi + rax], cl
 mov rdx, [rsi + 4*rbx]
