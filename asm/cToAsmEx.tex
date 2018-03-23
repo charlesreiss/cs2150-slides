@@ -10,12 +10,13 @@
 int n = 5;
 int i = 1;
 int sum = 0;
+...
 \end{lstlisting}
 };
 \node[codeInner,anchor=north west] (cCodeB)  at (cCodeA.south west) {
 \lstset{language=C++,style=small}
 \begin{lstlisting}
-while (i <= n) {
+  while (i <= n) {
 \end{lstlisting}
 };
 
@@ -30,7 +31,7 @@ while (i <= n) {
 \node[codeInner,anchor=north west] (cCodeD)  at (cCodeC.south west) {
 \lstset{language=C++,style=small}
 \begin{lstlisting}
-}
+  }
 \end{lstlisting}
 };
 \node[codeOuter,fit=(cCodeA) (cCodeB) (cCodeC) (cCodeD)] (cCode) {};
@@ -42,6 +43,8 @@ section .data
 n       DQ  5
 i       DQ  1
 sum     DQ  0
+section .text
+...
 \end{lstlisting}
 };
 \node[codeInner,anchor=north west] (asmCodeB) at (asmCodeA.south west) {
@@ -57,7 +60,7 @@ loop:   mov RCX, [i]
 \lstset{language=myasm,style=small}
 \begin{lstlisting}
         add [sum], RCX
-        inc QWORD [i]
+        add QWORD PTR [i], 1
 \end{lstlisting}
 };
 \node[codeInner,anchor=north west] (asmCodeD) at (asmCodeC.south west) {
@@ -82,6 +85,13 @@ endOfLoop:
 \node[fill=white,draw=red,align=left,ultra thick,below=.25cm of asmCodeB] {
 \lstinline|cmp [i], [n]| is not allowed \\
 only one memory operand per (most) instructions
+};
+\end{visibleenv}
+\begin{visibleenv}<5>
+\node[fill=white,draw=red,align=left,ultra thick,below=.25cm of asmCodeC] {
+\lstinline|QWORD PTR[i]| 8 bytes at location \texttt{i} \\
+otherwise, no way to know how big otherwise \\
+(more on this later)
 };
 \end{visibleenv}
 \end{tikzpicture}

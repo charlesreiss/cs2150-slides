@@ -11,7 +11,7 @@
         \item \lstinline|RBX| $\leftarrow$ memory[\lstinline|RSP|]
         \item \lstinline|RSP| $\leftarrow$ \lstinline|RSP| $+\;8$
     \end{itemize}
-    \item also okay: \\ \lstinline|push [RAX + RBX]|, etc. \\ \lstinline|push 42|, etc.
+    \item also okay: \\ \lstinline|push [RAX]|, etc. \\ \lstinline|push 42|, etc.
 \end{itemize}
 \begin{tikzpicture}[overlay,remember picture]
     \tikzset{offstack/.style={fill=black!25}}

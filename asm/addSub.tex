@@ -2,14 +2,14 @@
 \begin{lstlisting}
 add first, second
 add RAX, RBX
-add QWORD PTR [RDX], 8
+add [RDX], RBX
 ...
 sub first, second
 sub RSP, 16
 ...
 \end{lstlisting}
 \begin{itemize}
-\item first $\leftarrow$ first $+$ second (\texttt{add}), or first $\leftarrow$ first $-$ second
+    \item first $\leftarrow$ first $+$ second (\texttt{add}), or first $\leftarrow$ first $-$ second (\texttt{sub})
 \item support same operands as mov:
     \begin{itemize}
     \item can use registers, constants, locations in memory
