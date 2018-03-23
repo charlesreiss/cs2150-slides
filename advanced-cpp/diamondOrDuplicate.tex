@@ -1,0 +1,92 @@
+\usetikzlibrary{graphs}
+\usetikzlibrary{graphdrawing}
+\usegdlibrary{trees}
+
+\begin{frame}[fragile,label=diamOrDup]{diamands or duplicates}
+\begin{tikzpicture}
+\tikzset{>=Latex}
+\graph[tree layout,grow'=up] {
+    studentProfessor[as=student\_professor] -> {
+        student -> { gpListNodeA[as=gp\_list\_node], person },
+        professor -> { person, gpListNodeB[as=gp\_list\_node] },
+    }
+};
+\end{tikzpicture}
+\lstset{language=C++,style=small}
+\begin{itemize}
+\item replicated parents (\texttt{gp\_list\_node})
+    \begin{itemize}
+    \item one copy each time inherited
+    \item seperate lists of students, professors
+    \end{itemize}
+\item shared parents (\texttt{person})
+    \begin{itemize}
+    \item one copy of attributes (name?) for person
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=dupLayout]{duplicate layout}
+\begin{tikzpicture}
+\tikzset{>=Latex}
+\graph[tree layout,grow'=up,nodes={font=\small,inner sep=0.5mm},level distance=1mm] {
+    studentProfessor[as=student\_professor] -> {
+        student -> { gpListNodeA[as=gp\_list\_node], person },
+        professor -> { person, gpListNodeB[as=gp\_list\_node] },
+    }
+};
+\end{tikzpicture}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+gp_list_node &getStudentList(student_professor &p) {
+    return (gp_list_node &) (student &) p;
+}
+gp_list_node &getProfessorList(student_professor &p) {
+    return (gp_list_node &) (proessor &) p;
+}
+\end{lstlisting}
+\hrule
+example assembly:
+\lstset{language=myasm,style=small}
+\begin{tikzpicture}
+\node (one) {
+\begin{lstlisting}
+getStudentList:
+    lea rax, [rdi + 8]
+    ret
+\end{lstlisting}
+};
+\node[right=1cm of one] (two) {
+\begin{lstlisting}
+getProfessorList:
+    lea rax, [rdi + 64]
+    ret
+\end{lstlisting}
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=diamLayout]{diamond layout}
+\begin{tikzpicture}
+\tikzset{>=Latex}
+\graph[tree layout,grow'=up,nodes={font=\small}] {
+    studentProfessor[as=student\_professor] -> {
+        student -> { gpListNodeA[as=gp\_list\_node], person },
+        professor -> { person, gpListNodeB[as=gp\_list\_node] },
+    }
+};
+\end{tikzpicture}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+(person&) studentProf ==
+    (person &) (student &) studentProf ==
+        (person &) (professor &) studentProf
+\end{lstlisting}
+\hrule
+\begin{itemize}
+\item casts need more indirection
+    \begin{itemize}
+    \item example: vtable lookup of offset to `person' fields
+    \end{itemize}
+\end{itemize}
+\end{frame}

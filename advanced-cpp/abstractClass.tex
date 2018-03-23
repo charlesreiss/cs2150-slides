@@ -1,0 +1,19 @@
+\begin{frame}{pure virtual functions}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+class Shape {
+public:
+    virtual void draw() = 0;
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{= 0} --- no implementation!
+\item ``pure virtual function/method''
+\item \myemph{must be overriden} to create object
+    \begin{itemize}
+    \item otherwise, ``abstract class''
+    \end{itemize}
+\item $\approx$ \texttt{abstract} in Java
+\item only abstract methods $\approx$ Java interface
+\end{itemize}
+\end{frame}

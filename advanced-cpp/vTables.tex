@@ -1,0 +1,80 @@
+\begin{frame}[fragile,label=vTableEx]{a dynamic call}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+class Parent {
+public:
+    virtual void foo() { ... }
+    ...
+};
+class Child : public Parent {
+    virtual void foo() { ... }
+    ...
+};
+Parent *get();  // return Parent or Child
+int main() {
+    Parent *p = get();
+    p->foo();
+}
+\end{lstlisting}
+What does assembly for \texttt{main} look like? \\
+Could call \texttt{Parent::foo} or \texttt{Child:foo}
+\end{frame}
+
+\begin{frame}[fragile,label=vTableExAsm]{dynamic call: assembly}
+\lstset{
+    language=myasm,style=small,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+}
+\begin{lstlisting}
+// Parent *p (RAX) = get();
+call get
+mov rcx, @2[rax + 0]2@  // rcx <- "VTable" address
+mov rdi, rax    // rdi (this arg) <- p
+call @3[rcx + 0]3@      // call what rcx points to
+\end{lstlisting}
+\vspace{-.2cm}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+}
+\matrix[tight matrix,label={north:Parent object},nodes={font=\small,text width=3cm}] (parent) {
+    |[alt=<2>{fill=green!20}]| vtable pointer \\
+    Parent variable 1\\
+    Parent variable 2 \\
+    \ldots \\
+};
+\matrix[tight matrix,label={north:Parent vtable},nodes={font=\small,text width=5cm},anchor=north east] (parentV) at ([yshift=-2.5cm,xshift=-.5cm]parent.north east) {
+    |[alt=<3>{fill=green!20}]| {\tt Parent::foo} addr. \\
+    \ldots \\
+    {\tt Parent::\textasciitilde{}Parent} addr. \\
+};
+\matrix[tight matrix,label={north:Child object},nodes={font=\small,text width=3cm},anchor=north west] (child) at ([xshift=1cm]parent.north east) {
+    |[alt=<2>{fill=green!20}]| vtable pointer \\
+    Parent variable 1\\
+    Parent variable 2\\
+    \ldots \\
+    Child variable 1\\
+    \ldots \\
+};
+\matrix[tight matrix,label={north:Child vtable},nodes={font=\small,text width=5cm},anchor=north west] (childV) at ([yshift=-2.5cm,xshift=.5cm]child.north east) {
+    |[alt=<3>{fill=green!20}]| {\tt Child::foo} addr. \\
+    \ldots \\
+    {\tt Child::\textasciitilde{}Child} addr. \\
+};
+\draw[->,very thick] (parent-1-1.west) -| ([xshift=.5cm]parentV.north west);
+\draw[->,very thick] (child-1-1.east) -| ([xshift=-.5cm]childV.north east);
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{vtables during construction}
+\begin{itemize}
+    \item vtable set by constructor call
+    \item remember constructor call order:
+        \begin{itemize}
+        \item parent vtable set first
+        \item overwritten with child vtable
+        \item \ldots
+        \end{itemize}
+\end{itemize}
+\end{frame}
