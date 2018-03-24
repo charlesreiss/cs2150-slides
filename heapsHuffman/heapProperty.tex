@@ -1,0 +1,53 @@
+\usetikzlibrary{graphs,graphdrawing}
+\usegdlibrary{trees}
+
+
+\begin{frame}{the heap property}
+heap property: $\text{parent} \le \text{any of its children}$
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    mybst/.style={binary tree layout,level distance=5mm,sibling distance=4mm,nodes={draw,circle,inner sep=0.5mm,minimum width=.8cm}},
+    missing/.style={invisible,text=white},
+    pointerA/.style={->,very thick,green},
+    pointerB/.style={->,very thick,blue},
+    pointerC/.style={->,very thick,violet},
+    pointerAR/.style={<-,very thick,green},
+    pointerBR/.style={<-,very thick,blue},
+    pointerCR/.style={<-,very thick,violet},
+}
+\begin{scope}[mybst]
+\graph {
+    [name=a] 10 -> {
+        20 -> {40 -> {50, 700}, 60},
+        80 -> {99, 85}
+    }
+};
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{a non-heap}
+heap property: $\text{parent} \le \text{any of its children}$
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    mybst/.style={binary tree layout,level distance=5mm,sibling distance=4mm,nodes={draw,circle,inner sep=0.5mm,minimum width=.8cm}},
+    missing/.style={invisible,text=white},
+    pointerA/.style={->,very thick,green},
+    pointerB/.style={->,very thick,blue},
+    pointerC/.style={->,very thick,violet},
+    pointerAR/.style={<-,very thick,green},
+    pointerBR/.style={<-,very thick,blue},
+    pointerCR/.style={<-,very thick,violet},
+}
+\begin{scope}[mybst]
+\graph {
+    [name=a] 10 -> {
+        20[red] -> { 30, 15[red,> red] },
+        80
+    }
+};
+\end{scope}
+\end{tikzpicture}
+\end{frame}
