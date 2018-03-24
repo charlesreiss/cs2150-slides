@@ -1,0 +1,26 @@
+\begin{frame}[fragile,label=heapInsert]{insert(int)}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+void binary_heap::insert(int x) {
+    heap.push_back(x);
+    percolateUp(x);
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=heapPercuolateUp]{percolateUp(int)}
+\begin{lstlisting}
+void binary_heap::percolateUp(int index) {
+    int newValue = heap[index];
+    // while not at root and
+    //       less than parent...
+    while (index > 1 && newValue < heap[index / 2]) {
+        // move parent down
+        heap[index] = heap[index / 2];
+        // advanced up the tree
+        index /= 2;
+    }
+    heap[index] = newValue;
+}
+\end{lstlisting}
+\end{frame}

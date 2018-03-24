@@ -1,0 +1,18 @@
+\begin{frame}{insert runtime}
+    \begin{itemize}
+    \item worst case: $\log_2 N$ nodes changed
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{insert average case?}
+    \begin{itemize}
+    \item average case is better assuming random keys:
+        \begin{itemize}
+        \item intuition: leafs have bottom half of values (on average)
+        \item \ldots so usually don't need to move up
+        \item \ldots and if we do, parents of leafs have 25th to 50th percentile of values
+        \item \ldots so need to move up two steps even less
+        \item about 2 steps moved up on average
+        \end{itemize}
+    \end{itemize}
+\end{frame}

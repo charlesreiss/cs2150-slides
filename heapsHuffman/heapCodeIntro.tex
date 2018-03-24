@@ -1,0 +1,18 @@
+\begin{frame}[fragile,label=heapCodeIntro]{heap code}
+\lstset{language=C++,style=small}
+\begin{itemize}
+\item linked off slides page of repo
+\end{itemize}
+\begin{lstlisting}
+class binary_heap {
+    ...
+private:
+    // heap[1] is root
+        // leftChildIndex  = index * 2
+        // rightChildIndex = index * 2 + 1 
+        // parentIndex     = index / 2
+    vector<int> heap;
+    int heap_size;
+}
+\end{lstlisting}
+\end{frame}
