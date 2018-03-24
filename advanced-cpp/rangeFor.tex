@@ -1,0 +1,18 @@
+\begin{frame}[fragile,label=rangeFor]{range-based for loops}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+int array[1000];
+....
+for (int &x : array) {
+    ...
+}
+\end{lstlisting}
+\hrule
+\begin{lstlisting}
+vector<int> v;
+...
+for (int &x : v) {
+    ...
+}
+\end{lstlisting}
+\end{frame}

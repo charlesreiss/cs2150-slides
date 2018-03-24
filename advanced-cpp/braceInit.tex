@@ -1,0 +1,36 @@
+\begin{frame}[fragile,label=braceInit]{brace-based initialiation}
+\lstset{language=C++,style=smaller}
+can now use \lstinline|{}| to initialize objects:
+\begin{tikzpicture}
+\node (left) {
+\begin{lstlisting}
+// SomeClass()
+SomeClass foo;
+
+// SomeClass(const SomeClass &)
+SomeClass bar(foo);
+
+// SomeClass(int, int, int, int)
+SomeClass quux(1, 2, 3, 4);
+
+// vector<int>(initializer_list<int>)
+/* not supported in C++03 */
+\end{lstlisting}
+};
+\node[right=-1cm of left] (right) {
+\begin{lstlisting}
+
+SomeClass foo{};
+
+
+SomeClass bar{foo};
+
+
+SomeClass quux{1, 2, 3, 4};
+
+
+vector<int> v{0, 1, 2, 3, 4, 5};
+\end{lstlisting}
+};
+\end{tikzpicture}
+\end{frame}

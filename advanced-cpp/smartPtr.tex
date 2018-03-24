@@ -1,0 +1,61 @@
+\begin{frame}[fragile,label=uniquePtr]{unique\_ptr}
+\lstset{language=C++,style=smaller}
+instead of:
+\begin{lstlisting}
+class Foo {
+    ...
+    ~Foo() { delete bar; }
+    void set() {
+        if (bar) delete bar;
+        bar = new Bar(...);
+    }
+    Bar *bar;
+};
+\end{lstlisting}
+\hrule
+\begin{lstlisting}
+class Foo {
+    void set() {
+        bar.reset(new Bar(...));
+    }
+    unique_ptr<Bar> bar;
+};
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=uniquePtrImpl]{unique\_ptr implementation}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+template <class T> class unique_ptr {
+    ...
+    T& operator->() { return *value; }
+    T& operator*() { return *value; }
+    void reset(T* new_value) {
+        if (value) delete value;
+        value = new-value;
+    }
+    ~unique_ptr() {
+        if (value) delete value;
+    }
+private:
+    T *value;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{the smart pointers}
+\begin{itemize}
+\item \texttt{unique\_ptr} --- ``owns'' the object
+    \begin{itemize}
+    \item delete object when pointer goes away/changes
+    \end{itemize}
+\item \texttt{shared\_ptr} --- keeps a reference count
+    \begin{itemize}
+    \item delete object when last \texttt{shared\_ptr} goes away
+    \end{itemize}
+\item \texttt{weak\_ptr} --- works with shared\_ptr, but doesn't modify reference count
+    \begin{itemize}
+    \item handles circular references
+    \end{itemize}
+\end{itemize}
+\end{frame}

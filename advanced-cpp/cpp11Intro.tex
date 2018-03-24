@@ -1,0 +1,29 @@
+\begin{frame}{C++11 and beyond}
+\begin{itemize}
+\item C++ standard versions:
+    \begin{itemize}
+    \item 1997(C++03): \texttt{-std=c++98}
+    \item 2003 (C++03): \texttt{-std=c++03}
+    \item August 2011 (C++11): \texttt{-std=c++11}
+    \item August 2014 (C++14): \texttt{-std=c++14}
+    \item March 2017 (C++17): \texttt{-std=c++17}
+    \item ??? 2020 (C++20)
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=notableCpp11]{notable C++11 features}
+\lstset{language=C++}
+\begin{itemize}
+\item move constructors and r-value references
+    \begin{itemize}
+    \item option for moving value from $x$ to $y$ without copying
+    \end{itemize}
+\item initialization with braces: \lstinline|Class name{arg1, arg2, ...}|
+\item foreach loops: \lstinline|for (int &x: some_vector) {...}|
+\item type inference: \lstinline|auto it = some_vector.iterator();|
+\item return type at end: \lstinline|auto foo(int x, int y) -> int;|
+\item \lstinline|nullptr|
+\item (more) smart pointers
+\end{itemize}
+\end{frame}

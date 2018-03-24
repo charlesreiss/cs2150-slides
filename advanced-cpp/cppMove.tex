@@ -1,0 +1,77 @@
+\begin{frame}[fragile,label=motivateMove]{move motivation}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+vector<string> v;
+...
+v.push_back(getBigString());
+\end{lstlisting}
+\hrule
+\begin{itemize}
+\item C++03: this \myemph{makes a copy} of what \texttt{getBigString()} returns!
+\item (\texttt{push\_back} calls the copy constructor)
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=usingMoveC]{using move constructors}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+string one = "some contents";
+string two = std::move(one);
+\end{lstlisting}
+\hrule
+\texttt{two} contains \texttt{"some contents"} \\
+\texttt{one}'s contents \myemph{unspecified}
+\end{frame}
+
+\begin{frame}[fragile,label=moveConstruct]{move constructors}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+class DynamicArray {
+public:
+    ...
+    DynamicArray(DyanmicArray &&moveFrom) {
+        pointer = moveFrom.pointer;
+        size = moveFrom.size;
+        moveFrom.pointer = NULL;
+        moveFrom.size = 0;
+    }
+private:
+    int *pointer;
+    int size;
+};
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=usingMoveA]{using move assignment}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+string one = "some contents";
+string two = "other contents";
+two = std::move(one);
+\end{lstlisting}
+\hrule
+\texttt{two} contains \texttt{"some contents"} \\
+\texttt{one}'s contents \myemph{unspecified}
+\end{frame}
+
+\begin{frame}[fragile,label=moveA]{move assignment operators}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+class DynamicArray {
+public:
+    ...
+    DynamicArray &operator=(DynamicArray &&moveFrom) {
+        if (pointer != NULL)
+            delete[] pointer;
+        pointer = moveFrom.pointer;
+        size = moveFrom.size;
+        moveFrom.pointer = NULL;
+        moveFrom.size = 0;
+        return *this;
+    }
+private:
+    int *pointer;
+    int size;
+};
+\end{lstlisting}
+\end{frame}

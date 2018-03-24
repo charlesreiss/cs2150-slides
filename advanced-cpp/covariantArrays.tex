@@ -1,0 +1,24 @@
+\begin{frame}[fragile,label=covArr]{co-variant arrays}
+\lstset{language=Java,style=small}
+\begin{lstlisting}
+String[] a = new String[1];
+Object[] aAsObjects = a;
+b[0] = new Integer(1);
+\end{lstlisting}
+\begin{itemize}
+\item compiles, but \texttt{ArrayStoreException}
+\item not really an array of objects
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=nonCovArr]{non-co-variant containers}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+class Parent {};
+class Child : public Parent {};
+...
+vector<Child *> v;
+
+vector<Parent *> &vAsParent = v;  // DOES NOT COMPILE
+\end{lstlisting}
+\end{frame}
