@@ -1,0 +1,91 @@
+\usetikzlibrary{graphs,graphdrawing}
+\usegdlibrary{trees}
+
+\begin{frame}{heap deleteMin}
+\begin{itemize}
+\item \myemph<2-3>{replace root with last leaf node}
+\item while node greater than children: \myemph<4,6>{swap with \textit{\myemph<5>{smallest child}}}
+\end{itemize}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    mybst/.style={binary tree layout,level distance=5mm,sibling distance=4mm,nodes={draw,circle,inner sep=0.5mm,minimum width=.8cm}},
+    mybstS/.style={binary tree layout,level distance=5mm,sibling distance=4mm,nodes={font=\small,draw,circle,inner sep=0.5mm,minimum width=.8cm}},
+    missing/.style={invisible,text=white},
+    pointerA/.style={->,very thick,green},
+    pointerB/.style={->,very thick,blue},
+    pointerC/.style={->,very thick,violet},
+    pointerAR/.style={<-,very thick,green},
+    pointerBR/.style={<-,very thick,blue},
+    pointerCR/.style={<-,very thick,violet},
+}
+\begin{visibleenv}<2>
+\begin{scope}[mybst]
+\graph {
+    [name=a] 10[red,very thick,desired at={(0,0)}] -> {
+        30 -> { 40 -> {50, 70}, 60 },
+        80 -> {99, 85[red, very thick]}
+    }
+};
+\end{scope}
+\end{visibleenv}
+\begin{visibleenv}<3>
+\begin{scope}[mybst]
+\graph {
+    [name=b] 85[red,very thick,desired at={(0,0)}] -> {
+        30 -> { 40 -> {50, 70}, 60 },
+        80 -> {99, X[> invisible,invisible]}
+    }
+};
+\end{scope}
+\end{visibleenv}
+\begin{visibleenv}<4-5>
+\begin{scope}[mybst]
+\graph {
+    [name=c] 30[red,very thick,desired at={(0,0)}] -> {
+        85[red,thick] -> { 40 -> {50, 70}, 60 },
+        80 -> {99, X[> invisible,text=white,invisible]}
+    }
+};
+\end{scope}
+\end{visibleenv}
+\begin{visibleenv}<5>
+\begin{scope}[mybstS]
+\graph {
+    [name=howDoneA] 30[desired at={(5,0)}] -> { 85, 80 }
+};
+\end{scope}
+\node[fit=(howDoneA 30) (howDoneA 85) (howDoneA 80),draw,very thick,label={south:is a heap}] {};
+\begin{scope}[mybstS]
+\graph {
+    [name=howDoneB] 80[very thick,red,desired at={(8,0)}] -> { 30[very thick,red,> red], 85 }
+};
+\end{scope}
+\node[fit=(howDoneB 30) (howDoneB 85) (howDoneB 80),draw,red,very thick,label={south:not a heap}] {};
+\end{visibleenv}
+\begin{visibleenv}<6>
+\begin{scope}[mybst]
+\graph {
+    [name=c] 30[desired at={(0,0)}] -> {
+        40[red,very thick] -> {85[red, very thick] -> {50, 70}, 60 },
+        80 -> {99, X[> invisible,text=white,invisible]}
+    }
+};
+\end{scope}
+\end{visibleenv}
+\begin{visibleenv}<7>
+\begin{scope}[mybst]
+\graph {
+    [name=c] 30[desired at={(0,0)}] -> {
+        40 -> {50[red, very thick] -> {85[red,very thick], 70}, 60 },
+        80 -> {99, X[> invisible,text=white,invisible]}
+    }
+};
+\end{scope}
+\end{visibleenv}
+\begin{visibleenv}<2->
+\node[anchor=east] at (-2, 0) {\tt deleteMin()};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
