@@ -1,0 +1,24 @@
+\usetikzlibrary{graphs,graphdrawing}
+\usegdlibrary{trees}
+
+\begin{frame}{perfect binary trees}
+    \begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    mybst/.style={binary tree layout,level distance=10mm,sibling distance=15mm,nodes={draw,circle,inner sep=0.5mm,minimum width=.8cm,text=white}},
+}
+\begin{scope}[mybst]
+\graph {
+    [name=a] A[desired at={(0,0)}] -> {B -> {D, E}, C -> {F, G}} 
+};
+\end{scope}
+\end{tikzpicture}
+    \begin{itemize}
+    \item a binary tree is \myemph{perfect} or \myemph{complete} if
+        \begin{itemize}
+        \item all leaves have same depth
+        \item all nodes have zero children (leaf) or two children
+        \end{itemize}
+    \item \myemph{exactly} the trees that achieve $2^{h+1}-1$ nodes
+    \end{itemize}
+\end{frame}

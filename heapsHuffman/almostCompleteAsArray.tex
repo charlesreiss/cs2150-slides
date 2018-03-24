@@ -1,0 +1,62 @@
+\usetikzlibrary{graphs,graphdrawing}
+\usegdlibrary{trees}
+
+\begin{frame}[fragile,label=treesAsArrays]{trees as arrays}
+\lstset{language=C++,style=smaller}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    mybst/.style={binary tree layout,level distance=5mm,sibling distance=4mm,nodes={draw,circle,inner sep=0.5mm,minimum width=.8cm}},
+    missing/.style={invisible,text=white},
+    pointerA/.style={->,very thick,green},
+    pointerB/.style={->,very thick,blue},
+    pointerC/.style={->,very thick,violet},
+    pointerAR/.style={<-,very thick,green},
+    pointerBR/.style={<-,very thick,blue},
+    pointerCR/.style={<-,very thick,violet},
+}
+\begin{scope}[mybst]
+\graph {
+    [name=a] A[desired at={(0,0)}] -> {
+        B -> {D[> alt=<2>{pointerBR},> alt=<3>{pointerB}] -> {H[> alt=<3>{pointerC}], I[> alt=<2>{pointerAR},> alt=<3>{pointerA}]}, E -> {J, Xb[missing,> missing]}},
+        C -> {F ->[missing] {Xc[missing], Xd[missing]}, G ->[missing] {Xe[missing], Xf[missing]}}
+    }
+};
+\end{scope}
+\matrix[tight matrix,
+    nodes={font=\small,text width=.5cm},
+    column 1/.style={nodes={text width=1.5cm,draw=none,font=\small\bfseries}},
+] (asArray) at (1, -6) {
+   node  \& ~ \& A \& B \& C \& D \& E \& F \& G \& H \& I \& J  \& ~  \& ~  \& ~  \& ~  \& ~  \& ~ \\
+   index \& 0 \& 1 \& 2 \& 3 \& 4 \& 5 \& 6 \& 7 \& 8 \& 9 \& 10 \& 11 \& 12 \& 13 \& 14 \& 15 \& 16 \\
+};
+\node[below=0cm of asArray] {
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+string theTree[17] = {"", "A", "B", ....}
+\end{lstlisting}
+};
+\coordinate (rules) at (4, 0);
+\begin{visibleenv}<2>
+\draw[pointerA] (asArray-1-11.north) -- ++(0cm, .5cm) -| ([xshift=.25cm]asArray-1-6);
+\draw[pointerB] ([xshift=-.25cm]asArray-1-6.north) -- ++(0cm, .5cm) -| (asArray-1-4);
+\end{visibleenv}
+\begin{visibleenv}<2->
+\node[anchor=north west,alt=<2>{red},inner sep=0mm] (parentRule) at (rules) {
+\lstinline|parentIndex = index / 2|
+};
+\end{visibleenv}
+
+\begin{visibleenv}<3>
+\draw[pointerAR] (asArray-1-11.north) -- ++(0cm, .5cm) -| ([xshift=.25cm]asArray-1-6);
+\draw[pointerBR] ([xshift=-.25cm]asArray-1-6.north) -- ++(0cm, .5cm) -| (asArray-1-4);
+\draw[pointerCR] (asArray-1-10.north) -- ++(0cm, .4cm) -| ([xshift=.35cm]asArray-1-6);
+\end{visibleenv}
+\begin{visibleenv}<2->
+\node[anchor=north west,alt=<2>{red},align=left,inner sep=0mm] at ([yshift=.2cm]parentRule.south west) {
+\lstinline|leftChild = index * 2| \\
+\lstinline|rightChild = index * 2 + 1| \\
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}

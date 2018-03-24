@@ -1,0 +1,22 @@
+\begin{frame}[fragile,label=prioADT]{priority queue ADT}
+\lstset{language=C++}
+\begin{itemize}
+\item \lstinline|insert(priority, item)|
+\item \lstinline|findMin()| --- return item with lowest (first) priority
+\item \lstinline|deleteMin()| --- remove item with lowest (first) priority
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=prioADTImpl]{priority queue implementations}
+\lstset{language=C++}
+\begin{tabular}{l|lll}
+structure & insert & findMin & deleteMin \\
+unsorted vector & $\Theta(1)$ (amortized) & $\Theta(n)$ & $\Theta(n)$ \\
+unsorted linked list & $\Theta(1)$ & $\Theta(n)$ & $\Theta(n)$ \\
+sorted vector & $\Theta(n)$ & $\Theta(1)$ & $\Theta(1)$ \\
+sorted linked list & $\Theta(n)$ & $\Theta(1)$ & $\Theta(1)$ \\
+balanced tree & $\Theta(\log n)$ & $\Theta(\log n)$ & $\Theta(\log n)$ \\
+\myemph<2>{binary heap} & \myemph<2>{$\Theta(\log n)$} & \myemph<2>{$\Theta(1)$} & \myemph<2>{$\Theta(\log n)$} \\
+\myemph<3>{Fibannoci heap} & \myemph<3>{amortized $\Theta(1)$} & \myemph<3>{$\Theta(1)$} & \myemph<3>{amortized $\Theta(\log n)$} \\
+\end{tabular}
+\end{frame}
