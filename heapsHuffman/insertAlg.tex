@@ -1,0 +1,66 @@
+\usetikzlibrary{graphs,graphdrawing}
+\usegdlibrary{trees}
+
+\begin{frame}{heap insert}
+\begin{itemize}
+\item \myemph<3>{add as leaf node}
+\item while $<$ parent node: \myemph<4-5>{swap with parent}
+\end{itemize}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    mybst/.style={binary tree layout,level distance=5mm,sibling distance=4mm,nodes={draw,circle,inner sep=0.5mm,minimum width=.8cm}},
+    missing/.style={invisible,text=white},
+    pointerA/.style={->,very thick,green},
+    pointerB/.style={->,very thick,blue},
+    pointerC/.style={->,very thick,violet},
+    pointerAR/.style={<-,very thick,green},
+    pointerBR/.style={<-,very thick,blue},
+    pointerCR/.style={<-,very thick,violet},
+}
+\begin{visibleenv}<2>
+\begin{scope}[mybst]
+\graph {
+    [name=a] 10[desired at={(0,0)}] -> {
+        30 -> { 40 -> {50, 70}, 60 -> [draw=none] X[draw=none,text=white]},
+        80 -> {99, 85}
+    }
+};
+\end{scope}
+\end{visibleenv}
+\begin{visibleenv}<3>
+\begin{scope}[mybst]
+\graph {
+    [name=b] 10[desired at={(0,0)}] -> {
+        30 -> {40 -> {50, 70}, 60 -> 25[red,> red,very thick]},
+        80 -> {99, 85}
+    }
+};
+\end{scope}
+\end{visibleenv}
+\begin{visibleenv}<4>
+\begin{scope}[mybst]
+\graph {
+    [name=c] 10[desired at={(0,0)}] -> {
+        20 -> {40 -> {50, 70}, 25[red,very thick] -> 60[red]},
+        80 -> {99, 85}
+    }
+};
+\end{scope}
+\end{visibleenv}
+\begin{visibleenv}<5>
+\begin{scope}[mybst]
+\graph {
+    [name=d] 10[desired at={(0,0)}] -> {
+        25[red,very thick] -> {40 -> {50, 700}, 30[red] -> 60[red!50!black]},
+        80 -> {99, 85}
+    }
+};
+\end{scope}
+\end{visibleenv}
+\begin{visibleenv}<2->
+\node[anchor=east] at (-2, 0) {\tt insert(25)};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
