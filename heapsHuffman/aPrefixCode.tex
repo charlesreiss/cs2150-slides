@@ -1,0 +1,36 @@
+\begin{frame}[fragile,label=prefixCodeExample]{a prefix code}
+\providecommand{\cA}[1]{\colorbox{blue!20}{\strut#1}}
+\providecommand{\cB}[1]{\colorbox{green!20}{\strut#1}}
+\providecommand{\cC}[1]{\colorbox{violet!20}{\strut#1}}
+\providecommand{\cD}[1]{\colorbox{yellow!20}{\strut#1}}
+\providecommand{\cE}[1]{\colorbox{red!20}{\strut#1}}
+\begin{tikzpicture}
+\matrix[tight matrix,
+    column 1/.style={nodes={text width=2cm}},
+    column 2/.style={nodes={font=\tt}},
+    row 1/.style={nodes={draw=none,font=\bfseries}},
+    ] (codeTable) {
+    letter \& code \\
+    a \& 0 \\
+    b \& 100 \\
+    c \& 101 \\
+    d \& 11 \\
+};
+\begin{visibleenv}<2->
+\node[right=1cm of codeTable,align=left] {
+    \myemph{prefix code} \\
+    no code is prefix of another (no ambiguity) \\
+    shorter codes for more frequent values (hopefully)
+};
+\end{visibleenv}
+\begin{visibleenv}<3->
+\node[draw,anchor=north west,inner sep=0mm,very thick] (exampleStr) at ([yshift=-1cm]codeTable.south west) {
+    \cA{b}\cB{a}\cC{a}\cD{a}\cE{c}\cA{d}\cB{a}
+};
+\node[draw,right=2cm of exampleStr,font=\tt,inner sep=0mm, very thick] (exampleResult) {
+    \cA{100}\cB{0}\cC{0}\cD{0}\cE{101}\cA{100}\cB{0}
+};
+\draw[line width=1mm,-Latex,black!50] ([xshift=.25cm]exampleStr.east) -- ([xshift=-.25cm]exampleResult.west);
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}

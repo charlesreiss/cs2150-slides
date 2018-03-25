@@ -1,0 +1,60 @@
+\begin{frame}{compression}
+\begin{itemize}
+\item compression
+\vspace{.5cm}
+\item 50KB webpage as 5KB download (a lot faster!) 
+\item 100MB of machine code as 50MB download?
+\item movie of 24 1MB pictures/second into 10MB/minute file?
+\item \ldots
+\end{itemize}
+\end{frame}
+
+\begin{frame}{lossy compression}
+\begin{itemize}
+\item for audio, pictures, video, \textit{lossy compression} is common
+\item intuition: you won't notice if we make the pixel 0.25\% darker
+    \begin{itemize}
+    \item \ldots and it had ``noise'' from camera sensor, etc. anyways
+    \end{itemize}
+\item idea: model human perception
+\item write down \myemph{most important parts} of audio/image/etc.
+    \begin{itemize}
+    \item important = noticed by humans
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{lossless compression}
+\begin{itemize}
+\item lossless compression --- reproduce original file
+\item rely on patterns
+\vspace{.5cm}
+\item example: text file has many more `e's than '!'s
+\begin{itemize}
+\item \ldots so choose shorter encoding for `e' than `!'
+\end{itemize}
+\item example: computer-drawn images have lots of white space
+\begin{itemize}
+\item \ldots so have a way to represent ``a big white rectangle'' (instead of specifying each pixel)
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{typical compression results}
+\begin{itemize}
+\item ratio = original size:final size
+\item note: usually a compression ratio/speed tradeoff (not shown)
+\item lossless:
+    \begin{itemize}
+    \item for English text or source code: about 4:1
+    \item for CD-quality audio: about 2:1
+    \item for photographs: about 2:1
+    \item for computer-drawn diagrams: about 5:1 to 20:1
+    \end{itemize}
+\item lossy: (making a guess at what is ``close enough'' in quality)
+    \begin{itemize}
+    \item for CD-quality audio: about 4:1
+    \item for standard definition TV video+audio: about 1:40
+    \end{itemize}
+\end{itemize}
+\end{frame}
