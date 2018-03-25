@@ -1,0 +1,21 @@
+\begin{frame}[fragile,label=heapSort]{heap sort}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+void heapSort(vector<T>& values) {
+    binary_heap<T> heap; 
+    for (T x : values)
+        heap.insert(x);
+    values.clear();
+    while (!heap.empty()) {
+        values.push_back(heap.deleteMin());
+}
+\end{lstlisting}
+\begin{itemize}
+\item $\Theta(N \log N)$ sort 
+\item can be done in place with more careful implementation
+    \begin{itemize}
+    \item (use \texttt{values} as the heap's array)
+    \end{itemize}
+\item mostly not as fast in practice as comparable \textit{unstable} sorts
+\end{itemize}
+\end{frame}

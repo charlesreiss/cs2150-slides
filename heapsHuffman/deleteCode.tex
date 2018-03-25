@@ -1,0 +1,39 @@
+\begin{frame}[fragile,label=deleteCode]{deleteMin code}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+int binary_heap::deleteMin() {
+    if (heap_size == 0)
+        throw ...;
+    int result = heap[1];
+    heap[1] = heap[heap_size--];
+    heap.pop_back();
+    percolateDown(1);
+    return result;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=percolateDownCode]{precolateDown code}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+int binary_heap::percolateDown(int index) {
+    int value = heap[index];
+    // while left child exists
+    while (index * 2 <= heap_size) {
+        int left = index * 2, right = index * 2 + 1;
+
+        // set child to smallest child that exists
+        int child = left;
+        if (right <= heap_size && heap[right] < heap[left])
+            child = right;
+
+        // if less than smallest, done
+        if (value < heap[child]) break;
+        // otherwise:
+        heap[index] = heap[child]; // move child up
+        index = child;             // and traverse down
+    }
+    heap[index] = value;
+}
+\end{lstlisting}
+\end{frame}

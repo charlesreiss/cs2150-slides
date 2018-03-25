@@ -1,0 +1,23 @@
+\begin{frame}{other heap operations?}
+\begin{itemize}
+\item \texttt{decreaseKey}/\texttt{increaseKey}
+    \begin{itemize}
+    \item change value, then percolateUp/Down
+    \item slow ($\Theta(N)$) if you have to find the value
+    \item fast ($\Theta(\log N)$)if you already know where value is
+    \item (one method: keep track of its index)
+    \end{itemize}
+\item \texttt{remove}
+    \begin{itemize}
+    \item \texttt{decreaseKey}, then \texttt{deleteMin}
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{core heap operations}
+\begin{itemize}
+\item insert --- $\Theta(\log N)$ worst case, better on ``average''
+\item deleteMin --- $\Theta(\log N)$
+\item findMin --- $\Theta(1)$
+\end{itemize}
+\end{frame}
