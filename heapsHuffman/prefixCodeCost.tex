@@ -1,0 +1,27 @@
+\begin{frame}{prefix code cost}
+\begin{tikzpicture}
+\matrix[tight matrix,
+    column 1/.style={nodes={text width=1.5cm}},
+    column 2/.style={nodes={font=\tt,text width=1.25cm}},
+    column 3/.style={nodes={text width=3cm}},
+    row 1/.style={nodes={draw=none,font=\bfseries}},
+    ] (codeTable) {
+        letter \& code \& frequency\\
+    \strut a \& \strut 0 \& \strut 5/12 \\
+    \strut b \& \strut 100 \& \strut 1/6 \\
+    \strut c \& \strut 101 \& \strut 1/12 \\
+    \strut d \& \strut 11 \& \strut 1/3 \\
+};
+    \node[below=0cm of codeTable,align=center] (costExplain) {
+        $\text{cost} = \sum_i p_i r_i = \frac{5}{12}\cdot1 + \frac{1}{6}\cdot3 + \frac{1}{12}\cdot3+\frac{1}{3}\cdot2 = \frac{11}{6}$ (bits per symbol) \\
+        $p_i$: probability symbol $i$ occurs \\
+        $r_i$: length of code for $i$
+    };
+    \begin{visibleenv}<2->
+    \node[below=0cm of costExplain,align=center] {
+        versus a=\texttt{00},b=\texttt{01},c=\texttt{10},d=\texttt{11}: cost = $2$ (bits per symbol) \\
+        how to find \myemph{minimum cost prefix code} (given frequencies)?
+    };
+    \end{visibleenv}
+\end{tikzpicture}
+\end{frame}

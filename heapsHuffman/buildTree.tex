@@ -1,0 +1,26 @@
+\usetikzlibrary{graphs,graphdrawing,quotes}
+\usegdlibrary{trees}
+
+\directlua{dofile("buildTree.lua")}\typeout{(buildTree.lua)}
+\begin{frame}[fragile,label=buildHuff]{building the Huffman tree}
+\providecommand{\comma}{comma}
+\providecommand{\space}{\textvisiblespace}
+\begin{tikzpicture}
+\tikzset{
+    treeNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm},
+    treeLabel/.style={font=\fontsize{9}{10}\selectfont,label distance=-2mm},
+    >=Latex,
+    treeSubGraph/.style={binary tree layout,nodes={treeNode},level distance=5mm,sibling distance=5mm},
+    graphContainer/.style={draw,thick,inner sep=1mm,rounded corners=1em},
+    graphContainerLabel/.style={font=\fontsize{9}{10}\selectfont,label distance=-4mm},
+}
+\matrix[column sep=2mm] (initial) {
+    \directlua{buildTreeInitialSets()} \\
+};
+
+\matrix[column sep=2mm,below=2cm] (group) {
+    \directlua{buildTreeSecondSets()} \\
+};
+%\node[draw,very thick,dotted,rounded corners=1em,red,fit=(initial-b) (initial-f)] {};
+\end{tikzpicture}
+\end{frame}

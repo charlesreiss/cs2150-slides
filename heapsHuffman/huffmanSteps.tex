@@ -1,0 +1,30 @@
+\begin{frame}{high-level compression steps}
+    \begin{itemize}
+    \item read file, find symbol frequencies
+    \item \myemph<2>{choose best prefix code} (called \textit{Huffman code}) based on frequencies
+    \item write prefix code to output
+    \item read file, convert to preifx code, write to output
+    \end{itemize}
+    \vspace{.5cm}
+    \begin{tikzpicture}
+        \node[draw,very thick] (input) {input file};
+        \node[right=2cm of input,draw,very thick,rectangle split,rectangle split horizontal,rectangle split parts=2] (output) {
+            chosen prefix code \nodepart{two} input file using prefix code
+        };
+        \draw[-Latex,black!50,line width=2mm] ([xshift=.25cm]input.east) -- ([xshift=-.25cm]output.west);
+    \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{finding the best prefix code}
+    \begin{itemize}
+    \item build prefix code tree from bottom up
+    \item intuition 1: least frequent thing at bottom $\rightarrow$ use it first
+        \begin{itemize}
+        \item use case for a priority queue
+        \end{itemize}
+    \item intuition 2: combine less frequent symbols into more frequent group
+        \begin{itemize}
+        \item work with \myemph{partial prefix trees}
+        \end{itemize}
+    \end{itemize}
+\end{frame}

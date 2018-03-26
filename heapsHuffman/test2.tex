@@ -1,0 +1,39 @@
+\documentclass{article}
+\def\luacode{%
+  \bgroup
+  \catcode`\\=12
+  \catcode`\{=12
+  \catcode`\}=12
+  \catcode`\^^M=12
+  \catcode`\#=12
+  \catcode`\~=12
+  \catcode`\%=12
+  \doluacode
+}
+
+\bgroup
+\catcode`\|=0
+\catcode`\^^M=12 %
+\catcode`\\=12 %
+|long|gdef|doluacode#1^^M#2\endluacode{|directlua{#2}|egroup}%
+|egroup
+
+\begin{document}
+\luacode
+items = {
+    {'b',1}, {'f',1}, {'m',1}, {'p',1}, {'u','1'},
+    {',',1}, {'e',2}, {'o',2}, {'s',2}, {'i','5'},
+    {'\\space','9'}
+}
+
+for k, v in pairs(items) do
+    tex.sprint({
+        "x=",
+        v[2],
+        "y=",
+        v[1],
+        " & ",
+    })
+end
+\endluacode
+\end{document}
