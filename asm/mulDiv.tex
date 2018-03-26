@@ -9,13 +9,13 @@ imul RAX, [RCX + RDX]
 \item first operand \myemph{must} be register
 \end{itemize}
 \begin{lstlisting}
-imul first, second, third
+imul <first>, <second>, <third>
 imul RAX, RBX, 42
 imul RAX, [RCX + RDX], 42
 \end{lstlisting}
 \begin{itemize}
 \item first $\leftarrow$ second $\times$ third
-\item first operand \myemph{must} be register
+\item first: must be register; third: must be constant
 \end{itemize}
 \end{frame}
 

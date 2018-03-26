@@ -22,6 +22,7 @@ long myFunc(long a, long b, long c) {
 \end{lstlisting}
 };
 \node[anchor=north west] (versionNaive) at (exampleCode.south west){
+\vspace{-.5cm}
 \lstset{
     language=myasm,
     style=smaller,
@@ -40,7 +41,7 @@ myFunc:
 \matrix[tight matrix,inner sep=0.1mm,draw, very thick,fill=white,
     column 1/.style={nodes={draw=none, text width=3cm,font=\tt\small}},
     column 2/.style={nodes={text width=6cm,minimum height=.45cm}},
-    row 1/.style={nodes={draw=none,font=\bfseries}}, anchor=south east] at ([xshift=4cm,yshift=0cm]versionNaive.north east) {
+    row 1/.style={nodes={draw=none,font=\bfseries}}, anchor=south east] at ([xshift=9.5cm,yshift=-2cm]versionNaive.north east) {
     address \& value \\
     |[draw=none]| \ldots \\
     0xF0000000 \& |[draw=none]| (caller's stuff) \\
@@ -49,15 +50,15 @@ myFunc:
     \ldots \\
 };
 \begin{visibleenv}<3>
-\node[below=0cm of versionNaive,draw=red,ultra thick,align=left,fill=white] {
+\node[xshift=4cm,below=0cm of versionNaive,draw=red,ultra thick,align=left,fill=white] {
     optimization: place result in \texttt{RAX} --- avoid copy at end \\
     caller can't tell --- \texttt{RAX} will be overwritten anyways
 };
 \end{visibleenv}
 \begin{visibleenv}<4>
-\node[below=0cm of versionNaive,draw=red,ultra thick,align=left,fill=white] {
-    optimization: use argument registers directly --- avoid copy at beginning \\
-    caller can't tell \\
+\node[xshift=4cm,below=0cm of versionNaive,draw=red,ultra thick,align=left,fill=white] {
+    optimization: use argument registers directly \\
+    avoid copy at beginning (caller can't tell) \\
     note: allowed to change argument registers (not callee-saved)
 };
 \end{visibleenv}

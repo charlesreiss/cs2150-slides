@@ -40,14 +40,14 @@ myFunc:
     add R12, RBX  // result += c
     mov RAX, R12  // ret val = result
     @3pop R123@   // restore old R12
-    @2pop RBX3@ 
+    @3pop RBX3@ 
     ret
 \end{lstlisting}
 };
 \matrix[tight matrix,inner sep=0.1mm,draw, very thick,fill=white,
     column 1/.style={nodes={draw=none, text width=3cm,font=\tt\small}},
-    column 2/.style={nodes={text width=6cm,minimum height=.45cm}},
-    row 1/.style={nodes={draw=none,font=\bfseries}}, anchor=south east] at ([xshift=1cm,yshift=-.75cm]versionNaive.north east) {
+    column 2/.style={nodes={text width=5cm,minimum height=.45cm}},
+    row 1/.style={nodes={draw=none,font=\bfseries}}, anchor=south east] at ([xshift=2cm,yshift=-5cm]versionNaive.north east) {
     address \& value \\
     |[draw=none]| \ldots \\
     0xFF000 \& |[draw=none]| (caller's stuff) \\

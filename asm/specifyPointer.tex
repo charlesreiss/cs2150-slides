@@ -17,14 +17,14 @@
 \end{frame}
 
 \begin{frame}[fragile,label=validMovs]{example valid movs}
-\lstset{language=myasm}
+\lstset{language=myasm,deletekeywords=cl}
 \begin{lstlisting}
-mov rax, rbx
-mov rax, [rbx]
-mov [someLabel], rbx
-mov rax, [r13 - 4]
-mov [rsi + rax], cl
-mov rdx, [rsi + 4*rbx]
+mov rax, rbx           // RAX <- RBX
+mov rax, [rbx]         // RAX <- memory[RBX]
+mov [someLabel], rbx   // memory[someLabel] <- RBX
+mov rax, [r13 - 4]     // RAX <- memory[R13 + (-4)]
+mov [rsi + rax], cl    // memory[RSI + RAX] <- CL
+mov rdx, [rsi + 4*rbx] // RDX <- memory[RSI + 4 * RBX]
 \end{lstlisting}
 \end{frame}
 
@@ -51,15 +51,15 @@ mov rdx, [rsi + 4*rbx]
 mov bl, [rax]
 mov [rax], bl
 mov BYTE PTR [rax], bl
-mov BYTE PTR [bl], 42
+mov BYTE PTR [rbx], 42
 \end{lstlisting}
 \item move four bytes:
 \begin{lstlisting}
 mov ebx, [rax]
 mov [rax], ebx
 mov DWORD PTR [rax], ebx
-mov DWORD PTR [bl], 10
+mov DWORD PTR [rbx], 10
 \end{lstlisting}
-\item (BYTE, WORD, DWORD, QWORD)
+\item (BYTE, WORD (2 bytes), DWORD (4 bytes), QWORD (8 bytes))
 \end{itemize}
 \end{frame}

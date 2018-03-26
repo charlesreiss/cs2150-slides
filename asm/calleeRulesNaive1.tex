@@ -37,7 +37,7 @@ myFunc:
     add QWORD PTR [RSP], RDX // result += c
     mov RAX, QWORD PTR [RSP] // ret val = result
     // deallocate space
-    sub RSP, 8
+    add RSP, 8
     ret
 \end{lstlisting}
 };

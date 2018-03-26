@@ -19,6 +19,7 @@
     \begin{itemize}
     \item<3-> Linux+x86-64: arguments 1-6: \texttt{RDI}, \texttt{RSI}, \texttt{RDX}, \texttt{RCX}, \texttt{R8}, \texttt{R9}
     \item<3-> Linux+x86-64: arguments 7-: push on the stack (\textit{last} argument first)
+    \item<3-> last argument first: so arguments are \texttt{pop}'d in order
     \item<3-> (exceptions: objects that don't fit in a register, floating point, \ldots)
     \end{itemize}
 \end{itemize}

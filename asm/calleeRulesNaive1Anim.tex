@@ -27,7 +27,7 @@
 \lstinline|    add QWORD PTR [RSP], RDX // result += c|\\
 \lstinline|    mov RAX, QWORD PTR [RSP] // ret val = result|\\
 \lstinline|    // deallocate space|\\
-\lstinline|    sub RSP, 8|\\
+\lstinline|    add RSP, 8|\\
 \lstinline|    ret|\\
 };
 \matrix[right=1cm of code,regMatrix] (regs) {
@@ -60,7 +60,7 @@
 
 \lineHi{3}{2}
 \setReg{rsp}{0x7FFF0}{2}
-\rspMark{2}{2-7}
+\rspMark{3}{2-7}
 
 \lineHi{4}{3}
 \setReg{stack-3-2}{0}{3}
@@ -71,7 +71,7 @@
 
 \lineHi{6}{5}
 \getReg{rsi}{3}{5}
-\setReg{stack-4-2}{5}{5}
+\setReg{stack-3-2}{5}{5}
 
 \lineHi{7}{6}
 \getReg{rdx}{4}{6}
