@@ -1,0 +1,44 @@
+\begin{frame}[fragile,label=storeCode]{storing the prefix code}
+    \begin{itemize}
+    \item format for the lab:
+    \end{itemize}
+\begin{Verbatim}[fontsize=\fontsize{10}{11}\selectfont]
+space 00
+u 01000
+, 01001
+m 01010
+p 01011
+t 011
+b 10000
+f 10001
+e 1001
+o 1010
+s 1011
+i 11
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}{real format?}
+    \begin{itemize}
+    \item does this save space?
+    \item probably if input file is big enough\ldots
+    \vspace{.5cm}
+    \item but real compression formats use a more compact encoding
+        \begin{itemize}
+        \item not having you do in lab to ease debugging/etc.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{what about the data?}
+    \begin{itemize}
+        \item in lab: the text \texttt{01111110011110\ldots} 
+            \begin{itemize}
+            \item obviously wastes a lot of space\ldots
+            \end{itemize}
+        \item real compression: sequence of bytes, 8 bits per
+            \begin{itemize}
+            \item extra work to extract bit-by-bit, match with prefix code
+            \end{itemize}
+    \end{itemize}
+\end{frame}

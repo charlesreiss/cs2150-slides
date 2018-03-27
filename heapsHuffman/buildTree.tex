@@ -1,26 +1,220 @@
 \usetikzlibrary{graphs,graphdrawing,quotes}
 \usegdlibrary{trees}
 
-\directlua{dofile("buildTree.lua")}\typeout{(buildTree.lua)}
-\begin{frame}[fragile,label=buildHuff]{building the Huffman tree}
 \providecommand{\comma}{comma}
 \providecommand{\space}{\textvisiblespace}
-\begin{tikzpicture}
+\providecommand{\showMergeX}[5]{
+\node[#4,rounded corners=1em,inner sep=.5em,fit=(#1) (#2)] 
+    (#1-mergeIn) {};
+\node[#4,rounded corners=1em,inner sep=.5em,fit=(#3)] 
+    (#3-mergeOut) {};
+\path[->,line width=1mm,#5] (#1-mergeIn) -- (#3-mergeOut);
+}
+\providecommand{\showMerge}[3]{
+    \showMergeX{#1}{#2}{#3}{draw,red,very thick,dotted}{draw=red!50!black}
+}
+\providecommand{\showMergeB}[3]{
+    \showMergeX{#1}{#2}{#3}{draw,blue,ultra thick,dotted}{draw=blue!50!black}
+}
 \tikzset{
     treeNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm},
     treeLabel/.style={font=\fontsize{9}{10}\selectfont,label distance=-2mm},
     >=Latex,
-    treeSubGraph/.style={binary tree layout,nodes={treeNode},level distance=5mm,sibling distance=5mm},
+    treeSubGraph/.style={binary tree layout,graphs/nodes={treeNode},level distance=1mm,sibling distance=1mm,
+        graphs/edge quotes={font=\tt\tiny,auto}},
     graphContainer/.style={draw,thick,inner sep=1mm,rounded corners=1em},
     graphContainerLabel/.style={font=\fontsize{9}{10}\selectfont,label distance=-4mm},
 }
+
+\directlua{dofile("buildTree.lua")}\typeout{(buildTree.lua)}
+\begin{frame}[fragile,label=buildHuff1]{building the Huffman tree (1)}
+\begin{tikzpicture}
 \matrix[column sep=2mm] (initial) {
     \directlua{buildTreeInitialSets()} \\
 };
 
-\matrix[column sep=2mm,below=2cm] (group) {
+\begin{visibleenv}<1>
+    \node[below=0.5cm of initial,align=left,font=\large] {
+        list of \myemph{partial prefix trees} \\
+        labelled with \myemph{total frequency of contained symbols} \\
+        goal: combine these into one prefix tree
+    };
+\end{visibleenv}:
+\begin{visibleenv}<2->
+\matrix[column sep=2mm,below=2cm of initial] (secondM) {
     \directlua{buildTreeSecondSets()} \\
 };
-%\node[draw,very thick,dotted,rounded corners=1em,red,fit=(initial-b) (initial-f)] {};
+\node[draw,very thick,dotted,rounded corners=1em,red,inner sep=.5em,fit=(initial-b) (initial-f)] 
+    (initialBox) {};
+\node[draw,very thick,dotted,rounded corners=1em,red,inner sep=.5em,fit=(second-bf)] 
+    (secondBoxA) {};
+\path[->,line width=1mm,draw=red!50!black] (initialBox) -- (secondBoxA)
+    node[midway,right,align=left,xshift=1cm] {
+        combine \myemph{two least frequent} into partial prefix tree \\
+        new frequency = sum of old frequencies 
+    };
+\end{visibleenv}
+\begin{visibleenv}<3->
+\matrix[column sep=2mm,below=0cm of secondM] (thirdM) {
+    \directlua{buildTreeThirdSets()} \\
+};
+\showMerge{second-m}{second-p}{third-mp};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=buildHuff2]{building the Huffman tree (2)}
+\providecommand{\comma}{comma}
+\providecommand{\space}{\textvisiblespace}
+\begin{tikzpicture}
+
+\matrix[column sep=2mm] (thirdM) {
+    \directlua{buildTreeThirdSets()} \\
+};
+\matrix[column sep=2mm,below=0cm of thirdM] (fourthM) {
+    \directlua{buildTreeFourthSets()} \\
+};
+\showMerge{third-u}{third-comma}{fourth-ucomma};
+\matrix[column sep=2mm,below=0cm of fourthM] (fifthM) {
+    \directlua{buildTreeFifthSets()} \\
+};
+\showMergeB{fourth-ucomma}{fourth-mp}{fifth-ucommamp}
+\end{tikzpicture}
+\end{frame}
+
+% FIXME: not a great example
+\begin{frame}[fragile,label=buildHuff2Alt]{building the Huffman tree: alternatives}
+\begin{tikzpicture}
+\matrix[column sep=2mm,] (fourthM) {
+    \directlua{buildTreeFourthSets()} \\
+};
+\matrix[column sep=2mm,below=0cm of fourthM] (fifthMB) {
+    \directlua{buildTreeFifthBSets()} \\
+};
+
+    \node[draw,blue,dotted,very thick,rounded corners=1em,inner sep=.5em,fit=(fourth-mp)] (fourth-mpBox) {};
+    \node[draw,blue,dotted,very thick,rounded corners=1em,inner sep=.5em,fit=(fourth-o)](fourth-oBox)  {};
+    \node[draw,blue,dotted,very thick,rounded corners=1em,inner sep=.5em,fit=(fifthB-mpo)] (fifth-mpoBox) {};
+    \path[->,line width=1mm,draw=blue!50!black] (fourth-mpBox) -- (fifth-mpoBox);
+    \path[->,line width=1mm,draw=blue!50!black] (fourth-oBox) -- (fifth-mpoBox);
+\node[draw,red,dotted,very thick,rounded corners=1em,inner sep=.25em,fit=(fourth-ucomma) (fourth-mp)]  {};
+\node[below=0cm of fifthMB,align=left] {
+    multiple choices of what to combine  \\
+    proof not shown: produce same quality prefix tree
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=buildHuff3]{building the Huffman tree (3)}
+\begin{tikzpicture}
+\matrix[column sep=2mm] (fifthM) {
+    \directlua{buildTreeFifthSets()} \\
+};
+\matrix[column sep=2mm,below=0cm of fifthM] (seventhM) {
+    \directlua{buildTreeSeventhSets()} \\
+};
+\showMerge{fifth-bf}{fifth-e}{seventh-bfe}
+\showMergeB{fifth-o}{fifth-s}{seventh-os}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=buildHuff4]{building the Huffman tree (4)}
+\begin{tikzpicture}
+\matrix[column sep=2mm] (seventhM) {
+    \directlua{buildTreeSeventhSets()} \\
+};
+\matrix[column sep=2mm,below=1cm of seventhM] (ninthM) {
+    \directlua{buildTreeNinthSets()} \\
+};
+\showMerge{seventh-bfe}{seventh-os}{ninth-bfeos}
+\showMergeB{seventh-ucommamp}{seventh-t}{ninth-ucommampt}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=buildHuff5]{building the Huffman tree (5)}
+\vspace{-.5cm}
+\begin{tikzpicture}
+\matrix[column sep=2mm] (ninthM) {
+    \directlua{buildTreeNinthSets()} \\
+};
+\matrix[column sep=2mm,below=0cm of ninthM] (tenthM) {
+    \directlua{buildTreeTenthSets()} \\
+};
+\showMerge{ninth-bfeos}{ninth-i}{tenth-ibfeos}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=buildHuff6]{building the Huffman tree (6)}
+\vspace{-1cm}
+\begin{tikzpicture}
+\matrix[column sep=2mm] (tenthM) {
+    \directlua{buildTreeTenthSets()} \\
+};
+\matrix[column sep=2mm,below=0cm of ninthM] (tenthM) {
+    \directlua{buildTreeEleventhSets()} \\
+};
+\showMerge{tenth-ucommampt}{tenth-space}{eleventh-spaceucommampt}
+\end{tikzpicture}
+\end{frame}
+
+
+\begin{frame}[fragile,label=buildHuff7]{building the Huffman tree (7)}
+\vspace{-.5cm}
+\begin{tikzpicture}
+\matrix[column sep=2mm] (final) {
+    \directlua{buildTreeFinalSets()} \\
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=finalTree]{the final Huffman tree}
+\begin{tikzpicture}
+\matrix (graphBox) {
+    \begin{scope}[treeSubGraph]
+    \graph{
+            [fresh nodes] / -> {
+                 /[> "0"'] -> {
+                    space[as={\textvisiblespace},> "0"'],
+                    /[> "1"] -> {
+                        /[> "0"'] -> {
+                            /[> "0"'] -> {u[> "0"'],comma[as={,},> "1"]},
+                            /[> "1"] ->  {m[> "0"'],p[> "1"]}
+                        },
+                        t[> "1"]
+                    }
+                },
+                /[> "1"] ->  {
+                    /[> "0"'] -> {
+                        /[> "0"'] -> {/[> "0"'] -> {b[> "0"'], f[> "1"]}, e[> "1"]},
+                        /[> "1"] -> {o[> "0"'], s[> "1"]}
+                    },
+                    i[> "1"]
+                }
+            }
+        };
+    \end{scope}
+    \\
+};
+    \matrix[tight matrix,
+        column 1/.style={nodes={text width=1.5cm,font=\small\tt}},
+        column 2/.style={nodes={font=\small\tt,text width=1.5cm}},
+        row 1/.style={nodes={draw=none,font=\bfseries}},
+        nodes={minimum height=.4cm},
+        right=1cm of graphBox,
+        ] (codeTable) {
+        letter \& code \\
+        \strut \textvisiblespace \& \strut 00 \\
+        \strut u \& \strut 01000 \\
+        \strut , \& \strut 01001 \\
+        \strut m \& \strut 01010 \\
+        \strut p \& \strut 01011 \\
+        \strut t \& \strut 011 \\
+        \strut b \& \strut 10000 \\
+        \strut f \& \strut 10001 \\
+        \strut e \& \strut 1001 \\
+        \strut o \& \strut 1010 \\
+        \strut s \& \strut 1011 \\
+        \strut i \& \strut 11 \\
+    };
 \end{tikzpicture}
 \end{frame}

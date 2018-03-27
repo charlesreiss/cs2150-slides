@@ -1,0 +1,24 @@
+\begin{frame}[fragile,label=treePsuedo]{tree-building pseudocode}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+class PrefixTree { 
+    ...
+    PrefixTree(char c, int frequency);
+    PrefixTree(PrefixTree rightSide, PrefixTree leftSide);
+    PrefixTree(const PrefixTree &other);
+    ...
+};
+...
+  PriorityQueue<PrefixTree> queue;
+  for (char c, frequency f   in   inputFile) {
+      queue.insert(PrefixTree(c, f));
+  }
+  while (queue.size() > 1) {
+      PrefixTree first = queue.deleteMin();
+      PrefixTree second = queue.deleteMin();
+      queue.insert(PrefixTree(first, second));
+  }
+  return queue.deleteMin();
+...
+\end{lstlisting}
+\end{frame}
