@@ -1,6 +1,5 @@
-
-
 \begin{frame}[fragile,label=calleeSampleWeirdSave]{callee code example (save registers weirdly)}
+\vspace{-.5cm}
 \begin{tikzpicture}
 \tikzset{
     cCode/.style={align=left},
@@ -42,10 +41,11 @@ myFunc:
     ret
 \end{lstlisting}
 };
+\begin{comment}
 \matrix[tight matrix,inner sep=0.1mm,draw, very thick,fill=white,
     column 1/.style={nodes={draw=none, text width=3cm,font=\tt\small}},
     column 2/.style={nodes={text width=6cm,minimum height=.45cm}},
-    row 1/.style={nodes={draw=none,font=\bfseries}}, anchor=south east] at ([xshift=0cm,yshift=-1cm]versionNaive.north east) {
+    row 1/.style={nodes={draw=none,font=\bfseries}}, anchor=south east] at ([xshift=0cm,yshift=-1.5cm]versionNaive.north east) {
     address \& value \\
     |[draw=none]| \ldots \\
     0xF0000000 \& |[draw=none]| (caller's stuff) \\
@@ -54,6 +54,7 @@ myFunc:
     0xEFFFFFE8 \& |[draw=none]| (next stack allocation) \\
     \ldots \\
 };
+\end{comment}
 
 \begin{visibleenv}<3>
 \node[below=-2cm of versionNaive,draw=red,ultra thick,align=left,fill=white] {

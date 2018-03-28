@@ -1,0 +1,41 @@
+\begin{comment}
+\begin{frame}{last time}
+    \begin{itemize}
+    \item specifying memory locations
+        \begin{itemize}
+            \item \texttt{DWORD PTR [RAX+4*RBX+17]}
+        \end{itemize}
+    \item multiply/divide
+    \item LEA
+    \item calling convention: rules so we can call functions consistently
+        \begin{itemize}
+            \item where arguments, return value are
+            \item who needs to save/restore register values
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+\end{comment}
+
+\begin{frame}{last time}
+    \begin{itemize}
+    \item finish up calling convention
+    \item arithmetic instructions set flags
+        \begin{itemize}
+        \item mostly comparing results to 0
+        \item (some differences re: overflow/etc.)
+        \end{itemize}
+    \item \texttt{TEST RAX, RAX} $\approx$ \texttt{CMP RAX, 0}
+    \item assembly ``boilerplate''
+        \begin{itemize}
+        \item file type info
+        \item debugger/exception info
+        \item setup for C++ standard library
+        \end{itemize}
+    \item name mangling
+        \begin{itemize}
+        \item turning C++ names into valid labels
+        \item different names for different arguments
+        \item (no \texttt{::}, spaces, parens, etc.)
+        \end{itemize}
+    \end{itemize}
+\end{frame}

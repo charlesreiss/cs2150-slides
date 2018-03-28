@@ -1,9 +1,10 @@
 \begin{frame}[fragile,label=absValueIntelUnopt]{absolute\_value (unoptimized)}
 \lstset{
-    language=myasm
+    language=myasm,
+    style=smaller,
 }
 \begin{itemize}
-    \item \texttt{clang++ -S --mllvm --x86-asm-syntax=intel -S -fomit-frame-pointer}:
+    \item \fontsize{9}{10}\selectfont\texttt{clang++ -S --mllvm --x86-asm-syntax=intel -S -fomit-frame-pointer}:
 \end{itemize}
 \begin{lstlisting}
 absolute_value:
@@ -21,11 +22,12 @@ absolute_value:
 \end{frame}
 \begin{frame}[fragile,label=absValueInt]{absolute\_value\_int (unoptimized)}
 \lstset{
-    language=myasm
+    language=myasm,
+    style=smaller,
 }
 \begin{itemize}
     \item longs replaced with ints
-    \item \texttt{clang++ -S --mllvm --x86-asm-syntax=intel -S -fomit-frame-pointer}:
+    \item \fontsize{9}{10}\selectfont\texttt{clang++ -S --mllvm --x86-asm-syntax=intel -S -fomit-frame-pointer}:
 \end{itemize}
 \begin{lstlisting}
 absolute_value_int:
@@ -45,10 +47,11 @@ absolute_value_int:
 
 \begin{frame}[fragile,label=absValueO2]{absolute\_value (optimized)}
 \lstset{
-    language=myasm
+    language=myasm,
+    morekeywords=cmovl,
 }
 \begin{itemize}
-    \item \texttt{clang++ -S \myemph{-O2} --mllvm --x86-asm-syntax=intel -S -fomit-frame-pointer}:
+    \item \fontsize{9}{10}\selectfont \texttt{clang++ -S \myemph{-O2} --mllvm --x86-asm-syntax=intel -S -fomit-frame-pointer}:
 \end{itemize}
 \begin{lstlisting}
 absolute_value:

@@ -1,4 +1,5 @@
 \begin{frame}[fragile,label=calleeSampleBetter]{callee code example (better version)}
+    \vspace{-.5cm}
 \begin{tikzpicture}
 \tikzset{
     cCode/.style={align=left},
@@ -58,8 +59,7 @@ myFunc:
 \begin{visibleenv}<4>
 \node[xshift=4cm,below=0cm of versionNaive,draw=red,ultra thick,align=left,fill=white] {
     optimization: use argument registers directly \\
-    avoid copy at beginning (caller can't tell) \\
-    note: allowed to change argument registers (not callee-saved)
+    avoid copy at beginning (caller can't tell)
 };
 \end{visibleenv}
 \end{tikzpicture}

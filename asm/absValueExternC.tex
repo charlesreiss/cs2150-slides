@@ -70,3 +70,16 @@ assembly on Linux: \\
     \hspace{2cm}\texttt{\_Z14absolute\_value\myemph{l}}, and \\
     \hspace{2cm}\texttt{\_Z14absolute\_value\myemph{i}}
 \end{frame}
+
+\begin{frame}[fragile,label=cppFilt]{c++filt}
+    \begin{itemize}
+        \item \texttt{c++filt} --- command line program to translate C++ symbol names
+    \end{itemize}
+\begin{Verbatim}
+$ c++filt
+The function is _Z14absolute_valuellll
+^D
+\end{Verbatim}
+\hrule
+Output: \texttt{The function is \texttt{absolute\_value(long, long, long, long)}}
+\end{frame}
