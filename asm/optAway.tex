@@ -1,0 +1,27 @@
+\begin{frame}[fragile,label=optAway]{optimizing away}
+\begin{lstlisting}[language=C++,style=smaller]
+int foo() { return 42; }
+int example() { return 1 + foo(); }
+\end{lstlisting}
+possible generated asm:
+\begin{lstlisting}[language=myasm,style=smaller]
+...
+_Z8example1v:
+    mov EAX, 43
+    ret
+\end{lstlisting}
+\hrule
+\begin{lstlisting}[language=C++,style=smaller]
+int foo();
+int example() { return 1 + foo(); }
+\end{lstlisting}
+possible asm:
+\begin{lstlisting}[language=myasm,style=smaller]
+_Z8example1v:
+    push RAX
+    call _Z4foo1v
+    add EAX, 1
+    pop RCX
+    ret
+\end{lstlisting}
+\end{frame}

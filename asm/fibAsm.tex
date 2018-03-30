@@ -1,7 +1,7 @@
 \begin{frame}[fragile,label=fibAsm1]{fib (optimized; part 1)}
 \lstset{
     language=myasm,
-    style=small,
+    style=smaller,
     moredelim={**[is][\btHL<all:2>]{@2}{2@}},
     moredelim={**[is][\btHL<all:3>]{@3}{3@}},
     moredelim={**[is][\btHL<all:4>]{@4}{4@}},
@@ -22,7 +22,7 @@ fib:
 \end{lstlisting}
 \begin{tikzpicture}[overlay,remember picture]
     \tikzset{
-        box/.style={draw=red,ultra thick,fill=white,at={([yshift=-1cm]current page.south)},anchor=south},
+        box/.style={draw=red,ultra thick,fill=white,at={([yshift=1cm]current page.south)},anchor=south,align=left},
     }
     \begin{visibleenv}<2>
     \node[box] {
@@ -42,7 +42,7 @@ fib:
         jumps to code that returns R14
     };
     \end{visibleenv}
-    \begin{visibleenv}<4>
+    \begin{visibleenv}<5>
     \node[box] {
         edi, ebx both copies of n
     };
@@ -53,7 +53,7 @@ fib:
 \begin{frame}[fragile,label=fibAsm2]{fib (optimized; part 2)}
 \lstset{
     language=myasm,
-    style=small,
+    style=smaller,
     moredelim={**[is][\btHL<all:2>]{@2}{2@}},
     moredelim={**[is][\btHL<all:3>]{@3}{3@}},
     moredelim={**[is][\btHL<all:4>]{@4}{4@}},
@@ -80,12 +80,12 @@ fib:
 \end{lstlisting}
 \begin{tikzpicture}[overlay,remember picture]
     \tikzset{
-        box/.style={draw=red,ultra thick,fill=white,at={([yshift=-1cm]current page.south)},anchor=south},
+        box/.style={draw=red,ultra thick,fill=white,at={([yshift=1cm]current page.south)},anchor=south,align=left},
     }
     \begin{visibleenv}<2>
     \node[box] {
         return r14 \\
-        undo stack adjustment; restore rbx, r14 \\
+        undo stack adjustment \\ restore rbx, r14
     };
     \end{visibleenv}
     \begin{visibleenv}<3>

@@ -2,6 +2,7 @@
 \lstset{
     language=myasm,
     style=small,
+    morekeywords=cmovge
     moredelim={**[is][\btHL<all:2>]{@2}{2@}},
     moredelim={**[is][\btHL<all:3>]{@3}{3@}},
     moredelim={**[is][\btHL<all:4>]{@4}{4@}},
@@ -16,7 +17,7 @@ max:
 \end{lstlisting}
 \begin{tikzpicture}[overlay,remember picture]
     \tikzset{
-        box/.style={draw=red,ultra thick,fill=white,at={([yshift=-1cm]current page.south)},anchor=south},
+        box/.style={draw=red,ultra thick,fill=white,at={([yshift=1cm]current page.south)},anchor=south},
     }
     \begin{visibleenv}<2>
     \node[box] {
