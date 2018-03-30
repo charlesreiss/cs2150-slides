@@ -160,7 +160,7 @@ Child()
         \end{itemize}
     \item (even if destructor doesn't do anything)
         \begin{itemize}
-            \item compiler might use destructor to know how much to free up
+            \item compiler \myemph{might use destructor to know how much memory to free}
             \item C++ standard quote: ``If the static type of the object to be deleted is different from its
 dynamic type, the static type shall be a base class of the dynamic type of the object to be deleted and the
 static type shall have a virtual destructor or the behavior is undefined.''

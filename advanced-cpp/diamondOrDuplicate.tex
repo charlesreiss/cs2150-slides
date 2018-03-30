@@ -26,47 +26,52 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile,label=dupLayout]{duplicate layout}
-\begin{tikzpicture}
-\tikzset{>=Latex}
-\graph[tree layout,grow'=up,nodes={font=\small,inner sep=0.5mm},level distance=1mm] {
-    studentProfessor[as=student\_professor] -> {
-        student -> { gpListNodeA[as=gp\_list\_node], person },
-        professor -> { person, gpListNodeB[as=gp\_list\_node] },
-    }
-};
-\end{tikzpicture}
-\lstset{language=C++,style=small}
+\begin{frame}[fragile,label=virtualNoCopy]{C++ default: replicated inheritence}
+\lstset{language=C++,style=smaller}
 \begin{lstlisting}
-gp_list_node &getStudentList(student_professor &p) {
-    return (gp_list_node &) (student &) p;
-}
-gp_list_node &getProfessorList(student_professor &p) {
-    return (gp_list_node &) (proessor &) p;
+class Parent { public:
+    int value;
+};
+class A : public Parent {}; 
+class B : public Parent {}; 
+class C : public A, public B {}; 
+
+int main() {
+    C c;
+    A& as_a = c; B& as_b = c;
+    as_a.value = 1; as_b.value = 2;
+    cout << as_a.value << " " << as_b.value << endl;
 }
 \end{lstlisting}
 \hrule
-example assembly:
-\lstset{language=myasm,style=small}
-\begin{tikzpicture}
-\node (one) {
-\begin{lstlisting}
-getStudentList:
-    lea rax, [rdi + 8]
-    ret
-\end{lstlisting}
-};
-\node[right=1cm of one] (two) {
-\begin{lstlisting}
-getProfessorList:
-    lea rax, [rdi + 64]
-    ret
-\end{lstlisting}
-};
-\end{tikzpicture}
+output: \texttt{1 2} (two copies of \texttt{value})
 \end{frame}
 
-\begin{frame}[fragile,label=diamLayout]{diamond layout}
+\begin{frame}[fragile,label=virtualCopy]{virtual inheritence: one copy}
+\lstset{language=C++,style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+}
+\begin{lstlisting}
+class Parent { public:
+    int value;
+};
+class A : public @2virtual2@ Parent {}; 
+class B : public @2virtual2@ Parent {}; 
+class C : public A, public B {}; 
+
+int main() {
+    C c;
+    A& as_a = c; B& as_b = c;
+    as_a.value = 1; as_b.value = 2;
+    cout << as_a.value << " " << as_b.value << endl;
+}
+\end{lstlisting}
+\hrule
+output: \texttt{2 2} (\texttt{as\_a.value} same as \texttt{as\_b.value})
+\end{frame}
+
+\begin{frame}[fragile,label=declareMix]{declaring a mix}
+\lstset{language=C++,style=smaller}
 \begin{tikzpicture}
 \tikzset{>=Latex}
 \graph[tree layout,grow'=up,nodes={font=\small}] {
@@ -76,18 +81,9 @@ getProfessorList:
     }
 };
 \end{tikzpicture}
-\lstset{language=C++,style=small}
 \begin{lstlisting}
-(person&) studentProf ==
-    (person &) (student &) studentProf ==
-        (person &) (professor &) studentProf
+class student: public virtual person, public gp_list_node {...};
+class professor: public virtual person, public gp_list_node {...};
+class student_professor: public professor, public student {...};
 \end{lstlisting}
-\hrule
-\begin{itemize}
-\item casts need more indirection to implement
-    \begin{itemize}
-    \item example: vtable lookup of offset to `person' fields
-    \item different `offsets' of object for \texttt{professor} versus \texttt{student\_professor}
-    \end{itemize}
-\end{itemize}
 \end{frame}

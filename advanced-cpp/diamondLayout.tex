@@ -1,0 +1,126 @@
+\usetikzlibrary{graphs}
+\usetikzlibrary{graphdrawing}
+\usegdlibrary{trees}
+
+
+\begin{frame}[fragile,label=dupLayout]{duplicate layout}
+\begin{tikzpicture}
+\tikzset{>=Latex}
+\graph[tree layout,grow'=up,nodes={font=\small,inner sep=0.5mm},level distance=1mm] {
+    studentProfessor[as=student\_professor] -> {
+        student -> { gpListNodeA[as=gp\_list\_node], person },
+        professor -> { person, gpListNodeB[as=gp\_list\_node] },
+    }
+};
+\end{tikzpicture}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+gp_list_node &getStudentList(student_professor &p) {
+    return (gp_list_node &) (student &) p;
+}
+gp_list_node &getProfessorList(student_professor &p) {
+    return (gp_list_node &) (proessor &) p;
+}
+\end{lstlisting}
+\hrule
+example assembly:
+\lstset{language=myasm,style=small}
+\begin{tikzpicture}
+\node (one) {
+\begin{lstlisting}
+getStudentList:
+    lea rax, [rdi + 8]
+    ret
+\end{lstlisting}
+};
+\node[right=1cm of one] (two) {
+\begin{lstlisting}
+getProfessorList:
+    lea rax, [rdi + 64]
+    ret
+\end{lstlisting}
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=diamLayout]{diamond layout}
+\begin{tikzpicture}
+\tikzset{>=Latex}
+\graph[tree layout,grow'=up,nodes={font=\small}] {
+    studentProfessor[as=student\_professor] -> {
+        student -> { gpListNodeA[as=gp\_list\_node], person },
+        professor -> { person, gpListNodeB[as=gp\_list\_node] },
+    }
+};
+\end{tikzpicture}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+(person&) studentProf ==
+    (person &) (student &) studentProf ==
+        (person &) (professor &) studentProf
+\end{lstlisting}
+\hrule
+\begin{itemize}
+\item casts need more indirection to implement
+    \begin{itemize}
+    \item example: vtable lookup of offset to `person' fields
+    \item different `offsets' of object for \texttt{professor} versus \texttt{student\_professor}
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=possLayout]{a possible layout}
+\lstset{language=C++,style=smaller}
+\begin{tikzpicture}
+\tikzset{>=Latex}
+\begin{scope}[nodes={minimum width=7.5cm,minimum height=1cm,draw,font=\small}]
+\tikzset{vt/.style={minimum height=.4cm,inner sep=0.1mm}}
+\node[vt] (studentVT) { \texttt{student} VTable pointer };
+\node[below=0cm of studentVT] (student) { \texttt{student} data };
+\node[vt,below=0cm of student] (professorVT) { \texttt{professor} VTable pointer };
+\node[below=0cm of professorVT] (professor) { \texttt{professor} data };
+\node[below=0cm of professor] (studentProf) { \texttt{student\_professor} data };
+\node[vt,below=0cm of studentProf] (personVT) { \texttt{person} VTable pointer };
+\node[below=0cm of personVT] (person) { \texttt{person} data };
+\end{scope}
+
+\begin{visibleenv}<1>
+\tikzset{vtListing/.style={font=\tt\fontsize{9}{10}\selectfont,text width=7cm}}
+\matrix[tight matrix,right=1cm of personVT,nodes={vtListing}] (personVTdata) {
+    student\_professor::print \\
+    \ldots \\
+};
+
+\draw[->,thick] (personVT.east) -- (personVTdata-1-1.west);
+
+\matrix[tight matrix,right=1cm of studentVT,nodes={vtListing}] (studentVTdata){
+    student\_professor::takeClass \\
+    \ldots \\
+    \normalfont offset of person object = 48 \\
+};
+\draw[->,thick] (studentVT.east) -- (studentVTdata-1-1.west);
+
+\matrix[tight matrix,right=1cm of professorVT,nodes={vtListing}] (professorVTdata){
+    student\_professor::teachClass \\
+    \ldots \\
+    \normalfont offset of person object = 32 \\
+};
+\draw[->,thick] (professorVT.east) -- (professorVTdata-1-1.west);
+\end{visibleenv}
+
+\begin{visibleenv}<2>
+\node[anchor=south west] at ([xshift=1cm]studentVT.north east) {
+\begin{lstlisting}
+student_professor *original
+    = new student_professor;
+student *as_student = sp;
+professor *as_prof = sp;
+person *as_pers = sp;
+\end{lstlisting}
+};
+\draw[<-,very thick] (studentVT.east) -- ++(.5cm,0cm) node[right] {original, as\_student};
+\draw[<-,very thick] (professorVT.east) -- ++(.5cm,0cm)  node[right] {as\_prof};
+\draw[<-,very thick] (personVT.east) -- ++(.5cm,0cm) node[right] {as\_pers};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
