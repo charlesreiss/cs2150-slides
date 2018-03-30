@@ -50,6 +50,7 @@ someFunction:
     ...
     mov RSP, RBP // restore old stack pointer
         // instead of: add RSP, 32
+    pop RBP
     ret
 \end{lstlisting}
 \end{frame}
