@@ -113,9 +113,9 @@ getProfessorList:
 \begin{lstlisting}
 student_professor *original
     = new student_professor;
-student *as_student = sp;
-professor *as_prof = sp;
-person *as_pers = sp;
+student *as_student = original;
+professor *as_prof = original;
+person *as_pers = original;
 \end{lstlisting}
 };
 \draw[<-,very thick] (studentVT.east) -- ++(.5cm,0cm) node[right] {original, as\_student};
