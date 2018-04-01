@@ -1,0 +1,67 @@
+\usetikzlibrary{graphs,graphdrawing,quotes}
+\usegdlibrary{trees}
+
+
+\begin{frame}[fragile,label=decodingHuff]{decoding}
+\lstset{language=C++,style=small}
+\begin{itemize}
+\item load the code \myemph{into a prefix code tree}
+\item then, read bits, traversing tree until leaf
+\item psuedocode:
+\end{itemize}
+\begin{lstlisting}
+    while (there are more bits) {
+        PrefixTreeNode *current = root;
+        while (current is not a leaf) {
+            if (next bit is 0)
+                current = current->left;
+            else
+                current = current->right;
+        }
+        output(current->symbol);
+    }
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=decodeExample]{example}
+\begin{tikzpicture}
+\matrix[tight matrix,
+    column 1/.style={nodes={text width=2cm}},
+    column 2/.style={nodes={font=\tt}},
+    row 1/.style={nodes={draw=none,font=\bfseries}},
+    ] (codeTable) {
+    letter \& code \\
+    \strut a \& \strut 0 \\
+    \strut b \& \strut 100 \\
+    \strut c \& \strut 101 \\
+    \strut d \& \strut 11 \\
+};
+\tikzset{my prefix tree/.style={
+        binary tree layout,level distance=15mm,sibling distance=15mm,
+        graphs/nodes={draw,circle,inner sep=0.5mm,minimum width=.8cm},
+        graphs/edge quotes={draw=none,font=\tt,fill=white,inner sep=0.25mm},
+        high/.style={red,very thick},
+    },
+}
+
+\begin{scope}[my prefix tree]
+\graph{
+    [name=tree,fresh nodes]
+        root[as=,desired at={([xshift=2cm]codeTable.north east)},alt={<1,4,8>{high}}] -> {
+            a[> "0",alt={<9>{high}},> alt={<9>{high}}],
+            bcOrD[> "1",as=,alt={<2,5>{high}},> alt={<2,5>{high}}] -> {
+                bOrC[> "0",as=,alt={<6>{high}},> alt={<6>{high}}] -> {
+                    b[> "0",alt={<7>{high}},> alt={<7>{high}}],
+                    c[> "1"]
+                },
+                d[> "1",alt=<3>{high},> alt=<3>{high}]
+            }
+        }
+};
+\end{scope}
+\node[anchor=west] at ([yshift=-2cm]codeTable.south west) {
+    \texttt{\myemph<2>{1}\myemph<3>{1} \myemph<5>{1}\myemph<6>{0}\myemph<7>{0} \myemph<9>{0} 101 0 0 11} = \myemph<3>{d}\myemph<7>{b}\myemph<9>{a}:w
+    caad
+};
+\end{tikzpicture}
+\end{frame}

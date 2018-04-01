@@ -1,0 +1,111 @@
+\begin{frame}[fragile,label=heapPublic]{heap declaration: public}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+class binary_heap {
+public:
+    binary_heap();
+    binary_heap(vector<int> vec);
+    ~binary_heap();
+    
+    void insert(int x);
+    int findMin();
+    int deleteMin();
+    unsigned int size();
+    void makeEmpty();
+    bool isEmpty();
+    void print();
+    ...
+};
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=heapPrivate]{heap declaration: private}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+class binary_heap {
+    ...
+private:
+    vector<int> heap;
+    unsigned int heap_size;
+    void percolateUp(int hole);
+    void percolateDown(int hole);
+};
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=vectorHeap]{vector heap}
+\lstset{language=C++,style=small}
+\begin{itemize}
+\item \lstinline|vector<int> heap| --- vector representing binary tree, using rules shown before
+\begin{itemize}
+\item \lstinline|heap[0]| is unused
+\item \lstinline|heap[1]| is root
+\item \lstinline|heap[i * 2]| is left child of node $i$
+\item \lstinline|heap[i * 2 + 1]| is right child of node $i$
+\end{itemize}
+\item \lstinline|int heap_size| is its size 
+\begin{itemize}
+\item (even though \texttt{heap.size() - 1} could have been used instead\ldots)
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=constructFromHeap]{binary\_heap::binary\_heap(vec)} 
+\lstset{language=C++,style=small}
+\begin{itemize}
+\item constructor to initialize from \textit{unsorted} vector
+\item equivalent to repeated insertion\ldots
+\item<2-> recall: in-place heap sort --- similar to what's happening here\ldots
+\end{itemize}
+\begin{lstlisting}
+binary_heap::binary_heap(vector<int> vec) : 
+        heap_size(vec.size()) {
+    heap = vec;
+    heap.push_back(heap[0]);
+    heap[0] = 0;
+    for ( int i = heap_size/2; i > 0; i-- )
+        percolateDown(i);
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=heapMinEtc]{findMin/size/etc.}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+int binary_heap::findMin() {
+    if ( heap_size == 0 )
+        throw "findMin() called on empty heap";
+    return heap[1];
+}
+
+unsigned int binary_heap::size() {
+    return heap_size;
+}
+
+bool binary_heap::isEmpty() {
+    return heap_size == 0;
+}
+
+void binary_heap::makeEmpty() {
+    heap_size = 0;
+    heap.resize(1);
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=heapPrint]{print}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+void binary_heap::print() {
+    cout << "(" << heap[0] << ") ";
+    for ( int i = 1; i <= heap_size; i++ ) {
+        cout << heap[i] << " ";
+        // next line from from http://tinyurl.com/mf9tbgm
+        bool isPow2 = (((i+1) & ~(i))==(i+1))? i+1 : 0;
+        if ( isPow2 )
+            cout << endl << "\t";
+    }
+    cout << endl;
+}
+\end{lstlisting}
+\end{frame}

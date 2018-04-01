@@ -1,0 +1,56 @@
+\begin{frame}{lab preview}
+\begin{itemize}
+\item pre-lab: compression
+\item in-lab: decompression
+\item post-lab report
+\end{itemize}
+\end{frame}
+
+\begin{frame}{pre-lab}
+\begin{itemize}
+\item write a program to\ldots
+\vspace{.5cm}
+\item calculate letter frequencies of input
+\item use binary heap to build huffman tree
+\item output encoding mapping (format specified in lab)
+\item output encoded message
+\end{itemize}
+\end{frame}
+
+\begin{frame}{pre-lab tools}
+\begin{itemize}
+\item heap code supplied in slides
+\item file I/O code provided (\texttt{fileio.cpp})
+\begin{itemize}
+\item or see \texttt{getWordInTable.cpp} from lab 6
+\item or see \url{http://www.cplusplus.com/doc/tutorial/files/}
+\item or see \href{http://en.cppreference.com/w/cpp/io/basic_ifstream}{ifstream documentation}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{a note on ASCII}
+\begin{itemize}
+\item the American standard character codes
+\begin{itemize}
+\item 7-bit charcters (extra bit left over in bytes)
+\item ASCII or superset used to represent English text
+\end{itemize}
+\item 128 characters (95 printable, 33 non-printable)
+\item \href{https://en.wikipedia.org/wiki/ASCII}{Wikipedia article} as table/details
+\end{itemize}
+\end{frame}
+
+\begin{frame}{ASCII codes}
+\begin{itemize}
+\item for lab: only worry about ``printable'' ASCII characters
+\begin{itemize}
+\item byte values \texttt{0x20} to \texttt{0x7e}
+\end{itemize}
+\item special case: \texttt{0x20} = `space'
+\item no other whitespace characters used
+\begin{itemize}
+\item (output character in table as itself\ldots)
+\end{itemize}
+\end{itemize}
+\end{frame}
