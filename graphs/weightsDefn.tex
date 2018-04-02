@@ -1,0 +1,40 @@
+\usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes}
+\usegdlibrary{force}
+
+
+\begin{frame}{weighted graphs}
+\begin{itemize}
+\item some graphs have \textbf{weights} or \textbf{costs} associated with edges
+\item example motivation:
+    \begin{itemize}
+    \item graph representing roads: weight = travel time
+    \end{itemize}
+\item \textbf{weight} or cost \textbf{of a path} = sum of weights of edges in path
+\end{itemize}
+\end{frame}
+
+\begin{frame}{weighted graph example}
+\begin{tikzpicture}
+\tikzset{
+    graphNode/.style={draw,thick},
+    graphEdge/.style={draw,thick},
+    >=Latex,
+    my graph/.style={graphs/nodes={graphNode,label={[font=\small,fill=white,fill opacity=0.9]south:\tikzgraphnodetext}},graphs/edges={graphEdge},graphs/edge quotes={font=\small,auto,inner sep=0mm},
+        graphs/typeset={},
+    },
+}
+\begin{scope}[my graph,shift={(78,-38)},scale=4]
+\graph[no placement] {
+    Charlottesville[at={(-78.47,38.03)}],
+    Culpeper[at={(-77.99,38.47)}],
+    DC[at={(-77.01,38.90)}],
+    Richmond[at={(-77.47,37.53)}],
+    Fredericksburg[at={(-77.47,38.30)}],
+
+    Charlottesville --["46"] Culpeper --["73"] DC[as={Washington, DC}],
+    Charlottesville --["72"] Richmond --["58"] Fredericksburg --["53"] DC,
+    Fredericksburg --["35"'] Culpeper,
+};
+\end{scope}
+\end{tikzpicture}
+\end{frame}

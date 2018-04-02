@@ -1,0 +1,64 @@
+\usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes}
+\usegdlibrary{force}
+
+\begin{frame}{vertices and edges}
+\tikzset{
+    graphNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm,text=white,
+        alt=<2>{draw=red,ultra thick},alt=<3->{draw=green!50!black}},
+    graphEdge/.style={draw,thick,alt=<3>{draw=red,ultra thick},alt=<4->{draw=blue}},
+    >=Latex,
+    my graph/.style={graphs/nodes={graphNode},graphs/edges={graphEdge},graphs/edge quotes={font=\tt\tiny,auto}},
+}
+
+\begin{tikzpicture}
+\begin{scope}[my graph]
+% https://tex.stackexchange.com/questions/207953/petersen-graph-with-new-tikz-graph-library/208039
+  \graph[clockwise, radius=1.5cm] {subgraph C_n [n=5,name=A] };
+  \graph[clockwise, radius=0.75cm] {subgraph I_n [n=5,name=B] };
+
+  \foreach \i [evaluate={\j=int(mod(\i+2+4,5)+1)}] in {1,2,3,4,5}{
+    \draw[graphEdge] (A \i) -- (B \i);
+    \draw[graphEdge] (B \j) -- (B \i);
+  }
+\end{scope}
+\begin{visibleenv}<2->
+    \begin{pgfonlayer}{bg}
+    \draw[dotted,line width=.5mm,alt=<2>{draw=red!75}{draw=green!50!black},<-] ([xshift=.1cm]A 1.east) -- ++(3cm,0cm) node[right] (vertexOrEdge) {\textbf{vertices} or \textbf{nodes}};
+    \draw[dotted,line width=.5mm,alt=<2>{draw=red!75}{draw=green!50!black},<-] ([xshift=.1cm]A 2.north east) -- (vertexOrEdge.west);
+    \draw[dotted,line width=.5mm,alt=<2>{draw=red!75}{draw=green!50!black},<-] ([xshift=.1cm]B 1.north east) -- (vertexOrEdge.west);
+    \end{pgfonlayer}
+\end{visibleenv}
+
+\begin{visibleenv}<3->
+    \coordinate (middle1) at ($(A 2)!0.5!(A 3)$);
+    \coordinate (middle2) at ($(A 2)!0.7!(B 2)$);
+    \coordinate (middle3) at ($(A 3)!0.5!(B 3)$);
+    \coordinate (middle4) at ($(B 2)!0.3!(B 4)$);
+    \coordinate (edgeLabel) at ([xshift=2cm]middle1);
+    \begin{pgfonlayer}{bg}
+    \foreach \x in {1,2,3,4} {
+        \draw[dotted,line width=.5mm,alt=<3>{draw=red!75}{draw=blue!70!black},<-] ([xshift=.1cm]middle\x) -- (edgeLabel);
+    }
+    \node[anchor=west] at (edgeLabel) {\textbf{edges}};
+    \end{pgfonlayer}
+\end{visibleenv}
+\begin{visibleenv}<5->
+\begin{scope}[my graph,yshift=-4cm]
+% https://tex.stackexchange.com/questions/207953/petersen-graph-with-new-tikz-graph-library/208039
+  \graph[clockwise, radius=2cm] {subgraph C_n [n=5,name=Ad, ->] };
+  \graph[clockwise, radius=1cm] {subgraph I_n [n=5,name=Bd] };
+
+  \foreach \i [evaluate={\j=int(mod(\i+2+4,5)+1)}] in {1,2,3,4,5}{
+    \draw[graphEdge,->] (Ad \i) -- (Bd \i);
+    \draw[graphEdge,->] (Bd \j) -- (Bd \i);
+  }
+\end{scope}
+\coordinate (dirStart) at ([xshift=-2cm]Ad 1.west);
+\coordinate (undirStart) at ([xshift=-2cm]A 1.west);
+\draw[very thick,decorate,decoration={brace, mirror}] (dirStart) -- (dirStart |- Ad 4)
+    node[midway, left,align=right] {\textbf{directed graph} \\ \textit{or} \\ \textbf{digraph}};
+\draw[very thick,decorate,decoration={brace, mirror}] (undirStart) -- (undirStart |- A 4)
+    node[midway, left] {\textbf{undirected graph}};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
