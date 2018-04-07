@@ -1,4 +1,17 @@
+\usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes}
+\usegdlibrary{force}
+
 \begin{frame}{cycles, loops, etc.}
+\tikzset{
+    my graph node/.style={draw,circle,thick,font=\tt\fontsize{7}{8}\selectfont,minimum width=.3cm,inner sep=0.2mm,text=white},
+    my graph edge/.style={draw,thick},
+    my graph node hidden/.style={my graph node,opacity=0.5},
+    my graph edge hidden/.style={my graph edge,opacity=0.5},
+    >=Latex,
+    my graph/.style={graphs/nodes={my graph node},graphs/edges={my graph edge},graphs/edge quotes={font=\tt\tiny,auto}},
+    my graph hide/.style={graphs/nodes={my graph node hidden},graphs/edges={my graph edge hidden},graphs/edge quotes={font=\tt\tiny,auto}},
+    graphs/show cycle/.style={nodes={opacity=1.0,draw=blue!70!black},edges={opacity=1.0,draw=blue!70!black}}
+}
 \begin{itemize}
 \item \textbf{cycle}: path where length $\ge 1$, $v_1=v_n$
 \begin{itemize}
@@ -6,4 +19,25 @@
 \end{itemize}
 \item \textbf{loop}: $(v,v) \in E$
 \end{itemize}
+\begin{tikzpicture}[overlay,remember picture]
+\begin{scope}[my graph hide]
+\graph[spring layout,downsize ratio=0.1,node distance=.5cm] {
+    {[show cycle] A -- B -- C -- D -- E -- A},
+    X -- A,
+    D -- Y,
+    C -- R -- Q -- Z -- C,
+    A[desired at={([xshift=-3cm,yshift=-4cm]current page.north east)}],
+    E[desired at={([xshift=-2.5cm,yshift=-4cm]current page.north east)}],
+};
+
+\graph[spring layout,downsize ratio=0.1,node distance=.5cm] {
+    {A -- B -- {[show cycle] C} -- D -- E -- A},
+    X -- A,
+    D -- Y,
+    {[show cycle] C -- R -- Q -- Z -- C},
+    A[desired at={([xshift=-3cm,yshift=-2cm]current page.north east)}],
+    E[desired at={([xshift=-2.5cm,yshift=-2cm]current page.north east)}],
+};
+\end{scope}
+\end{tikzpicture}
 \end{frame}

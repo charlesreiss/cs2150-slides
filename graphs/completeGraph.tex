@@ -1,5 +1,21 @@
+\usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes}
+\usegdlibrary{force}
+
+
+
 \begin{frame}{complete graph}
+\tikzset{
+    graphNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm,text=white},
+    graphEdge/.style={draw,thick},
+    >=Latex,
+    my graph/.style={graphs/nodes={graphNode},graphs/edges={graphEdge},graphs/edge quotes={font=\tt\tiny,auto}},
+}
 \begin{itemize}
 \item \textbf{complete graph}: graph with edges between every pair of distinct vertices
 \end{itemize}
+\begin{tikzpicture}
+\begin{scope}[my graph]
+\graph[clockwise, radius=2.5cm] {subgraph K_n [n=10,name=A] };
+\end{scope}
+\end{tikzpicture}
 \end{frame}
