@@ -64,3 +64,36 @@
 \end{tikzpicture}
 \end{frame}
 
+
+\begin{frame}{breadth first search pseudocode}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+void Graph::bfs(Vertex start) {
+    for (Vertex v: vertices) {
+        v.distance = INFINITY;
+        v.previous = NULL;
+    }
+    Queue frontier;
+    frontier.enqueue(start);
+    while (!frontier.isEmpty()) {
+        Vertex v = q.dequeue();
+        for (Vertex w : verticesWithEdgeFrom(v)) {
+            // w.distance == INFINITY --> we haven't visited this vertex yet
+            if (w.distance == INFINITY) {
+                w.distance = v.distance + 1;
+                w.previous = v;
+                frontier.enqueue(w);
+            } 
+        }
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{BFS runtime?}
+\begin{itemize}
+\item need to initialize distances to infinity: $\Theta(|V|)$ operations
+\item need to check every edge: $\Theta(|E|)$ operations
+\item runtime $\Theta(|V|+|E|)$
+\end{itemize}
+\end{frame}
