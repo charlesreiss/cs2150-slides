@@ -1,0 +1,165 @@
+\usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes}
+\usegdlibrary{force,layered}
+
+\begin{frame}[fragile,label=addWeights]{add weights: a broken idea}
+\lstset{language=C++,style=smaller,
+moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+moredelim={**[is][\btHL<all:2->]{@2}{2@}},
+}
+\begin{lstlisting}
+void Graph::BROKEN_bestFirstSarch(Vertex start) {
+  ... 
+  while (!frontier.isEmpty()) {
+    Vertex v = q.dequeue();
+    for (Vertex w : verticesWithEdgeFrom(v)) {
+       // BROKEN!
+       if (@2w.distance == INFINITY2@) {
+          w.distance = v.distance @1+ weightOfEdge(v, w)1@;
+          w.previous = v;
+          frontier.enqueue(w);
+        } 
+      }
+    }
+  }
+}
+\end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+\tikzset{
+    graphNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm},
+    graphEdge/.style={draw,thick,alt=<7->{opacity=0.2}},
+    >=Latex,
+    my graph/.style={graphs/nodes={graphNode},graphs/edges={graphEdge},graphs/edge quotes={font=\tt\tiny,auto}},
+    hilite/.style={alt=<#1>{red,very thick}},
+    shortest path tree/.style={alt=<7->{opacity=1.0},alt=<7>{draw=red,very thick}},
+}
+\begin{visibleenv}<2->
+\matrix[anchor=north east] at (current page.north east) {
+\begin{scope}[my graph]
+\graph[layered layout,level distance=10mm]{
+    A ->["50"',alt=<3>{red,thick}] B ->["50"',alt=<5>{red,very thick}] C,
+    A ->["110", minimum layers=2,alt=<4>{red,thick}] C,
+};
+\end{scope}
+\\
+};
+\end{visibleenv}
+\begin{visibleenv}<3->
+\node[anchor=east,font=\small,draw,thick,align=left] (cLabel) at (B.west) {
+    distance $50$ \\
+    previous: A 
+};
+\node[anchor=north east,font=\small,draw,thick,align=left] (cLabel) at (C.south west) {
+    distance \only<3>{$\infty$}\only<4->{\myemph<5>{$110$}} \\
+    previous: \only<3>{(none)}\only<4->{A} 
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=fixPartOne]{fix part 1: update to smaller distance}
+\lstset{language=C++,style=smaller,
+moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+moredelim={**[is][\btHL<all:2->]{@2}{2@}},
+}
+\begin{lstlisting}
+void Graph::BROKEN_bestFirstSarch(Vertex start) {
+  ... 
+  while (!frontier.isEmpty()) {
+    Vertex v = q.dequeue();
+    for (Vertex w : verticesWithEdgeFrom(v)) {
+       int newDistance = v.distance + weightOfEdge(v, w);
+       if (@1newDistance < w.distance1@) {
+          w.distance = newDistance;
+          w.previous = v;
+          @2frontier.enqueue(w);2@
+        } 
+      }
+    }
+  }
+}
+\end{lstlisting}
+\begin{tikzpicture}
+\begin{visibleenv}<2->
+\node[draw=red,ultra thick,fill=white] at ([yshift=3cm]current page.south) {
+    problem: now enqueuing nodes multiple times \\
+    want to only visit node once
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile,label=withDistance]{fix part 2: visit nodes once, order by distance}
+\lstset{language=C++,style=smaller,
+moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+moredelim={**[is][\btHL<all:2->]{@2}{2@}},
+}
+\begin{lstlisting}
+void Graph::SLOW_bestFirstSarch(Vertex start) {
+    for (Vertex v: vertices) {
+        v.distance = INFINITY;
+        v.previous = NULL;
+        @1v.visited = false;1@
+    }
+    start.distance = 0;
+    while (!haveUnvisitedNode()) {
+        Vertex v = @1findUnvisitedNodeWithSmallestDistance();1@
+        @1v.visited = true;1@
+        for (Vertex w : verticesWithEdgeFrom(v)) {
+            // w.distance == INFINITY --> we haven't visited this vertex yet
+           int newDistance = v.distance + weightOfEdge(v, w);
+            if (newDistance < w.distance) {
+                w.distance = newDistance;
+                w.previous = v;
+            } 
+        }
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{visiting by distance?}
+\begin{itemize}
+\item assumption: no negative weights
+\item given this: \myemph{distance only decreases}
+\item and \myemph{can't find shorter path from further node}!
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=withPQ]{fix part 3: a faster search}
+\lstset{language=C++,style=smaller,
+moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+moredelim={**[is][\btHL<all:2->]{@2}{2@}},
+}
+\begin{lstlisting}
+void Graph::bestFirstSarch(Vertex start) {
+    PriorityQueue pq;
+    for (Vertex v: vertices) {
+        v.distance = INFINITY; v.previous = NULL;
+    }
+    start.distance = 0;
+    pq.insert(0, start);
+    while (!pq.empty()) {
+        Vertex v = pq.deleteMin();
+        for (Vertex w : verticesWithEdgeFrom(v)) {
+            // w.distance == INFINITY --> we haven't visited this vertex yet
+            int oldDistance = w.distance;
+            int newDistance = v.distance + weightOfEdge(v, w);
+            if (newDistance < oldDistance) {
+                w.distance = newDistance;
+                w.previous = v;
+                if (oldDistance == INFINITY)
+                    pq.insert(newDistance, w);
+                else
+                    pq.decreaseKey(newDistance, w);
+            } 
+        }
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{a note on names}
+\begin{itemize}
+\item often also called \textit{Dijkstra's algorithm}
+\end{itemize}
+\end{frame}

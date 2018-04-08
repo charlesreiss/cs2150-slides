@@ -65,7 +65,7 @@
 \end{frame}
 
 
-\begin{frame}{breadth first search pseudocode}
+\begin{frame}[fragile,label=bfsPseudo]{breadth first search pseudocode}
 \lstset{language=C++,style=small}
 \begin{lstlisting}
 void Graph::bfs(Vertex start) {
@@ -74,6 +74,7 @@ void Graph::bfs(Vertex start) {
         v.previous = NULL;
     }
     Queue frontier;
+    start.distance = 0;
     frontier.enqueue(start);
     while (!frontier.isEmpty()) {
         Vertex v = q.dequeue();
