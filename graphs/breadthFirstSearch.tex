@@ -1,0 +1,66 @@
+\usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes}
+\usegdlibrary{force,trees}
+
+\begin{frame}{breadth-first search}
+\begin{itemize}
+\item shortest path special case: weights = 1
+\item algorithm is \myemph{breadth-first search}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{special case: breadth-first search on trees}
+\begin{itemize}
+\item can look at breadth-first search as generalization of pre-order traversal
+\item difference: now we can have other paths from roots
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=bfsIntuition]{breadth first search intuition}
+\begin{itemize}
+\item \myemph<2>{start with just source}
+\item \myemph<3>{follow edges to first find vertices at distance 1}
+\item \myemph<4>{then use those to find vertices at distance 2}, \myemph<5>{then distance 3}, \ldots
+\end{itemize}
+\begin{tikzpicture}
+\tikzset{
+    graphNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm},
+    graphEdge/.style={draw,thick,alt=<7->{opacity=0.2}},
+    >=Latex,
+    my graph/.style={graphs/nodes={graphNode},graphs/edges={graphEdge},graphs/edge quotes={font=\tt\tiny,auto}},
+    hilite/.style={alt=<#1>{red,very thick}},
+    shortest path tree/.style={alt=<7->{opacity=1.0},alt=<7>{draw=red,very thick}},
+}
+\begin{scope}[my graph]
+\graph[tree layout,level distance=10mm]{
+    A[hilite=2] ->[shortest path tree] {[nodes={hilite=3}] B,C,D,E},
+    C ->[shortest path tree] {[nodes={hilite=4}]G, H, I[> alt=<8>{draw=red,dotted}]},
+    D -> {[nodes={hilite=4}]H, I[> alt=<8>{opacity=1.0,draw=red,dotted}], J[> shortest path tree]},
+    E ->[bend right,hilite=6] {B, C},
+    J ->[bend left,hilite=6] A,
+    J ->[shortest path tree] {[nodes={hilite=5}] K, L},
+    H ->[shortest path tree] M[hilite=5],
+};
+\begin{visibleenv}<6>
+\node[right=1cm of E,align=left] {
+    key idea: track \myemph{visited nodes} \\
+    so we don't check them again \\
+    (already found the shortest path) 
+};
+\end{visibleenv}
+\begin{visibleenv}<7>
+\node[right=1cm of E,align=left] {
+    could have list of paths, one per node \\
+    but more compact idea: \\
+    store \myemph{one source edge per node} \\
+    also called \textit{shortest path tree}
+};
+\end{visibleenv}
+\begin{visibleenv}<8>
+\node[right=1cm of E,align=left] {
+    multiple possible answers!
+};
+\end{visibleenv}
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+

@@ -1,0 +1,33 @@
+\usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes}
+\usegdlibrary{force}
+
+\begin{frame}{topological sort}
+\begin{itemize}
+\item only defined for \textit{directed acyclic graph}
+\item order vertices such that if there is a path from $v_i$ to $v_j$, then $v_j$ is after $v_i$
+\end{itemize}
+\begin{tikzpicture}
+\tikzset{
+    graphNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm},
+    graphEdge/.style={draw,thick},
+    >=Latex,
+    my graph/.style={graphs/nodes={graphNode},graphs/edges={graphEdge},graphs/edge quotes={font=\tt\tiny,auto}},
+}
+\begin{scope}[my graph]
+\graph[spring layout,node distance=1.5cm,iterations=100]{
+    F -> H,
+    F -> G -> E,
+    F -> C -> {D, B},
+    A -> {B, C},
+    B -> D -> E,
+    C -> G,
+};
+\end{scope}
+\node[right=1cm of A,align=left] {
+    topological sorts: \\
+    A, C, B, D, F, G, E, H \textit{or} \\
+    F, A, H, C, G, B, D, E \textit{or} \\
+    \ldots
+};
+\end{tikzpicture}
+\end{frame}

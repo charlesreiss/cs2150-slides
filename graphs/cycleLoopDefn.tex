@@ -1,42 +1,124 @@
 \usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes}
-\usegdlibrary{force}
+\usegdlibrary{force,circular,routing,layered}
 
-\begin{frame}{cycles, loops, etc.}
+\begin{frame}[fragile,label=cycleEtc]{cycles, etc.}
 \tikzset{
     my graph node/.style={draw,circle,thick,font=\tt\fontsize{7}{8}\selectfont,minimum width=.3cm,inner sep=0.2mm,text=white},
     my graph edge/.style={draw,thick},
-    my graph node hidden/.style={my graph node,opacity=0.5},
-    my graph edge hidden/.style={my graph edge,opacity=0.5},
+    my graph node hidden/.style={my graph node,draw=black!50},
+    my graph edge hidden/.style={my graph edge,draw=black!50},
     >=Latex,
     my graph/.style={graphs/nodes={my graph node},graphs/edges={my graph edge},graphs/edge quotes={font=\tt\tiny,auto}},
     my graph hide/.style={graphs/nodes={my graph node hidden},graphs/edges={my graph edge hidden},graphs/edge quotes={font=\tt\tiny,auto}},
-    graphs/show cycle/.style={nodes={opacity=1.0,draw=blue!70!black},edges={opacity=1.0,draw=blue!70!black}}
+    graphs/show cycle/.style={nodes={draw=blue!70!black},edges={opacity=1.0,draw=blue!70!black}},
+    graphs/show cycle B/.style={nodes={draw=orange!80!black},edges={opacity=1.0,draw=orange!80!black}},
+    show cycle B/.style={draw=orange!80!black,graphs/nodes={draw=orange!80!black},graphs/edges={draw=orange!80!black}},
 }
 \begin{itemize}
 \item \textbf{cycle}: path where length $\ge 1$, $v_1=v_n$
-\begin{itemize}
 \item undirected graph: \ldots and no repeated edges
 \end{itemize}
-\item \textbf{loop}: $(v,v) \in E$
-\end{itemize}
 \begin{tikzpicture}[overlay,remember picture]
+\matrix[anchor=north east] at (current page.north east) {
 \begin{scope}[my graph hide]
-\graph[spring layout,downsize ratio=0.1,node distance=.5cm] {
+\graph[spring layout,downsize ratio=0.1,node distance=.5cm,name=undirA] {
     {[show cycle] A -- B -- C -- D -- E -- A},
     X -- A,
     D -- Y,
     C -- R -- Q -- Z -- C,
-    A[desired at={([xshift=-3cm,yshift=-4cm]current page.north east)}],
-    E[desired at={([xshift=-2.5cm,yshift=-4cm]current page.north east)}],
 };
-
-\graph[spring layout,downsize ratio=0.1,node distance=.5cm] {
+\end{scope}
+\\
+\begin{scope}[my graph hide]
+\graph[spring layout,downsize ratio=0.1,node distance=.5cm,name=undirB] {
     {A -- B -- {[show cycle] C} -- D -- E -- A},
     X -- A,
     D -- Y,
     {[show cycle] C -- R -- Q -- Z -- C},
-    A[desired at={([xshift=-3cm,yshift=-2cm]current page.north east)}],
-    E[desired at={([xshift=-2.5cm,yshift=-2cm]current page.north east)}],
+};
+\end{scope}
+\\
+\begin{scope}[my graph hide]
+\graph[spring layout,downsize ratio=0.1,node distance=.5cm,name=undirB] {
+    {[show cycle] A -- B -- C -- D -- E -- A},
+    X -- A,
+    D -- Y,
+    {[show cycle] C -- R -- Q -- Z -- C},
+};
+\end{scope}
+\\
+};
+\matrix[anchor=north east,column sep=1cm] (diCycles) at ([yshift=-6cm]current page.north east) {
+\begin{scope}[my graph hide]
+\graph[name=dirA,spring layout] {
+    {
+        { [show cycle B] A },
+        // {A -> B -> C -> D -> A},
+        // {[show cycle B] A -> E[> draw=black!50] -> F -> G -> A},
+    },
+    A -> X[draw=orange!80!black,> show cycle B] -> {Y[draw=orange!80!black,> show cycle B], Z},
+    E -> {S, Q -> R},
+    {[show cycle B] Y -> E[> show cycle B] },
+};
+\end{scope}
+\&
+\begin{scope}[my graph hide]
+\graph[name=dirA,spring layout] {
+    {
+        { [show cycle B] A },
+        // [show cycle B] {A -> B -> C -> D -> A},
+        // [show cycle B] {A -> E -> F -> G -> A},
+    },
+    A -> X -> {Y, Z},
+    E -> {S, Q -> R},
+    Y -> E,
+};
+\end{scope}
+\&
+\begin{scope}[my graph hide]
+\graph[name=dirA,spring layout] {
+    {
+        { [show cycle B] A },
+        // {A -> B -> C -> D -> A},
+        // [show cycle B] {A -> E -> F -> G -> A},
+    },
+    A -> X -> {Y, Z},
+    E -> {S, Q -> R},
+    Y -> E,
+};
+\end{scope}
+\& 
+\begin{scope}[my graph hide]
+\graph[name=dirB,spring layout] {
+    {
+        { [show cycle B] A },
+        // [show cycle B] {A -> B -> C -> D -> A},
+        {A -> E -> F -> G -> A},
+    },
+    A -> X -> {Y, Z},
+    E -> {S, Q -> R},
+    Y -> E,
+};
+\end{scope}
+\\
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{loops}
+\begin{itemize}
+\item $(v,v)\in E$
+\end{itemize}
+\begin{tikzpicture}
+\tikzset{
+    my graph node/.style={draw,circle,thick,font=\tt\fontsize{7}{8}\selectfont,minimum width=.3cm,inner sep=0.2mm,text=white},
+    my graph edge/.style={draw,thick},
+    >=Latex,
+    my graph/.style={graphs/nodes={my graph node},graphs/edges={my graph edge},graphs/edge quotes={font=\tt\tiny,auto}},
+}
+\begin{scope}[my graph]
+\graph {
+    A ->[loop above] A
 };
 \end{scope}
 \end{tikzpicture}

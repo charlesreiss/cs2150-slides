@@ -1,0 +1,15 @@
+\begin{frame}{shortest path algorithm kinds}
+\begin{itemize}
+\item single pair: path from $V$ to $W$
+\item \myemph<2->{single source}: for each vertex $W$, path from $V$ to $W$
+\item all pairs: for each pair of vertices $V, W$, path from $V$ to $W$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{more formally}
+\begin{itemize}
+\item given graph $G = (V,E)$ and a vertex $s$ (the \textit{source})\ldots
+\item where an edges $(v, w)$ has weight $w_{v,w}$
+\item for each vertex $x$ find a path $v_1=s, v_2, \ldots, v_n=x$ such that the $\sum w_{v_i,v_{i+1}}$ is minimum
+\end{itemize}
+\end{frame}

@@ -1,0 +1,70 @@
+
+\usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes}
+\usegdlibrary{force}
+
+\begin{frame}{adjacency matrix}
+$
+A[u][v] = 
+    \begin{cases}
+        weight  & \text{if } (u, v) \in E \\
+        0 & \text{otherwise} \\
+    \end{cases}
+$
+% $
+
+\begin{tikzpicture}
+\matrix[tight matrix,
+    row 1/.style={nodes={draw=none}},
+    column 1/.style={nodes={draw=none}},
+    ] (theAdj) {
+    ~ \& 1 \& 2 \& 3 \& 4 \\
+    1 \& 0 \& 1 \& 1 \& 1 \\
+    2 \& 0 \& 0 \& |[{alt=<2>{fill=red!10}}]| 1 \& 0 \\
+    3 \& 0 \& 0 \& 0 \& 0 \\
+    4 \& |[{alt=<3>{fill=red!10}}]| 1 \& 0 \& 0 \& 0 \\
+};
+\tikzset{
+    graphNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm},
+    graphEdge/.style={draw,thick},
+    >=Latex,
+    my graph/.style={graphs/nodes={graphNode},graphs/edges={graphEdge},graphs/edge quotes={font=\tt\tiny,auto}},
+}
+\begin{scope}[my graph]
+\graph[spring layout] {
+    1[desired at={([xshift=2cm]theAdj.east)}] -> 2,
+    1 -> 3,
+    2 -> 3[> alt=<2>{red,very thick}],
+    1 -> 4[> bend left,> alt=<3>{red,very thick}],
+    4 -> 1[> bend left],
+};
+\end{scope}
+\end{tikzpicture}
+\begin{visibleenv}<4>
+\begin{tikzpicture}
+\matrix[tight matrix,
+    row 1/.style={nodes={draw=none}},
+    column 1/.style={nodes={draw=none}},
+    ] (theAdj) {
+    ~ \& 1 \& 2 \& 3 \& 4 \\
+    1 \& 9 \& 17 \& 0 \& 0 \\
+    2 \& 0 \& 0 \& 13 \& 0 \\
+    3 \& 0 \& 0 \& 0 \& 10 \\
+    4 \& 0 \& 16 \& 18 \& 0 \\ 
+};
+\tikzset{
+    graphNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm},
+    graphEdge/.style={draw,thick},
+    >=Latex,
+    my graph/.style={graphs/nodes={graphNode},graphs/edges={graphEdge},graphs/edge quotes={font=\tt\tiny,auto}},
+}
+\begin{scope}[my graph,node distance=1.5cm]
+\graph[spring layout] {
+    1[desired at={([xshift=1cm]theAdj.east)}] ->["17",orient=right] 2 ->["13"] 3 ->["10"] -> 4,
+    4 ->["16"] 2, 
+    4 ->["18"] 3, 
+    1 ->[loop above, "9"] 1,
+};
+\end{scope}
+\end{tikzpicture}
+\end{visibleenv}
+\end{frame}

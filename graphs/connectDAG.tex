@@ -1,10 +1,41 @@
+\usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes}
+\usegdlibrary{force,circular,routing,layered,trees}
+
+
 \begin{frame}{connectivity}
+\tikzset{
+    my graph node/.style={draw,circle,thick,font=\tt\fontsize{7}{8}\selectfont,minimum width=.3cm,inner sep=0.2mm,text=white},
+    my graph edge/.style={draw,thick},
+    my graph node hidden/.style={my graph node,draw=black!50},
+    my graph edge hidden/.style={my graph edge,draw=black!50},
+    >=Latex,
+    my graph/.style={graphs/nodes={my graph node},graphs/edges={my graph edge},graphs/edge quotes={font=\tt\tiny,auto}},
+    my graph hide/.style={graphs/nodes={my graph node hidden},graphs/edges={my graph edge hidden},graphs/edge quotes={font=\tt\tiny,auto}},
+    graphs/show cycle/.style={nodes={draw=blue!70!black},edges={opacity=1.0,draw=blue!70!black}},
+    graphs/show cycle B/.style={nodes={draw=orange!80!black},edges={opacity=1.0,draw=orange!80!black}},
+    show cycle B/.style={draw=orange!80!black,graphs/nodes={draw=orange!80!black},graphs/edges={draw=orange!80!black}},
+}
 \begin{itemize}
 \item \textbf{connected graph}: for all $x, y  \in V$, there exists a path from $x$ to $y$
     \begin{itemize}
     \item N.B: includes 0-length paths
     \end{itemize}
 \end{itemize}
+\begin{tikzpicture}
+\begin{scope}[my graph]
+\graph[spring layout] {
+    [name=A] A -- B -- C -- D -- B -- D
+};
+\end{scope}
+\node[draw,ultra thick,fit=(A A) (A D) (A C) (A B),label={north:a connected graph}] {};
+\begin{scope}[my graph]
+\graph[spring layout] {
+    [name=B] A -- B -- C,
+    D, E -- F
+};
+\end{scope}
+\node[draw,ultra thick,fit=(B A) (B D) (B C) (B B) (B E) (B F),label={north:a non-connected graph}] {};
+\end{tikzpicture}
 \end{frame}
 
 \begin{frame}{in a directed graph\ldots}
@@ -19,4 +50,93 @@
     \end{itemize}
 \item \textbf{weakly connected} --- would be connected as undirected graph
 \end{itemize}
+\end{frame}
+
+\begin{frame}{strong/weak connected examples}
+\begin{tikzpicture}
+\tikzset{
+    my graph node/.style={draw,circle,thick,font=\tt\fontsize{7}{8}\selectfont,minimum width=.3cm,inner sep=0.2mm},
+    my graph edge/.style={draw,thick},
+    my graph node hidden/.style={my graph node,draw=black!50},
+    my graph edge hidden/.style={my graph edge,draw=black!50},
+    >=Latex,
+    my graph/.style={graphs/nodes={my graph node},graphs/edges={my graph edge},graphs/edge quotes={font=\tt\tiny,auto}},
+    my graph hide/.style={graphs/nodes={my graph node hidden},graphs/edges={my graph edge hidden},graphs/edge quotes={font=\tt\tiny,auto}},
+    graphs/show cycle/.style={nodes={draw=blue!70!black},edges={opacity=1.0,draw=blue!70!black}},
+    graphs/show cycle B/.style={nodes={draw=orange!80!black},edges={opacity=1.0,draw=orange!80!black}},
+    show cycle B/.style={draw=orange!80!black,graphs/nodes={draw=orange!80!black},graphs/edges={draw=orange!80!black}},
+    mark graph/.style={draw,very thick},
+}
+\matrix (scA) {
+\node[font=\small,align=center] {a strongly connected graph \\
+drawn in two ways};
+\\
+\node {
+\begin{tikzpicture}
+\begin{scope}[my graph]
+\graph[simple necklace layout] {
+    [name=X]
+    A -> B -> C -> D -> B -> E -> F ->  A,
+    F -> G -> C,
+};
+\end{scope}
+\node[fit=(X A) (X G) (X B) (X D) (X C) (X F),mark graph] {};
+\end{tikzpicture}
+};
+\\
+\node {
+\begin{tikzpicture}
+\begin{scope}[my graph]
+\graph[spring layout] {
+    [name=Y]
+    A -> B -> C -> D -> B -> E -> F ->  A,
+    F -> G -> C,
+};
+\end{scope}
+\node[fit=(Y A) (Y G) (Y B) (Y D) (Y C) (Y F),mark graph] {};
+\end{tikzpicture}
+};
+\\
+};
+\matrix[right=.5cm of scA] (scB) {
+\node[font=\small,align=center] {another strongly\\connected graph};
+\\
+\node {
+\begin{tikzpicture}
+\begin{scope}[my graph]
+\graph[tree layout] {
+    [name=Z]
+    // [simple necklace layout] { A -> B -> C -> D -> A },
+    // [simple necklace layout] { E -> F -> G -> H -> I },
+    C -> E,
+    I -> C,
+};
+\end{scope}
+\node[fit=(Z A) (Z G) (Z B) (Z D) (Z C) (Z F),mark graph] {};
+\end{tikzpicture}
+};
+\\
+};
+\matrix[right=.5cm of scB] {
+\node[font=\small,align=center] {a weakly connected graph };
+\\
+\node[mark graph] (weakGraph){
+\begin{tikzpicture}
+\begin{scope}[my graph]
+\graph[spring layout,node distance=1.5cm] {
+    [name=W] subgraph K_n [V={a,b,c,d},<->] -> subgraph C_n [V={e,f,g},<->],
+};
+\end{scope}
+\begin{visibleenv}<2>
+\node[fit=(W e) (W f) (W g),draw=red,dashed] {};
+\node[fit=(W a) (W b) (W c) (W d),draw=red,dashed] {};
+\end{visibleenv}
+\end{tikzpicture}
+};
+\\
+};
+\begin{visibleenv}<2>
+\node[below=.5cm of weakGraph,font=\small,red!70!black] {two \textit{strongly connected components}};
+\end{visibleenv}
+\end{tikzpicture}
 \end{frame}

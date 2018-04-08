@@ -1,0 +1,75 @@
+\usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes}
+\usegdlibrary{force}
+
+\begin{frame}[fragile,label=topoSortSimple]{algorithm (simple)}
+\lstset{language=C++,style=small}
+psuedocode:
+\begin{lstlisting}
+vector<Vertex> topologicalSort(Graph g) {
+    vector<Vertex> result;
+    for (int i = 0; i < g.numVertices(); ++i) {
+        Vertex v = g.findVertexOfInDegreeZero();
+        if (did not find v) throw CycleFound();
+        result.push_back(v);
+        for (Vertex w : v.adjacentVertices()) {
+            g.deleteEdge(v, w);
+        }
+    }
+    return result;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=topoSortSimpleExample]{example}
+\begin{tikzpicture}
+\tikzset{
+    graphNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm},
+    graphEdge/.style={draw,thick},
+    >=Latex,
+    my graph/.style={graphs/nodes={graphNode},graphs/edges={graphEdge},graphs/edge quotes={font=\tt\tiny,auto}},
+    hilite/.style={alt=#1{red,very thick}},
+    hide after/.style={alt=<#1->{invisible}},
+}
+\begin{scope}[my graph]
+\graph[spring layout,node distance=1.5cm,iterations=100]{
+    F[hilite={<2>},hilite={<4-5>}] ->[hide after=5] H[hilite=<6>],
+    F ->[hide after=5] G[hilite=<9>,hide after=10] -> E,
+    F ->[hide after=5] C[hilite=<6>,hilite=<7>,hilite=<8>] ->[hide after=8] {D, B [hilite=<9>]},
+    A[hilite=<2-3>] ->[hide after=3] {B, C},
+    B ->[hide after=10] D[hilite=<10>] ->[hide after=10] E[hilite=<11>],
+    C ->[hide after=8] G,
+};
+\end{scope}
+\coordinate (annotate) at ([xshift=1cm]A);
+\tikzset{
+    remark/.style={at=(annotate),anchor=west,align=left},
+}
+\tikzset{
+    result/.style={at={([yshift=-1cm]annotate)},anchor=west},
+}
+\begin{visibleenv}<2>
+\node[remark] {
+    initial in-degree 0 vertices --- two choices
+};
+\end{visibleenv}
+\begin{visibleenv}<3>
+\node[remark] {
+    choose one (\texttt{A} --- arbitrary), \\ add to result, remove edges
+};
+\end{visibleenv}
+\begin{visibleenv}<4>
+\node[remark] {
+    one in-degree 0 vertex: \texttt{F}
+};
+\end{visibleenv}
+\begin{visibleenv}<3->
+\node [result] {
+    result: \myemph<3>{\texttt{A}}, \only<5->{\myemph<5>{\texttt{F}},} \only<6->{\myemph<6>{\texttt{H}},} \only<8->{\myemph<8>{\texttt{C}},}
+        \only<9->{\myemph<9>{B, G},}
+        \only<10->{\myemph<10>{D},}
+        \only<11->{\myemph<11>{E},}
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+

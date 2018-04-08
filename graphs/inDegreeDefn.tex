@@ -1,0 +1,36 @@
+\usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes}
+\usegdlibrary{force}
+
+\begin{frame}[fragile,label=inDegree]{definition: in-degree}
+\begin{itemize}
+\item \textit{indegree} of vertex: number of \textit{incoming} edges
+\end{itemize}
+\begin{tikzpicture}
+\tikzset{
+    graphNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm},
+    graphEdge/.style={draw,thick},
+    >=Latex,
+    my graph/.style={graphs/nodes={graphNode},graphs/edges={graphEdge},graphs/edge quotes={font=\tt\tiny,auto}},
+    indegree/.style={label={[inner sep=0.05mm,red]north west:#1}},
+}
+\begin{scope}[my graph]
+\graph[spring layout,node distance=1.5cm,iterations=100]{
+    F -> H,
+    F -> G -> E,
+    F -> C -> {D, B},
+    A -> {B, C},
+    B -> D -> E,
+    C -> G,
+    A[indegree=0],
+    B[indegree=2],
+    C[indegree=2],
+    D[indegree=2],
+    E[indegree=2],
+    F[indegree=0],
+    G[indegree=2],
+    H[indegree=1],
+};
+\end{scope}
+\end{tikzpicture}
+\end{frame}
+

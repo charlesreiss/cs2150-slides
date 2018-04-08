@@ -1,0 +1,42 @@
+\usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes}
+\usegdlibrary{force}
+
+
+\begin{frame}{exercise: topological sort}
+\begin{tikzpicture}
+\tikzset{
+    graphNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm},
+    graphEdge/.style={draw,thick},
+    >=Latex,
+    my graph/.style={graphs/nodes={graphNode},graphs/edges={graphEdge},graphs/edge quotes={font=\tt\tiny,auto}},
+}
+\begin{scope}[my graph]
+\graph[spring layout,node distance=1.5cm,iterations=100]{
+    A -> B -> D,
+    A -> C -> D,
+};
+\end{scope}
+\begin{visibleenv}<2>
+    \node[right=1cm of C] {
+        possible answers: A, B, C, D \textit{or} A, C, B, D
+    };
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{no topological sort}
+\begin{tikzpicture}
+\tikzset{
+    graphNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm},
+    graphEdge/.style={draw,thick},
+    >=Latex,
+    my graph/.style={graphs/nodes={graphNode},graphs/edges={graphEdge},graphs/edge quotes={font=\tt\tiny,auto}},
+}
+\begin{scope}[my graph]
+\graph[spring layout,node distance=1.5cm,iterations=100]{
+    A -> B -> D,
+    A <- C <- D,
+};
+\end{scope}
+\end{tikzpicture}
+\end{frame}
