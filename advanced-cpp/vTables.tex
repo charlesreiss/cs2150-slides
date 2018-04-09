@@ -30,7 +30,7 @@ Could call \texttt{Parent::foo} or \texttt{Child:foo}
 // Parent *p (RAX) = get();
 call get
 mov rcx, @2[rax + 0]2@  // rcx <- "VTable" address
-mov rdi, rax            // rdi (this arg) <- p
+mov rdi, rax        // rdi (this arg) <- p
 call @3[rcx + 0]3@      // call what rcx points to
 \end{lstlisting}
 \vspace{-.2cm}

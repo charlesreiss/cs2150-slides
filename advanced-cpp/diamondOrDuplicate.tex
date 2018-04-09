@@ -87,3 +87,56 @@ class professor: public virtual person, public gp_list_node {...};
 class student_professor: public professor, public student {...};
 \end{lstlisting}
 \end{frame}
+
+\begin{frame}[fragile,label=diamondConstruct1]{diamond inheritence and constructors (1)}
+\lstset{language=C++,style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+}
+\begin{lstlisting}
+class Parent { public:
+    Parent(const char *x) { cout << "Parent(" << x << ")" << endl; }
+};
+class A : public virtual Parent { public:
+    A() : Parent("A") {}
+};
+class B : public virtual Parent { public:
+    B() : Parent("B") {}
+}; 
+class C : public A, public B { public:
+    C() : Parent("C") {}
+}; 
+
+int main() {
+    C c;
+}
+\end{lstlisting}
+\hrule
+output: \texttt{Parent(C)}
+\end{frame}
+
+\begin{frame}[fragile,label=diamondConstruct2]{diamond inheritence and constructors (2)}
+\lstset{language=C++,style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+}
+\begin{lstlisting}
+class Parent { public:
+    Parent() { cout << "Parent() [default constructor]" << endl; }
+    Parent(const char *x) { cout << "Parent(" << x << ")" << endl; }
+};
+class A : public virtual Parent { public:
+    A() : Parent("A") {}
+};
+class B : public virtual Parent { public:
+    B() : Parent("B") {}
+}; 
+class C : public A, public B { public:
+    C() {}
+}; 
+
+int main() {
+    C c;
+}
+\end{lstlisting}
+\hrule
+output: \texttt{Parent() [default constructor]}
+\end{frame}

@@ -3,8 +3,8 @@
 
 \begin{frame}{heap insert}
 \begin{itemize}
-\item \myemph<3>{add as leaf node}
-\item while $<$ parent node: \myemph<4-5>{swap with parent}
+\item \myemph<3>{add new node as leaf node}
+\item while new node $<$ parent node: \myemph<4-5>{swap with parent}
 \end{itemize}
 \begin{tikzpicture}
 \tikzset{
@@ -42,7 +42,7 @@
 \begin{scope}[mybst]
 \graph {
     [name=c] 10[desired at={(0,0)}] -> {
-        20 -> {40 -> {50, 70}, 25[red,very thick] -> 60[red]},
+        30 -> {40 -> {50, 70}, 25[red,very thick] -> 60[red]},
         80 -> {99, 85}
     }
 };

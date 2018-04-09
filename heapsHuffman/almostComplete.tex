@@ -23,13 +23,34 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{almsot complete formally}
+\begin{frame}{almost complete formally}
 \begin{itemize}
 \item single node tree is almost complete
 \item otherwise: almost complete if either
     \begin{itemize}
     \item left child is complete with height $h$ and right child almost complete with height $h$; \textit{OR}
-    \item left child is almost complete with height $h$ and right child is complete with height $h$
+    \item left child is almost complete with height $h$ and right child is complete with height $h-1$
     \end{itemize}
 \end{itemize}
+\begin{tikzpicture}
+\tikzset{
+    >=Latex,
+    mybst/.style={binary tree layout,level distance=5mm,sibling distance=5mm,nodes={draw,circle,inner sep=0.5mm,minimum width=.5cm,text=white,font=\tiny}},
+    missing/.style={alt=<1>{invisible},alt=<2>{dotted,draw=red},text=white, edge from parent/.style={draw=none}}
+}
+\begin{scope}[mybst]
+\graph {
+    [name=a] A[desired at={(0,0)}] -> {
+        B -> {D, E},
+        C -> F
+    }
+};
+\graph {
+    [name=b] A[desired at={(6,0)}] -> {
+        B -> {D, E},
+        C
+    }
+};
+\end{scope}
+\end{tikzpicture}
 \end{frame}

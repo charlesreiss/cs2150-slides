@@ -158,9 +158,9 @@ Child()
         \begin{itemize}
         \item (but it's actually an instance of the subclass)
         \end{itemize}
-    \item (even if destructor doesn't do anything)
+    \item compiler \myemph{might use destructor to know how much memory to free}
         \begin{itemize}
-            \item compiler \myemph{might use destructor to know how much memory to free}
+            \item so requied \myemph{even if destructor ``doesn't do anything''}
             \item C++ standard quote: ``If the static type of the object to be deleted is different from its
 dynamic type, the static type shall be a base class of the dynamic type of the object to be deleted and the
 static type shall have a virtual destructor or the behavior is undefined.''

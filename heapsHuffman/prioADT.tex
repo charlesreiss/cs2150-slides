@@ -18,5 +18,35 @@ sorted linked list & $\Theta(n)$ & $\Theta(1)$ & $\Theta(1)$ \\
 balanced tree & $\Theta(\log n)$ & $\Theta(\log n)$ & $\Theta(\log n)$ \\
 \myemph<2>{binary heap} & \myemph<2>{$\Theta(\log n)$} & \myemph<2>{$\Theta(1)$} & \myemph<2>{$\Theta(\log n)$} \\
 \myemph<3>{Fibannoci heap} & \myemph<3>{amortized $\Theta(1)$} & \myemph<3>{$\Theta(1)$} & \myemph<3>{amortized $\Theta(\log n)$} \\
+\myemph<3>{strict Fibannoci heap} & \myemph<3>{$\Theta(1)$} & \myemph<3>{$\Theta(1)$} & \myemph<3>{$\Theta(\log n)$} \\
 \end{tabular}
+\end{frame}
+
+\begin{frame}{additional, optional operations}
+\begin{itemize}
+\item not necessary to have a priority queue, but useful\ldots
+\begin{itemize}
+    \item decreaseKey --- change value of key given index/pointer
+    \item remove --- remove value with given index/pointer
+\end{itemize}
+\end{itemize}
+\begin{tabular}{l|lll}
+structure & decreaseKey & remove\\
+unsorted vector & $\Theta(1)$ & $\Theta(n)$ \\
+unsorted linked list & $\Theta(1)$ & $\Theta(n)$ \\
+    sorted vector & $\Theta(n)$ & $\Theta(n)$\\
+    sorted linked list & $\Theta(n)$ & $\Theta(1)$ \\
+    balanced tree & $\Theta(\log n)$ & $\Theta(\log n)$\\
+    \myemph<2>{binary heap} & \myemph<2>{$\Theta(\log n)$} & \myemph<2>{$\Theta(\log n)$}\\
+    \myemph<3>{Fibannoci heap} & \myemph<3>{amortized $\Theta(1)$} & \myemph<3>{amortized $\Theta(1)$}\\
+    \myemph<3>{strict Fibannoci heap} & \myemph<3>{$\Theta(1)$} & \myemph<3>{$\Theta(1)$} \\
+\end{tabular}
+\end{frame}
+
+\begin{frame}{aside: min v max}
+    \begin{itemize}
+    \item can also have ADT with findMax/etc. \textit{instead of} findMin/etc.
+    \item same complexities, etc. (use different comparisons)
+    \item terms for heaps: ``min-heap'' (findMin version) or ``max-heap'' (findMax version)
+    \end{itemize}
 \end{frame}

@@ -23,8 +23,8 @@
 \begin{scope}[mybst]
 \graph {
     [name=a] 10[red,very thick,desired at={(0,0)}] -> {
-        30 -> { 40 -> {50, 70}, 60 },
-        80 -> {99, 85[red, very thick]}
+        30 -> { 40 -> 85[red, very thick], 60 },
+        80 -> {99, 81}
     }
 };
 \end{scope}
@@ -33,8 +33,8 @@
 \begin{scope}[mybst]
 \graph {
     [name=b] 85[red,very thick,desired at={(0,0)}] -> {
-        30 -> { 40 -> {50, 70}, 60 },
-        80 -> {99, X[> invisible,invisible]}
+        30 -> { 40 -> X[> invisible, invisible], 60 },
+        80 -> {99, 81}
     }
 };
 \end{scope}
@@ -43,8 +43,8 @@
 \begin{scope}[mybst]
 \graph {
     [name=c] 30[red,very thick,desired at={(0,0)}] -> {
-        85[red,thick] -> { 40 -> {50, 70}, 60 },
-        80 -> {99, X[> invisible,text=white,invisible]}
+        85[red,thick] -> { 40, 60 },
+        80 -> {99, 81}
     }
 };
 \end{scope}
@@ -67,18 +67,18 @@
 \begin{scope}[mybst]
 \graph {
     [name=c] 30[desired at={(0,0)}] -> {
-        40[red,very thick] -> {85[red, very thick] -> {50, 70}, 60 },
-        80 -> {99, X[> invisible,text=white,invisible]}
+        40[red,very thick] -> {85[red, very thick], 60 },
+        80 -> {99, 81}
     }
 };
 \end{scope}
 \end{visibleenv}
-\begin{visibleenv}<7>
+\begin{visibleenv}<0>
 \begin{scope}[mybst]
 \graph {
     [name=c] 30[desired at={(0,0)}] -> {
         40 -> {50[red, very thick] -> {85[red,very thick], 70}, 60 },
-        80 -> {99, X[> invisible,text=white,invisible]}
+        80 -> {99, 81}
     }
 };
 \end{scope}
