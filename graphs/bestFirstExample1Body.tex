@@ -1,0 +1,108 @@
+
+
+
+\begin{visibleenv}<1>
+\matrix[
+    my algorithm table,
+    ] (the table) {
+~ \& dist \& prev \& path \\
+|[my label updating]| A \& |[my distance updating]| 0\& |[my previous updating]| --- \& |[my path updating]| A\\
+|[my label unvisited]| B \& |[my distance unvisited]| $\infty$\& |[my previous unvisited]| --- \& |[my path unvisited]| ---\\
+|[my label changed]| C \& |[my distance changed]| 2\& |[my previous changed]| A \& |[my path changed]| A$\rightarrow$C\\
+|[my label changed]| D \& |[my distance changed]| 1\& |[my previous changed]| A \& |[my path changed]| A$\rightarrow$D\\
+|[my label unvisited]| E \& |[my distance unvisited]| $\infty$\& |[my previous unvisited]| --- \& |[my path unvisited]| ---\\
+|[my label unvisited]| F \& |[my distance unvisited]| $\infty$\& |[my previous unvisited]| --- \& |[my path unvisited]| ---\\
+|[my label unvisited]| G \& |[my distance unvisited]| $\infty$\& |[my previous unvisited]| --- \& |[my path unvisited]| ---\\
+};
+\end{visibleenv}
+            
+\begin{visibleenv}<2>
+\matrix[
+    my algorithm table,
+    ] (the table) {
+~ \& dist \& prev \& path \\
+|[my label visited]| A \& |[my distance visited]| 0\& |[my previous visited]| --- \& |[my path visited]| A\\
+|[my label changed]| B \& |[my distance changed]| 6\& |[my previous changed]| D \& |[my path changed]| A$\rightarrow$D$\rightarrow$B\\
+|[my label unvisited]| C \& |[my distance unvisited]| 2\& |[my previous unvisited]| A \& |[my path unvisited]| A$\rightarrow$C\\
+|[my label updating]| D \& |[my distance updating]| 1\& |[my previous updating]| A \& |[my path updating]| A$\rightarrow$D\\
+|[my label changed]| E \& |[my distance changed]| 2\& |[my previous changed]| D \& |[my path changed]| A$\rightarrow$D$\rightarrow$E\\
+|[my label changed]| F \& |[my distance changed]| 7\& |[my previous changed]| D \& |[my path changed]| A$\rightarrow$D$\rightarrow$F\\
+|[my label changed]| G \& |[my distance changed]| 6\& |[my previous changed]| D \& |[my path changed]| A$\rightarrow$D$\rightarrow$G\\
+};
+\end{visibleenv}
+            
+\begin{visibleenv}<3>
+\matrix[
+    my algorithm table,
+    ] (the table) {
+~ \& dist \& prev \& path \\
+|[my label visited]| A \& |[my distance visited]| 0\& |[my previous visited]| --- \& |[my path visited]| A\\
+|[my label unvisited]| B \& |[my distance unvisited]| 6\& |[my previous unvisited]| D \& |[my path unvisited]| A$\rightarrow$D$\rightarrow$B\\
+|[my label updating]| C \& |[my distance updating]| 2\& |[my previous updating]| A \& |[my path updating]| A$\rightarrow$C\\
+|[my label visited]| D \& |[my distance visited]| 1\& |[my previous visited]| A \& |[my path visited]| A$\rightarrow$D\\
+|[my label unvisited]| E \& |[my distance unvisited]| 2\& |[my previous unvisited]| D \& |[my path unvisited]| A$\rightarrow$D$\rightarrow$E\\
+|[my label changed]| F \& |[my distance changed]| 4\& |[my previous changed]| C \& |[my path changed]| A$\rightarrow$C$\rightarrow$F\\
+|[my label unvisited]| G \& |[my distance unvisited]| 6\& |[my previous unvisited]| D \& |[my path unvisited]| A$\rightarrow$D$\rightarrow$G\\
+};
+\end{visibleenv}
+            
+\begin{visibleenv}<4>
+\matrix[
+    my algorithm table,
+    ] (the table) {
+~ \& dist \& prev \& path \\
+|[my label visited]| A \& |[my distance visited]| 0\& |[my previous visited]| --- \& |[my path visited]| A\\
+|[my label changed]| B \& |[my distance changed]| 3\& |[my previous changed]| E \& |[my path changed]| A$\rightarrow$D$\rightarrow$E$\rightarrow$B\\
+|[my label visited]| C \& |[my distance visited]| 2\& |[my previous visited]| A \& |[my path visited]| A$\rightarrow$C\\
+|[my label visited]| D \& |[my distance visited]| 1\& |[my previous visited]| A \& |[my path visited]| A$\rightarrow$D\\
+|[my label updating]| E \& |[my distance updating]| 2\& |[my previous updating]| D \& |[my path updating]| A$\rightarrow$D$\rightarrow$E\\
+|[my label unvisited]| F \& |[my distance unvisited]| 4\& |[my previous unvisited]| C \& |[my path unvisited]| A$\rightarrow$C$\rightarrow$F\\
+|[my label unvisited]| G \& |[my distance unvisited]| 6\& |[my previous unvisited]| D \& |[my path unvisited]| A$\rightarrow$D$\rightarrow$G\\
+};
+\end{visibleenv}
+            
+\begin{visibleenv}<5>
+\matrix[
+    my algorithm table,
+    ] (the table) {
+~ \& dist \& prev \& path \\
+|[my label visited]| A \& |[my distance visited]| 0\& |[my previous visited]| --- \& |[my path visited]| A\\
+|[my label updating]| B \& |[my distance updating]| 3\& |[my previous updating]| E \& |[my path updating]| A$\rightarrow$D$\rightarrow$E$\rightarrow$B\\
+|[my label visited]| C \& |[my distance visited]| 2\& |[my previous visited]| A \& |[my path visited]| A$\rightarrow$C\\
+|[my label visited]| D \& |[my distance visited]| 1\& |[my previous visited]| A \& |[my path visited]| A$\rightarrow$D\\
+|[my label visited]| E \& |[my distance visited]| 2\& |[my previous visited]| D \& |[my path visited]| A$\rightarrow$D$\rightarrow$E\\
+|[my label unvisited]| F \& |[my distance unvisited]| 4\& |[my previous unvisited]| C \& |[my path unvisited]| A$\rightarrow$C$\rightarrow$F\\
+|[my label unvisited]| G \& |[my distance unvisited]| 6\& |[my previous unvisited]| D \& |[my path unvisited]| A$\rightarrow$D$\rightarrow$G\\
+};
+\end{visibleenv}
+            
+\begin{visibleenv}<6>
+\matrix[
+    my algorithm table,
+    ] (the table) {
+~ \& dist \& prev \& path \\
+|[my label visited]| A \& |[my distance visited]| 0\& |[my previous visited]| --- \& |[my path visited]| A\\
+|[my label visited]| B \& |[my distance visited]| 3\& |[my previous visited]| E \& |[my path visited]| A$\rightarrow$D$\rightarrow$E$\rightarrow$B\\
+|[my label visited]| C \& |[my distance visited]| 2\& |[my previous visited]| A \& |[my path visited]| A$\rightarrow$C\\
+|[my label visited]| D \& |[my distance visited]| 1\& |[my previous visited]| A \& |[my path visited]| A$\rightarrow$D\\
+|[my label visited]| E \& |[my distance visited]| 2\& |[my previous visited]| D \& |[my path visited]| A$\rightarrow$D$\rightarrow$E\\
+|[my label updating]| F \& |[my distance updating]| 4\& |[my previous updating]| C \& |[my path updating]| A$\rightarrow$C$\rightarrow$F\\
+|[my label unvisited]| G \& |[my distance unvisited]| 6\& |[my previous unvisited]| D \& |[my path unvisited]| A$\rightarrow$D$\rightarrow$G\\
+};
+\end{visibleenv}
+            
+\begin{visibleenv}<7>
+\matrix[
+    my algorithm table,
+    ] (the table) {
+~ \& dist \& prev \& path \\
+|[my label visited]| A \& |[my distance visited]| 0\& |[my previous visited]| --- \& |[my path visited]| A\\
+|[my label visited]| B \& |[my distance visited]| 3\& |[my previous visited]| E \& |[my path visited]| A$\rightarrow$D$\rightarrow$E$\rightarrow$B\\
+|[my label visited]| C \& |[my distance visited]| 2\& |[my previous visited]| A \& |[my path visited]| A$\rightarrow$C\\
+|[my label visited]| D \& |[my distance visited]| 1\& |[my previous visited]| A \& |[my path visited]| A$\rightarrow$D\\
+|[my label visited]| E \& |[my distance visited]| 2\& |[my previous visited]| D \& |[my path visited]| A$\rightarrow$D$\rightarrow$E\\
+|[my label visited]| F \& |[my distance visited]| 4\& |[my previous visited]| C \& |[my path visited]| A$\rightarrow$C$\rightarrow$F\\
+|[my label updating]| G \& |[my distance updating]| 6\& |[my previous updating]| D \& |[my path updating]| A$\rightarrow$D$\rightarrow$G\\
+};
+\end{visibleenv}
+            
