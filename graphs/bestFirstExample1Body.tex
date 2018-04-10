@@ -1,7 +1,87 @@
 
+\tikzset{graph at A/.style={},edges from A/.style={},
+graph at B/.style={},edges from B/.style={},
+graph at C/.style={},edges from C/.style={},
+graph at D/.style={},edges from D/.style={},
+graph at E/.style={},edges from E/.style={},
+graph at F/.style={},edges from F/.style={},
+graph at G/.style={},edges from G/.style={},}
 
+\tikzset{
+    alt=<1>{}{},
+}
 
-\begin{visibleenv}<1>
+\tikzset{
+    alt=<2>{graph at A/.style={hilite},edges from A/.style={hilite},}{},
+}
+
+\tikzset{
+    alt=<3>{graph at A/.style={hidden},graph at D/.style={hilite},edges from D/.style={hilite},}{},
+}
+
+\tikzset{
+    alt=<4>{graph at A/.style={hidden},graph at C/.style={hilite},edges from C/.style={hilite},graph at D/.style={hidden},}{},
+}
+
+\tikzset{
+    alt=<5>{graph at A/.style={hidden},graph at C/.style={hidden},graph at D/.style={hidden},graph at E/.style={hilite},edges from E/.style={hilite},}{},
+}
+
+\tikzset{
+    alt=<6>{graph at A/.style={hidden},graph at B/.style={hilite},edges from B/.style={hilite},graph at C/.style={hidden},graph at D/.style={hidden},graph at E/.style={hidden},}{},
+}
+
+\tikzset{
+    alt=<7>{graph at A/.style={hidden},graph at B/.style={hidden},graph at C/.style={hidden},graph at D/.style={hidden},graph at E/.style={hidden},graph at F/.style={hilite},edges from F/.style={hilite},}{},
+}
+
+\tikzset{
+    alt=<8>{graph at A/.style={hidden},graph at B/.style={hidden},graph at C/.style={hidden},graph at D/.style={hidden},graph at E/.style={hidden},graph at F/.style={hidden},graph at G/.style={hilite},edges from G/.style={hilite},}{},
+}
+
+\matrix[my graph box] (the graph) {
+\begin{scope}[my graph]
+\graph[spring layout]{
+    A[graph at A] ->[edges from A,"2"] C,
+A[graph at A] ->[edges from A,"1"] D,
+
+B[graph at B] ->[edges from B,"2"] A,
+
+C[graph at C] ->[edges from C,"1"] D,
+C[graph at C] ->[edges from C,"2"] F,
+
+D[graph at D] ->[edges from D,"5"] B,
+D[graph at D] ->[edges from D,"1"] E,
+D[graph at D] ->[edges from D,"6"] F,
+D[graph at D] ->[edges from D,"5"] G,
+
+E[graph at E] ->[edges from E,"1"] B,
+
+F[graph at F] ->[edges from F,"10"] G,
+
+G[graph at G] ->[edges from G,"3"] E,
+
+};
+\end{scope}
+\\
+};
+
+\begin{onlyenv}<1>
+\matrix[
+    my algorithm table,
+    ] (the table) {
+~ \& dist \& prev \& path \\
+|[my label unvisited]| A \& |[my distance unvisited]| 0\& |[my previous unvisited]| --- \& |[my path unvisited]| A\\
+|[my label unvisited]| B \& |[my distance unvisited]| $\infty$\& |[my previous unvisited]| --- \& |[my path unvisited]| ---\\
+|[my label unvisited]| C \& |[my distance unvisited]| $\infty$\& |[my previous unvisited]| --- \& |[my path unvisited]| ---\\
+|[my label unvisited]| D \& |[my distance unvisited]| $\infty$\& |[my previous unvisited]| --- \& |[my path unvisited]| ---\\
+|[my label unvisited]| E \& |[my distance unvisited]| $\infty$\& |[my previous unvisited]| --- \& |[my path unvisited]| ---\\
+|[my label unvisited]| F \& |[my distance unvisited]| $\infty$\& |[my previous unvisited]| --- \& |[my path unvisited]| ---\\
+|[my label unvisited]| G \& |[my distance unvisited]| $\infty$\& |[my previous unvisited]| --- \& |[my path unvisited]| ---\\
+};
+\end{onlyenv}
+            
+\begin{onlyenv}<2>
 \matrix[
     my algorithm table,
     ] (the table) {
@@ -14,9 +94,9 @@
 |[my label unvisited]| F \& |[my distance unvisited]| $\infty$\& |[my previous unvisited]| --- \& |[my path unvisited]| ---\\
 |[my label unvisited]| G \& |[my distance unvisited]| $\infty$\& |[my previous unvisited]| --- \& |[my path unvisited]| ---\\
 };
-\end{visibleenv}
+\end{onlyenv}
             
-\begin{visibleenv}<2>
+\begin{onlyenv}<3>
 \matrix[
     my algorithm table,
     ] (the table) {
@@ -29,9 +109,9 @@
 |[my label changed]| F \& |[my distance changed]| 7\& |[my previous changed]| D \& |[my path changed]| A$\rightarrow$D$\rightarrow$F\\
 |[my label changed]| G \& |[my distance changed]| 6\& |[my previous changed]| D \& |[my path changed]| A$\rightarrow$D$\rightarrow$G\\
 };
-\end{visibleenv}
+\end{onlyenv}
             
-\begin{visibleenv}<3>
+\begin{onlyenv}<4>
 \matrix[
     my algorithm table,
     ] (the table) {
@@ -44,9 +124,9 @@
 |[my label changed]| F \& |[my distance changed]| 4\& |[my previous changed]| C \& |[my path changed]| A$\rightarrow$C$\rightarrow$F\\
 |[my label unvisited]| G \& |[my distance unvisited]| 6\& |[my previous unvisited]| D \& |[my path unvisited]| A$\rightarrow$D$\rightarrow$G\\
 };
-\end{visibleenv}
+\end{onlyenv}
             
-\begin{visibleenv}<4>
+\begin{onlyenv}<5>
 \matrix[
     my algorithm table,
     ] (the table) {
@@ -59,9 +139,9 @@
 |[my label unvisited]| F \& |[my distance unvisited]| 4\& |[my previous unvisited]| C \& |[my path unvisited]| A$\rightarrow$C$\rightarrow$F\\
 |[my label unvisited]| G \& |[my distance unvisited]| 6\& |[my previous unvisited]| D \& |[my path unvisited]| A$\rightarrow$D$\rightarrow$G\\
 };
-\end{visibleenv}
+\end{onlyenv}
             
-\begin{visibleenv}<5>
+\begin{onlyenv}<6>
 \matrix[
     my algorithm table,
     ] (the table) {
@@ -74,9 +154,9 @@
 |[my label unvisited]| F \& |[my distance unvisited]| 4\& |[my previous unvisited]| C \& |[my path unvisited]| A$\rightarrow$C$\rightarrow$F\\
 |[my label unvisited]| G \& |[my distance unvisited]| 6\& |[my previous unvisited]| D \& |[my path unvisited]| A$\rightarrow$D$\rightarrow$G\\
 };
-\end{visibleenv}
+\end{onlyenv}
             
-\begin{visibleenv}<6>
+\begin{onlyenv}<7>
 \matrix[
     my algorithm table,
     ] (the table) {
@@ -89,9 +169,9 @@
 |[my label updating]| F \& |[my distance updating]| 4\& |[my previous updating]| C \& |[my path updating]| A$\rightarrow$C$\rightarrow$F\\
 |[my label unvisited]| G \& |[my distance unvisited]| 6\& |[my previous unvisited]| D \& |[my path unvisited]| A$\rightarrow$D$\rightarrow$G\\
 };
-\end{visibleenv}
+\end{onlyenv}
             
-\begin{visibleenv}<7>
+\begin{onlyenv}<8>
 \matrix[
     my algorithm table,
     ] (the table) {
@@ -104,5 +184,5 @@
 |[my label visited]| F \& |[my distance visited]| 4\& |[my previous visited]| C \& |[my path visited]| A$\rightarrow$C$\rightarrow$F\\
 |[my label updating]| G \& |[my distance updating]| 6\& |[my previous updating]| D \& |[my path updating]| A$\rightarrow$D$\rightarrow$G\\
 };
-\end{visibleenv}
+\end{onlyenv}
             
