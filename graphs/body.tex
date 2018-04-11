@@ -80,14 +80,13 @@
 
 \subsection{problem definition}
 
-% FIXME:
 \input{topoSortDefn}
 
 \subsubsection{examples}
 
 \input{topoSortEx}
 
-% FIXME: example: course prerequisites
+\againframe<2>{preReqTree}
 
 \subsection{definition: in-degree}
 
@@ -118,11 +117,7 @@
 \input{breadthFirstSearch}
 
 \subsection{aside: greedy algorithms}
-% FIXME: observation: this is greedy
-
 \input{bfsGreedy}
-
-% FIXME: observation; being greedy is safe
 
 \section{Dijkstra's algorithm (weighted single-source shortest)}
 
@@ -130,24 +125,32 @@
 
 \subsection{example}
 
-% FIXME: example
 \input{bestFirstExample}
 
 \subsection{runtime and data structues}
 
 % FIXME: runtime
+\input{bestFirstRuntime}
 
 \subsection{aside: dropping the negative edges assumptino}
 
+\input{negativeWeights}
+
 \section{shortest path application: map routing} % FIXME: omit?
+
+\input{mapRouting}
 
 \section{travelling salesperson}
 
+\input{tspIntuition}
+
 \subsection{definition: Hamiltonian path/cycle}
 
-\subsection{problem definition}
+\input{hamiltonianDefn}
 
 \subsection{naive Θ(N!) algorithm}
+
+\input{tspEnumerate}
 
 \subsection{better algorithms: heuristics and approximation}
 

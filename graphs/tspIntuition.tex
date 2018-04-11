@@ -1,0 +1,31 @@
+\begin{frame}{travelling salesperson problem}
+\begin{itemize}
+\item given cities, costs to travel between, least-cost trip that:
+\begin{itemize}
+\item visits each city exactly once, and
+\item returns to the starting city
+\end{itemize}
+\item as a graph:
+\begin{itemize}
+\item cities = nodes
+\item costs = edge weights
+\end{itemize}
+\item assume fully connected graph
+\begin{itemize}
+\item alternative: first add infinite weight edges between disconnected nodes
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{TSP difficulty}
+\begin{itemize}
+\item solving TSP exactly is NP-hard
+\vspace{.5cm}
+\item worst case: essentially need to enumerate all possible tours
+\hrule
+\item but, we can practically solve up to 10000s of cities on real (e.g. road) maps
+\begin{itemize}
+\item obviously doing something smarter\ldots
+\end{itemize}
+\end{itemize}
+\end{frame}

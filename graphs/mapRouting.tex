@@ -1,0 +1,27 @@
+\begin{frame}{single-source to single-source+destination}
+\begin{itemize}
+\item what if want to get from $A$ to $Z$
+\item solution: Dijkstra's algorithm from $A$ but stop early --- when we proesss $Z$
+\item gaurentee: won't update $Z$'s distance again
+\end{itemize}
+\end{frame}
+
+\begin{frame}{heuristic shortest path}
+\begin{itemize}
+\item road map --- still slow!
+\item some ideas for speeding up:
+\begin{itemize}
+\item search highways instead of side-roads earlier
+\item search edges in correct direction earlier
+\item search from both directions, try to meet
+\item \ldots
+\end{itemize}
+\item if you take AI --- major topic is \textit{heuristic search}
+    \begin{itemize}
+    \item taking advantage of ideas like the above
+    \item \ldots and still getting shortest path, if you want it
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+

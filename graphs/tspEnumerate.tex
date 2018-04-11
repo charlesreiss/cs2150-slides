@@ -1,0 +1,110 @@
+\begin{frame}{naive TSP algorithm}
+\begin{itemize}
+\item choose a starting city $x_1$
+\item for each unused next city $x_2$: (n-1 possible)
+    \begin{itemize}
+    \item for each unused next city $x_3$: (n-2 possible)
+    \begin{itemize}
+    \item for each unused next city $x_4$: (n-3 possible)
+    \item \ldots
+    \end{itemize}
+    \item see if $x_1,x_2,x_3,x_4,\ldots,x_n$ is shorter than anything else
+    \end{itemize}
+\item output shortest seen
+\vspace{.5cm}
+\item $(N-1)!$ factorial runtime = $\Theta(N!)$ 
+    \begin{itemize}
+    \item worse than $\Theta(2^N)$
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=implNaiveTSP]{naive TSP implementation}
+\lstset{language=C++,style=smaller}
+psuedocode:
+\begin{lstlisting}
+vector<Vertex> partial_tour;
+void TestTours() {
+    if (partial_tour.size() == vertices.size()) {
+        partial_tour.push_back(partial_tour[0]);
+        if (weightOf(partial_tour[0]) < best_tour_weight) {
+            best_tour = partial_tour;
+            best_tour_weight = weightOf(best_tour);
+        }
+        partial_tour.pop_back();
+    } else {
+        for (Vertex v : vertices - partial_tour) {
+            partial_tour.push_back(v);
+            FindTour();
+            partial_tour.pop_back(v);
+        }
+    }
+}
+void TSP() {
+    partial_tour = {startNode};
+    best_tour_weight = INFINITY;
+    TestTours();
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{(n-1)! is big}
+\begin{itemize}
+\item 20 cities --- $>10^{16}$ tours to check
+\item 30 cities --- $>10^{30}$ tours to check
+\item \ldots
+\end{itemize}
+\end{frame}
+
+\begin{frame}{best gaurenteed TSP algorithm}
+\begin{itemize}
+\item TSP is NP-hard --- no known subexponetial solution
+\item best general algorithm: $\Theta(N^2 2^N)$
+    \begin{itemize}
+    \item 20 cities --- $>10^8$ operations
+    \item 30 cities --- $>10^11$ operations
+    \end{itemize}
+\item uses \textit{dynamic programming} --- covered in 4102
+\vspace{.5cm}
+\item basic idea: if we know $1, 3, 2, 4$ is the best way to visit cities 1, 2, 3, 4 starting at city 1 and ending at 4, then don't figure that out multiple times
+    \begin{itemize}
+    \item e.g. $1, 2, 3, 4, 5, 1$ \myemph{cannot be shorter} than $1, 3, 2, 4, 5, 1$
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{TSP heuristics}
+\begin{itemize}
+\item one idea: branch and bound
+\item still: construct lots and lots of possible tours
+    \begin{itemize}
+    \item keep adding cities
+    \end{itemize}
+\item but maintain track extra numbers:
+    \begin{itemize}
+    \item the best cost found so far
+    \item \myemph{lower bound} on the tours we could find with chosen nodes
+    \end{itemize}
+\item stop enumerating (return from \texttt{FindTour} early) if lower bound is too low
+\end{itemize}
+\end{frame}
+
+\begin{frame}{a lower bound}
+\begin{itemize}
+\item example lower bound:
+\vspace{.5cm}
+\item if I've chosen cities $1$, $2$, $4$, $3$ in that order
+\item minimum cost = $w(1,2)+w(2,4)+w(4,3)+\sum_{i=3}^n\text{minimum weight of edge from i}$
+    \begin{itemize}
+    \item if this is worse than best we've found so far --- no sense continuing further
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{other TSP ideas}
+\begin{itemize}
+\item TSP on real maps --- take advantage of geometry
+\item try cities close to each other first
+\item use map distances to compute minimum costs quickly
+\end{itemize}
+\end{frame}

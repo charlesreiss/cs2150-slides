@@ -1,0 +1,21 @@
+\begin{frame}{Dijkstra's algorithm runtime}
+\begin{itemize}
+\item for every vertex (worst case):
+\vspace{.5cm}
+\item find vertex smallest unknown distance
+    \begin{itemize}
+    \item $\Theta(|V|^2)$ total --- if checking every vertex
+    \item $\Theta(|V|\log|V|)$ total --- if removing from heap
+    \end{itemize}
+\item scan all edges of vertex, update distances
+    \begin{itemize}
+    \item $\Theta(|E|)$ total --- if not maintaining priority queue
+    \item $\Theta(|E|\log|V|)$ if updating binary heap
+    \end{itemize}
+\vspace{.5cm}
+\item total with binary heap: $\Theta((|E|+|V|)\log|V|)$
+    \begin{itemize}
+    \item Fibanocci heap instead: $\Theta(|E|+|V|\log|V|)$
+    \end{itemize}
+\end{itemize}
+\end{frame}

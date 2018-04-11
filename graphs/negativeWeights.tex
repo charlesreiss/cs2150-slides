@@ -1,0 +1,12 @@
+\begin{frame}{negative weights}
+\begin{itemize}
+\item example: weight = fuel used; negative weight = refueling
+\item Dijkstra's algorithm \myemph{doesn't work}
+    \begin{itemize}
+    \item assumption: won't update a node's distance after visiting its edges
+    \end{itemize}
+\item alternative algorithms do --- e.g. Bellman-Ford ($\Theta(|E||V|)$ runtime)
+\vspace{.5cm}
+\item negative cost cycles --- infinitely small cost!
+\end{itemize}
+\end{frame}
