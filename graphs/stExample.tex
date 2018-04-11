@@ -1,0 +1,48 @@
+\usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes}
+\usegdlibrary{force}
+\begin{frame}{spanning tree examples}
+\tikzset{
+    graphNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm,text=white},
+    graphEdge/.style={draw,thick},
+    hidden/.style={opacity=0},
+    >=Latex,
+    my graph/.style={graphs/nodes={graphNode},graphs/edges={graphEdge},graphs/edge quotes={font=\tt\tiny,auto}},
+}
+\begin{tikzpicture}
+\matrix[row sep=5mm,column sep=5mm] {
+\begin{scope}[my graph]
+\graph[spring layout] {
+    [name=orig] A -- B -- C -- D -- E -- B
+};
+\end{scope}
+\& \node {original graph};
+\\
+\begin{scope}[my graph]
+\graph[spring layout] {
+    [name=orig] A -- B --[hidden] C -- D -- E -- B
+};
+\end{scope}
+\&
+\begin{scope}[my graph]
+\graph[spring layout] {
+    [name=orig] A -- B -- C --[hidden] D -- E -- B
+};
+\end{scope}
+\&
+\begin{scope}[my graph]
+\graph[spring layout] {
+    [name=orig] A -- B -- C -- D --[hidden] E -- B
+};
+\end{scope}
+\&
+\begin{scope}[my graph]
+\graph[spring layout] {
+    [name=orig] A -- B -- C -- D -- E --[hidden] B
+};
+\end{scope}
+\&
+\node[align=left]{spanning trees \\ of graph};
+\\
+};
+\end{tikzpicture}
+\end{frame}
