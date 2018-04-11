@@ -1,0 +1,15 @@
+\begin{frame}{Prim's greedy MST algorithm}
+    \begin{itemize}
+    \item track: vertices in spanning tree, edges in spanning tree
+    \item add a vertex to the spanning tree (arbitrarily)
+    \vspace{.5cm}
+    \item while not all vertices are in the spanning tree: 
+    \item pick an edge $(u, v)$ such that
+        \begin{itemize}
+        \item $u$ is already in the spanning tree
+        \item $v$ is not already in the spanning tree
+        \item $(u,v)$ has the smallest weight of all possible edges
+        \end{itemize}
+    \item add the edge and $v$ to the spanning tree
+    \end{itemize}
+\end{frame}

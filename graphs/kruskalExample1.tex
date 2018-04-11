@@ -1,0 +1,40 @@
+\usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes}
+\usegdlibrary{force,layered}
+
+\begin{frame}{Kruskal's algorithm example}
+\begin{tikzpicture}
+\tikzset{
+    graphNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm},
+    graphEdge/.style={draw,thick},
+    >=Latex,
+    my graph/.style={graphs/nodes={graphNode},graphs/edges={graphEdge},graphs/edge quotes={font=\tt\small,auto,inner sep=0.1mm}},
+    my graph box/.style={}
+}
+
+\tikzset{
+    my label/.style={draw=none,text width=.6cm},
+    my distance/.style={text width=1cm},
+    my previous/.style={text width=1cm},
+    my path/.style={text width=4cm},
+    my algorithm table/.style={
+        tight matrix,
+        nodes={font=\strut},
+        row 1/.style={nodes={draw=none}},
+        column 1/.style={nodes={my label}}
+        column 2/.style={nodes={my distance}},
+        column 3/.style={nodes={my previous}},
+        column 4/.style={nodes={my path}},
+        right={1cm of the graph},
+    },
+    marked vertex/.style={very thick,fill=blue!10},
+    unmarked vertex/.style={},
+    used/.style={draw=black,very thick},
+    just used/.style={draw=red,very thick},
+    considered/.style={draw=blue,dashed},
+    unused/.style={draw=black!40,dashed},
+    my graph box/.style={},
+    edge history/.style={below=1cm of the graph},
+}
+\input{kruskallExample1Body}
+\end{tikzpicture}
+\end{frame}
