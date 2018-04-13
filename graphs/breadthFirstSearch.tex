@@ -10,8 +10,10 @@
 
 \begin{frame}{special case: breadth-first search on trees}
 \begin{itemize}
-\item can look at breadth-first search as generalization of pre-order traversal
-\item difference: now we can have other paths from roots
+\item can look at breadth-first search as variation on pre-order traversal
+\item same idea: parents before children
+\item but whole level at a time\ldots
+\item and need to ignore extra paths
 \end{itemize}
 \end{frame}
 
@@ -66,12 +68,11 @@
 
 
 \begin{frame}[fragile,label=bfsPseudo]{breadth first search pseudocode}
-\lstset{language=C++,style=small}
+\lstset{language=C++,style=smaller}
 \begin{lstlisting}
 void Graph::bfs(Vertex start) {
     for (Vertex v: vertices) {
-        v.distance = INFINITY;
-        v.previous = NULL;
+        v.distance = INFINITY; v.previous = NULL;
     }
     Queue frontier;
     start.distance = 0;
@@ -79,7 +80,6 @@ void Graph::bfs(Vertex start) {
     while (!frontier.isEmpty()) {
         Vertex v = q.dequeue();
         for (Vertex w : verticesWithEdgeFrom(v)) {
-            // w.distance == INFINITY --> we haven't visited this vertex yet
             if (w.distance == INFINITY) {
                 w.distance = v.distance + 1;
                 w.previous = v;

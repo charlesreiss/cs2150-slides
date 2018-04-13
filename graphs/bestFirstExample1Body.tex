@@ -42,24 +42,24 @@ graph at G/.style={},edges from G/.style={},}
 \matrix[my graph box] (the graph) {
 \begin{scope}[my graph]
 \graph[spring layout]{
-    A[graph at A] ->[edges from A,"2"] C,
-A[graph at A] ->[edges from A,"1"] D,
+    A[graph at A] ->[edges from A,edges from A,"2"] C[graph at C],
+A[graph at A] ->[edges from A,edges from A,"1"] D[graph at D],
 
-B[graph at B] ->[edges from B,"2"] A,
+B[graph at B] ->[edges from B,edges from B,"2"] A[graph at A],
 
-C[graph at C] ->[edges from C,"1"] D,
-C[graph at C] ->[edges from C,"2"] F,
+C[graph at C] ->[edges from C,edges from C,"1"] D[graph at D],
+C[graph at C] ->[edges from C,edges from C,"2"] F[graph at F],
 
-D[graph at D] ->[edges from D,"5"] B,
-D[graph at D] ->[edges from D,"1"] E,
-D[graph at D] ->[edges from D,"6"] F,
-D[graph at D] ->[edges from D,"5"] G,
+D[graph at D] ->[edges from D,edges from D,"5"] B[graph at B],
+D[graph at D] ->[edges from D,edges from D,"1"] E[graph at E],
+D[graph at D] ->[edges from D,edges from D,"6"] F[graph at F],
+D[graph at D] ->[edges from D,edges from D,"5"] G[graph at G],
 
-E[graph at E] ->[edges from E,"1"] B,
+E[graph at E] ->[edges from E,edges from E,"1"] B[graph at B],
 
-F[graph at F] ->[edges from F,"10"] G,
+F[graph at F] ->[edges from F,edges from F,"10"] G[graph at G],
 
-G[graph at G] ->[edges from G,"3"] E,
+G[graph at G] ->[edges from G,edges from G,"3"] E[graph at E],
 
 };
 \end{scope}

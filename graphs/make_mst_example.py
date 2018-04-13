@@ -34,6 +34,14 @@ class Edge():
     def name(self):
         return '({start}, {end})'.format(start=self.start, end=self.end)
 
+    def before(self, other):
+        if self.start < other.start:
+            return True
+        elif self.start == other.start and (self.end < other.end):
+            return True
+        else:
+            return False
+
 class Graph():
     def __init__(self, directed=False):
         self.directed = directed
@@ -95,7 +103,7 @@ class Graph():
                 if edge.end in self.marked_vertices:
                     continue
                 edge.considered = True
-                if edge.weight < best_weight:
+                if edge.weight < best_weight or (edge.weight == best_weight and edge.before(best_edge)):
                     best_edge = edge
                     best_weight = edge.weight
             return best_edge
@@ -107,7 +115,7 @@ class Graph():
                 if self._find_set(edge.start) == self._find_set(edge.end):
                     continue
                 edge.considered = True
-                if edge.weight < best_weight:
+                if edge.weight < best_weight or (edge.weight == best_weight and edge.before(best_edge)):
                     best_edge = edge
                     best_weight = edge.weight
             return best_edge

@@ -7,13 +7,14 @@ psuedocode:
 \begin{lstlisting}
 vector<Vertex> topologicalSort(Graph g) {
     vector<Vertex> result;
-    for (int i = 0; i < g.numVertices(); ++i) {
+    for (int i = 0; i < numVertices; ++i) {
         Vertex v = g.findVertexOfInDegreeZero();
         if (did not find v) throw CycleFound();
         result.push_back(v);
         for (Vertex w : v.adjacentVertices()) {
             g.deleteEdge(v, w);
         }
+        g.deleteVertex(v);
     }
     return result;
 }
@@ -33,10 +34,10 @@ vector<Vertex> topologicalSort(Graph g) {
 \begin{scope}[my graph]
 \graph[spring layout,node distance=1.5cm,iterations=100]{
     F[hilite={<2>},hilite={<4-5>}] ->[hide after=5] H[hilite=<6>],
-    F ->[hide after=5] G[hilite=<9>,hide after=10] -> E,
-    F ->[hide after=5] C[hilite=<6>,hilite=<7>,hilite=<8>] ->[hide after=8] {D, B [hilite=<9>]},
+    F ->[hide after=5] G[hilite=<9>] ->[hide after=10] E[hilite=<11>],
+    F ->[hide after=5] C[hilite=<6>,hilite=<7>,hilite=<8>] ->[hide after=8] {D[hilite=<10>], B [hilite=<9>]},
     A[hilite=<2-3>] ->[hide after=3] {B, C},
-    B ->[hide after=10] D[hilite=<10>] ->[hide after=10] E[hilite=<11>],
+    B ->[hide after=10] D ->[hide after=10] E,
     C ->[hide after=8] G,
 };
 \end{scope}

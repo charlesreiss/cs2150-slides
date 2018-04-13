@@ -57,8 +57,11 @@ class Node():
     def graph_line(self, edge_type='->'):
         output = ""
         for out_vertex, out_weight in self.edges:
-            output += '{label}[graph at {label}] {edge_type}[edges from {label},"{out_weight}"] {out_vertex},\n'.format(
+            if edge_type == '--' and out_vertex < self.label:
+                continue
+            output += '{label}[graph at {label}] {edge_type}[edges from {label},edges from {out_label},"{out_weight}"] {out_vertex}[graph at {out_vertex}],\n'.format(
                 label=self.label,
+                out_label=out_vertex if edge_type == '--' else self.label,
                 out_vertex=out_vertex,
                 out_weight=out_weight,
                 edge_type=edge_type,
@@ -141,7 +144,7 @@ class Graph():
     alt=<%s>{%s}{},
 }
 ''' % (i + 1 , rule))
-        graph_lines = list(map(lambda k: self.nodes[k].graph_line(), sorted(self.nodes.keys())))
+        graph_lines = list(map(lambda k: self.nodes[k].graph_line(edge_type), sorted(self.nodes.keys())))
         output += r'''
 \matrix[my graph box] (the graph) {
 \begin{scope}[my graph]
@@ -184,9 +187,8 @@ def example_two():
     g.add_node('D', [('E', 6)])
     g.add_node('E', [('G', 9)])
     g.add_node('G', [])
-
     g.reflect_edges()
     print(g.best_first_search('A', '--'))
 
 if __name__ == '__main__':
-    example_two()
+    example_one()
