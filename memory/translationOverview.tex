@@ -1,0 +1,47 @@
+\begin{frame}{address translation}
+\begin{tikzpicture}
+\tikzset{
+    every node/.style={font=\small},
+}
+\node[align=center,alt=<2>{draw=red,very thick,fill=red!10}{}] (progAAddr) {Program A \\ addresses \\ \myemph<3>{``virtual''}};
+\begin{visibleenv}<2>
+\node[align=left,below=.5cm of progAAddr] {\myemph{every address accessed} \\ instructions \textit{and} data};
+\end{visibleenv}
+%\node[below=1cm of progAAddr,align=center] (progBAddr) {Program B \\ addresses};
+\node[draw, right=3cm of progAAddr,align=center,alt=<4>{draw=red,very thick,fill=red!10}] (translationA) { mapping \\ (set by OS) };
+\begin{visibleenv}<4>
+\node[align=left,below=.5cm of translationA] {stored in processor? \\ format?};
+\end{visibleenv}
+%\node[draw, right=3cm of progBAddr,align=center] (translationB) { mapping \\ (set by OS) };
+\node[draw,rectangle split, rectangle split parts=6, anchor=north west,label={[align=center]north:real memory\\\myemph<3>{``physical''}}] (mem) at ([xshift=3cm]translationA.north east) {
+    \nodepart{one}
+    Program A code 
+    \nodepart{two}
+    Program B code
+    \nodepart{three}
+    Program A data
+    \nodepart{four}
+    Program B data
+    \nodepart{five}
+    OS data
+    \nodepart{six}
+    \ldots
+};
+\draw[-Latex,green,thick] (progAAddr) -- (translationA) (translationA.east) -- (mem.one west);
+\draw[-Latex,green,thick] (translationA.east) -- (mem.three west);
+%\draw[-Latex,blue,thick] (progBAddr) -- (translationB) (translationB.east) -- (mem.two west);
+%\draw[-Latex,blue,thick] (translationB.east) -- (mem.four west);
+%\node[thick,red,draw,anchor=north west] (error) at ([yshift=-.5cm]mem.south west) {trigger error};
+%\draw[-Latex,green,thick] (translationA.east) -- (error.west);
+%\draw[-Latex,blue,thick] (translationB.east) -- (error.west);
+%\draw[-Latex,green,ultra thick,dotted] (translationA.east) -- (mem.five west);
+%\draw[-Latex,blue,ultra thick,dotted] (translationB.east) -- (mem.five west);
+\begin{visibleenv}<3>
+\node[draw,thick,align=center,below=3cm of translationA] {
+    program addresses are `virtual' \\
+    real addresses are `physical' \\
+    can be \myemph{different sizes}!
+};
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}

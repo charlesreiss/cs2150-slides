@@ -1,0 +1,39 @@
+\tikzset{
+    program memory label/.style={font=\ttfamily},
+    program memory box/.style={draw,rectangle,minimum width=5cm,fill=white},
+    program memory highlight/.style={draw,rectangle,line width=1mm, draw=blue!80!black,opacity=.3,
+        inner sep=0.5mm},
+}
+
+\newcommand{\programMemoryImage}{
+\node[program memory box,minimum height=1cm,pattern=north west lines,pattern color=black!5!white] (kernel) {Used by OS};
+\node[right=1mm of kernel.north east,program memory label] {0xFFFF FFFF FFFF FFFF};
+\node[right=1mm of kernel.south east,program memory label] {0xFFFF 8000 0000 0000};
+\node[program memory box, minimum height=.5cm, below=1cm of kernel] (stack) {Stack};
+\node[right=1mm of stack.north east,program memory label] {0x7F\ldots{}};
+\node[program memory box, minimum height=.5cm, below=1cm of stack] (heap) {Heap / other dynamic};
+\node[program memory box, minimum height=.5cm, below=0mm of heap] (data) {Writable data};
+\node[program memory box, minimum height=.5cm, below=0mm of data] (sdata) {Code + Constants};
+\node[right=1mm of sdata.south east,program memory label] {0x0000 0000 0040 0000};
+\coordinate (memBottom) at ($(sdata.south east) + (0mm, -2mm)$);
+\begin{pgfonlayer}{bg}
+\draw[pattern=north west lines, pattern color=black!40!white] (kernel.north west) rectangle (memBottom);
+\end{pgfonlayer}
+}
+\newcommand{\programMemoryHighlight}[1]{
+    \node[#1,program memory highlight] {};
+}
+
+\begin{frame}{a possible memory layout on Linux}
+\begin{tikzpicture}
+\programMemoryImage
+    \begin{visibleenv}<2>
+        \programMemoryHighlight{fit=(heap)}
+        \node[right=1cm of heap] {$\rightarrow$ new, malloc use space here};
+    \end{visibleenv}
+    \begin{visibleenv}<3>
+        \programMemoryHighlight{fit=(stack)}
+        \node[right=1cm of stack] {$\rightarrow$ local variables allocated here};
+    \end{visibleenv}
+\end{tikzpicture}
+\end{frame}
