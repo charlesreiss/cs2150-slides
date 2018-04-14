@@ -1,0 +1,86 @@
+\begin{frame}[fragile,label=mallocPrototype]{malloc}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+void *malloc(size_t size);
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{void \*} --- generic pointer type
+    \begin{itemize}
+    \item in C --- converts implicitly to any pointer type
+    \item in C++ --- requires cast
+    \end{itemize}
+\item \texttt{size\_t} --- integer type that holds size (in bytes)
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=mallocUsage1]{typical malloc usage}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+int *array;
+...
+array = malloc(number_of_elements * sizeof(*array))
+// OR
+array = malloc(number_of_elements * sizeof(int))
+\end{lstlisting}
+\hrule
+\begin{lstlisting}
+SomeType *item;
+...
+item = malloc(sizeof(*item));
+// OR
+item = malloc(sizeof(SomeType));
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{malloc and free}
+\begin{itemize}
+\item free --- undo malloc's allocation
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=newParts]{new}
+\lstset{language=C++}
+\begin{itemize}
+    \item new does \myemph{two things} that can be done seperately
+    \vspace{.5cm}
+    \item allocate memory
+        \begin{itemize}
+        \item \texttt{::operator new(size\_t)}
+        \end{itemize}
+    \item call constructors
+        \begin{itemize}
+        \item can do separately with ``placement new''
+        \item \lstinline|new (somePtr) Foo(arguments);|
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=placementNew]{``manually'' doing what new does}
+\lstset{language=C++}
+\begin{lstlisting}
+Foo *foo = new Foo(1, 2, 3);
+\end{lstlisting}
+\hrule
+\begin{lstlisting}
+// allocate space
+Foo *foo = ::operator new(sizeof(Foo));
+
+// call constructor
+new (foo) Foo(1, 2, 3);
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=deleteParts]{delete}
+\lstset{language=C++}
+\begin{itemize}
+    \item deletedoes \myemph{two things} that can be done seperately
+    \vspace{.5cm}
+    \item call destructors
+        \begin{itemize}
+        \item \lstinline|foo->~Foo();|
+        \end{itemize}
+    \item actually free memory
+        \begin{itemize}
+        \end{itemize}
+\end{itemize}
+\end{frame}

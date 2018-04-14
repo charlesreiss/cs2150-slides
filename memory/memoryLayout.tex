@@ -29,11 +29,11 @@
 \programMemoryImage
     \begin{visibleenv}<2>
         \programMemoryHighlight{fit=(heap)}
-        \node[right=1cm of heap] {$\rightarrow$ new, malloc use space here};
+        \node[right=1cm of heap,align=left] {grows upward \\ $\rightarrow$ new, malloc};
     \end{visibleenv}
     \begin{visibleenv}<3>
         \programMemoryHighlight{fit=(stack)}
-        \node[right=1cm of stack] {$\rightarrow$ local variables allocated here};
+        \node[right=1cm of stack,align=left] {$\rightarrow$ local variables allocated here \\ grows downward};
     \end{visibleenv}
 \end{tikzpicture}
 \end{frame}
