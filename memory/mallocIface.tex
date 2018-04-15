@@ -30,6 +30,8 @@ item = malloc(sizeof(*item));
 // OR
 item = malloc(sizeof(SomeType));
 \end{lstlisting}
+\hrule
+note: in C++ (not C) would need casts
 \end{frame}
 
 \begin{frame}{malloc and free}
@@ -45,7 +47,7 @@ item = malloc(sizeof(SomeType));
     \vspace{.5cm}
     \item allocate memory
         \begin{itemize}
-        \item \texttt{::operator new(size\_t)}
+        \item \texttt{::operator new(sizeof(Foo))}
         \end{itemize}
     \item call constructors
         \begin{itemize}
@@ -81,6 +83,7 @@ new (foo) Foo(1, 2, 3);
         \end{itemize}
     \item actually free memory
         \begin{itemize}
+        \item \lstinline|::operator delete(foo);|
         \end{itemize}
 \end{itemize}
 \end{frame}
