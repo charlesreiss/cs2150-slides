@@ -21,23 +21,52 @@
 \end{frame}
 \end{comment}
 
-
+\begin{comment}
 \begin{frame}{last time}
     \begin{itemize}
     \item topological sort
         \begin{itemize}
-            \item intuition: find first node (no incoming edges), remove, repeat
-            \item fast implementation: track in-degrees only, enqueue as indegree decremented to 0
+        \item find node without incoming edges, remove, repeat
+        \item implementation: track \textit{in-degrees}, enqueue when indegree becomes 0
+        \item runtime: $\Theta(|V|+|E|)$ [$|E|$ total updates to in-degrees]
+        \item queue: newly discovered nodes after known nodes
         \end{itemize}
     \item shortest path: breadth first search
         \begin{itemize}
-        \item use edges to find distance 1 nodes, use edges from those to find distance 2 nodes, etc.
-        \item analogy to pre-order: still parents then children, but all parents at level $x$ then children
+        \item find distance 1 nodes, use those to find distance 2 nodes, etc.
+        \item all parents at level $x$ then children
+        \item queue: newly discovered nodes after known nodes
+                \begin{itemize}
+                \item versus pre-order: process immediately
+                \end{itemize}
         \item extra tracking: don't `visit' node twice
         \end{itemize}
     \item representing shortest paths: shortest path tree
         \begin{itemize}
         \item only need edge from each node towards source
         \end{itemize}
+    \end{itemize}
+\end{frame}
+\end{comment}
+
+\begin{frame}{last time}
+    \begin{itemize}
+        \item breadth first search versus Dijkstra's
+        \item find node at distance $X$ --- might later find at distance $Y$
+        \item avoid processing nodes twice --- order of distance
+            \begin{itemize}
+            \item processing node at distance $X$, can't find path of distance $X-k$
+            \end{itemize}
+        \item priority queue to track pending nodes
+            \begin{itemize}
+            \item key = distance
+            \item a use for \texttt{decreaseKey}
+            \end{itemize}
+        \item runtime $\Theta((|V|+|E|)\log |V|)$ with binary heaps
+            \begin{itemize}
+            \item priority queue operation for every vertex, then (almost) every edge
+            \end{itemize}
+        \vspace{.5cm}
+        \item restriction: no negative weights
     \end{itemize}
 \end{frame}

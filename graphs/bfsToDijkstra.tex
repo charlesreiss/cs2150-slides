@@ -36,7 +36,7 @@ void Graph::BROKEN_shortestPaths(Vertex start) {
 \matrix[anchor=north east] at (current page.north east) {
 \begin{scope}[my graph]
 \graph[layered layout,level distance=10mm]{
-    A ->["50"',alt=<3>{red,thick}] B ->["50"',alt=<5>{red,very thick}] C,
+    A[alt=<3-4>{font=\bfseries}] ->["50"',alt=<3>{red,thick}] B[alt=<5>{font=\bfseries}] ->["50"',alt=<5>{red,very thick}] C,
     A ->["110", minimum layers=2,alt=<4>{red,thick}] C,
 };
 \end{scope}
@@ -105,8 +105,7 @@ void Graph::SLOW_shortestPaths(Vertex start) {
         Vertex v = @1findUnvisitedNodeWithSmallestDistance();1@
         @1v.visited = true;1@
         for (Vertex w : verticesWithEdgeFrom(v)) {
-            // w.distance == INFINITY --> we haven't visited this vertex yet
-           int newDistance = v.distance + weightOfEdge(v, w);
+            int newDistance = v.distance + weightOfEdge(v, w);
             if (newDistance < w.distance) {
                 w.distance = newDistance;
                 w.previous = v;

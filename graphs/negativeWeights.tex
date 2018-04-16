@@ -10,3 +10,19 @@
 \item negative cost cycles --- infinitely small cost!
 \end{itemize}
 \end{frame}
+
+\begin{frame}{high-level view: dealing with negative weights}
+    \begin{itemize}
+    \item Bellman-Ford algorithm
+        \vspace{.5cm}
+    \item for every node: track shortest known path from source
+        \begin{itemize}
+        \item initially: ``no known paths''
+        \end{itemize}
+    \item iterate through \textit{all edges} updating paths
+        \begin{itemize}
+        \item Q: ``can this edge be used to make a better path to source?''
+        \end{itemize}
+    \item repeat $|V|$ times
+    \end{itemize}
+\end{frame}
