@@ -10,68 +10,12 @@ malloc/new & OS allocation interfaces \\
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile,label=heapLayout]{one way to implement malloc free}
-\begin{tikzpicture}
-\node[anchor=north east] (code) at (-1,0) {
-\begin{lstlisting}
-struct AllocInfo {
-  bool free;
-  int size;
-  AllocInfo *prev;
-  AllocInfo *next;
-};
-\end{lstlisting}
-};
-
-\tikzset{xscale=0.9}
-\begin{scope}[overlay]
-    \draw[stackBox,fill=black!20] (0, 1) rectangle (3, -7);
-
-    \draw[onStack] (0, 1) rectangle (3, 0) node[midway,font=\small,align=center] {free space \\ (deleted obj.)};
-    \draw[onStack,fill=white] (0, -0.0) rectangle (3, -0.5) node[midway,font=\small] (freeANext) {next};
-    \draw[onStack,fill=white] (0, -0.5) rectangle (3, -1.0) node[midway,font=\small] (freeAPrev) {prev};
-    \draw[onStack,fill=white] (0, -1.0) rectangle (3, -1.5) node[midway,font=\small] (freeASize) {size/free};
-
-    \draw[very thick, red, rounded corners] (0, 1) rectangle (3, -1.5);
-
-    \draw[onStack,fill=blue!20] (0, -1.5) rectangle (3, -3.0) node[midway,font=\small,align=center] (freeBAlloc) {new'd object};
-    \draw[onStack,fill=white] (0, -3.0) rectangle (3, -3.5) node[midway,font=\small] (freeBSize) {size/free};
-    
-    \draw[very thick, red, rounded corners] (0, -1.5) rectangle (3, -3.5);
-
-    \draw[onStack] (0, -3.5) rectangle (3, -5.0) node[midway,font=\small] {free space};
-    \draw[onStack,fill=white] (0, -5.0) rectangle (3, -5.5) node[midway,font=\small] (freeCNext) {next};
-    \draw[onStack,fill=white] (0, -5.5) rectangle (3, -6.0) node[midway,font=\small] (freeCPrev) {prev};
-    \draw[onStack,fill=white] (0, -6.0) rectangle (3, -6.5) node[midway,font=\small] (freeCSize) {size/free};
-    
-    \draw[very thick, red, rounded corners] (0, -3.5) rectangle (3, -6.5);
-    
-    \draw[-Latex,blue,thick] (freeAPrev) -- ++(1.75cm,0cm) |- (freeCSize);
-    \draw[-Latex,blue,thick] (freeCNext) -- ++(2.00cm,0cm) |- (freeASize);
-    \draw[-Latex,blue,thick,opacity=0.5] (freeCPrev) -- ++(1.25cm,0cm) -- ++(0cm,-2cm);
-    \draw[-Latex,blue,thick,opacity=0.5] (freeANext) -- ++(1.75cm,0cm) -- ++(0cm,2cm);
-\end{scope}
-\draw[-Latex,line width=3pt,black!50] (3.5,-2.25) -- (5.5,-2.25) node[black,midway,above,font=\small\tt] {free};
-\begin{scope}[overlay,xshift=6cm,name prefix=sec-]
-    \draw[stackBox,fill=black!20] (0, 1) rectangle (3, -7);
-
-    \draw[onStack] (0, 1) rectangle (3, -5.0) node[midway,font=\small] {free space};
-    \draw[onStack,fill=white] (0, -5.0) rectangle (3, -5.5) node[midway,font=\small] (freeCNext) {next};
-    \draw[onStack,fill=white] (0, -5.5) rectangle (3, -6.0) node[midway,font=\small] (freeCPrev) {prev};
-    \draw[onStack,fill=white] (0, -6.0) rectangle (3, -6.5) node[midway,font=\small] (freeCSize) {size/free};
-    
-    \draw[-Latex,blue,thick,opacity=0.5] (freeCPrev) -- ++(1.25cm,0cm) -- ++(0cm,-2cm);
-    \draw[-Latex,blue,thick,opacity=0.5] (freeCNext) -- ++(1.75cm,0cm) -- ++(0cm,2cm);
-\end{scope}
-\end{tikzpicture}
-\end{frame}
-
 \begin{frame}{implementing malloc/free}
 \begin{itemize}
     \item get \myemph{large allocations} from OS
     \item subdivide allocation --- need data structure to manage
     \begin{itemize}
-        \item one idea: before what malloc/new returns
+        \item one idea: \myemph<2>{before what malloc/new returns}
         \item another idea: separate, e.g., hashtable on address
     \end{itemize} 
     \item lots of tricky choices:
@@ -81,4 +25,107 @@ struct AllocInfo {
         \item \ldots
     \end{itemize}
 \end{itemize}
+\end{frame}
+
+\tikzset{
+    stackBox/.style={very thick},
+    allocBox/.style={dashed,very thick,fill=blue!20},
+    onStack/.style={thick,align=center},
+    frameOne/.style={fill=blue!15},
+    frameTwo/.style={fill=red!15},
+    markLine/.style={blue!50!black},
+    markLineB/.style={blue!90!black},
+    hiLine/.style={red!90!black},
+}
+
+\begin{frame}[fragile,label=heapLayout]{one malloc/free impl.}
+\begin{tikzpicture}
+\node[anchor=north east] (code) at (-1,0) {
+\begin{lstlisting}
+struct AllocInfo {
+  int size;
+  // for alloc'd:
+  AllocInfo *prev;
+  AllocInfo *next;
+};
+\end{lstlisting}
+};
+
+\tikzset{
+    isSize/.style={alt=<3>{fill=red!10}},
+    isNextPrev/.style={alt=<2>{fill=red!10}},
+}
+
+\tikzset{xscale=0.9}
+\begin{scope}[overlay,xshift=.5cm]
+    \draw[stackBox,fill=black!20] (0, 1) rectangle (3, -7);
+
+    \draw[onStack] (0, 1) rectangle (3, 0) node[midway,font=\small,align=center] {free space};
+    \draw[onStack,fill=white,isNextPrev] (0, -0.0) rectangle (3, -0.5) node[midway,font=\small] (freeANext) {next};
+    \draw[onStack,fill=white,isNextPrev] (0, -0.5) rectangle (3, -1.0) node[midway,font=\small] (freeAPrev) {prev};
+    \draw[onStack,fill=white,isSize] (0, -1.0) rectangle (3, -1.5) node[midway,font=\small] (freeASize) {size};
+
+    \draw[very thick, red, rounded corners] (0, 1) rectangle (3, -1.5);
+
+    \draw[onStack,fill=blue!20] (0, -1.5) rectangle (3, -3.0) node[midway,font=\small,align=center] (freeBAlloc) {new'd object};
+    \draw[onStack,fill=white,isSize] (0, -3.0) rectangle (3, -3.5) node[midway,font=\small] (freeBSize) {size};
+    
+    \draw[very thick, red, rounded corners] (0, -1.5) rectangle (3, -3.5);
+
+    \draw[onStack] (0, -3.5) rectangle (3, -5.0) node[midway,font=\small] {free space};
+    \draw[onStack,fill=white,isNextPrev] (0, -5.0) rectangle (3, -5.5) node[midway,font=\small] (freeCNext) {next};
+    \draw[onStack,fill=white,isNextPrev] (0, -5.5) rectangle (3, -6.0) node[midway,font=\small] (freeCPrev) {prev};
+    \draw[onStack,fill=white,isSize] (0, -6.0) rectangle (3, -6.5) node[midway,font=\small] (freeCSize) {size};
+    
+    \draw[very thick, red, rounded corners] (0, -3.5) rectangle (3, -6.5);
+    
+    \draw[-Latex,blue,thick] (freeAPrev) -- ++(1.75cm,0cm) |- (freeCSize);
+    \draw[-Latex,blue,thick] (freeCNext) -- ++(2.00cm,0cm) |- (freeASize);
+    \draw[-Latex,blue,thick,opacity=0.5] (freeCPrev) -- ++(1.25cm,0cm) -- ++(0cm,-2cm);
+    \draw[-Latex,blue,thick,opacity=0.5] (freeANext) -- ++(1.75cm,0cm) -- ++(0cm,2cm);
+\end{scope}
+\begin{visibleenv}<2>
+    \node[below=.5cm of code,align=left] {
+        keep \myemph{linked list} of \\ available chunks of memory
+    };
+\end{visibleenv}
+\begin{visibleenv}<3>
+    \node[below=.5cm of code,align=left] {
+        keep \myemph{sizes} before allocations \\
+        maybe need less with \texttt{delete}?
+    };
+\end{visibleenv}
+\begin{visibleenv}<4>
+    \node[below=.5cm of code,align=left] {
+        merge adjacent free allocations \\
+        (if any)
+    };
+    \draw[-Latex,line width=3pt,black!50] (4.5,-2.25) -- (5.5,-2.25) node[black,midway,above,font=\small\tt] {free};
+    \begin{scope}[overlay,xshift=6cm,name prefix=sec-]
+        \draw[stackBox,fill=black!20] (0, 1) rectangle (3, -7);
+
+        \draw[onStack] (0, 1) rectangle (3, -5.0) node[midway,font=\small] {free space};
+        \draw[onStack,fill=white] (0, -5.0) rectangle (3, -5.5) node[midway,font=\small] (freeCNext) {next};
+        \draw[onStack,fill=white] (0, -5.5) rectangle (3, -6.0) node[midway,font=\small] (freeCPrev) {prev};
+        \draw[onStack,fill=white] (0, -6.0) rectangle (3, -6.5) node[midway,font=\small] (freeCSize) {size/free};
+        
+        \draw[-Latex,blue,thick,opacity=0.5] (freeCPrev) -- ++(1.25cm,0cm) -- ++(0cm,-2cm);
+        \draw[-Latex,blue,thick,opacity=0.5] (freeCNext) -- ++(1.75cm,0cm) -- ++(0cm,2cm);
+    \end{scope}
+\end{visibleenv}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{tough malloc/free choices}
+    \begin{itemize}
+    \item quickly finding free blocks of right size
+    \item avoiding large amounts of small, free spaces
+        \begin{itemize}
+        \item ``fragmentation''
+        \end{itemize}
+    \item extra overhead (sizes, next/prev pointers, \ldots)
+    \vspace{.5cm}
+    \item multiple lists of free blocks?
+    \item different areas of memory for different size allocations?
+    \end{itemize}
 \end{frame}
