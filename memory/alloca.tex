@@ -13,6 +13,7 @@
 \lstset{
     language=myasm,
     style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
     moredelim={**[is][\btHL<all:3>]{@3}{3@}},
     moredelim={**[is][\btHL<all:4>]{@4}{4@}},
 }
@@ -46,7 +47,7 @@ alloca:
         };
     \end{visibleenv}
     \begin{visibleenv}<3>
-        \node[box] at (placeLow) {
+        \node[box] at (placeHigh) {
             changing stack pointer \\
             how does caller access local variables on the stack? \\
             assumption: uses a base pointer instead\ldots
@@ -65,6 +66,7 @@ alloca:
 \lstset{
     language=C++,
     style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
     moredelim={**[is][\btHL<all:3>]{@3}{3@}},
     moredelim={**[is][\btHL<all:4>]{@4}{4@}},
 }
@@ -77,6 +79,7 @@ void foo(int N) {
 \lstset{
     language=myasm,
     style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
     moredelim={**[is][\btHL<all:3>]{@3}{3@}},
     moredelim={**[is][\btHL<all:4>]{@4}{4@}},
 }

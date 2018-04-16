@@ -10,7 +10,7 @@
 \node[right=1mm of kernel.north east,program memory label] {0xFFFF FFFF FFFF FFFF};
 \node[right=1mm of kernel.south east,program memory label] {0xFFFF 8000 0000 0000};
 \node[program memory box, minimum height=.5cm, below=1cm of kernel] (stack) {Stack};
-\node[right=1mm of stack.north east,program memory label] {0x7F\ldots{}};
+\node[right=1mm of stack.north east,program memory label,yshift=2mm] {0x7F\ldots{}};
 \node[program memory box, minimum height=.5cm, below=1cm of stack] (heap) {Heap / other dynamic};
 \node[program memory box, minimum height=.5cm, below=0mm of heap] (data) {Writable data};
 \node[program memory box, minimum height=.5cm, below=0mm of data] (sdata) {Code + Constants};
@@ -29,11 +29,11 @@
 \programMemoryImage
     \begin{visibleenv}<2>
         \programMemoryHighlight{fit=(heap)}
-        \node[right=1cm of heap,align=left] {grows upward \\ $\rightarrow$ new, malloc};
+        \node[right=0cm of heap,align=left] {grows upward \\ $\leftarrow$ new, malloc};
     \end{visibleenv}
     \begin{visibleenv}<3>
         \programMemoryHighlight{fit=(stack)}
-        \node[right=1cm of stack,align=left] {$\rightarrow$ local variables allocated here \\ grows downward};
+        \node[right=0cm of stack,align=left,yshift=-2mm] {$\leftarrow$ local variables allocated here \\ grows downward};
     \end{visibleenv}
 \end{tikzpicture}
 \end{frame}

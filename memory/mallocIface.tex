@@ -32,6 +32,9 @@ item = malloc(sizeof(SomeType));
 \end{lstlisting}
 \hrule
 note: in C++ (not C) would need casts
+    \begin{itemize}
+        \item \lstinline|array = (int*) malloc(...);|
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{malloc and free}
@@ -47,7 +50,7 @@ note: in C++ (not C) would need casts
     \vspace{.5cm}
     \item allocate memory
         \begin{itemize}
-        \item \texttt{::operator new(sizeof(Foo))}
+        \item \texttt{operator new(sizeof(Foo))}
         \end{itemize}
     \item call constructors
         \begin{itemize}
@@ -64,18 +67,45 @@ Foo *foo = new Foo(1, 2, 3);
 \end{lstlisting}
 \hrule
 \begin{lstlisting}
+#include <memory>  // prototypes for operator new
+...
+
 // allocate space
-Foo *foo = ::operator new(sizeof(Foo));
+Foo *foo = (Foo*) operator new(sizeof(Foo));
 
 // call constructor
 new (foo) Foo(1, 2, 3);
 \end{lstlisting}
 \end{frame}
 
+\begin{frame}[fragile,label=placementNewVector]{implementing vector: create}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+template <class T> class MyVector {
+    ...
+private:
+    T * array;
+    int size, capacity;
+};
+
+template <class T>
+void MyVector::push_back(const T& other) {
+    // increase array capacity if needed
+    if (++size > capacity) { ... }
+
+    // call copy constructor to create array[size-1]
+    new (&array[size - 1]) T(other);
+        // better than constructing all in advance and assigning
+        // e.g. if vector of lists,
+        //      don't allocate "extra" head/tail dummy nodes
+}
+\end{lstlisting}
+\end{frame}
+
 \begin{frame}[fragile,label=deleteParts]{delete}
 \lstset{language=C++}
 \begin{itemize}
-    \item deletedoes \myemph{two things} that can be done seperately
+    \item delete does \myemph{two things} that can be done seperately
     \vspace{.5cm}
     \item call destructors
         \begin{itemize}
@@ -83,7 +113,25 @@ new (foo) Foo(1, 2, 3);
         \end{itemize}
     \item actually free memory
         \begin{itemize}
-        \item \lstinline|::operator delete(foo);|
+        \item \lstinline|operator delete(foo);|
         \end{itemize}
 \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=manualDeleteVector]{implementing vector: destroy}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+template <class T> class MyVector {
+    ...
+private:
+    T * array;
+    int size, capacity;
+};
+
+template <class T>
+void MyVector::pop_back(const T& other) {
+    size--;
+    array[size].~T();
+}
+\end{lstlisting}
 \end{frame}
