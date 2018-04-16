@@ -121,11 +121,13 @@ struct AllocInfo {
     \item quickly finding free blocks of right size
     \item avoiding large amounts of small, free spaces
         \begin{itemize}
+        \item enough free memory, but not usable?
         \item ``fragmentation''
         \end{itemize}
     \item extra overhead (sizes, next/prev pointers, \ldots)
     \vspace{.5cm}
-    \item multiple lists of free blocks?
-    \item different areas of memory for different size allocations?
+    \item how many lists of free blocks?
+    \item different lists for different sizes?
+    \item return first block or best sizes block? in between?
     \end{itemize}
 \end{frame}
