@@ -1,0 +1,152 @@
+\usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes}
+\usegdlibrary{force,layered}
+
+\begin{frame}{Kruskal: tracking sets (1)}
+\begin{tikzpicture}
+\tikzset{
+    graphNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm,fill=white},
+    graphEdge/.style={draw,thick},
+    >=Latex,
+    my graph/.style={graphs/nodes={graphNode},graphs/edges={graphEdge},graphs/edge quotes={font=\tt\small,auto,inner sep=0.1mm}},
+    my graph box/.style={},
+    hidden/.style={opacity=0},
+}
+\tikzset{
+    marked vertex/.style={very thick,fill=blue!10},
+    unmarked vertex/.style={},
+    used/.style={draw=black,very thick},
+    just used/.style={draw=red,very thick},
+    considered/.style={draw=blue,dashed},
+    unused/.style={draw=black!40,dashed},
+    my graph box/.style={},
+    edge history/.style={below=1cm of the graph},
+}
+
+    \matrix[column sep=2cm] (the graph) {
+    \begin{scope}[my graph]
+\tikzset{
+    node named A/.style={unmarked vertex},node named B/.style={unmarked vertex},node named C/.style={unmarked vertex},node named D/.style={unmarked vertex},node named E/.style={unmarked vertex},node named F/.style={unmarked vertex},node named G/.style={unmarked vertex},edge from A to B/.style=used,edge from A to C/.style=unused,edge from A to D/.style=used,edge from B to D/.style=unused,edge from B to E/.style=considered,edge from C to D/.style=used,edge from C to F/.style=considered,edge from D to E/.style=considered,edge from D to F/.style=considered,edge from D to G/.style=just used,edge from E to G/.style=considered,edge from F to G/.style=used,
+    just used/.style=unused,
+    considered/.style=unused,
+}
+    \graph[spring layout,node distance=1.75cm]{
+        A[node named A],B[node named B],C[node named C],D[node named D],E[node named E],F[node named F],G[node named G],A --[edge from A to B,"2"] B,A --[edge from A to C,"4"] C,A --[edge from A to D,"1"] D,B --[edge from B to D,"3"] D,B --[edge from B to E,"10"] E,C --[edge from C to D,"2"] D,C --[edge from C to F,"5"] F,D --[edge from D to E,"7"] E,D --[edge from D to F,"8"] F,D --[edge from D to G,"4"] G,E --[edge from E to G,"6"] G,F --[edge from F to G,"1"] G,
+    };
+    \end{scope}
+\\
+};
+    \begin{pgfonlayer}{bg}
+        \fill[blue!20,rounded corners]
+        ([xshift=-.25cm,yshift=.25cm]A.north west) -- ([xshift=.25cm,yshift=.25cm]A.north east) -- ([xshift=.25cm,yshift=-.25cm]A.south east) --
+         ([xshift=.25cm,yshift=.25cm]B.north east) --
+         ([xshift=.25cm,yshift=-.25cm]B.south east) --
+         ([xshift=-.25cm,yshift=-.25cm]B.south west) -- 
+         ([xshift=.25cm,yshift=-.25cm]D.south east) --
+         ([xshift=-.25cm,yshift=-.25cm]D.south west) -- 
+         ([xshift=-.25cm,yshift=.25cm]D.north west) --
+         ([xshift=-.25cm,yshift=-.25cm]C.south west) --
+         ([xshift=-.25cm,yshift=.25cm]C.north west) -- 
+         ([xshift=.25cm,yshift=.25cm]C.north east) --
+        cycle;
+        \node[blue!50!black] at ([yshift=1.5cm]$(A)!.5!(C)$) {set ABCD};
+        \node[fill=green!20,rounded corners,inner sep=.25cm,fit=(G) (F)] {};
+        \node[green!50!black,anchor=east] at ([xshift=-.5cm]$(F)!.5!(G)$) {set FG};
+        \node[fill=orange!20,rounded corners,inner sep=.25cm,fit=(E)] {};
+        \node[orange!50!black,anchor=north] at ([yshift=0cm]E.south) { set E };
+        
+    \end{pgfonlayer}
+    \node[align=left,right=1cm of the graph] {
+        track \myemph{sets of edges} \\
+        same set --- already connected \\
+        goal: add edges that connect distinct sets
+    };
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Kruskal: tracking sets (2)}
+\begin{tikzpicture}
+\tikzset{
+    graphNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm,fill=white},
+    graphEdge/.style={draw,thick},
+    >=Latex,
+    my graph/.style={graphs/nodes={graphNode},graphs/edges={graphEdge},graphs/edge quotes={font=\tt\small,auto,inner sep=0.1mm}},
+    my graph box/.style={},
+    hidden/.style={opacity=0},
+}
+\tikzset{
+    marked vertex/.style={very thick,fill=blue!10},
+    unmarked vertex/.style={},
+    used/.style={draw=black,very thick},
+    just used/.style={draw=red,very thick},
+    considered/.style={draw=blue,dashed},
+    unused/.style={draw=black!40,dashed},
+    my graph box/.style={},
+    edge history/.style={below=1cm of the graph},
+}
+
+    \matrix[column sep=2cm] (the graph) {
+    \begin{scope}[my graph]
+\tikzset{
+    node named A/.style={unmarked vertex},node named B/.style={unmarked vertex},node named C/.style={unmarked vertex},node named D/.style={unmarked vertex},node named E/.style={unmarked vertex},node named F/.style={unmarked vertex},node named G/.style={unmarked vertex},edge from A to B/.style=used,edge from A to C/.style=unused,edge from A to D/.style=used,edge from B to D/.style=unused,edge from B to E/.style=considered,edge from C to D/.style=used,edge from C to F/.style=considered,edge from D to E/.style=considered,edge from D to F/.style=considered,edge from D to G/.style=just used,edge from E to G/.style=considered,edge from F to G/.style=used,
+    just used/.style=unused,
+    considered/.style=unused,
+}
+    \graph[spring layout,node distance=1.75cm]{
+        A[node named A],B[node named B],C[node named C],D[node named D],E[node named E],F[node named F],G[node named G],A --[edge from A to B,"2"] B,A --[edge from A to C,"4"] C,A --[edge from A to D,"1"] D,B --[edge from B to D,"3"] D,B --[edge from B to E,"10"] E,C --[edge from C to D,"2"] D,C --[edge from C to F,"5"] F,D --[edge from D to E,"7"] E,D --[edge from D to F,"8"] F,D --[edge from D to G,"4"] G,E --[edge from E to G,"6"] G,F --[edge from F to G,"1"] G,
+    };
+    \end{scope}
+    \&
+    \begin{scope}[my graph]
+\tikzset{
+    node named A/.style={unmarked vertex},node named B/.style={unmarked vertex},node named C/.style={unmarked vertex},node named D/.style={unmarked vertex},node named E/.style={unmarked vertex},node named F/.style={unmarked vertex},node named G/.style={unmarked vertex},edge from A to B/.style=used,edge from A to C/.style=unused,edge from A to D/.style=used,edge from B to D/.style=unused,edge from B to E/.style=considered,edge from C to D/.style=used,edge from C to F/.style=considered,edge from D to E/.style=considered,edge from D to F/.style=considered,edge from D to G/.style=just used,edge from E to G/.style=considered,edge from F to G/.style=used,
+    just used/.style={used,draw=red},
+    considered/.style=unused,
+}
+    \graph[spring layout,node distance=1.75cm]{
+        [name=after] A[node named A],B[node named B],C[node named C],D[node named D],E[node named E],F[node named F],G[node named G],A --[edge from A to B,"2"] B,A --[edge from A to C,"4"] C,A --[edge from A to D,"1"] D,B --[edge from B to D,"3"] D,B --[edge from B to E,"10"] E,C --[edge from C to D,"2"] D,C --[edge from C to F,"5"] F,D --[edge from D to E,"7"] E,D --[edge from D to F,"8"] F,D --[edge from D to G,"4"] G,E --[edge from E to G,"6"] G,F --[edge from F to G,"1"] G,
+    };
+    \end{scope}
+\\
+};
+    \begin{pgfonlayer}{bg}
+        \fill[blue!20,rounded corners]
+        ([xshift=-.25cm,yshift=.25cm]A.north west) -- ([xshift=.25cm,yshift=.25cm]A.north east) -- ([xshift=.25cm,yshift=-.25cm]A.south east) --
+         ([xshift=.25cm,yshift=.25cm]B.north east) --
+         ([xshift=.25cm,yshift=-.25cm]B.south east) --
+         ([xshift=-.25cm,yshift=-.25cm]B.south west) -- 
+         ([xshift=.25cm,yshift=-.25cm]D.south east) --
+         ([xshift=-.25cm,yshift=-.25cm]D.south west) -- 
+         ([xshift=-.25cm,yshift=.25cm]D.north west) --
+         ([xshift=-.25cm,yshift=-.25cm]C.south west) --
+         ([xshift=-.25cm,yshift=.25cm]C.north west) -- 
+         ([xshift=.25cm,yshift=.25cm]C.north east) --
+        cycle;
+        \node[blue!50!black] at ([yshift=1.5cm]$(A)!.5!(C)$) {set ABCD};
+        \node[fill=green!20,rounded corners,inner sep=.25cm,fit=(G) (F)] {};
+        \node[green!50!black,anchor=east] at ([xshift=-.5cm]$(F)!.5!(G)$) {set FG};
+        \node[fill=orange!20,rounded corners,inner sep=.25cm,fit=(E)] {};
+        \node[orange!50!black,anchor=north] at ([yshift=0cm]E.south) { set E };
+
+        \fill[teal!20,rounded corners]
+         ([xshift=-.25cm,yshift=.25cm]after A.north west) --
+         ([xshift=.25cm,yshift=.25cm]after A.north east) --
+         ([xshift=.25cm,yshift=-.25cm]after A.south east) --
+         ([xshift=.25cm,yshift=.25cm]after B.north east) --
+         ([xshift=.25cm,yshift=-.25cm]after B.south east) --
+         ([xshift=-.25cm,yshift=-.25cm]after B.south west) -- 
+         ([xshift=.25cm,yshift=-.25cm]after D.south east) --
+         ([xshift=-.25cm,yshift=-.25cm]after D.south west) -- 
+         ([xshift=.25cm,yshift=-.25cm]after G.south east) --
+         ([xshift=-.25cm,yshift=-.25cm]after G.south west) -- 
+         ([xshift=-.25cm,yshift=.25cm]after F.north west) -- 
+         ([xshift=.25cm,yshift=.25cm]after F.north east) -- 
+         ([xshift=-.25cm,yshift=.25cm]after C.north west) -- 
+         ([xshift=.25cm,yshift=.25cm]after C.north east) --
+        cycle;
+        \node[fill=orange!20,rounded corners,inner sep=.25cm,fit=(after E)] {};
+        \node[orange!50!black,anchor=north] at ([yshift=0cm]after E.south) { set E };
+        \node[teal!50!black,anchor=south] at ([yshift=.25cm]after C.north) {set ABCDFG};
+    \end{pgfonlayer}
+    \draw[line width=2mm,black!50,-Latex] ($(A.east)!.5!(B.east)$) -- ($(after F.west)!.5!(after G.west)$);
+\end{tikzpicture}
+\end{frame}

@@ -1,0 +1,21 @@
+\begin{frame}[fragile,label=kruskalCode]{Kruskal pseudocode}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+SetTracker setTracker;
+for (Vertex v : vertices) {
+    setTracker.createNewSetFor(v);
+}
+vector<Edge> result;
+for (Edge e : sortByWeight(edges)) {
+    // check if adding edge would connect unconnected sets
+    if (setTracker.setIdOf(e.from) != setTracker.setIdOf(e.to)) {
+        result.push_back(e);
+        setTracker.mergeSets(
+            setTracker.setIdOf(e.from),
+            setTracker.setIdOf(e.to)
+        );
+    }
+}
+return result;
+\end{lstlisting}
+\end{frame}

@@ -118,6 +118,8 @@
 
 \input{shortestPathKinds}
 
+%\input{lastTime}
+
 \section{breath-first search (unweighted single-source shortest)}
 
 \input{breadthFirstSearch}
@@ -135,10 +137,9 @@
 
 \subsection{runtime and data structures}
 
-% FIXME: runtime % FIXME: explaning data structures
 \input{bestFirstRuntime}
 
-\subsection{aside: dropping the negative edges assumptino}
+\subsection{aside: dropping the negative edges assumption}
 
 \input{negativeWeights}
 
@@ -194,7 +195,7 @@
 
 \input{primCode}
 
-% FIXME: more explaning data structures
+% FIXME: more explaining data structures
 
 \subsection{greedy MST algorithm: Kruskal's}
 
@@ -210,8 +211,13 @@
 
 \subsubsection{code}
 
+\input{kruskalCode}
 
 \subsubsection{runtime}
 
+\input{kruskalRuntime}
 
-% FIXME: parts
+\subsubsection{aside: implementing union-find}
+
+\input{unionFindImpl}
+

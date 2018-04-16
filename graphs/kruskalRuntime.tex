@@ -1,0 +1,31 @@
+\begin{frame}<1>[label=kruskalRuntime]{Kruskal runtime}
+    \begin{itemize}
+    \item need to sort all edges ($|E|\log|E|$ time)
+    \item for each edge: ($|E|$ times) \only<2>{\myemph<2>{O(|E|\alpha(|V|))}}
+        \begin{itemize}
+        \item two ``find the set something is in'' operations
+        \end{itemize}
+    \item for each edge added: ($|V|-1$ times) \only<2>{\myemph<2>{O(|E|\alpha(|V|))}}
+        \begin{itemize}
+        \item one ``merge two sets'' operations
+        \end{itemize}
+    \vspace{.5cm}
+    \item<2> overall: $\Theta(|E|\log|E|) = \Theta(|E|\log|V|)$ time
+        \begin{itemize}
+            \item aside: $\log|V| \in \Theta(\log|E|)$ since $|V|^2 \ge |E| \ge |V| - 1$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{union-find data structure}
+    \begin{itemize}
+    \item \texttt{SetTracker} called a ``union-find datastructure'' or ``disjoin-set datastructure''
+    \item best implementation: slightly worse than amortized constant time per operation
+        \begin{itemize}
+            \item amortized $O(\alpha(n))$ time where $\alpha(n)$ is the inverse of the Ackermann function
+            \item $\alpha(n)$ is asymptotically smaller than $\log(n)$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\againframe<2>{kruskalRuntime}

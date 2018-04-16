@@ -1,0 +1,62 @@
+\begin{frame}[fragile,label=unionFindNaive]{implementing union-find: naive/slow}
+\lstset{language=C++,style=small}
+\begin{lstlisting}
+map<Vertex, Vertex> parentOf;
+MakeInitialSets() {
+    for (Vertex v : vertices)
+        parentOf[v] = v;
+}
+// Each set represented by its "root" vertex
+Vertex FindSetOf(Vertex v) {
+    if (v == parentOf[v]) {
+        return v;
+    } else {
+        return FindSetOf(parentOf[v]);
+    }
+}
+UnionSets(Vertex u, Vertex v) {
+    parentOf[v] = u;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=unionFindPathComp]{implementing union-find: path compression}
+\lstset{language=C++,style=small,
+moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    }
+\begin{lstlisting}
+...
+FindSetOf(Vertex v) {
+    if (v == parentOf[v]) {
+        return v;
+    } else {
+        @1parentOf[v] = FindSetOf(parentOf[v]);1@
+        return parentOf[v];
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=unionFindBySize]{implementing union-find: union by size}
+\lstset{language=C++,style=small,
+moredelim={**[is][\btHL<all:1>]{@1}{1@}},
+    }
+\begin{lstlisting}
+map<Vertex, int> sizeOf;  
+MakeInitialSets() {
+    ...
+        sizeOf[v] = 1;
+}
+
+UnionOf(Vertex u, Vertex v) {
+    if (sizeOf[u] > sizeOf[v]) {
+        (u,v) = (v,u);
+    }
+    // attach lower size to higher size
+    parentOf[u] = v;
+
+    // update size
+    sizeOf[v] += sizeOf[u];
+}
+\end{lstlisting}
+\end{frame}

@@ -1,0 +1,45 @@
+\begin{frame}{Prim's algorithm runtime}
+\begin{itemize}
+    \item spanning tree will have $|V|-1$ edges
+        \begin{itemize}
+        \item each edge added connects a new vertex
+        \end{itemize}
+    \item choosing each edge 
+        \begin{itemize}
+        \item naive --- scan all edges each time $|E|$ work
+        \item better --- maintain \myemph{priority queue of vertices}, priority=cost of best edge
+        \end{itemize}
+    \vspace{.5cm}
+    \item up to $|E|$ inserts or decreaseKeys (update best edge for vertex)
+    \item max size of priority queue: $|V|-1$
+    \item $\Theta(|E|\log|V|)$ time with binary heap
+        \begin{itemize}
+            \item $\Theta(|E|+|V|\log|V|)$ time with Fibanocci heap
+        \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile,label=primPseudo]{Prim's algorithm pseudocode}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+set<Edge> used_edges;  // where result goes
+priority_queue<Vertex> pending_vertices;
+map<Vertex, Edge> best_edge_to;
+for (Vertex v : vertices) {
+    pending_vertices.insert(INFINITY, v);
+}
+pending_vertices.decreaseKey(0, start_vertex);
+while (used_vertices != vertices) {
+    Vertex v = pending_vertices.deleteMin();
+    used_edges.insert(best_edge_to[v]);
+    for (Edge e : edgesFrom(v)) {
+        if (e.cost < best_edge_to[e.to].cost) {
+            best_edge_to[e.to] = e;
+            // assuming decreaseKey ignored if e.to not in queue
+            pending_vertices.decreaseKey(e.cost, e.to);
+        }
+    }
+}
+\end{lstlisting}
+\end{frame}

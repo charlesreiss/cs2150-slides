@@ -1,0 +1,43 @@
+\begin{comment}
+    \begin{frame}{last time}
+    \begin{itemize}
+    \item Huffman decoding --- construct + follow tree
+    \item Huffman lab format, etc. reminders
+        \begin{itemize}
+        \item printable ASCII only --- 0x20 to 0x7e
+        \end{itemize}
+    \item graph definitions
+        \begin{itemize}
+        \item directed v undirected
+        \item paths and cycles
+        \item connected (undirected), weakly connected and strongly conneted (directed)
+        \end{itemize}
+    \item graph representations and their pros/cons
+        \begin{itemize}
+        \item adjacency matrix --- entry for every pair, no lists
+        \item adjacency lists --- list for every vertex
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+\end{comment}
+
+
+\begin{frame}{last time}
+    \begin{itemize}
+    \item topological sort
+        \begin{itemize}
+            \item intuition: find first node (no incoming edges), remove, repeat
+            \item fast implementation: track in-degrees only, enqueue as indegree decremented to 0
+        \end{itemize}
+    \item shortest path: breadth first search
+        \begin{itemize}
+        \item use edges to find distance 1 nodes, use edges from those to find distance 2 nodes, etc.
+        \item analogy to pre-order: still parents then children, but all parents at level $x$ then children
+        \item extra tracking: don't `visit' node twice
+        \end{itemize}
+    \item representing shortest paths: shortest path tree
+        \begin{itemize}
+        \item only need edge from each node towards source
+        \end{itemize}
+    \end{itemize}
+\end{frame}
