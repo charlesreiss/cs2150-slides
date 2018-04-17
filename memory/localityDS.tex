@@ -1,0 +1,52 @@
+\begin{frame}{data structure locality}
+\begin{tikzpicture}
+    \tikzset{
+        >=Latex,
+        list node/.style={
+            on chain,draw,rectangle split, rectangle split parts=2,
+            rectangle split horizontal, join
+        }
+    }
+    \matrix[tight matrix,nodes={minimum height=.5cm}] (the array) {
+        1 \& 2 \& 3 \& |[draw=none]| \ldots \& 10 \\
+    };
+    \matrix[tight matrix,
+        column 1/.style={nodes={draw=none,font=\tt\small,text width=2cm}},
+        column 2/.style={nodes={draw,font=\tt\small,text width=2cm}},
+        anchor=west,
+        ] (the array layout) at ([xshift=5cm]the array.east) {
+        0x1000 \& 1 \\
+        0x1008 \& 2 \\
+        0x1010 \& 3 \\
+        0x1018 \& 4 \\
+        \ldots \& |[draw=none]| \ldots \\
+    };
+
+    \begin{scope}[start chain=going right,
+            every join/.style={->,thick},
+        ]
+        \node[list node,anchor=north west] at ([yshift=-2cm]the array.south west) { 1 };
+        \node[list node] { 2 };
+        \node[list node] { 3 };
+        \node[on chain,join] { \ldots };
+        \node[list node] { 10 };
+    \end{scope}
+
+    \matrix[tight matrix,
+        column 1/.style={nodes={draw=none,font=\tt\small,text width=2cm}},
+        column 2/.style={nodes={draw,font=\tt\small,text width=2cm}},
+        anchor=north west,
+        ] (list layout) at ([yshift=-1cm]the array layout.south west) {
+        0x1000 \& 1 \\
+        0x1008 \& 0x1050 \\
+        \ldots \& |[draw=none]| \ldots \\
+        0x1020 \& 3 \\
+        0x1028 \& 0x1060 \\
+        \ldots \& |[draw=none]| \ldots \\
+        0x1050 \& 2 \\
+        0x1058 \& 0x1020 \\
+        0x1060 \& 4 \\
+        \ldots \& |[draw=none]| \ldots \\
+    };
+\end{tikzpicture}
+\end{frame}

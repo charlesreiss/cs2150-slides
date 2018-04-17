@@ -1,0 +1,37 @@
+\begin{frame}[label=localityIntro]{memory hierarchy assumptions}
+\begin{itemize}
+    \item \myemph{temporal locality} \\
+        ``if a value is accessed now, it will be accessed again soon''
+        \begin{itemize}
+        \item caches should keep \myemph{recently accessed values}
+        \end{itemize}
+    \vspace{.5cm}
+    \item \myemph{spatial locality} \\
+        ``if a value is accessed now, adjacent values will be accessed soon''
+        \begin{itemize}
+        \item caches should \myemph{store adjacent values at the same time}
+        \end{itemize}
+
+    \vspace{1cm}
+    \item natural properties of programs --- think about loops
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=localityExamples]{locality examples}
+\lstset{language=C,style=small}
+\begin{lstlisting}
+double computeMean(int length, double *values) {
+    double total = 0.0;
+    for (int i = 0; i < length; ++i) {
+        total += values[i];
+    }
+    return total / length;
+}
+\end{lstlisting}
+\begin{itemize}
+    \item temporal locality: machine code of the loop
+    \item spatial locality: machine code of most consecutive instructions
+    \item temporal locality: {\tt total}, {\tt i}, {\tt length} accessed repeatedly
+    \item spatial locality: {\tt values[i+1]} accessed after {\tt values[i]}
+\end{itemize}
+\end{frame}
