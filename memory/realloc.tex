@@ -1,0 +1,69 @@
+\begin{frame}[fragile,label=realloc]{realloc}
+\lstset{language=C++,style=small}
+\begin{itemize}
+    \item \lstinline|void *realloc(void *pointer, size_t size)|
+    \item either:
+        \begin{itemize}
+        \item \myemph<2>{changes the size} of the allocation at \lstinline|pointer|, or
+        \item \myemph<3>{allocates new space}, \myemph<3>{copies data} from \lstinline|pointer| there, \myemph<4>{free} (old) pointer
+        \end{itemize}
+    \item returns the new space (if any, or \lstinline|pointer| otherwise)
+\end{itemize}
+\begin{tikzpicture}
+\tikzset{
+    stackBox/.style={very thick},
+    allocBox/.style={dashed,very thick,fill=blue!20},
+    onStack/.style={thick,align=center},
+    frameOne/.style={fill=red!25},
+    frameTwo/.style={fill=blue!10},
+    frameThree/.style={pattern color=blue,pattern=crosshatch},
+    markLine/.style={blue!50!black},
+    markLineB/.style={blue!90!black},
+    hiLine/.style={red!90!black},
+    >=Latex,
+}
+    \draw[stackBox] (0, 0) rectangle (2, -4);
+    \draw[onStack,frameOne] (0, -.5) rectangle (2, -1);
+    \draw[onStack,frameTwo] (0, -3) rectangle (2, -4);
+    \draw[onStack,frameTwo] (0, -1.5) rectangle (2, -2.75);
+
+    \begin{visibleenv}<2>
+        \draw[red,thick,rounded corners] (-.25,.25) rectangle (5.25,-4.25);
+    \end{visibleenv}
+    \begin{visibleenv}<3>
+        \begin{scope}[xshift=7cm]
+        \draw[red,thick,rounded corners] (-.25,.25) rectangle (5.25,-4.25);
+        \end{scope}
+    \end{visibleenv}
+    \begin{visibleenv}<4>
+        \begin{scope}[xshift=7cm]
+        \draw[red,thick,rounded corners] (2.75,.25) rectangle (8.25,-4.25);
+        \end{scope}
+    \end{visibleenv}
+
+    \foreach \x in {2.5,9.5,12.5} {
+        \draw[->,ultra thick,black!50] ($(\x, -2) + (-.25,0)$) -- ++(.5cm,0cm);
+    }
+
+    \draw[stackBox] (3, 0) rectangle (5, -4);
+    \draw[onStack,frameOne] (3, -.5) rectangle (5, -1.25);
+    \draw[onStack,frameTwo] (3, -3) rectangle (5, -4);
+    \draw[onStack,frameTwo] (3, -1.5) rectangle (5, -2.75);
+
+    \begin{scope}[xshift=7cm]
+    \draw[stackBox] (0, 0) rectangle (2, -4);
+    \draw[onStack,frameOne] (0, -.5) rectangle (2, -1);
+    \draw[onStack,frameTwo] (0, -1.1) rectangle (2, -1.9);
+
+    \draw[stackBox] (3, 0) rectangle (5, -4);
+    \draw[onStack,frameOne,dotted] (3, -.5) rectangle (5, -1);
+    \draw[onStack,frameTwo] (3, -1.1) rectangle (5, -1.9);
+    \draw[onStack,frameOne] (3, -2) rectangle (5, -3.25);
+    \draw[onStack,dotted] (3, -2) rectangle (5, -2.5);
+
+    \draw[stackBox] (6, 0) rectangle (8, -4);
+    \draw[onStack,frameTwo] (6, -1.1) rectangle (8, -1.9);
+    \draw[onStack,frameOne] (6, -2) rectangle (8, -3.25);
+    \end{scope}
+\end{tikzpicture}
+\end{frame}

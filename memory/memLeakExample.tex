@@ -1,0 +1,41 @@
+\begin{frame}[fragile,label=memLeakCode]{some code with memory leaks}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+// allocate a space in memory for result
+char *result = malloc (sizeof (*result));
+*result = '\0';
+while (i < argc) {  // while there are still args
+    char *s = malloc (sizeof (*s) *
+            (strlen(result) + strlen(argv[i]) + 1));
+    strcpy (s, result);
+    strcat (s, argv[i]);
+    result = s;
+    i++;
+}
+printf ("Concatenation: %s\n", result);
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile,label=memLeakCode]{some code with memory leaks}
+\lstset{language=C++,style=smaller,
+    moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+    }
+\begin{lstlisting}
+// allocate a space in memory for result
+char *result = malloc (sizeof (*result));
+*result = '\0';
+while (i < argc) {  // while there are still args
+    char *s = malloc (sizeof (*s) *
+            (strlen(result) + strlen(argv[i]) + 1));
+    strcpy (s, result);
+    strcat (s, argv[i]);
+    @2free(result);2@
+    result = s;
+    i++;
+}
+printf ("Concatenation: %s\n", result);
+\end{lstlisting}
+exercise: why \texttt{result} and not \texttt{s}?
+\end{frame}
+
