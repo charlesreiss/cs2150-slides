@@ -1,19 +1,22 @@
 import sys
+import random
 
 class Edge():
-    def __init__(self, start, end, weight):
+    def __init__(self, start, end, weight, extra=''):
         self.start = start
         self.end = end
         self.weight = weight
         self.used = False
         self.considered = False
+        self.extra = extra
 
-    def graph_line(self, edge_type='->'):
-        return r'{start} {edge_type}[edge from {start} to {end},"{weight}"] {end},'.format(
+    def graph_line(self, edge_type='->', show_weight=False):
+        return r'{start} {edge_type}[edge from {start} to {end},"{weight}",{extra}] {end},'.format(
                 edge_type=edge_type,
                 start=self.start,
                 end=self.end,
-                weight=self.weight,
+                weight=self.weight if show_weight else "",
+                extra=self.extra,
         )
     
     def style_line(self):
@@ -49,6 +52,12 @@ class Graph():
         self.vertices = set()
         self.marked_vertices = set()
         self.set_of = {}
+        self.vertex_extra = {}
+        self.graph_layout = 'spring layout'
+        self.show_weight = True
+
+    def set_vertex(self, v, extra):
+        self.vertex_extra[v] = extra
 
     def add_edge(self, u, v, w):
         self.edges.append(Edge(u, v, w))
@@ -76,9 +85,12 @@ class Graph():
     def generate_graph_lines(self):
         output = ''
         for vertex in sorted(list(self.vertices)):
-            output += r'{name}[node named {name}],'.format(name=vertex)
+            output += r'{name}[node named {name},{extra}],'.format(
+                        name=vertex,
+                        extra=self.vertex_extra.get(vertex, '')
+            )
         for edge in self.edges:
-            output += edge.graph_line('->' if self.directed else '--')
+            output += edge.graph_line('->' if self.directed else '--', show_weight=self.show_weight)
         return output
 
     def generate_graph_style(self):
@@ -92,15 +104,14 @@ class Graph():
             output += edge.style_line()
         return output
 
-    def mst(self, start, which='Prim'):
+    def mst(self, start, which='Prim', end_only=False, omit_edge_list=False):
         def _find_next_prim():
             best_weight = float('inf')
             best_edge = None
             for edge in self.edges:
                 edge.considered = False
-                if edge.start not in self.marked_vertices:
-                    continue
-                if edge.end in self.marked_vertices:
+                if not ((edge.start in self.marked_vertices and edge.end not in self.marked_vertices) or
+                        (edge.end in self.marked_vertices and edge.start not in self.marked_vertices)):
                     continue
                 edge.considered = True
                 if edge.weight < best_weight or (edge.weight == best_weight and edge.before(best_edge)):
@@ -136,6 +147,7 @@ class Graph():
                 break
             edge_history.append(current)
             if which == 'Prim':
+                self.marked_vertices.add(current.start)
                 self.marked_vertices.add(current.end)
             elif which == 'Kruskal':
                 self._union_set(current.start, current.end)
@@ -144,8 +156,17 @@ class Graph():
             current.used = True
             styles.append(self.generate_graph_style())
             used_edges.append(edge_history.copy())
+            #print("selected ", current.start, ":", current.end)
+            #print("got ", current.end in self.marked_vertices, current.start in self.marked_vertices)
+            #print(list(map(lambda e: e.name(), edge_history)))
+            #print(list(self.marked_vertices))
             assert(len(edge_history) < len(self.vertices))
+        used_edges.append(edge_history.copy())
+        styles.append(self.generate_graph_style())
         output = ''
+        if end_only:
+            styles = [styles[-1]]
+            used_edges = []
         for i, rule in enumerate(styles):
             output += (r'''
 \tikzset{
@@ -155,15 +176,16 @@ class Graph():
         output += (r'''
 \matrix[my graph box] (the graph) {
 \begin{scope}[my graph]
-\graph[spring layout]{
+\graph[%s]{
     %s
 };
 \end{scope}
 \\
 };
-''' % (self.generate_graph_lines()))
-        for i, edge_history in enumerate(used_edges):
-            output += (r'''
+''' % (self.graph_layout, self.generate_graph_lines()))
+        if not omit_edge_list:
+            for i, edge_history in enumerate(used_edges):
+                output += (r'''
 \begin{visibleenv}<%s>
 \node[edge history] {
     %s
@@ -188,6 +210,45 @@ def example_one(which):
     g.add_edge('F', 'G', 1)
     print(g.mst('A', which))
 
+def distance(a, b):
+    import math
+    dx = a[0] - b[0]
+    dy = a[1] - b[1]
+    return math.sqrt(dx*dx + dy*dy)
+
+def example_geography(which, end_only=True):
+    random.seed(42)
+    g = Graph()
+    coords = {}
+    vertices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P','Q']
+    for x in vertices:
+        while True:
+            coords[x] = (random.uniform(0, 12), random.uniform(0, 6))
+            too_close = False
+            for y in vertices:
+                if x != y and y in coords:
+                    if distance(coords[x], coords[y]) < 0.75:
+                        too_close = True
+            if not too_close:
+                break
+        g.set_vertex(x, 'at={{({x:.2f},{y:.2f})}}'.format(x=coords[x][0], y=coords[x][1]))
+    for x in vertices:
+        by_distance = sorted(vertices, key=lambda y: distance(coords[x], coords[y]))
+        for y in by_distance[1:8]:
+            if x < y:
+                g.add_edge(x, y, distance(coords[x], coords[y]))
+    g.graph_layout = 'no layout'
+    g.show_weight = False
+    print(g.mst('A', which, end_only=end_only, omit_edge_list=True))
+
 if __name__ == '__main__':
-    example_one(sys.argv[1])
+    which_example = sys.argv[1]
+    if which_example == 'one':
+        example_one(sys.argv[2])
+    elif which_example == 'geography':
+        example_geography(sys.argv[2], end_only=True)
+    elif which_example == 'geography-full':
+        example_geography(sys.argv[2], end_only=False)
+    else:
+        print("unknown example", which_example)
     

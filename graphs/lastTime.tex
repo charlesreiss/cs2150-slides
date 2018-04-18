@@ -49,11 +49,12 @@
 \end{frame}
 \end{comment}
 
+\begin{comment}
 \begin{frame}{last time}
     \begin{itemize}
         \item breadth first search versus Dijkstra's
-        \item find node at distance $X$ --- might later find at distance $Y$
-        \item avoid processing nodes twice --- order of distance
+        \item find node at distance $X$ --- might find again at distance $Y<X$
+        \item avoid processing nodes twice --- order of best found distance
             \begin{itemize}
             \item processing node at distance $X$, can't find path of distance $X-k$
             \end{itemize}
@@ -65,8 +66,31 @@
         \item runtime $\Theta((|V|+|E|)\log |V|)$ with binary heaps
             \begin{itemize}
             \item priority queue operation for every vertex, then (almost) every edge
+            \item $\Theta(|E|+|V|\log|V|)$ with better data structure
             \end{itemize}
         \vspace{.5cm}
         \item restriction: no negative weights
+    \end{itemize}
+\end{frame}
+\end{comment}
+
+\begin{frame}{last time}
+    \begin{itemize}
+    \item travelling salesperson problem
+    \item i.e. min weight Hamiltonian cycle
+        \begin{itemize}
+        \item = visit all vertices once and return to start
+        \end{itemize}
+    \item the branch-and-bound idea
+    \item lab preview:
+        \begin{itemize}
+        \item topological sort / naive TSP / report on TSP acceleration techs.
+        \end{itemize}
+    \item spanning tree --- connected graph with no cycles
+        \begin{itemize}
+        \item i.e. no extra edges
+        \item application: transport network
+        \end{itemize}
+    \item minimum spanning tree: spanning tree with least weight
     \end{itemize}
 \end{frame}

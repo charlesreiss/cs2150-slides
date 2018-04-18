@@ -1,7 +1,7 @@
 \usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes}
 \usegdlibrary{force,layered}
 
-\begin{frame}{Kruskal's algorithm example}
+\begin{frame}{Prim's algorithm example}
 \begin{tikzpicture}
 \tikzset{
     graphNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm},
@@ -33,8 +33,8 @@
     considered/.style={draw=blue,dashed},
     unused/.style={draw=black!40,dashed},
     my graph box/.style={},
-    edge history/.style={below=.5cm of the graph},
+    edge history/.style={below=1cm of the graph},
 }
-\input{kruskalExample1Body}
+\input{primExample2Body}
 \end{tikzpicture}
 \end{frame}

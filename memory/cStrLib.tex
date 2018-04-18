@@ -61,7 +61,7 @@ goes \myemph{out of bounds!}
 \end{visibleenv}
 \end{frame}
 
-\begin{frame}[fragile,label=strcpyTooSmall]{a strcpy inquiry (3)}
+\begin{frame}[fragile,label=strcpyLeak]{a strcpy inquiry (3)}
 \lstset{
     language=C++,style=small
 }
@@ -77,4 +77,17 @@ void foo() {
 \begin{visibleenv}<2->
 \myemph{probably leaks memory}
 \end{visibleenv}
+\end{frame}
+
+\begin{frame}[fragile,label=strcatCode]{strcat}
+\lstset{
+    language=C++,style=small
+}
+\begin{lstlisting}
+const char *hello = "Hello, ";
+const char *world = "World!";
+char *result = malloc(strlen(hello) + strlen(world) + 1);
+strcpy(result, hello);
+strcat(result, world);
+\end{lstlisting}
 \end{frame}

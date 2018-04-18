@@ -31,10 +31,14 @@
     alt=<8>{node named A/.style={unmarked vertex},node named B/.style={unmarked vertex},node named C/.style={unmarked vertex},node named D/.style={unmarked vertex},node named E/.style={unmarked vertex},node named F/.style={unmarked vertex},node named G/.style={unmarked vertex},edge from A to B/.style=used,edge from A to C/.style=unused,edge from A to D/.style=used,edge from B to D/.style=unused,edge from B to E/.style=considered,edge from C to D/.style=used,edge from C to F/.style=unused,edge from D to E/.style=considered,edge from D to F/.style=unused,edge from D to G/.style=used,edge from E to G/.style=just used,edge from F to G/.style=used,}{},
 }
 
+\tikzset{
+    alt=<9>{node named A/.style={unmarked vertex},node named B/.style={unmarked vertex},node named C/.style={unmarked vertex},node named D/.style={unmarked vertex},node named E/.style={unmarked vertex},node named F/.style={unmarked vertex},node named G/.style={unmarked vertex},edge from A to B/.style=used,edge from A to C/.style=unused,edge from A to D/.style=used,edge from B to D/.style=unused,edge from B to E/.style=unused,edge from C to D/.style=used,edge from C to F/.style=unused,edge from D to E/.style=unused,edge from D to F/.style=unused,edge from D to G/.style=used,edge from E to G/.style=used,edge from F to G/.style=used,}{},
+}
+
 \matrix[my graph box] (the graph) {
 \begin{scope}[my graph]
 \graph[spring layout]{
-    A[node named A],B[node named B],C[node named C],D[node named D],E[node named E],F[node named F],G[node named G],A --[edge from A to B,"2"] B,A --[edge from A to C,"4"] C,A --[edge from A to D,"1"] D,B --[edge from B to D,"3"] D,B --[edge from B to E,"10"] E,C --[edge from C to D,"2"] D,C --[edge from C to F,"5"] F,D --[edge from D to E,"7"] E,D --[edge from D to F,"8"] F,D --[edge from D to G,"4"] G,E --[edge from E to G,"6"] G,F --[edge from F to G,"1"] G,
+    A[node named A,],B[node named B,],C[node named C,],D[node named D,],E[node named E,],F[node named F,],G[node named G,],A --[edge from A to B,"2",] B,A --[edge from A to C,"4",] C,A --[edge from A to D,"1",] D,B --[edge from B to D,"3",] D,B --[edge from B to E,"10",] E,C --[edge from C to D,"2",] D,C --[edge from C to F,"5",] F,D --[edge from D to E,"7",] E,D --[edge from D to F,"8",] F,D --[edge from D to G,"4",] G,E --[edge from E to G,"6",] G,F --[edge from F to G,"1",] G,
 };
 \end{scope}
 \\
@@ -83,6 +87,12 @@
 \end{visibleenv}
 
 \begin{visibleenv}<8>
+\node[edge history] {
+    (A, D), (F, G), (A, B), (C, D), (D, G), (E, G)
+};
+\end{visibleenv}
+
+\begin{visibleenv}<9>
 \node[edge history] {
     (A, D), (F, G), (A, B), (C, D), (D, G), (E, G)
 };

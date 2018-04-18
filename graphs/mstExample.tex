@@ -1,13 +1,13 @@
 \usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes}
 \usegdlibrary{force,layered}
 
-\begin{frame}{Kruskal's algorithm example}
+\begin{frame}{MST example}
 \begin{tikzpicture}
 \tikzset{
     graphNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm},
     graphEdge/.style={draw,thick},
     >=Latex,
-    my graph/.style={graphs/nodes={graphNode},graphs/edges={graphEdge},graphs/edge quotes={font=\tt\small,auto,inner sep=0.1mm},graphs/node distance=2cm},
+    my graph/.style={graphs/nodes={graphNode},graphs/edges={graphEdge},graphs/edge quotes={opacity=0}},
     my graph box/.style={}
 }
 
@@ -26,15 +26,16 @@
         column 4/.style={nodes={my path}},
         right={1cm of the graph},
     },
-    marked vertex/.style={very thick,fill=blue!10},
+    marked vertex/.style={},
     unmarked vertex/.style={},
     used/.style={draw=black,very thick},
-    just used/.style={draw=red,very thick},
-    considered/.style={draw=blue,dashed},
+    just used/.style={used},
     unused/.style={draw=black!40,dashed},
+    considered/.style={unused},
     my graph box/.style={},
-    edge history/.style={below=.5cm of the graph},
+    edge history/.style={opacity=0},
 }
-\input{kruskalExample1Body}
+\input{mstExampleBody1}
+
 \end{tikzpicture}
 \end{frame}

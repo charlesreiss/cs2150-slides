@@ -1,0 +1,61 @@
+\tikzset{
+    node named A/.style={marked vertex},node named B/.style={marked vertex},node named C/.style={marked vertex},node named D/.style={marked vertex},node named E/.style={marked vertex},node named F/.style={marked vertex},node named G/.style={marked vertex},edge from A to B/.style=used,edge from A to C/.style=used,edge from A to D/.style=used,edge from B to D/.style=unused,edge from B to E/.style=considered,edge from C to D/.style=unused,edge from C to F/.style=used,edge from D to E/.style=just used,edge from D to F/.style=unused,edge from D to G/.style=used,edge from E to G/.style=unused,edge from F to G/.style=unused,
+}
+
+\matrix[my graph box] (the graph) {
+\begin{scope}[my graph]
+\graph[spring layout]{
+    A[node named A],B[node named B],C[node named C],D[node named D],E[node named E],F[node named F],G[node named G],A --[edge from A to B,"2",weight=2] B,A --[edge from A to C,"4",weight=4] C,A --[edge from A to D,"1",weight=1] D,B --[edge from B to D,"3",weight=3] D,B --[edge from B to E,"10",weight=10] E,C --[edge from C to D,"2",weight=2] D,C --[edge from C to F,"5",weight=5] F,D --[edge from D to E,"7",weight=7] E,D --[edge from D to F,"8",weight=8] F,D --[edge from D to G,"4",weight=4] G,E --[edge from E to G,"6",weight=6] G,F --[edge from F to G,"1",weight=1] G,
+};
+\end{scope}
+\\
+};
+
+\begin{visibleenv}<1>
+\node[edge history] {
+    
+};
+\end{visibleenv}
+
+\begin{visibleenv}<2>
+\node[edge history] {
+    
+};
+\end{visibleenv}
+
+\begin{visibleenv}<3>
+\node[edge history] {
+    (A, D)
+};
+\end{visibleenv}
+
+\begin{visibleenv}<4>
+\node[edge history] {
+    (A, D), (A, B)
+};
+\end{visibleenv}
+
+\begin{visibleenv}<5>
+\node[edge history] {
+    (A, D), (A, B), (A, C)
+};
+\end{visibleenv}
+
+\begin{visibleenv}<6>
+\node[edge history] {
+    (A, D), (A, B), (A, C), (D, G)
+};
+\end{visibleenv}
+
+\begin{visibleenv}<7>
+\node[edge history] {
+    (A, D), (A, B), (A, C), (D, G), (C, F)
+};
+\end{visibleenv}
+
+\begin{visibleenv}<8>
+\node[edge history] {
+    (A, D), (A, B), (A, C), (D, G), (C, F), (D, E)
+};
+\end{visibleenv}
+

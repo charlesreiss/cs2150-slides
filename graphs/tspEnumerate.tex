@@ -20,30 +20,33 @@
 \end{frame}
 
 \begin{frame}[fragile,label=implNaiveTSP]{naive TSP implementation}
-\lstset{language=C++,style=smaller}
-psuedocode:
+\lstset{
+    language=C++,
+    style=smaller,
+moredelim={**[is][\btHL<all:2>]{@2}{2@}},
+moredelim={**[is][\btHL<all:3>]{@3}{3@}},
+}
 \begin{lstlisting}
-vector<Vertex> partial_tour;
+vector<Vertex> partial_tour; vector<Vertex> best_tour;
 void TestTours() {
-    if (partial_tour.size() == vertices.size()) {
+    if (@2partial_tour.size() == vertices.size()2@) {
         partial_tour.push_back(partial_tour[0]);
-        if (weightOf(partial_tour[0]) < best_tour_weight) {
+        if (weightOf(partial_tour) < weightOf(best_tour)) {
             best_tour = partial_tour;
-            best_tour_weight = weightOf(best_tour);
         }
         partial_tour.pop_back();
     } else {
-        for (Vertex v : vertices - partial_tour) {
+        for (Vertex v : @3vertices - partial_tour3@) {
             partial_tour.push_back(v);
-            FindTour();
+            TestTours();
             partial_tour.pop_back(v);
         }
     }
 }
-void TSP() {
-    partial_tour = {startNode};
-    best_tour_weight = INFINITY;
+TSP() {
+    best_tour = ...; partial_tour = {startNode};
     TestTours();
+    return best_tour;
 }
 \end{lstlisting}
 \end{frame}
@@ -62,14 +65,13 @@ void TSP() {
 \item best general algorithm: $\Theta(N^2 2^N)$
     \begin{itemize}
     \item 20 cities --- $>10^8$ operations
-    \item 30 cities --- $>10^11$ operations
+    \item 30 cities --- $>10^{11}$ operations
     \end{itemize}
 \item uses \textit{dynamic programming} --- covered in 4102
 \vspace{.5cm}
-\item basic idea: if we know $1, 3, 2, 4$ is the best way to visit cities 1, 2, 3, 4 starting at city 1 and ending at 4, then don't figure that out multiple times
-    \begin{itemize}
-    \item e.g. $1, 2, 3, 4, 5, 1$ \myemph{cannot be shorter} than $1, 3, 2, 4, 5, 1$
-    \end{itemize}
+\item<2-> solve subproblems: best way to visit cities ${1,2,3,4}$ starting at $1$ ending at $4$
+\item<2-> know: if $1,3,2,4$ is best for above subproblem, then $1,3,2,4,5,1$ is shorter than $1,2,3,4,5,1$
+\item<2-> can avoid checking $1,2,3,4,5,1$\ldots
 \end{itemize}
 \end{frame}
 
@@ -87,17 +89,15 @@ void TSP() {
     \end{itemize}
 \item stop enumerating (return from \texttt{FindTour} early) if lower bound is too low
 \end{itemize}
-\end{frame}
+4\end{frame}
 
 \begin{frame}{a lower bound}
 \begin{itemize}
 \item example lower bound:
 \vspace{.5cm}
 \item if I've chosen cities $1$, $2$, $4$, $3$ in that order
-\item minimum cost = $w(1,2)+w(2,4)+w(4,3)+\sum_{i=3}^n\text{minimum weight of edge from i}$
-    \begin{itemize}
-    \item if this is worse than best we've found so far --- no sense continuing further
-    \end{itemize}
+\item minimum cost = $w(1,2)+w(2,4)+w(4,3)+\sum_{i=3}^n\text{min edge from i}$
+\item if min possible cost $>$ best known cost: stop!
 \end{itemize}
 \end{frame}
 
@@ -106,10 +106,11 @@ void TSP() {
 \item TSP on real maps --- take advantage of geometry
 \item try cities close to each other first
 \item use map distances to compute minimum costs quickly
-\item some \textit{approximation algorithms}
+\item sometimes can use \textit{approximation algorithms}
     \begin{itemize}
-    \item get within a certain factor of best solution
-    \item good for pruning very bad solutiosn quickly
+    \item assumption: sufficiently `normal' weights --- e.g. A-B shorter than A-C-B
+    \item gaurenteed within a certain factor of best solution
+    \item good for pruning very bad solutions quickly
     \end{itemize}
 \end{itemize}
 \end{frame}
