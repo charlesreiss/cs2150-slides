@@ -1,0 +1,60 @@
+
+\begin{frame}[fragile,label=cStrings]{strings in C}
+\lstset{language=C++,style=smaller}
+\begin{tikzpicture}
+    \tikzset{
+        mybox part/.style={minimum width=2cm,font=\scriptsize,align=left,fill=black!10!white},
+        mybox/.style={draw,rectangle,mybox part},
+        mycodebox/.style={draw,rectangle,mybox part,fill=white},
+        mylabel/.style 2 args={label={[label distance=-1mm,inner sep=1mm,fill=white,draw,rectangle,font=\footnotesize,visible on=#2]90:#1}},
+        myline/.style={line width=1pt,-latex},
+    }
+    \node[mycodebox] (code) {
+\begin{lstlisting}[style=smaller]
+int main() {
+   const char *hello = "Hello World!";
+   ...
+}
+\end{lstlisting}
+    };
+    \node[left=2cm of code,mylabel={\texttt{hello} (on stack/register)}{<1->},mybox] (ptr) {0x4005C0};
+    \matrix[matrix of nodes,
+        mylabel={read-only data}{<1->},below=1.5cm of ptr,mybox,
+        nodes={draw,rectangle,minimum width=0mm,minimum height=.5cm, inner sep=0mm,anchor=south,
+               font=\tt\scriptsize\addfontfeatures{Mapping=}},
+        xshift=3cm,
+        inner sep=0mm,outer sep=0mm,
+    ] (data) {
+        \sf\ldots\&'H'\&'e'\&'l'\&'l'\&'o'\&'\verb*| |'\&
+        'W'\&'o'\&'r'\&'l'\&'d'\&'!'\&'\textbackslash0'\&\sf\ldots\\
+    };
+
+    \draw[-latex,very thick] (ptr) -- (data-1-2);
+
+    \begin{visibleenv}<2>
+    \matrix[below=.5cm of data,xshift=3cm,tight matrix,
+        column 1/.style={nodes={draw=none,text width=3cm,font=\tt\fontsize{8}{9}\selectfont}},
+        column 2/.style={nodes={text width=2cm,font=\tt\fontsize{8}{9}\selectfont}},
+        column 3/.style={nodes={draw=none,blue,text width=1.5cm,font=\tt\fontsize{8}{9}\selectfont}},
+        row 1/.style={nodes={font=\normalfont\bfseries\fontsize{8}{9}\selectfont,draw=none}},
+    ] (memory) {
+        address(es) \& value \\
+        0x4005c0 \& 0x48 \& 'H' \\
+        0x4005c1 \& 0x65 \& 'e' \\
+        0x4005c2 \& 0x6c \& 'l' \\
+        0x4005c3 \& 0x6c \& 'l' \\
+        0x4005c4 \& 0x6f \& 'o' \\
+        \ldots \& |[draw=none]| \ldots \\
+        0x4005ca \& 0x21 \& '!' \\
+        0x4005cb \& 0x00 \& '\textbackslash0' \\
+        \ldots \& \ldots \\
+        0x7fff3488-8f \& 0x4005c0 \& hello \\
+    };
+    \draw[thick,decorate,decoration={brace,mirror}] (memory-2-1.north west) -- (memory-9-1.south west) node[left,midway,font=\small] {string (constant data)};
+    \draw[thick,decorate,decoration={brace,mirror}] (memory-10-1.north west) -- (memory-11-1.south west) node[left,midway,font=\small] {pointer (on stack)};
+
+    \end{visibleenv}
+
+\end{tikzpicture}
+\end{frame}
+

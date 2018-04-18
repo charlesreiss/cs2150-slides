@@ -1,0 +1,80 @@
+\begin{frame}[fragile,label=cStrLib]{C standard library functions}
+\lstset{
+    language=C++,style=small
+}
+\begin{itemize}
+    \item header file: \texttt{string.h}
+    \vspace{.5cm}
+    \item \lstinline|size_t strlen(const char* s)| --- number of chars in s
+    \item \lstinline|char *strcpy(char *s1, const char *s2)| --- copy \texttt{s2} to \texttt{s1}, return \texttt{s1}
+    \item \lstinline|char *strcat(char *s1, const char *s2)| --- append \texttt{s2} to \texttt{s1}, return \texttt{s1}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=strlenImpl]{implementing strlen}
+\lstset{
+    language=C++,style=small
+}
+\begin{lstlisting}
+size_t strlen(const char* s) {
+    size_t i = 0;
+    while (s[i] != '\0')
+        i += 1;
+    return i;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=strcpyReadOnly]{a strcpy inquiry (1)}
+\lstset{
+    language=C++,style=small
+}
+\begin{lstlisting}
+char *hello = "Hello!";
+char *bye = "Bye!";
+strcpy(bye, hello);
+\end{lstlisting}
+\begin{visibleenv}<2->
+\hrule
+C result: \myemph{Segmentation fault}
+C++ result: compile error, \texttt{"Hello!"} is const
+\end{visibleenv}
+\end{frame}
+
+\begin{frame}[fragile,label=strcpyTooSmall]{a strcpy inquiry (2)}
+\lstset{
+    language=C++,style=small
+}
+\begin{lstlisting}
+const char *hello = "Hello!";
+char bye[5] = {'B', 'y', 'e', '!', '\0'}; // or "Bye!" (same effect)
+strcpy(bye, hello);
+\end{lstlisting}
+\hrule
+\begin{visibleenv}<2->
+same as:
+\begin{lstlisting}
+bye[0] = 'H'; bye[1] = 'e'; bye[2] = 'l'; bye[3] = 'l'; bye[4] = 'o';
+bye[5] = '!'; bye[6] = '\0';
+\end{lstlisting}
+goes \myemph{out of bounds!}
+\end{visibleenv}
+\end{frame}
+
+\begin{frame}[fragile,label=strcpyTooSmall]{a strcpy inquiry (3)}
+\lstset{
+    language=C++,style=small
+}
+\begin{lstlisting}
+void foo() {
+    const char *hello = "Hello!";
+    char *dest = malloc(strlen(hello) + 1);
+    strcpy(dest, hello);
+    doSomethingWith(dest);
+}
+\end{lstlisting}
+\hrule
+\begin{visibleenv}<2->
+\myemph{probably leaks memory}
+\end{visibleenv}
+\end{frame}
