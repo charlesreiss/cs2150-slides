@@ -1,0 +1,12 @@
+\begin{frame}{memory leak finding}
+    \begin{itemize}
+    \item idea: look at all pointers on stack, in global variables
+    \begin{itemize}
+        \item and all pointers contained in objects those reference
+        \item and \ldots
+    \end{itemize}
+    \item and compare to list of all allocated objects
+    \vspace{.5cm}
+    \item done by tools like Valgrind Memcheck or AddressSanitizer
+    \end{itemize}
+\end{frame}

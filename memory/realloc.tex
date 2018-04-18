@@ -67,3 +67,17 @@
     \end{scope}
 \end{tikzpicture}
 \end{frame}
+
+\begin{frame}{some realloc gotchas}
+    \begin{itemize}
+    \item need to \myemph{use return value} --- data might have moved!
+    \item need to worry about \myemph{other copies of the pointer}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{realloc runtime}
+    \begin{itemize}
+    \item copy: $\Theta(n)$
+    \item in place: $\Theta(1)$
+    \end{itemize}
+\end{frame}
