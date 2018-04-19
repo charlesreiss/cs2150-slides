@@ -14,25 +14,31 @@
 }
 \begin{lstlisting}
 unsigned run(int count) {
-    unsigned index = 0;
+    unsigned index = 1;
     for (unsigned j = 0; j < count; ++j) {
+        // use array @ index to find next index
+        // prevents parallel accesses to cache/memory
         index = array[index];
     }
     return index;
 }
 
-// setup to access array with no easily observed pattern
-    // NB: 103 will be relatively prime, so this accesses
-    //     every element of the array
+// setup to access array with bad spatial locality
+// size is the approx. # elements to access
 void setup(int size) {
-    for (unsigned i = 0; i < size; ++i) {
-        array[i] = ((i + 1) * 103) % size;
-
+    for (int i = 0; i < size; ++i)
+        array[i] = -1;
+    int index = 0;
+    for (int i = 0; i < size - 1; ++i) {
+        array[index] = /* random other array index w/ -1 array element */;
+        index = array[index];
     }
+    array[index] = 0;
 }
 \end{lstlisting}
 \end{frame}
 
 \begin{frame}{observing caches}
+    \vspace{-1cm}
     \includegraphics[width=\textwidth]{size-v-cycles}
 \end{frame} 
