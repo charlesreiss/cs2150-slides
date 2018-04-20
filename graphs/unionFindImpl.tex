@@ -1,3 +1,6 @@
+\usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes}
+\usegdlibrary{force,layered}
+
 \begin{frame}[fragile,label=unionFindNaive]{implementing union-find: naive/slow}
 \lstset{language=C++,style=small}
 \begin{lstlisting}
@@ -18,6 +21,113 @@ UnionSets(Vertex u, Vertex v) {
     parentOf[v] = u;
 }
 \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=unionFindGraphs]{union-find graphs}
+\begin{tikzpicture}
+\tikzset{
+    graphNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm,fill=white},
+    graphEdge/.style={draw,thick},
+    >=Latex,
+    my graph/.style={graphs/nodes={graphNode},graphs/edges={graphEdge},graphs/edge quotes={opacity=0,font=\tt\small,auto,inner sep=0.1mm}},
+    my graph box/.style={},
+    hidden/.style={opacity=0},
+}
+\tikzset{
+    marked vertex/.style={very thick,fill=blue!10},
+    unmarked vertex/.style={},
+    used/.style={draw=black,very thick},
+    just used/.style={draw=red,very thick},
+    considered/.style={draw=blue,dashed},
+    unused/.style={draw=none},
+    my graph box/.style={},
+}
+
+\matrix[column sep=4cm] (the graph) {
+    \begin{scope}[my graph]
+\tikzset{
+    node named A/.style={unmarked vertex},node named B/.style={unmarked vertex},node named C/.style={unmarked vertex},node named D/.style={unmarked vertex},node named E/.style={unmarked vertex},node named F/.style={unmarked vertex},node named G/.style={unmarked vertex},edge from A to B/.style=used,edge from A to C/.style=unused,edge from A to D/.style=used,edge from B to D/.style=unused,edge from B to E/.style=considered,edge from C to D/.style=used,edge from C to F/.style=considered,edge from D to E/.style=considered,edge from D to F/.style=considered,edge from D to G/.style=just used,edge from E to G/.style=considered,edge from F to G/.style=used,
+    >=Latex,
+    edge from A to B/.append style={<-},
+    edge from A to D/.append style={<-},
+    edge from C to D/.append style={->},
+    edge from F to G/.append style={<-},
+    just used/.style={line width=1mm,dotted,black!50},
+    considered/.style=unused,
+}
+    \graph[spring layout,node distance=1.25cm]{
+        [name=before] A[node named A],B[node named B],C[node named C],D[node named D],E[node named E],F[node named F],G[node named G],
+        A --[edge from A to B,"2"] B,A --[edge from A to C,"4"] C,A --[edge from A to D,"1"] D,B --[edge from B to D,"3"] D,B --[edge from B to E,"10"] E,C --[edge from C to D,"2"] D,C --[edge from C to F,"5"] F,D --[edge from D to E,"7"] E,D --[edge from D to F,"8"] F,D --[edge from D to G,"4"] G,E --[edge from E to G,"6"] G,F --[edge from F to G,"1"] G,
+
+        A ->[loop above] A,
+        F ->[loop left] F,
+        E ->[loop below] E,
+    };
+    \end{scope}
+\&
+    \begin{scope}[my graph]
+\tikzset{
+    node named A/.style={unmarked vertex},node named B/.style={unmarked vertex},node named C/.style={unmarked vertex},node named D/.style={unmarked vertex},node named E/.style={unmarked vertex},node named F/.style={unmarked vertex},node named G/.style={unmarked vertex},edge from A to B/.style=used,edge from A to C/.style=unused,edge from A to D/.style=used,edge from B to D/.style=unused,edge from B to E/.style=considered,edge from C to D/.style=used,edge from C to F/.style=considered,edge from D to E/.style=considered,edge from D to F/.style=considered,edge from D to G/.style=just used,edge from E to G/.style=considered,edge from F to G/.style=used,
+    >=Latex,
+    edge from A to B/.append style={<-},
+    edge from A to D/.append style={<-},
+    edge from C to D/.append style={->},
+    edge from F to G/.append style={->},
+    just used/.style={unused},
+    considered/.style=unused,
+}
+    \graph[spring layout,node distance=1.25cm]{
+        [name=after] A[node named A],B[node named B],C[node named C],D[node named D],E[node named E],F[node named F],G[node named G],
+        A --[edge from A to B,"2"] B,A --[edge from A to C,"4"] C,A --[edge from A to D,"1"] D,B --[edge from B to D,"3"] D,B --[edge from B to E,"10"] E,C --[edge from C to D,"2"] D,C --[edge from C to F,"5"] F,D --[edge from D to E,"7"] E,D --[edge from D to F,"8"] F,D --[edge from D to G,"4"] G,E --[edge from E to G,"6"] G,F --[edge from F to G,"1"] G,
+
+        E ->[loop below] E,
+        F ->[loop left] F,
+    };
+        \draw[thick,red,->] plot [smooth,tension=1.25] coordinates { (after A.north west) ([yshift=.5cm]after C) (after F.north east) };
+    \end{scope}
+\\
+};
+    \begin{pgfonlayer}{bg}
+        \fill[blue!20,rounded corners]
+        ([xshift=-.25cm,yshift=.25cm]before A.north west) -- ([xshift=.25cm,yshift=.25cm]before A.north east) -- ([xshift=.25cm,yshift=-.25cm]before A.south east) --
+         ([xshift=.25cm,yshift=.25cm]before B.north east) --
+         ([xshift=.25cm,yshift=-.25cm]before B.south east) --
+         ([xshift=-.25cm,yshift=-.25cm]before B.south west) -- 
+         ([xshift=.25cm,yshift=-.25cm]before D.south east) --
+         ([xshift=-.25cm,yshift=-.25cm]before D.south west) -- 
+         ([xshift=-.25cm,yshift=.25cm]before D.north west) --
+         ([xshift=-.25cm,yshift=-.25cm]before C.south west) --
+         ([xshift=-.25cm,yshift=.25cm]before C.north west) -- 
+         ([xshift=.25cm,yshift=.25cm]before C.north east) --
+        cycle;
+        \node[blue!50!black,align=center] at ([yshift=1.5cm]$(before A)!.5!(before C)$) {set ABCD \\ id = A};
+        \node[fill=green!20,rounded corners,inner sep=.25cm,fit=(before G) (before F)] {};
+        \node[green!50!black,anchor=east,align=center] at ([xshift=-.5cm]$(before F)!.5!(before G)$) {set FG \\ id = F};
+        \node[fill=orange!20,rounded corners,inner sep=.25cm,fit=(before E)] {};
+        \node[orange!50!black,anchor=north,align=center] at ([yshift=-.25cm]before E.south) { set E \\ id = E };
+
+        \fill[teal!20,rounded corners]
+         ([xshift=-.25cm,yshift=.25cm]after A.north west) --
+         ([xshift=.25cm,yshift=.25cm]after A.north east) --
+         ([xshift=.25cm,yshift=-.25cm]after A.south east) --
+         ([xshift=.25cm,yshift=.25cm]after B.north east) --
+         ([xshift=.25cm,yshift=-.25cm]after B.south east) --
+         ([xshift=-.25cm,yshift=-.25cm]after B.south west) -- 
+         ([xshift=.25cm,yshift=-.25cm]after D.south east) --
+         ([xshift=-.25cm,yshift=-.25cm]after D.south west) -- 
+         ([xshift=.25cm,yshift=-.25cm]after G.south east) --
+         ([xshift=-.25cm,yshift=-.25cm]after G.south west) -- 
+         ([xshift=-.25cm,yshift=.25cm]after F.north west) -- 
+         ([xshift=.25cm,yshift=.25cm]after F.north east) -- 
+         ([xshift=-.25cm,yshift=.25cm]after C.north west) -- 
+         ([xshift=.25cm,yshift=.25cm]after C.north east) --
+        cycle;
+        \node[fill=orange!20,rounded corners,inner sep=.25cm,fit=(after E)] {};
+        \node[align=center,orange!50!black,anchor=north] at ([yshift=-.25cm]after E.south) { set E \\ id = E };
+        \node[align=center,teal!50!black,anchor=south] at ([yshift=.25cm]after C.north) {set ABCDFG \\ id = F};
+    \end{pgfonlayer}
+    \draw[line width=2mm,black!50,-Latex] ($(before A.east)!.5!(before B.east)$) -- ($(after F.west)!.5!(after G.west)$) node[midway,above,font=\small,align=left,text=black] {Union( \\ \hspace{.5cm} IdOf(D), \\ \hspace{.5cm} IdOf(G) \\ );};
+\end{tikzpicture}
 \end{frame}
 
 \begin{frame}[fragile,label=unionFindPathComp]{implementing union-find: path compression}

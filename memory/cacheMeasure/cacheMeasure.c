@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <immintrin.h>
 #include "timing.h"
 #include <sys/mman.h>
@@ -12,25 +13,51 @@ typedef unsigned long TYPE;
 #define MAX_SIZE (64 * 1024 * 1024 / sizeof(TYPE))
 
 TYPE *array;
+int nextPrime(int x) {
+    for (;;) {
+        ++x;
+        int okay = 1;
+        for (int i = 2; okay && i * i <= x; ++i) {
+            if (x % i == 0)
+                okay = 0;
+        }
+        if (okay) {
+            return x;
+        }
+    }
+}
 
 void setup(int size) {
-    for (unsigned i = 0; i < size; ++i) {
-#ifdef USE_AVX
-        array[i] = _mm256_set1_epi32(((i + 1) * 103) % size);
-#else
-        array[i] = ((i + 1) * 103) % size;
-#endif
+    for (int i = 0; i < size; ++i)
+        array[i] = -1;
+    int index = 0;
+    for (int i = 0; i < size - 1; ++i) {
+        int place = rand() % (size - i - 1);
+        int origPlace = place;
+        int j = 0;
+        for (j = 0; place >= 0; ++j) {
+            if (array[j] == -1 && j != index) place--;
+        }
+        j--;
+        //printf("[%d] index %d: place %d maps to %d\n", size, index, origPlace, j);
+        //fflush(stdout);
+        assert(array[j] == -1);
+        index = array[index] = j;
+    }
+    array[index] = 0;
+    index = 0;
+    for (int i = 0; i < size; ++i) {
+        index = array[index];
+        if (index == 0) {
+            printf("[%d] PERIOD %d\n", size, i);
+        }
     }
 }
 
 unsigned run_chase(int size) {
     unsigned i = 0;
     for (int j = 0; j < size * 4; ++j) {
-#ifdef USE_AVX
-        i = _mm256_extract_epi32(array[i], 0);
-#else
         i = array[i];
-#endif
     }
     return i;
 }
@@ -47,8 +74,9 @@ int main(void) {
         perror("mmap");
         return 1;
     }
-    for (int i = 256; i <= MAX_SIZE; i *= 2) {
+    for (int i = 256; i <= MAX_SIZE; i += i >> 1) {
         setup(i);
-        printf("%ld,%.3f,%.3f,%.3f\n", i * sizeof(TYPE), time_one(i), time_one(i), time_one(i));
+        printf("%ld,%.3f\n", i * sizeof(TYPE), time_one(i));
+        fflush(stdout);
     }
 }

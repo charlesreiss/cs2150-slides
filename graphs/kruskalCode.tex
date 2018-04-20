@@ -1,5 +1,5 @@
 \begin{frame}[fragile,label=kruskalCode]{Kruskal pseudocode}
-\lstset{language=C++,style=small}
+\lstset{language=C++,style=smaller}
 \begin{lstlisting}
 SetTracker setTracker;
 for (Vertex v : vertices) {
@@ -15,6 +15,7 @@ for (Edge e : sortByWeight(edges)) {
             setTracker.setIdOf(e.to)
         );
     }
+    if (result.size() == vertices.size() - 1) break;
 }
 return result;
 \end{lstlisting}

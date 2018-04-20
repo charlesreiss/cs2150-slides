@@ -30,14 +30,14 @@ for (Vertex v : vertices) {
     pending_vertices.insert(INFINITY, v);
 }
 pending_vertices.decreaseKey(0, start_vertex);
-while (used_vertices != vertices) {
+while (!pending_vertices.empty()) {
     Vertex v = pending_vertices.deleteMin();
     used_edges.insert(best_edge_to[v]);
     for (Edge e : edgesFrom(v)) {
         if (e.cost < best_edge_to[e.to].cost) {
             best_edge_to[e.to] = e;
-            // assuming decreaseKey ignored if e.to not in queue
-            pending_vertices.decreaseKey(e.cost, e.to);
+            if (e.to in pending_vertices)
+                pending_vertices.decreaseKey(e.cost, e.to);
         }
     }
 }
