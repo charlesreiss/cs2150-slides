@@ -28,29 +28,18 @@ int nextPrime(int x) {
 }
 
 void setup(int size) {
+    int *order = malloc(size * sizeof(int));
     for (int i = 0; i < size; ++i)
-        array[i] = -1;
-    int index = 0;
-    for (int i = 0; i < size - 1; ++i) {
-        int place = rand() % (size - i - 1);
-        int origPlace = place;
-        int j = 0;
-        for (j = 0; place >= 0; ++j) {
-            if (array[j] == -1 && j != index) place--;
-        }
-        j--;
-        //printf("[%d] index %d: place %d maps to %d\n", size, index, origPlace, j);
-        //fflush(stdout);
-        assert(array[j] == -1);
-        index = array[index] = j;
+        order[i] = i;
+    for (int i = 0; i <= size - 2; ++i) {
+        int j = i + (rand() % (size - i));
+        int temp = order[i];
+        order[i] = order[j];
+        order[j] = temp;
     }
-    array[index] = 0;
-    index = 0;
-    for (int i = 0; i < size; ++i) {
-        index = array[index];
-        if (index == 0) {
-            printf("[%d] PERIOD %d\n", size, i);
-        }
+    array[order[size - 1]] = order[0];
+    for (int i = 0; i < size - 1; ++i) {
+        array[order[i]] = order[i + 1];
     }
 }
 

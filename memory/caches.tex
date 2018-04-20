@@ -27,11 +27,11 @@ unsigned run(int count) {
 // size is the approx. # elements to access
 void setup(int size) {
     for (int i = 0; i < size; ++i)
-        array[i] = -1;
-    int index = 0;
+        order[i] = i;
+    randomlyShuffle(order, size);
     for (int i = 0; i < size - 1; ++i) {
-        array[index] = /* random other array index w/ -1 array element */;
-        index = array[index];
+        /* order[i] should point to order[i+1] */
+        array[order[i]] = order[(i + 1) % size];
     }
     array[index] = 0;
 }
