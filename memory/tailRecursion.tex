@@ -1,0 +1,74 @@
+\begin{frame}[fragile,label=recurseToTail]{recursion to tail recursion}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+int factorial_recursive(int x) {
+    if (x <= 1)
+        return 1;
+    else
+        return x * factorial_recursive(x-1);
+}
+\end{lstlisting}
+\hrule
+\begin{lstlisting}
+int factorial_tail_recursive(int x, int y = 1) {
+    if (x <= 1)
+        return y;
+    else
+        return factorial_tail_recursive(x-1, x*y);
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=noCall]{tail recursion: avoiding call}
+\lstset{language=myasm,style=smaller,
+        moredelim={**[is][\btHL<all:2>]{@2}{2@}}}
+}
+\begin{lstlisting}
+factorial_tail_recursive:
+  cmp edi, 1
+  jle .L4
+.L2:
+  imul esi, edi
+  sub edi, 1
+  @2jmp factorial_tail_recursive2@
+  // same effect as:
+  // call factorial_tail_recursive
+  // ret
+.L4:
+  mov eax, esi
+  ret
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{tail recursion}
+\begin{itemize}
+    \item saves lots of stack space ($\Theta(x)$ space to $\Theta(1)$ space)
+    \item easier for compilers to do
+    \vspace{.5cm}
+    \item ``tail'' requirement: must be last thing to do
+    \item \ldots so it's okay to return directly to caller
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=tailToLoop]{tail recursion to loop}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+int factorial_tail_recursive(int x, int y = 1) {
+    if (x <= 1)
+        return y;
+    else
+        return factorial_tail_recursive(x-1, x*y);
+}
+\end{lstlisting}
+\hrule
+\begin{lstlisting}
+int factorial_loop(int x) {
+    int y = 1;
+    while (x > 1) {
+        y *= x;
+        x--;
+    }
+    return y;
+}
+\end{lstlisting}
+\end{frame}
