@@ -1,0 +1,91 @@
+\begin{frame}{CPU/memory time per operation}
+(everything approximate\ldots)
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel=year,
+    ylabel=ns lat./operation,
+    width=15cm,height=7cm,
+    legend pos=north east,
+    xticklabel style={/pgf/number format/1000 sep=},
+    ymode=log,
+    %height=6cm,
+]
+    \addplot[blue,only marks,label=memory] plot coordinates {
+        (1980, 225)  
+        (1983, 170)  
+        (1986, 125)  
+        (1993, 75) 
+        (1997, 62) 
+        (2000, 52) 
+        (2017, 50)  % DDR4-3400 16-18-18-36
+    };
+
+
+    \addplot[red,only marks,label=processors] plot coordinates {
+        (1982, 320)  
+        (1985, 313)  
+        (1989, 200)  
+        (1993, 76)
+        (1997, 50)
+        (2001, 15)
+        (2001, 11)
+        (2002, 9.4)
+        (2003, 7.5)
+        (2004, 5.1)
+        (2004, 8.1)
+        (2006, 4.2)
+        (2008, 5.6)
+        (2011, 4.75)
+        (2017, 4.5)
+    };
+    \legend{memory,processors}
+        \draw[visible on=<2>,black!50,ultra thick,-Latex] (2001, 52) -- (2016, 50) node[midway,above] {little decrease};
+        \draw[visible on=<2>,black!50,ultra thick,-Latex] (2008, 5) -- (2016, 5) node[midway,above] {little decrease};
+        \draw[visible on=<3>,black!50,ultra thick,-Latex] (2017, 45) -- (2017, 6) node[midway] {huge gap!};
+\end{axis}
+\end{tikzpicture}
+\imagecredit{data up to 2001, data via Patterson, ``Latency lags Bandwidth'', CACM, 2004 \\
+    last RAM point based on DDR4-3400 RAM with 16-18-18-36 timings \\
+    later CPU points based on GHz + approx. pipeline depth of various AMD/Intel CPUs}
+\end{frame}
+
+\begin{frame}{CPU/memory processed per ns}
+(everything approximate\ldots)
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel=year,
+    ylabel=MB/sec or ops/core/sec,
+    width=15cm,height=7cm,
+    legend pos=south east,
+    xticklabel style={/pgf/number format/1000 sep=},
+    ymode=log,
+    %height=6.5cm,
+]
+    \addplot[blue,only marks,label=memory] plot coordinates {
+        (1980, 13)
+        (1983, 40)
+        (1986, 160)
+        (1993, 267)
+        (1997, 640)
+        (2000, 1600)
+        (2017, 17000)
+    };
+
+
+    \addplot[red,only marks,label=processors] plot coordinates {
+        (1982, 2) 
+        (1985, 6) 
+        (1989, 25) 
+        (1993, 132)
+        (1997, 600)
+        (2001, 4500)
+        (2004, 9600) % Pentium 4 Prescott @ 2.4G @ 4 adds/cycle
+        (2008, 9900) % Wolfdale @ 3.3G @ 3 adds/cycle * 2 cores
+        (2009, 12000) % Nehalem @ 3G @ 4 adds/cycle * 4 cores (64-bit SSE2 adds)
+        (2013, 39600) % Skylake @ 3.3G @ 12 adds/cycle * 4 cores(64-bit AVX2 adds)
+    };
+        \draw[visible on=<2>,black!50,ultra thick,-Latex] (1990, 10) -- (2016, 10000) node[midway,below,sloped,align=center] {still increasing \\ more operations at a time!};
+    \legend{memory,processors}
+\end{axis}
+\end{tikzpicture}
+\end{frame}
