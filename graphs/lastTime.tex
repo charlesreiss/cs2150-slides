@@ -101,18 +101,17 @@
     \begin{itemize}
     \item minimum spanning tree algorithms
     \item both \myemph{greedy} --- choose least cost candidate edge, never take back
-    \item Prim's: start with one vertex, candidate edges: add new vertex to tree
-    \item Prim's data structure: priority queue of vertices
+    \item Prim's: track used vertices, candidate edge: would add new vertex
         \begin{itemize}
-        \item additionally track: `best' edge from used vertex to each unused
+        \item priority queue of vertices (order: cost of edge to)
         \item add edge: check for better edges from new vertex
+        \item runtime: $\Theta((|E|+|V|)\log|V|)= \Theta(|E|\log|V|)$ (binary heap) $\Theta(|E|+|V|\log|V|)$ (Fib. heap)
         \end{itemize}
-    \item Prim's runtime: $\Theta((|E|+|V|)\log|V|)= \Theta(|E|\log|V|)$ (binary heap); $\Theta(|E|+|V|\log|V|)$ (Fib. heap)
-    \item Kruskal's: don't track vertices, candidate edges: if don't create cycle
-    \item Krusakl's data structure: union-find (continued today)
+    \item Kruskal's: candidate edge: won't create cycle
         \begin{itemize}
+        \item set tracking (`union-find') data structure
         \item use ``set-of(vertex)'' to detect if new edge creates a cycle
+        \item runtime: $\Theta(|E|\log|V|)$
         \end{itemize}
-    \item Kruskal's runtime: $\Theta(|E|\log|V|)$
     \end{itemize}
 \end{frame}

@@ -55,8 +55,8 @@ alloca:
     \end{visibleenv}
     \begin{visibleenv}<4>
         \node[box] at (placeHigh) {
-            how do we know caller only saves 3 registers? \\
-            we don't\ldots
+            how do they know caller only saves 3 registers? \\
+            maybe they wrote the compiler\ldots?
         };
     \end{visibleenv}
 \end{tikzpicture}
@@ -109,7 +109,7 @@ foo: # @foo
     \end{visibleenv}
     \begin{visibleenv}<3>
         \node[box] at (placeLow) {
-            rsp becomes rsp + N  \\ (rounded up to next mult. of 16)
+            rsp becomes rsp - N  \\ (N rounded up to next mult. of 16)
         };
     \end{visibleenv}
 \end{tikzpicture}

@@ -1,4 +1,4 @@
-\begin{frame}{graph terms}
+\begin{frame}{graph summary (1)}
 \begin{itemize}
 \item directed (digraph) versus undirected
 \item topological sort --- ordering of vertices in digraph
@@ -10,12 +10,21 @@
     \item unweighted: breadth-first search --- queue --- distance 1 then 2 then 3
     \item weighted: Dijkstra's --- priority queue --- visit veritices ordered by best distance
     \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{graphs summary (2)}
 \item traveling salesperson problem --- minimum `tour' --- visit all, then return
     \begin{itemize}
     \item NP-hard --- essentially ``try everything'' worst case
     \item speedup: stop search early if not better than known best
     \item speedup: avoid rechecking subproblems (e.g. shortest path from A to D visiting A,B,C,D)
     \item speedup: heuristics
+    \end{itemize}
+\item spanning tree --- tree (no cycles) connecting all vertices of connected graph
+\item minimum spanning tree --- spanning tree with min sum of edge weights
+    \begin{itemize}
+    \item finding: greedy --- choose smallest edges first
     \end{itemize}
 \end{itemize}
 \end{frame}

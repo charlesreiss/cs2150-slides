@@ -145,6 +145,9 @@ FindSetOf(Vertex v) {
     }
 }
 \end{lstlisting}
+    \begin{itemize}
+    \item<2> shortcut future searches for loop
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile,label=unionFindBySize]{implementing union-find: union by size}
@@ -152,9 +155,9 @@ FindSetOf(Vertex v) {
 moredelim={**[is][\btHL<all:1>]{@1}{1@}},
     }
 \begin{lstlisting}
-map<Vertex, int> sizeOf;  
+map<Vertex, int> sizeOf;  // SetId -> # of vertices in set
 MakeInitialSets() {
-    ...
+    for(...)
         sizeOf[v] = 1;
 }
 
