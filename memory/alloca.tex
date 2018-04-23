@@ -72,7 +72,7 @@ alloca:
 }
 \begin{lstlisting}
 void foo(int N) {
-    char *temp = alloca( N);
+    char *temp = alloca(N);
     bar(temp);
 }
 \end{lstlisting}
@@ -92,10 +92,25 @@ foo: # @foo
   add rax, 15
   and rax, -16
   sub rdi, rax
-  mov rsp, rdi
+  @3mov rsp, rdi3@
   call bar
   mov @2rsp, rbp2@
   pop @2rbp2@
   ret
 \end{lstlisting}
+\begin{tikzpicture}[overlay,remember picture]
+    \coordinate (placeLow) at ([xshift=3cm,yshift=2cm]current page.south);
+    \coordinate (placeHigh) at ([yshift=5cm]current page.south);
+    \tikzset{box/.style={draw=red,very thick,fill=white,anchor=south,align=left}}
+    \begin{visibleenv}<2>
+        \node[box] at (placeLow) {
+            use frame pointer --- \\ remember original stack location
+        };
+    \end{visibleenv}
+    \begin{visibleenv}<3>
+        \node[box] at (placeLow) {
+            rsp becomes rsp + N  \\ (rounded up to next mult. of 16)
+        };
+    \end{visibleenv}
+\end{tikzpicture}
 \end{frame}

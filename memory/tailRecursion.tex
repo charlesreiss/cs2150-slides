@@ -50,6 +50,26 @@ factorial_tail_recursive:
 \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile,label=tailRecOnStack]{tail recursion: things on the stack}
+\lstset{language=myasm,style=smaller,
+        moredelim={**[is][\btHL<all:2>]{@2}{2@}}}
+}
+\begin{lstlisting}
+example_function:
+    push rbx
+    cmp rdi, 0
+    je base_case
+    ...
+    ...
+    @2pop rbx2@
+    @2jmp example_function2@
+base_case:
+    pop rbx
+    mov rax, ...
+    ret
+\end{lstlisting}
+\end{frame}
+
 \begin{frame}[fragile,label=tailToLoop]{tail recursion to loop}
 \lstset{language=C++,style=smaller}
 \begin{lstlisting}
