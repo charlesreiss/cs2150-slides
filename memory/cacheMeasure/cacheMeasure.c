@@ -63,7 +63,8 @@ int main(void) {
         perror("mmap");
         return 1;
     }
-    for (int i = 256; i <= MAX_SIZE; i += i >> 1) {
+    printf("size,m1\n");
+    for (int i = 256; i <= MAX_SIZE; i += i >> 2) {
         setup(i);
         printf("%ld,%.3f\n", i * sizeof(TYPE), time_one(i));
         fflush(stdout);
