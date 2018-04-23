@@ -241,12 +241,39 @@ def example_geography(which, end_only=True):
     g.show_weight = False
     print(g.mst('A', which, end_only=end_only, omit_edge_list=True))
 
+def example_geography_small(which, end_only=True):
+    random.seed(43)
+    g = Graph()
+    coords = {}
+    vertices = ['A', 'B', 'C', 'D', 'E', 'F', 'G',]
+    for x in vertices:
+        while True:
+            coords[x] = (random.uniform(0, 12), random.uniform(0, 6))
+            too_close = False
+            for y in vertices:
+                if x != y and y in coords:
+                    if distance(coords[x], coords[y]) < 0.75:
+                        too_close = True
+            if not too_close:
+                break
+        g.set_vertex(x, 'at={{({x:.2f},{y:.2f})}}'.format(x=coords[x][0], y=coords[x][1]))
+    for x in vertices:
+        by_distance = sorted(vertices, key=lambda y: distance(coords[x], coords[y]))
+        for y in by_distance[1:8]:
+            if x < y:
+                g.add_edge(x, y, distance(coords[x], coords[y]))
+    g.graph_layout = 'no layout'
+    g.show_weight = False
+    print(g.mst('A', which, end_only=end_only, omit_edge_list=True))
+
 if __name__ == '__main__':
     which_example = sys.argv[1]
     if which_example == 'one':
         example_one(sys.argv[2])
     elif which_example == 'geography':
         example_geography(sys.argv[2], end_only=True)
+    elif which_example == 'geography-small':
+        example_geography_small(sys.argv[2], end_only=True)
     elif which_example == 'geography-full':
         example_geography(sys.argv[2], end_only=False)
     else:

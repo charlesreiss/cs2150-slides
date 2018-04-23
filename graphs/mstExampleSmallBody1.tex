@@ -1,0 +1,14 @@
+
+\tikzset{
+    alt=<1>{node named A/.style={marked vertex},node named B/.style={marked vertex},node named C/.style={marked vertex},node named D/.style={marked vertex},node named E/.style={marked vertex},node named F/.style={marked vertex},node named G/.style={marked vertex},edge from A to E/.style=used,edge from A to B/.style=unused,edge from A to F/.style=unused,edge from A to D/.style=unused,edge from A to G/.style=unused,edge from A to C/.style=unused,edge from B to E/.style=used,edge from B to F/.style=used,edge from B to D/.style=unused,edge from B to G/.style=unused,edge from B to C/.style=unused,edge from C to G/.style=used,edge from C to D/.style=unused,edge from C to F/.style=unused,edge from C to E/.style=unused,edge from D to G/.style=used,edge from D to F/.style=unused,edge from D to E/.style=unused,edge from E to F/.style=unused,edge from E to G/.style=unused,edge from F to G/.style=used,}{},
+}
+
+\matrix[my graph box] (the graph) {
+\begin{scope}[my graph]
+\graph[no layout]{
+    A[node named A,at={(0.46,4.18)}],B[node named B,at={(1.73,2.78)}],C[node named C,at={(8.06,4.76)}],D[node named D,at={(5.44,2.99)}],E[node named E,at={(0.23,2.59)}],F[node named F,at={(4.47,5.11)}],G[node named G,at={(6.56,4.53)}],A --[edge from A to E,"",] E,A --[edge from A to B,"",] B,A --[edge from A to F,"",] F,A --[edge from A to D,"",] D,A --[edge from A to G,"",] G,A --[edge from A to C,"",] C,B --[edge from B to E,"",] E,B --[edge from B to F,"",] F,B --[edge from B to D,"",] D,B --[edge from B to G,"",] G,B --[edge from B to C,"",] C,C --[edge from C to G,"",] G,C --[edge from C to D,"",] D,C --[edge from C to F,"",] F,C --[edge from C to E,"",] E,D --[edge from D to G,"",] G,D --[edge from D to F,"",] F,D --[edge from D to E,"",] E,E --[edge from E to F,"",] F,E --[edge from E to G,"",] G,F --[edge from F to G,"",] G,
+};
+\end{scope}
+\\
+};
+

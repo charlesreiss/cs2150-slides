@@ -1,0 +1,21 @@
+\begin{frame}{graph terms}
+\begin{itemize}
+\item directed (digraph) versus undirected
+\item topological sort --- ordering of vertices in digraph
+    \begin{itemize}
+    \item intuition: find vertex w/ no in-edge, delete
+    \end{itemize}
+\item shortest path --- minimum edges from one vertex to another
+    \begin{itemize}
+    \item unweighted: breadth-first search --- queue --- distance 1 then 2 then 3
+    \item weighted: Dijkstra's --- priority queue --- visit veritices ordered by best distance
+    \end{itemize}
+\item traveling salesperson problem --- minimum `tour' --- visit all, then return
+    \begin{itemize}
+    \item NP-hard --- essentially ``try everything'' worst case
+    \item speedup: stop search early if not better than known best
+    \item speedup: avoid rechecking subproblems (e.g. shortest path from A to D visiting A,B,C,D)
+    \item speedup: heuristics
+    \end{itemize}
+\end{itemize}
+\end{frame}

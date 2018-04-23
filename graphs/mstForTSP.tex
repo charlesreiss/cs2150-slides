@@ -1,0 +1,168 @@
+
+\usetikzlibrary{graphs,graphs.standard,graphdrawing,quotes}
+\usegdlibrary{force,layered,trees}
+
+\begin{frame}{aside: MST to approximate TSP}
+\begin{itemize}
+    \item TSP special case: triangle rule applies
+    \item $w(a\rightarrow b) \le w(a\rightarrow c) + w(c\rightarrow b)$
+    \vspace{.5cm}
+    \item one ``good'' solution: find MST
+    \item do an (e.g.) pre-order traversal of the tree
+    \item use that as the tour 
+\end{itemize}
+\begin{tikzpicture}[overlay,remember picture]
+\tikzset{
+    graphNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm},
+    graphEdge/.style={draw,thick},
+    >=Latex,
+    my graph/.style={graphs/nodes={graphNode},graphs/edges={graphEdge},graphs/edge quotes={opacity=0}},
+    my graph box/.style={}
+}
+\matrix[my graph box,anchor=east] (the graph) at (current page.east) {
+\begin{scope}[my graph, sibling distance=2cm]
+\graph[layered layout]{
+    A -- {[same layer] B, C},
+    B -- {[same layer] D, E},
+    {
+        [edges={draw=blue,visible on=<2->}] A ->[bend left] B ->[bend right]  D ->[bend right,orient=right] E ->[bend left] C ->[bend left] A
+    },
+
+};
+\end{scope}
+\\ 
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{MST as good TSP approx}
+\begin{itemize}
+    \item context: triangle rule, use MST pre-order traversal as TSP
+    \item worst weight: $2 \times MST$
+        \begin{itemize}
+        \item edges not in MST: weight not worse than path through tree
+        \item result: use every edge twice (to get to node, to get back) 
+        \end{itemize}
+    \vspace{.5cm}
+    \item<2-> observation: best TSP - one edge = a spanning tree
+    \item<2-> $\rightarrow$ weight of MST $\ge$ best TSP solution
+    \item<3-> $\rightarrow$ above TSP --- at most 2x as bad as best
+\end{itemize}
+\begin{tikzpicture}[overlay,remember picture]
+\tikzset{
+    graphNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm},
+    graphEdge/.style={draw,thick},
+    >=Latex,
+    my graph/.style={graphs/nodes={graphNode},graphs/edges={graphEdge},graphs/edge quotes={opacity=0}},
+    my graph box/.style={}
+}
+\matrix[my graph box,anchor=east] (the graph) at (current page.east) {
+\begin{scope}[my graph, sibling distance=2cm]
+\graph[layered layout]{
+    A -- {[same layer] B, C},
+    {
+        [edges={draw=blue}] A ->[bend left] B ->[ultra thick,bend right,orient=right,dotted] C ->[bend left] A
+    },
+    {
+        [edges={draw=red,dotted}] B ->[bend left] A -> [bend left] C
+    }
+
+};
+\end{scope}
+\\ 
+};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{MST to TSP example}
+\begin{tikzpicture}
+\tikzset{
+    graphNode/.style={draw,circle,thick,font=\tt\fontsize{9}{10}\selectfont,minimum width=.6cm,inner sep=0.2mm},
+    graphEdge/.style={draw,thick},
+    >=Latex,
+    my graph/.style={graphs/nodes={graphNode},graphs/edges={graphEdge},graphs/edge quotes={opacity=0}},
+    my graph box/.style={}
+}
+
+\tikzset{
+    my label/.style={draw=none,text width=.6cm},
+    my distance/.style={text width=1cm},
+    my previous/.style={text width=1cm},
+    my path/.style={text width=4cm},
+    my algorithm table/.style={
+        tight matrix,
+        nodes={font=\strut},
+        row 1/.style={nodes={draw=none}},
+        column 1/.style={nodes={my label}}
+        column 2/.style={nodes={my distance}},
+        column 3/.style={nodes={my previous}},
+        column 4/.style={nodes={my path}},
+        right={1cm of the graph},
+    },
+    marked vertex/.style={},
+    unmarked vertex/.style={},
+    used/.style={draw=black,very thick},
+    just used/.style={used},
+    unused/.style={draw=black!10,dashed},
+    considered/.style={unused},
+    my graph box/.style={},
+    edge history/.style={opacity=0},
+}
+\tikzset{
+    node named A/.style={marked vertex},node named B/.style={marked vertex},node named C/.style={marked vertex},node named D/.style={marked vertex},node named E/.style={marked vertex},node named F/.style={marked vertex},node named G/.style={marked vertex},edge from A to E/.style=used,edge from A to B/.style=unused,edge from A to F/.style=unused,edge from A to D/.style=unused,edge from A to G/.style=unused,edge from A to C/.style=unused,edge from B to E/.style=used,edge from B to F/.style=used,edge from B to D/.style=unused,edge from B to G/.style=unused,edge from B to C/.style=unused,edge from C to G/.style=used,edge from C to D/.style=unused,edge from C to F/.style=unused,edge from C to E/.style=unused,edge from D to G/.style=used,edge from D to F/.style=unused,edge from D to E/.style=unused,edge from E to F/.style=unused,edge from E to G/.style=unused,edge from F to G/.style=used,
+}
+
+\matrix[my graph box] (the graph) {
+\begin{scope}[my graph]
+\graph[no layout]{
+    A[node named A,at={(0.46,4.18)}],B[node named B,at={(1.73,2.78)}],C[node named C,at={(8.06,4.76)}],D[node named D,at={(5.44,2.99)}],E[node named E,at={(0.23,2.59)}],F[node named F,at={(4.47,5.11)}],G[node named G,at={(6.56,4.53)}],A --[edge from A to E,"",] E,A --[edge from A to B,"",] B,A --[edge from A to F,"",] F,A --[edge from A to D,"",] D,A --[edge from A to G,"",] G,A --[edge from A to C,"",] C,B --[edge from B to E,"",] E,B --[edge from B to F,"",] F,B --[edge from B to D,"",] D,B --[edge from B to G,"",] G,B --[edge from B to C,"",] C,C --[edge from C to G,"",] G,C --[edge from C to D,"",] D,C --[edge from C to F,"",] F,C --[edge from C to E,"",] E,D --[edge from D to G,"",] G,D --[edge from D to F,"",] F,D --[edge from D to E,"",] E,E --[edge from E to F,"",] F,E --[edge from E to G,"",] G,F --[edge from F to G,"",] G,
+};
+\end{scope}
+\\ 
+};
+
+\begin{visibleenv}<2->
+\node[right=1cm of the graph,align=left] {
+    pre-order traversal \\ from root F: \\
+    F, \\
+    B, E, A, \\
+    G, D, C, \\
+};
+\end{visibleenv}
+\begin{visibleenv}<2->
+\foreach \x/\y in {1/F,2/B,3/E,4/A,5/G,6/D,7/C} {
+    \node[red,anchor=south east] at (\y.north west) {\x};
+}
+\begin{scope}[blue, very thick,->]
+    \draw (F) -- (B);
+    \draw (B) -- (E);
+    \draw (E) -- (A);
+    \draw (A) -- (G);
+    \draw (G) -- (D);
+    \draw (D) -- (C);
+    \draw (C) -- (F);
+\end{scope}
+\end{visibleenv}
+
+\begin{visibleenv}<3>
+\draw[blue, very thick,->] (A) -- (G);
+\begin{scope}[red, very thick,->]
+    \draw (A) -- (E);
+    \draw (E) -- (B);
+    \draw (B) -- (F);
+    \draw (F) -- (G);
+\end{scope}
+\end{visibleenv}
+\begin{visibleenv}<4>
+\draw[blue, very thick,->] (D) -- (C);
+\draw[blue, very thick,->] (C) -- (F);
+\begin{scope}[red, very thick,->]
+    \draw (D) -- (G);
+    \draw (G) -- (C);
+    \draw (C) -- (G);
+    \draw (G) -- (F);
+\end{scope}
+\end{visibleenv}
+
+\end{tikzpicture}
+\end{frame}
