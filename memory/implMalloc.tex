@@ -1,6 +1,6 @@
 \begin{frame}{implementing malloc}
 \begin{tabular}{ll}
-malloc/new & OS allocation interfaces \\
+malloc/new & OS (low-level)  allocation interfaces \\
 16 byte or smaller allocations & minimum allocation/free: 4KB \\
 100ish ns/allocation or free & microsecondish allocation/free \\
 \end{tabular}
@@ -15,10 +15,10 @@ malloc/new & OS allocation interfaces \\
     \item get \myemph{large allocations} from OS
     \item subdivide allocation --- need data structure to manage
     \begin{itemize}
-        \item one idea: \myemph<2>{before what malloc/new returns}
+        \item one idea: \myemph<2>{around memory malloc/new returns}
         \item another idea: separate, e.g., hashtable on address
     \end{itemize} 
-    \item lots of tricky choices:
+    \item<2> lots of tricky choices:
     \begin{itemize}
         \item what if there are lots of non-contiguous free chunks?
         \item how to quickly find chunk of appropraite size
@@ -43,8 +43,8 @@ malloc/new & OS allocation interfaces \\
 \node[anchor=north east] (code) at (-1,0) {
 \begin{lstlisting}
 struct AllocInfo {
-  int size;
-  // for alloc'd:
+  int size; bool free;
+  // for unalloc'd:
   AllocInfo *prev;
   AllocInfo *next;
 };
@@ -63,19 +63,19 @@ struct AllocInfo {
     \draw[onStack] (0, 1) rectangle (3, 0) node[midway,font=\small,align=center] {free space};
     \draw[onStack,fill=white,isNextPrev] (0, -0.0) rectangle (3, -0.5) node[midway,font=\small] (freeANext) {next};
     \draw[onStack,fill=white,isNextPrev] (0, -0.5) rectangle (3, -1.0) node[midway,font=\small] (freeAPrev) {prev};
-    \draw[onStack,fill=white,isSize] (0, -1.0) rectangle (3, -1.5) node[midway,font=\small] (freeASize) {size};
+    \draw[onStack,fill=white,isSize] (0, -1.0) rectangle (3, -1.5) node[midway,font=\small] (freeASize) {size/free};
 
     \draw[very thick, red, rounded corners] (0, 1) rectangle (3, -1.5);
 
     \draw[onStack,fill=blue!20] (0, -1.5) rectangle (3, -3.0) node[midway,font=\small,align=center] (freeBAlloc) {new'd object};
-    \draw[onStack,fill=white,isSize] (0, -3.0) rectangle (3, -3.5) node[midway,font=\small] (freeBSize) {size};
+    \draw[onStack,fill=white,isSize] (0, -3.0) rectangle (3, -3.5) node[midway,font=\small] (freeBSize) {size/free};
     
     \draw[very thick, red, rounded corners] (0, -1.5) rectangle (3, -3.5);
 
     \draw[onStack] (0, -3.5) rectangle (3, -5.0) node[midway,font=\small] {free space};
     \draw[onStack,fill=white,isNextPrev] (0, -5.0) rectangle (3, -5.5) node[midway,font=\small] (freeCNext) {next};
     \draw[onStack,fill=white,isNextPrev] (0, -5.5) rectangle (3, -6.0) node[midway,font=\small] (freeCPrev) {prev};
-    \draw[onStack,fill=white,isSize] (0, -6.0) rectangle (3, -6.5) node[midway,font=\small] (freeCSize) {size};
+    \draw[onStack,fill=white,isSize] (0, -6.0) rectangle (3, -6.5) node[midway,font=\small] (freeCSize) {size/free};
     
     \draw[very thick, red, rounded corners] (0, -3.5) rectangle (3, -6.5);
     

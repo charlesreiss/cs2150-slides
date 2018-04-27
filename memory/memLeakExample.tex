@@ -3,6 +3,7 @@
 \begin{lstlisting}
 // allocate a space in memory for result
 char *result = malloc (sizeof (*result));
+int i = 1;
 *result = '\0';
 while (i < argc) {  // while there are still args
     char *s = malloc (sizeof (*s) *
@@ -24,6 +25,7 @@ printf ("Concatenation: %s\n", result);
 \begin{lstlisting}
 // allocate a space in memory for result
 char *result = malloc (sizeof (*result));
+int i = 1;
 *result = '\0';
 while (i < argc) {  // while there are still args
     char *s = malloc (sizeof (*s) *

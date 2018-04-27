@@ -7,6 +7,117 @@
     \end{itemize}
     \item and compare to list of all allocated objects
     \vspace{.5cm}
-    \item done by tools like Valgrind Memcheck or AddressSanitizer
+    \item some mallocs have \myemph{debug modes} that do this
+    \item also tools like Valgrind Memcheck or AddressSanitizer
+        \begin{itemize}
+            \item detect memory leaks and some other memory errors
+            \item \ldots but fairly high overhead
+        \end{itemize}
     \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,label=asanEx]{AddressSanitizer example}
+\lstset{language={},style=smaller}
+\begin{lstlisting}
+$ gcc -O -fsanitize=address -g example.c
+$ ./a.out foo bar
+Concatenation: foobar
+
+=================================================================
+==24984==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 7 byte(s) in 1 object(s) allocated from:
+    #0 0x7f77c05c6602 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.2+0x98602)
+    #1 0x400a0d in main /home/cr4bd/example.c:11
+
+Direct leak of 1 byte(s) in 1 object(s) allocated from:
+    #0 0x7f77c05c6602 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.2+0x98602)
+    #1 0x40099c in main /home/cr4bd/example.c:8
+
+SUMMARY: AddressSanitizer: 8 byte(s) leaked in 2 allocation(s).
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=memcheckEx]{valgrind memcheck example}
+\lstset{language={},style=script}
+\begin{lstlisting}
+$ valgrind --tool=memcheck --leak-check=full ./a.out foo bar
+...
+==25916== Command: ./a.out foo bar
+==25916== 
+Concatenation: foobar
+==25916== 
+==25708== HEAP SUMMARY:
+==25708==     in use at exit: 12 bytes in 3 blocks
+==25708==   total heap usage: 4 allocs, 1 frees, 1,036 bytes allocated
+==25708== 
+==25708== 1 bytes in 1 blocks are definitely lost in loss record 1 of 2
+==25708==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==25708==    by 0x400643: main (example.c:8)
+==25708== 
+==25708== 11 bytes in 2 blocks are definitely lost in loss record 2 of 2
+==25708==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==25708==    by 0x400692: main (example.c:11)
+==25916== LEAK SUMMARY:
+==25916==    definitely lost: 12 bytes in 3 blocks
+==25916==    indirectly lost: 0 bytes in 0 blocks
+==25916==      possibly lost: 0 bytes in 0 blocks
+==25916==    still reachable: 0 bytes in 0 blocks
+==25916==         suppressed: 0 bytes in 0 blocks
+==25916== 
+==25916== For counts of detected and suppressed errors, rerun with: -v
+==25916== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=otherErrorsASAN]{also other memory errors}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+// set.cc:
+void set(int *p, int x) {
+    p[x] = x;
+}
+// example2.cc:
+int main() {
+    int *array = new int[100];
+    set(array, 200);
+    return 0;
+}
+\end{lstlisting}
+\hrule
+\lstset{language={},style=smaller}
+\begin{lstlisting}
+...
+==26138==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x614000010160 at pc 0x000000400791 bp 0x7ffd03eccd30 sp 0x7ffd03eccd20
+WRITE of size 4 at 0x614000010160 thread T0
+    #0 0x400790 in set(int*, int) /home/cr4bd/set.cc:2
+    #1 0x400657 in main /home/cr4bd/example2.cc:5
+...
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile,label=otherErrorsValgrind]{also other memory errors}
+\lstset{language=C++,style=smaller}
+\begin{lstlisting}
+// set.cc:
+void set(int *p, int x) {
+    p[x] = x;
+}
+// example2.cc:
+int main() {
+    int *array = new int[100];
+    set(array, 200);
+    return 0;
+}
+\end{lstlisting}
+\hrule
+\lstset{language={},style=smaller}
+\begin{lstlisting}
+...
+==26229== Invalid write of size 4
+==26229==    at 0x400619: set(int*, int) (set.cc:2)
+==26229==    by 0x400517: main (example2.cc:5)
+==26229==  Address 0x5abdfa0 is 336 bytes inside an unallocated block of size 4,120,976 in arena "client"
+...
+\end{lstlisting}
 \end{frame}

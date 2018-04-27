@@ -78,6 +78,7 @@ int factorial_tail_recursive(int x, int y = 1) {
         return y;
     else
         return factorial_tail_recursive(x-1, x*y);
+            // tail call: jump to beginning
 }
 \end{lstlisting}
 \hrule
@@ -87,7 +88,7 @@ int factorial_loop(int x) {
     while (x > 1) {
         y *= x;
         x--;
-    }
+    }   // jmp to beginning...
     return y;
 }
 \end{lstlisting}

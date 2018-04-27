@@ -37,7 +37,8 @@ strcpy(bye, hello);
 \begin{visibleenv}<2->
 \hrule
 C result: \myemph{Segmentation fault}
-C++ result: compile error, \texttt{"Hello!"} is const
+
+C++ result: compile warning/error (\texttt{"Hello!"} is const) \ldots then segfault
 \end{visibleenv}
 \end{frame}
 
@@ -47,15 +48,17 @@ C++ result: compile error, \texttt{"Hello!"} is const
 }
 \begin{lstlisting}
 const char *hello = "Hello!";
-char bye[5] = {'B', 'y', 'e', '!', '\0'}; // or "Bye!" (same effect)
+char bye[5] = {'B', 'y', 'e', '!', '\0'};
+    // or "Bye!" (same effect)
 strcpy(bye, hello);
 \end{lstlisting}
 \hrule
+\vspace{.5cm}
 \begin{visibleenv}<2->
 same as:
 \begin{lstlisting}
-bye[0] = 'H'; bye[1] = 'e'; bye[2] = 'l'; bye[3] = 'l'; bye[4] = 'o';
-bye[5] = '!'; bye[6] = '\0';
+bye[0] = 'H'; bye[1] = 'e'; bye[2] = 'l'; bye[3] = 'l';
+bye[4] = 'o'; bye[5] = '!'; bye[6] = '\0';
 \end{lstlisting}
 goes \myemph{out of bounds!}
 \end{visibleenv}
